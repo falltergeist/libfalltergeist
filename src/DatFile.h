@@ -17,12 +17,30 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef LIBFALLTERGEIST_DATFILE_H
+#define LIBFALLTERGEIST_DATFILE_H
 
+#include <vector>
 
-#include "src/DatFile.h"
-#include "src/DatFileItem.h"
+namespace libfalltergeist
+{
+class DatFileItem;
 
+class DatFile
+{
+public:
+    DatFile();
+    DatFile(char * pathToFile);
+    ~DatFile();
+    bool open(char * pathToFile);
+    bool save(char * pathToFile);
+    bool close();
+    virtual std::vector<DatFileItem *> * getItems(void);
+protected:
+    std::vector<DatFileItem *> * _items;
 
-#endif // LIBFALLTERGEIST_H
+};
+
+}
+
+#endif // LIBFALLTERGEIST_DATFILE_H

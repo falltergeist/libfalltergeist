@@ -1,7 +1,7 @@
 CMakeFiles
 CMakeCache.txt
 Makefile
-cmake_install.cmake
+*.cmake
 *.so
 *.cbp
 *.user
