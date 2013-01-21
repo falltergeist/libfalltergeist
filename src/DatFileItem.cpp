@@ -32,7 +32,7 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
     _dataOffset = 0;
     _unpackedSize = 0;
     _packedSize = 0;
-    _packed = false;
+    _isCompressed = false;
 }
 
 DatFileItem::~DatFileItem()
@@ -68,5 +68,44 @@ char * DatFileItem::getFilename()
     return _filename;
 }
 
+unsigned int DatFileItem::getDataOffset()
+{
+    return _dataOffset;
+}
+
+void DatFileItem::setDataOffset(unsigned int offset)
+{
+    _dataOffset = offset;
+}
+
+unsigned int DatFileItem::getUnpackedSize()
+{
+    return _unpackedSize;
+}
+
+void DatFileItem::setUnpackedSize(unsigned int size)
+{
+    _unpackedSize = size;
+}
+
+unsigned int DatFileItem::getPackedSize()
+{
+    return _packedSize;
+}
+
+void DatFileItem::setPackedSize(unsigned int size)
+{
+    _packedSize = size;
+}
+
+void DatFileItem::setIsCompressed(bool compressed)
+{
+    _isCompressed = compressed;
+}
+
+bool DatFileItem::isCompressed()
+{
+    return _isCompressed;
+}
 
 }

@@ -35,6 +35,17 @@ DatFile::DatFile()
 }
 
 /**
+ * Opens selected DAT file
+ * @brief DatFile::DatFile
+ */
+DatFile::DatFile(char * pathToFile)
+{
+    _items = 0;
+    _stream = 0;
+    open(pathToFile);
+}
+
+/**
  * Destroys DAT file object
  * @brief DatFile::~DatFile
  */
@@ -65,6 +76,20 @@ bool DatFile::open(char * pathToFile)
         std::cout << "[FAIL]" << std::endl;
         return false;
     }
+}
+
+/**
+ * Check if file is opened
+ * @brief DatFile::isOpened
+ * @return
+ */
+bool DatFile::isOpened()
+{
+    if (_stream && _stream->is_open())
+    {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -154,6 +179,8 @@ void DatFile::readBytes(char * destination, unsigned int numberOfBytes)
  */
 std::vector<DatFileItem *> * DatFile::getItems()
 {
+    if (!isOpened()) return 0;
+
     if (_items == 0)
     {
         std::cout << "Loading DAT file items ... ";
@@ -183,26 +210,24 @@ std::vector<DatFileItem *> * DatFile::getItems()
         {
             DatFileItem * item = new DatFileItem(this);
 
-            //reading  fileName length
-            unsigned int filenameSize = readUint32();
-
             //reading fileName
+            unsigned int filenameSize = readUint32();
             char * filename = new char[filenameSize + 1]();
             readBytes(filename, filenameSize);
             item->setFilename(filename);
             delete [] filename;
 
             //reading compression flag
-            unsigned char compressed = readUint8();
+            item->setIsCompressed(readUint8() == 1 ? true : false);
 
             //reading unpacked size
-            unsigned int unpackedSize = readUint32();
+            item->setUnpackedSize(readUint32());
 
             //reading packed size
-            unsigned int packedSize = readUint32();
+            item->setPackedSize(readUint32());
 
             //reading data offset from dat file begining
-            unsigned int dataOffset = readUint32();
+            item->setDataOffset(readUint32());
 
             _items->push_back(item);
         }

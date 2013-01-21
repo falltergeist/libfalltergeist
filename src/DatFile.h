@@ -31,8 +31,10 @@ class DatFile
 {
 public:
     DatFile();
+    DatFile(char * pathToFile);
     ~DatFile();
     bool open(char * pathToFile);
+    bool isOpened();
     void setPosition(unsigned int position);
     unsigned int size(void);
     unsigned int getPosition(void);

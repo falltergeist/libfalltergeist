@@ -32,7 +32,7 @@ protected:
     unsigned int _dataOffset; // data offset in the DAT file
     unsigned int _unpackedSize; // unpacked data size
     unsigned int _packedSize; // packed data size
-    bool _packed; // is packed?
+    bool _isCompressed; // is packed?
 public:
 
     char * data; // file data
@@ -52,8 +52,8 @@ public:
     void setPackedSize(unsigned int size);
     unsigned int getPackedSize();
 
-    void setPacked(bool packed);
-    bool getPacked();
+    void setIsCompressed(bool compressed);
+    bool isCompressed();
 };
 
 }
