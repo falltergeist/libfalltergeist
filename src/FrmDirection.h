@@ -20,11 +20,20 @@
 #ifndef LIBFALLTERGEIST_FRMDIRECTION_H
 #define LIBFALLTERGEIST_FRMDIRECTION_H
 
+#include <vector>
+
 namespace libfalltergeist
 {
+class FrmFrame;
 
 class FrmDirection
 {
+protected:
+    short _shiftX;
+    short _shiftY;
+    unsigned int _dataOffset;
+    std::vector<FrmFrame *> * _frames;
+
 public:
     FrmDirection();
 };

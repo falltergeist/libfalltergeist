@@ -35,8 +35,7 @@ protected:
     bool _isCompressed; // is packed?
     char * _data;
     unsigned int _position;
-    bool _initialized;
-    void _init();
+    bool _opened;
 public:
 
     DatFileItem(DatFile * datFile);
@@ -68,6 +67,9 @@ public:
     unsigned int size();
     unsigned int getPosition();
     void setPosition(unsigned int position);
+    void open();
+    bool isOpened();
+    void close();
 
 };
 

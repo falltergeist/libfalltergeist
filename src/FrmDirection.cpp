@@ -18,12 +18,14 @@
  */
 
 #include "../src/FrmDirection.h"
+#include "../src/FrmFrame.h"
 
 namespace libfalltergeist
 {
 
 FrmDirection::FrmDirection()
 {
+    _frames = 0;
 }
 
 }

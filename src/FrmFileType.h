@@ -20,14 +20,18 @@
 #ifndef LIBFALLTERGEIST_FRMFILETYPE_H
 #define LIBFALLTERGEIST_FRMFILETYPE_H
 
+#include <vector>
+
 namespace libfalltergeist
 {
 class DatFileItem;
+class FrmDirection;
 
 class FrmFileType
 {
 protected:
     DatFileItem * _datFileItem;
+    std::vector<FrmDirection *> * _directions;
 public:
     FrmFileType(DatFileItem * datFileItem);
 };

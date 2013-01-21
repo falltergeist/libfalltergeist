@@ -19,12 +19,14 @@
 
 #include "../src/FrmFileType.h"
 #include "../src/DatFileItem.h"
+#include "../src/FrmDirection.h"
 
 namespace libfalltergeist
 {
 
 FrmFileType::FrmFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    _directions = 0;
 }
 
 }

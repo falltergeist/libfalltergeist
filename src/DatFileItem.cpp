@@ -35,7 +35,7 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
     _unpackedSize = 0;
     _packedSize = 0;
     _isCompressed = false;
-    _initialized = false;
+    _opened = false;
     _position = 0;
 }
 
@@ -114,7 +114,7 @@ bool DatFileItem::isCompressed()
 
 unsigned int DatFileItem::readUint32()
 {
-    _init();
+    open();
     unsigned int pos = getPosition();
     unsigned int value = (_data[pos] << 24) | (_data[pos+ 1] << 16) | (_data[pos + 2] << 8) | _data[pos + 3];
     setPosition(pos + 4);
@@ -128,7 +128,7 @@ int DatFileItem::readInt32()
 
 unsigned short DatFileItem::readUint16()
 {
-    _init();
+    open();
     unsigned int pos = getPosition();
     unsigned short value = (_data[pos] << 8) | _data[pos+ 1];
     setPosition(pos + 2);
@@ -142,7 +142,7 @@ short DatFileItem::readInt16()
 
 unsigned char DatFileItem::readUint8()
 {
-    _init();
+    open();
     unsigned int pos = getPosition();
     unsigned char value = _data[pos];
     setPosition(pos + 1);
@@ -169,9 +169,9 @@ unsigned int DatFileItem::getPosition()
     return _position;
 }
 
-void DatFileItem::_init()
+void DatFileItem::open()
 {
-    if (_initialized) return;
+    if (isOpened()) return;
 
     _data = new char[getUnpackedSize()]();
     _datFile->setPosition(getDataOffset());
@@ -202,7 +202,7 @@ void DatFileItem::_init()
         // just copying from dat file
         _datFile->readBytes(_data, getUnpackedSize());
     }
-    _initialized = true;
+    _opened = true;
 }
 
 void DatFileItem::skipBytes(unsigned int numberOfBytes)
@@ -212,9 +212,21 @@ void DatFileItem::skipBytes(unsigned int numberOfBytes)
 
 void DatFileItem::readBytes(char * destination, unsigned int numberOfBytes)
 {
-    _init();
+    open();
     memcpy(destination, _data + getPosition(), numberOfBytes);
     setPosition(getPosition() + numberOfBytes);
+}
+
+bool DatFileItem::isOpened()
+{
+    return _opened;
+}
+
+void DatFileItem::close()
+{
+    if (!isOpened()) return;
+    delete [] _data;
+    _opened = false;
 }
 
 }

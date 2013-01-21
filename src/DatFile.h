@@ -40,6 +40,7 @@ public:
     unsigned int getPosition(void);
     bool close(void);
     virtual std::vector<DatFileItem *> * getItems(void);
+    //todo virtual std::vector<DatFileItem *> * getOpenedItems(void);
     unsigned int readUint32();
     int readInt32();
     unsigned short readUint16();
