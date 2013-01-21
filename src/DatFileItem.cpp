@@ -21,23 +21,26 @@
 #include "../src/DatFileItem.h"
 #include "../src/DatFile.h"
 #include <algorithm>
+#include <zlib.h>
 
 namespace libfalltergeist
 {
 
 DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
 {
-    data = 0;
+    _data = 0;
     _filename = 0;
     _dataOffset = 0;
     _unpackedSize = 0;
     _packedSize = 0;
     _isCompressed = false;
+    _initialized = false;
+    _position = 0;
 }
 
 DatFileItem::~DatFileItem()
 {
-    delete [] data;
+    delete [] _data;
     delete [] _filename;
 }
 
@@ -106,6 +109,110 @@ void DatFileItem::setIsCompressed(bool compressed)
 bool DatFileItem::isCompressed()
 {
     return _isCompressed;
+}
+
+unsigned int DatFileItem::readUint32()
+{
+    _init();
+    unsigned int pos = getPosition();
+    unsigned int value = (_data[pos] << 24) | (_data[pos+ 1] << 16) | (_data[pos + 2] << 8) | _data[pos + 3];
+    setPosition(pos + 4);
+    return value;
+}
+
+int DatFileItem::readInt32()
+{
+    return (int) readUint32();
+}
+
+unsigned short DatFileItem::readUint16()
+{
+    _init();
+    unsigned int pos = getPosition();
+    unsigned short value = (_data[pos] << 8) | _data[pos+ 1];
+    setPosition(pos + 2);
+    return value;
+}
+
+short DatFileItem::readInt16()
+{
+    return (short) readUint16();
+}
+
+unsigned char DatFileItem::readUint8()
+{
+    _init();
+    unsigned int pos = getPosition();
+    unsigned char value = _data[pos];
+    setPosition(pos + 1);
+    return value;
+}
+
+char DatFileItem::readInt8()
+{
+    return (char) readUint8();
+}
+
+unsigned int DatFileItem::size()
+{
+    return getUnpackedSize();
+}
+
+void DatFileItem::setPosition(unsigned int position)
+{
+    _position = position;
+}
+
+unsigned int DatFileItem::getPosition()
+{
+    return _position;
+}
+
+void DatFileItem::_init()
+{
+    if (_initialized) return;
+
+    _data = new char[getUnpackedSize()]();
+
+    if (isCompressed())
+    {
+        char * packedData = new char[getPackedSize()]();
+        _datFile->readBytes(packedData, getPackedSize());
+
+        // unpacking
+        z_stream zStream;
+        zStream.total_in  = zStream.avail_in  = getPackedSize();
+        zStream.avail_in = getPackedSize();
+        zStream.next_in  = (unsigned char *) packedData;
+        zStream.total_out = zStream.avail_out = getUnpackedSize();
+        zStream.next_out = (unsigned char *) _data;
+        zStream.zalloc = Z_NULL;
+        zStream.zfree = Z_NULL;
+        zStream.opaque = Z_NULL;
+        inflateInit( &zStream );            // zlib function
+        inflate( &zStream, Z_FINISH );      // zlib function
+        inflateEnd( &zStream );             // zlib function
+
+        delete [] packedData;
+    }
+    else
+    {
+        // just copying from dat file
+        _datFile->setPosition(getDataOffset());
+        _datFile->readBytes(_data, getUnpackedSize());
+    }
+    _initialized = true;
+}
+
+void DatFileItem::skipBytes(unsigned int numberOfBytes)
+{
+    setPosition(getPosition() + numberOfBytes);
+}
+
+void DatFileItem::readBytes(char * destination, unsigned int numberOfBytes)
+{
+    memcpy(destination, _data + getPosition(), numberOfBytes);
+    setPosition(getPosition() + numberOfBytes);
 }
 
 }

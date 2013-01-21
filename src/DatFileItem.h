@@ -33,9 +33,11 @@ protected:
     unsigned int _unpackedSize; // unpacked data size
     unsigned int _packedSize; // packed data size
     bool _isCompressed; // is packed?
+    char * _data;
+    unsigned int _position;
+    bool _initialized;
+    void _init();
 public:
-
-    char * data; // file data
 
     DatFileItem(DatFile * datFile);
     ~DatFileItem();
@@ -54,6 +56,19 @@ public:
 
     void setIsCompressed(bool compressed);
     bool isCompressed();
+
+    unsigned int readUint32();
+    int readInt32();
+    unsigned short readUint16();
+    short readInt16();
+    unsigned char readUint8();
+    char readInt8();
+    void readBytes(char * destination, unsigned int numberOfBytes);
+    void skipBytes(unsigned int numberOfBytes);
+    unsigned int size();
+    unsigned int getPosition();
+    void setPosition(unsigned int position);
+
 };
 
 }

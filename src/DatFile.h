@@ -40,7 +40,6 @@ public:
     unsigned int getPosition(void);
     bool close(void);
     virtual std::vector<DatFileItem *> * getItems(void);
-protected:
     unsigned int readUint32();
     int readInt32();
     unsigned short readUint16();
@@ -49,6 +48,7 @@ protected:
     char readInt8();
     void readBytes(char * destination, unsigned int numberOfBytes);
     void skipBytes(unsigned int numberOfBytes);
+protected:
     std::vector<DatFileItem *> * _items;
     std::ifstream * _stream;
 
