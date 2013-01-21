@@ -44,30 +44,30 @@ DatFile::~DatFile()
 }
 
 /**
- * Opens existing DAT file
+ * Opens file stream
  * @brief DatFile::open
  * @param pathToFile
  * @return
  */
 bool DatFile::open(char * pathToFile)
 {
-    std::cout << "opening DAT file..." << std::endl;
+    std::cout << "Opening DAT file: " << pathToFile << " ... ";
     _stream = new std::ifstream();
     _stream->open(pathToFile, std::ios::binary);
     if (_stream->is_open())
     {
-        std::cout << "DAT file opened" << std::endl;
+        std::cout << "[OK]" << std::endl;
         return true;
     }
     else
     {
-        std::cout << "Can't open DAT file" << std::endl;
+        std::cout << "[FAIL]" << std::endl;
         return false;
     }
 }
 
 /**
- * Closes file
+ * Closes file stream
  * @brief DatFile::close
  * @return
  */
@@ -88,21 +88,100 @@ bool DatFile::close()
     return false;
 }
 
-unsigned int DatFile::size(void)
+/**
+ * Sets current position in file
+ * @brief DatFile::setPosition
+ * @param position
+ */
+void DatFile::setPosition(unsigned int position)
 {
-    if (!_stream || !_stream->is_open()) return 0;
-    _stream->seekg(0,std::ios::end);
+    _stream->seekg(position, std::ios::beg);
+}
+
+/**
+ * Returns curent position in file
+ * @brief DatFile::getPosition
+ * @return
+ */
+unsigned int DatFile::getPosition()
+{
     return _stream->tellg();
 }
 
+/**
+ * Returns file size in bytes
+ * @brief DatFile::size
+ * @return
+ */
+unsigned int DatFile::size(void)
+{
+    if (!_stream || !_stream->is_open()) return 0;
+    unsigned int oldPosition = _stream->tellg();
+    _stream->seekg(0,std::ios::end);
+    unsigned int currentPosition = _stream->tellg();
+    _stream->seekg(oldPosition, std::ios::beg);
+    return currentPosition;
+}
+
+/**
+ * Returns DatFile entries
+ * @brief DatFile::getItems
+ * @return
+ */
 std::vector<DatFileItem *> * DatFile::getItems()
 {
     if (_items == 0)
     {
-        //load items;
         std::cout << "Loading items..." << std::endl;
+        setPosition(size() - 4);
+        std::cout << "Total data size: " << readUint32() << std::endl;
+        std::cout << "Position: " << getPosition() << std::endl;
     }
     return _items;
+}
+
+unsigned int DatFile::readUint32()
+{
+    unsigned int value;
+    unsigned char * data = new unsigned char[4]();
+    _stream->readsome((char *)data, 4);
+    value = ( data[3] << 24) | (data[2] << 16) | ( data[1] << 8) | data[0];
+    delete [] data;
+    //setPosition(getPosition() + 4);
+    return value;
+}
+
+int DatFile::readInt32()
+{
+    return (int) readUint32();
+}
+
+unsigned short DatFile::readUint16()
+{
+    unsigned short value;
+    unsigned char * data = new unsigned char[2]();
+    _stream->readsome((char *)data, 2);
+    value = ( data[1] << 8) | data[0];
+    delete [] data;
+    //setPosition(getPosition() + 2);
+    return value;
+}
+
+short DatFile::readInt16()
+{
+    return (short) readUint16();
+}
+
+unsigned char DatFile::readUint8()
+{
+    unsigned char value;
+    _stream->readsome((char *)&value, 1);
+    return value;
+}
+
+char DatFile::readInt8()
+{
+    return (char) readUint8();
 }
 
 }

@@ -33,12 +33,20 @@ public:
     DatFile();
     ~DatFile();
     bool open(char * pathToFile);
-    bool seek(unsigned int position);
+    void setPosition(unsigned int position);
     unsigned int size(void);
-    unsigned int pos(void);
+    unsigned int getPosition(void);
     bool close(void);
     virtual std::vector<DatFileItem *> * getItems(void);
 protected:
+    unsigned int readUint32();
+    int readInt32();
+    unsigned short readUint16();
+    short readInt16();
+    unsigned char readUint8();
+    char readInt8();
+    char * readBytes(unsigned int numberOfBytes);
+    char * skipBytes(unsigned int numberOfBytes);
     std::vector<DatFileItem *> * _items;
     std::ifstream * _stream;
 
