@@ -17,15 +17,20 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef LIBFALLTERGEIST_FRMFILETYPE_H
+#define LIBFALLTERGEIST_FRMFILETYPE_H
 
+namespace libfalltergeist
+{
+class DatFileItem;
 
-#include "src/DatFile.h"
-#include "src/DatFileItem.h"
-#include "src/FrmFileType.h"
-#include "src/FrmDirection.h"
-#include "src/FrmFrame.h"
+class FrmFileType
+{
+protected:
+    DatFileItem * _datFileItem;
+public:
+    FrmFileType(DatFileItem * datFileItem);
+};
 
-
-#endif // LIBFALLTERGEIST_H
+}
+#endif // LIBFALLTERGEIST_FRMFILETYPE_H

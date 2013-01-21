@@ -17,15 +17,17 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef LIBFALLTERGEIST_FRMFRAME_H
+#define LIBFALLTERGEIST_FRMFRAME_H
 
+namespace libfalltergeist
+{
 
-#include "src/DatFile.h"
-#include "src/DatFileItem.h"
-#include "src/FrmFileType.h"
-#include "src/FrmDirection.h"
-#include "src/FrmFrame.h"
+class FrmFrame
+{
+public:
+    FrmFrame();
+};
 
-
-#endif // LIBFALLTERGEIST_H
+}
+#endif // LIBFALLTERGEIST_FRMFRAME_H
