@@ -2,7 +2,8 @@ cmake_minimum_required( VERSION 2.8 )
 
 project( libfalltergeist )
 
-set(SOURCES src/DatFile.cpp
+set(SOURCES libfalltergeist.cpp
+            src/DatFile.cpp
             src/DatFileItem.cpp)
 
 set(HEADERS libfalltergeist.h

@@ -18,7 +18,6 @@
  */
 
 #include "../src/DatFile.h"
-#include <fstream>
 #include <iostream>
 
 namespace libfalltergeist
@@ -31,27 +30,7 @@ namespace libfalltergeist
 DatFile::DatFile()
 {
     _items = 0;
-}
-
-/**
- * Opens existing file if exist or creates new
- * @brief DatFile::DatFile
- * @param pathToFile
- */
-DatFile::DatFile(char * pathToFile)
-{
-    _items = 0;
-    // trying to open file
-    std::ifstream stream(pathToFile, std::ios::binary);
-    if (stream.is_open())
-    {
-        std::cout << "DAT file opened" << std::endl;
-    }
-    else
-    {
-        std::cout << "Can't open DAT file" << std::endl;
-    }
-
+    _stream = 0;
 }
 
 /**
@@ -61,6 +40,7 @@ DatFile::DatFile(char * pathToFile)
 DatFile::~DatFile()
 {
     delete _items;
+    delete _stream;
 }
 
 /**
@@ -71,16 +51,19 @@ DatFile::~DatFile()
  */
 bool DatFile::open(char * pathToFile)
 {
-}
-
-/**
- * Saves object to file
- * @brief DatFile::save
- * @param pathToFile
- * @return
- */
-bool DatFile::save(char * pathToFile)
-{
+    std::cout << "opening DAT file..." << std::endl;
+    _stream = new std::ifstream();
+    _stream->open(pathToFile, std::ios::binary);
+    if (_stream->is_open())
+    {
+        std::cout << "DAT file opened" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "Can't open DAT file" << std::endl;
+        return false;
+    }
 }
 
 /**
@@ -90,6 +73,26 @@ bool DatFile::save(char * pathToFile)
  */
 bool DatFile::close()
 {
+    if (_stream && _stream->is_open())
+    {
+        _stream->close();
+        if (_stream->is_open())
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+unsigned int DatFile::size(void)
+{
+    if (!_stream || !_stream->is_open()) return 0;
+    _stream->seekg(0,std::ios::end);
+    return _stream->tellg();
 }
 
 std::vector<DatFileItem *> * DatFile::getItems()
