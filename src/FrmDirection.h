@@ -36,6 +36,13 @@ protected:
 
 public:
     FrmDirection();
+    ~FrmDirection();
+    short getShiftX();
+    void setShiftX(short shiftX);
+    short getShiftY();
+    void setShiftY(short shiftY);
+    unsigned int getDataOffset();
+    void setDataOffset(unsigned int offset);
 };
 
 }

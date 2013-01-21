@@ -29,4 +29,40 @@ FrmFileType::FrmFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
     _directions = 0;
 }
 
+FrmFileType::~FrmFileType()
+{
+    delete _directions;
+}
+
+void FrmFileType::open()
+{
+    // initialization
+    _datFileItem->setPosition(0);
+    _version = _datFileItem->readUint32();
+    _framesPerSecond = _datFileItem->readUint16();
+    _actionFrame = _datFileItem->readUint16();
+    _framesPerDirection = _datFileItem->readUint16();
+
+    _directions = new std::vector<FrmDirection *>;
+    for (unsigned int i = 0; i != 6; ++i)
+    {
+        FrmDirection * direction = new FrmDirection();
+        direction->setShiftX(_datFileItem->readUint16());
+        _directions->push_back(direction);
+    }
+
+    for (unsigned int i = 0; i != 6; ++i)
+    {
+        _directions->at(i)->setShiftY(_datFileItem->readInt16());
+    }
+
+    for (unsigned int i = 0; i != 6; ++i)
+    {
+        _directions->at(i)->setDataOffset(_datFileItem->readInt32());
+    }
+    // size of frame area
+    _datFileItem->skipBytes(4);
+
+}
+
 }

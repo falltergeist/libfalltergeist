@@ -243,6 +243,7 @@ unsigned int DatFile::readUint32()
     unsigned int value;
     unsigned char * data = new unsigned char[4]();
     _stream->readsome((char *)data, 4);
+    // Little endian
     value = ( data[3] << 24) | (data[2] << 16) | ( data[1] << 8) | data[0];
     delete [] data;
     setPosition(position + 4);
@@ -260,6 +261,7 @@ unsigned short DatFile::readUint16()
     unsigned short value;
     unsigned char * data = new unsigned char[2]();
     _stream->readsome((char *)data, 2);
+    // Little endian
     value = ( data[1] << 8) | data[0];
     delete [] data;
     setPosition(position + 2);

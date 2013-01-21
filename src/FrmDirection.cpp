@@ -28,4 +28,39 @@ FrmDirection::FrmDirection()
     _frames = 0;
 }
 
+FrmDirection::~FrmDirection()
+{
+    delete _frames;
+}
+
+short FrmDirection::getShiftX()
+{
+    return _shiftX;
+}
+
+void FrmDirection::setShiftX(short shiftX)
+{
+    _shiftX = shiftX;
+}
+
+short FrmDirection::getShiftY()
+{
+    return _shiftY;
+}
+
+void FrmDirection::setShiftY(short shiftY)
+{
+    _shiftY = shiftY;
+}
+
+unsigned int FrmDirection::getDataOffset()
+{
+    return _dataOffset;
+}
+
+void FrmDirection::setDataOffset(unsigned int offset)
+{
+    _dataOffset = offset;
+}
+
 }
