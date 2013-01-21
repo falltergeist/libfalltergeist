@@ -27,5 +27,9 @@
 #include "src/FrmDirection.h"
 #include "src/FrmFrame.h"
 
+namespace libfalltergeist
+{
+
+}
 
 #endif // LIBFALLTERGEIST_H

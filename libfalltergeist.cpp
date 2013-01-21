@@ -19,7 +19,7 @@
 
 #include "libfalltergeist.h"
 
-namespace Falltergeist
+namespace libfalltergeist
 {
 
 }
