@@ -22,6 +22,7 @@
 #include "../src/DatFile.h"
 #include <algorithm>
 #include <zlib.h>
+#include <iostream>
 
 namespace libfalltergeist
 {
@@ -173,6 +174,7 @@ void DatFileItem::_init()
     if (_initialized) return;
 
     _data = new char[getUnpackedSize()]();
+    _datFile->setPosition(getDataOffset());
 
     if (isCompressed())
     {
@@ -198,7 +200,6 @@ void DatFileItem::_init()
     else
     {
         // just copying from dat file
-        _datFile->setPosition(getDataOffset());
         _datFile->readBytes(_data, getUnpackedSize());
     }
     _initialized = true;
@@ -211,6 +212,7 @@ void DatFileItem::skipBytes(unsigned int numberOfBytes)
 
 void DatFileItem::readBytes(char * destination, unsigned int numberOfBytes)
 {
+    _init();
     memcpy(destination, _data + getPosition(), numberOfBytes);
     setPosition(getPosition() + numberOfBytes);
 }
