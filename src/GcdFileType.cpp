@@ -17,30 +17,13 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
-
-
-#include "src/DatFile.h"
-#include "src/DatFileItem.h"
-#include "src/AafFileType.h"
-#include "src/AafGlyph.h"
-#include "src/BioFileType.h"
-#include "src/FonFileType.h"
-#include "src/FonGlyph.h"
-#include "src/FrmFileType.h"
-#include "src/FrmDirection.h"
-#include "src/FrmFrame.h"
-#include "src/GcdFileType.h"
-#include "src/LstFileType.h"
-#include "src/MsgFileType.h"
-#include "src/MsgMessage.h"
-#include "src/PalFileType.h"
-#include "src/PalColor.h"
+#include "../src/GcdFileType.h"
 
 namespace libfalltergeist
 {
 
+GcdFileType::GcdFileType()
+{
 }
 
-#endif // LIBFALLTERGEIST_H
+}
