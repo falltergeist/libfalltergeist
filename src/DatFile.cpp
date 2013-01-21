@@ -18,6 +18,7 @@
  */
 
 #include "../src/DatFile.h"
+#include "../src/DatFileItem.h"
 #include <iostream>
 
 namespace libfalltergeist
@@ -53,7 +54,7 @@ bool DatFile::open(char * pathToFile)
 {
     std::cout << "Opening DAT file: " << pathToFile << " ... ";
     _stream = new std::ifstream();
-    _stream->open(pathToFile, std::ios::binary);
+    _stream->open(pathToFile, std::ios_base::binary);
     if (_stream->is_open())
     {
         std::cout << "[OK]" << std::endl;
@@ -124,6 +125,29 @@ unsigned int DatFile::size(void)
 }
 
 /**
+ * Skips some bytes
+ * @brief DatFile::skipBytes
+ * @param numberOfBytes
+ */
+void DatFile::skipBytes(unsigned int numberOfBytes)
+{
+    setPosition(getPosition() + numberOfBytes);
+}
+
+/**
+ * Reads some bytes to the selected destination
+ * @brief DatFile::readBytes
+ * @param destination
+ * @param numberOfBytes
+ */
+void DatFile::readBytes(char * destination, unsigned int numberOfBytes)
+{
+    unsigned int position = getPosition();
+    unsigned int readed = _stream->readsome(destination, numberOfBytes);
+    setPosition(position + numberOfBytes);
+}
+
+/**
  * Returns DatFile entries
  * @brief DatFile::getItems
  * @return
@@ -132,22 +156,71 @@ std::vector<DatFileItem *> * DatFile::getItems()
 {
     if (_items == 0)
     {
-        std::cout << "Loading items..." << std::endl;
+        std::cout << "Loading DAT file items ... ";
+
+        _items = new std::vector<DatFileItem *>;
+
+        // reading data size from dat file
         setPosition(size() - 4);
-        std::cout << "Total data size: " << readUint32() << std::endl;
-        std::cout << "Position: " << getPosition() << std::endl;
+        unsigned int datFileSize = readUint32();
+        if (datFileSize != size())
+        {
+            std::cout << "[FAIL]" << std::endl;
+            std::cout << "[ERROR] Wrong or corrupted DAT file";
+            return 0;
+        }
+
+        // reading size of files tree
+        setPosition(size() - 8);
+        unsigned int filesTreeSize = readUint32();
+
+        // reading total number of items in dat file
+        setPosition(size() - filesTreeSize - 8);
+        unsigned int filesTotalNumber = readUint32();
+
+        //reading files data one by one
+        for (unsigned int i = 0; i != filesTotalNumber; ++i)
+        {
+            DatFileItem * item = new DatFileItem(this);
+
+            //reading  fileName length
+            unsigned int filenameSize = readUint32();
+
+            //reading fileName
+            char * filename = new char[filenameSize + 1]();
+            readBytes(filename, filenameSize);
+            item->setFilename(filename);
+            delete [] filename;
+
+            //reading compression flag
+            unsigned char compressed = readUint8();
+
+            //reading unpacked size
+            unsigned int unpackedSize = readUint32();
+
+            //reading packed size
+            unsigned int packedSize = readUint32();
+
+            //reading data offset from dat file begining
+            unsigned int dataOffset = readUint32();
+
+            _items->push_back(item);
+        }
+        std::cout << "[OK]" << std::endl;
+        std::cout << "Items loaded: " << filesTotalNumber << std::endl;
     }
     return _items;
 }
 
 unsigned int DatFile::readUint32()
 {
+    unsigned int position = getPosition();
     unsigned int value;
     unsigned char * data = new unsigned char[4]();
     _stream->readsome((char *)data, 4);
     value = ( data[3] << 24) | (data[2] << 16) | ( data[1] << 8) | data[0];
     delete [] data;
-    //setPosition(getPosition() + 4);
+    setPosition(position + 4);
     return value;
 }
 
@@ -158,12 +231,13 @@ int DatFile::readInt32()
 
 unsigned short DatFile::readUint16()
 {
+    unsigned int position = getPosition();
     unsigned short value;
     unsigned char * data = new unsigned char[2]();
     _stream->readsome((char *)data, 2);
     value = ( data[1] << 8) | data[0];
     delete [] data;
-    //setPosition(getPosition() + 2);
+    setPosition(position + 2);
     return value;
 }
 
@@ -174,8 +248,10 @@ short DatFile::readInt16()
 
 unsigned char DatFile::readUint8()
 {
+    unsigned int position = getPosition();
     unsigned char value;
     _stream->readsome((char *)&value, 1);
+    setPosition(position + +1);
     return value;
 }
 

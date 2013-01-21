@@ -45,8 +45,8 @@ protected:
     short readInt16();
     unsigned char readUint8();
     char readInt8();
-    char * readBytes(unsigned int numberOfBytes);
-    char * skipBytes(unsigned int numberOfBytes);
+    void readBytes(char * destination, unsigned int numberOfBytes);
+    void skipBytes(unsigned int numberOfBytes);
     std::vector<DatFileItem *> * _items;
     std::ifstream * _stream;
 

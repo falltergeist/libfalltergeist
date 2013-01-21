@@ -20,6 +20,7 @@
 #include <string.h>
 #include "../src/DatFileItem.h"
 #include "../src/DatFile.h"
+#include <algorithm>
 
 namespace libfalltergeist
 {
@@ -47,9 +48,15 @@ DatFileItem::~DatFileItem()
  */
 void DatFileItem::setFilename(char * filename)
 {
-    delete [] _filename;
-    _filename = new char[strlen(filename) + 1]();
-    strcpy(_filename,filename);
+    if (_filename != 0) delete [] _filename;
+
+    // convert to lowercase and replace slashes
+    std::string fname(filename);
+    std::replace(fname.begin(),fname.end(),'\\','/');
+    std::transform(fname.begin(),fname.end(),fname.begin(), ::tolower);
+
+    _filename = new char[strlen(fname.c_str()) + 1]();
+    strcpy(_filename, fname.c_str());
 }
 
 /**
