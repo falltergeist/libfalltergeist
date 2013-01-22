@@ -18,12 +18,23 @@
  */
 
 #include "../src/PalFileType.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-PalFileType::PalFileType()
+PalFileType::PalFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    open();
+}
+
+PalFileType::~PalFileType()
+{
+}
+
+void PalFileType::open()
+{
+    //initialization
 }
 
 }

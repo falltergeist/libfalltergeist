@@ -22,11 +22,17 @@
 
 namespace libfalltergeist
 {
+class DatFileItem;
 
 class PalFileType
 {
+protected:
+    DatFileItem * _datFileItem;
+
 public:
-    PalFileType();
+    PalFileType(DatFileItem * datFileItem);
+    ~PalFileType();
+    void open();
 };
 
 }

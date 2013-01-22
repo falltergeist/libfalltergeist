@@ -20,6 +20,8 @@
 #include "../src/DatFile.h"
 #include "../src/DatFileItem.h"
 #include <iostream>
+#include <string>
+#include <algorithm>
 
 namespace libfalltergeist
 {
@@ -285,6 +287,23 @@ unsigned char DatFile::readUint8()
 char DatFile::readInt8()
 {
     return (char) readUint8();
+}
+
+DatFileItem * DatFile::getItemByFilename(char * filename)
+{
+    std::string name(filename);
+    // Replace slashes and transform to lower case
+    std::replace(name.begin(),name.end(),'\\','/');
+    std::transform(name.begin(),name.end(),name.begin(), ::tolower);
+    std::vector<DatFileItem *>::iterator it;
+    for (it = getItems()->begin(); it != getItems()->end(); ++it)
+    {
+        if ((*it)->getFilename() == name)
+        {
+            return *it;
+        }
+    }
+    return 0;
 }
 
 }
