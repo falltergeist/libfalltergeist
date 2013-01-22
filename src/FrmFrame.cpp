@@ -53,22 +53,22 @@ void FrmFrame::setHeight(unsigned short height)
     _height = height;
 }
 
-unsigned short FrmFrame::getOffsetX()
+short FrmFrame::getOffsetX()
 {
     return _offsetX;
 }
 
-void FrmFrame::setOffsetX(unsigned short offsetX)
+void FrmFrame::setOffsetX(short offsetX)
 {
     _offsetX = offsetX;
 }
 
-unsigned short FrmFrame::getOffsetY()
+short FrmFrame::getOffsetY()
 {
     return _offsetY;
 }
 
-void FrmFrame::setOffsetY(unsigned short offsetY)
+void FrmFrame::setOffsetY(short offsetY)
 {
     _offsetY = offsetY;
 }

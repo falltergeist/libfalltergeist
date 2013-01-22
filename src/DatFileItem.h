@@ -34,7 +34,7 @@ protected:
     unsigned int _unpackedSize; // unpacked data size
     unsigned int _packedSize; // packed data size
     bool _isCompressed; // is packed?
-    char * _data;
+    unsigned char * _data;
     unsigned int _position;
     bool _opened;
 public:

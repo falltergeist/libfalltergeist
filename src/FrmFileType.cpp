@@ -21,6 +21,7 @@
 #include "../src/DatFileItem.h"
 #include "../src/FrmDirection.h"
 #include "../src/FrmFrame.h"
+#include <iostream>
 
 namespace libfalltergeist
 {
@@ -72,17 +73,14 @@ void FrmFileType::open()
     // Data offset
     for (unsigned int i = 0; i != 6; ++i)
     {
-        getDirections()->at(i)->setDataOffset(_datFileItem->readInt32());
+        getDirections()->at(i)->setDataOffset(_datFileItem->readUint32());
     }
-
-    // Total size of frames area
-    _datFileItem->skipBytes(4);
 
     // for each direction
     for (unsigned int i = 0; i!= 6; ++i)
     {
         // jump to frames data at frames area
-        _datFileItem->setPosition(getDirections()->at(i)->getDataOffset() + 0x3E);
+        _datFileItem->setPosition(getDirections()->at(i)->getDataOffset() + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
@@ -96,13 +94,14 @@ void FrmFileType::open()
             frame->setHeight(_datFileItem->readUint16());
 
             //Number of pixels for this frame
+
             unsigned int dataSize = _datFileItem->readUint32();
 
             // X offset
-            frame->setOffsetX(_datFileItem->readUint16());
+            frame->setOffsetX(_datFileItem->readInt16());
 
             // Y offset
-            frame->setOffsetY(_datFileItem->readUint16());
+            frame->setOffsetY(_datFileItem->readInt16());
 
             for (unsigned int n = 0; n != dataSize; ++n)
             {
@@ -127,7 +126,7 @@ void FrmFileType::setVersion(unsigned int version)
     _version = version;
 }
 
-unsigned int FrmFileType::getFramesPerSecond()
+unsigned short FrmFileType::getFramesPerSecond()
 {
     return _framesPerSecond;
 }
@@ -137,7 +136,7 @@ void FrmFileType::setFramesPerSecond(unsigned short fps)
     _framesPerSecond = fps;
 }
 
-unsigned int FrmFileType::getFramesPerDirection()
+unsigned short FrmFileType::getFramesPerDirection()
 {
     return _framesPerDirection;
 }

@@ -117,7 +117,7 @@ unsigned int DatFileItem::readUint32()
 {
     open();
     unsigned int pos = getPosition();
-    unsigned int value = (_data[pos] << 24) | (_data[pos+ 1] << 16) | (_data[pos + 2] << 8) | _data[pos + 3];
+    unsigned int value = (_data[pos] << 24)| (_data[pos+ 1] << 16) | (_data[pos + 2] << 8) | _data[pos + 3];
     setPosition(pos + 4);
     return value;
 }
@@ -174,7 +174,7 @@ void DatFileItem::open()
 {
     if (isOpened()) return;
 
-    _data = new char[getUnpackedSize()]();
+    _data = new unsigned char[getUnpackedSize()]();
     _datFile->setPosition(getDataOffset());
 
     if (isCompressed())
@@ -201,7 +201,7 @@ void DatFileItem::open()
     else
     {
         // just copying from dat file
-        _datFile->readBytes(_data, getUnpackedSize());
+        _datFile->readBytes((char *)_data, getUnpackedSize());
     }
     _opened = true;
 }
