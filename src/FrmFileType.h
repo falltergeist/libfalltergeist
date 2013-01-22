@@ -44,6 +44,16 @@ public:
     void open();
     FrmFileType(DatFileItem * datFileItem);
     ~FrmFileType();
+    unsigned int getVersion();
+    void setVersion(unsigned int version);
+    unsigned short getFramesPerSecond();
+    void setFramesPerSecond(unsigned short fps);
+    unsigned short getFramesPerDirection();
+    void setFramesPerDirection(unsigned short fpd);
+    unsigned short getActionFrame();
+    void setActionFrame(unsigned short number);
+    std::vector<FrmDirection *> * getDirections();
+
 };
 
 }
