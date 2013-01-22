@@ -63,4 +63,11 @@ void FrmDirection::setDataOffset(unsigned int offset)
     _dataOffset = offset;
 }
 
+std::vector<FrmFrame *> * FrmDirection::getFrames()
+{
+    if (_frames != 0) return _frames;
+    _frames = new std::vector<FrmFrame *>;
+    return _frames;
+}
+
 }

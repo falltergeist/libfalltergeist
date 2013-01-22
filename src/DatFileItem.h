@@ -23,6 +23,7 @@
 namespace libfalltergeist
 {
 class DatFile;
+class FrmFileType;
 
 class DatFileItem
 {
@@ -70,6 +71,8 @@ public:
     void open();
     bool isOpened();
     void close();
+
+    FrmFileType * asFrmFileType();
 
 };
 

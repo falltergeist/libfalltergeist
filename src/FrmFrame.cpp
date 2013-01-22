@@ -17,13 +17,68 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FrmFrame.h"
+#include "../src/FrmFrame.h"
+#include "../src/PalColor.h"
 
 namespace libfalltergeist
 {
 
 FrmFrame::FrmFrame()
 {
+    _colorIndexes = 0;
 }
+
+FrmFrame::~FrmFrame()
+{
+    delete _colorIndexes;
+}
+
+unsigned short FrmFrame::getWidth()
+{
+    return _width;
+}
+
+void FrmFrame::setWidth(unsigned short width)
+{
+    _width = width;
+}
+
+unsigned short FrmFrame::getHeight()
+{
+    return _height;
+}
+
+void FrmFrame::setHeight(unsigned short height)
+{
+    _height = height;
+}
+
+unsigned short FrmFrame::getOffsetX()
+{
+    return _offsetX;
+}
+
+void FrmFrame::setOffsetX(unsigned short offsetX)
+{
+    _offsetX = offsetX;
+}
+
+unsigned short FrmFrame::getOffsetY()
+{
+    return _offsetY;
+}
+
+void FrmFrame::setOffsetY(unsigned short offsetY)
+{
+    _offsetY = offsetY;
+}
+
+std::vector<unsigned char> * FrmFrame::getColorIndexes()
+{
+    if (_colorIndexes != 0) return _colorIndexes;
+    _colorIndexes = new std::vector<unsigned char>;
+    return _colorIndexes;
+}
+
 
 }

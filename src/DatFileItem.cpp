@@ -20,6 +20,7 @@
 #include <string.h>
 #include "../src/DatFileItem.h"
 #include "../src/DatFile.h"
+#include "../src/FrmFileType.h"
 #include <algorithm>
 #include <zlib.h>
 #include <iostream>
@@ -227,6 +228,12 @@ void DatFileItem::close()
     if (!isOpened()) return;
     delete [] _data;
     _opened = false;
+}
+
+FrmFileType * DatFileItem::asFrmFileType()
+{
+    FrmFileType * frm = new FrmFileType(this);
+    return frm;
 }
 
 }

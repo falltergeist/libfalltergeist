@@ -43,6 +43,7 @@ public:
     void setShiftY(short shiftY);
     unsigned int getDataOffset();
     void setDataOffset(unsigned int offset);
+    std::vector<FrmFrame *> * getFrames();
 };
 
 }
