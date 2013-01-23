@@ -19,22 +19,37 @@
 
 #include "../src/PalFileType.h"
 #include "../src/DatFileItem.h"
+#include "../src/PalColor.h"
 
 namespace libfalltergeist
 {
 
 PalFileType::PalFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    _colors = 0;
     open();
 }
 
 PalFileType::~PalFileType()
 {
+    delete _colors;
 }
 
 void PalFileType::open()
 {
-    //initialization
+    _datFileItem->setPosition(0);
+    _colors = new std::vector<PalColor *>;
+
+    // zero color (transparent)
+    _colors->push_back(new PalColor(0,0,0,0));
+
+    for (unsigned int i = 1; i != 256; ++i)
+    {
+        unsigned char r = _datFileItem->readUint8();
+        unsigned char g = _datFileItem->readUint8();
+        unsigned char b = _datFileItem->readUint8();
+        _colors->push_back(new PalColor(r,g,b));
+    }
 }
 
 }

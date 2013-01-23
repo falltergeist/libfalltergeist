@@ -22,8 +22,24 @@
 namespace libfalltergeist
 {
 
-PalColor::PalColor()
+PalColor::PalColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) : r(r), g(g), b(b), a(a)
 {
+}
+
+PalColor::operator int()
+{
+    unsigned char k = 1;
+    int color = ((r * k) << 16) | ((g * k) << 8) | (b * k);
+    if (color == 0) return 0;
+    return 0xFF000000 | color;
+}
+
+PalColor::operator unsigned int()
+{
+    unsigned char k = 1;
+    unsigned int color = ((r * k) << 16) | ((g * k) << 8) | (b * k);
+    if (color == 0) return 0;
+    return 0xFF000000 | color;
 }
 
 }

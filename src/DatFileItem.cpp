@@ -21,6 +21,7 @@
 #include "../src/DatFileItem.h"
 #include "../src/DatFile.h"
 #include "../src/FrmFileType.h"
+#include "../src/PalFileType.h"
 #include <algorithm>
 #include <zlib.h>
 #include <iostream>
@@ -234,6 +235,12 @@ FrmFileType * DatFileItem::asFrmFileType()
 {
     FrmFileType * frm = new FrmFileType(this);
     return frm;
+}
+
+PalFileType * DatFileItem::asPalFileType()
+{
+    PalFileType * pal = new PalFileType(this);
+    return pal;
 }
 
 }

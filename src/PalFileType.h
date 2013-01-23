@@ -20,19 +20,26 @@
 #ifndef LIBFALLTERGEIST_PALFILETYPE_H
 #define LIBFALLTERGEIST_PALFILETYPE_H
 
+#include <vector>
+
 namespace libfalltergeist
 {
 class DatFileItem;
+class PalColor;
 
 class PalFileType
 {
 protected:
     DatFileItem * _datFileItem;
+    std::vector<PalColor *> * _colors;
 
 public:
     PalFileType(DatFileItem * datFileItem);
     ~PalFileType();
     void open();
+    std::vector<PalColor *> * getColors();
+    PalColor * getColor();
+
 };
 
 }
