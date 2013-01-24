@@ -52,4 +52,14 @@ void PalFileType::open()
     }
 }
 
+std::vector<PalColor *> * PalFileType::getColors()
+{
+    return _colors;
+}
+
+PalColor * PalFileType::getColor(unsigned char index)
+{
+    return _colors->at(index);
+}
+
 }

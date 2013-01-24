@@ -38,7 +38,7 @@ public:
     ~PalFileType();
     void open();
     std::vector<PalColor *> * getColors();
-    PalColor * getColor();
+    PalColor * getColor(unsigned char index);
 
 };
 
