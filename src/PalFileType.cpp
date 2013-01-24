@@ -42,12 +42,14 @@ void PalFileType::open()
 
     // zero color (transparent)
     _colors->push_back(new PalColor(0,0,0,0));
+    _datFileItem->skipBytes(3);
 
     for (unsigned int i = 1; i != 256; ++i)
     {
         unsigned char r = _datFileItem->readUint8();
         unsigned char g = _datFileItem->readUint8();
-        unsigned char b = _datFileItem->readUint8();
+        unsigned char b = _datFileItem->readUint8();        
+
         _colors->push_back(new PalColor(r,g,b));
     }
 }
