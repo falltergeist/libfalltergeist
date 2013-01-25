@@ -60,6 +60,7 @@ void AafFileType::open()
         glyph->setWidth(_datFileItem->readUint16());
         glyph->setHeight(_datFileItem->readUint16());
         _dataOffsets[i] = _datFileItem->readUint32();
+        _glyphs->push_back(glyph);
     }
 
     //glyphs data
