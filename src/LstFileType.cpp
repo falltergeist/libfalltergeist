@@ -19,6 +19,7 @@
 
 #include "../src/LstFileType.h"
 #include "../src/DatFileItem.h"
+#include <iostream>
 
 namespace libfalltergeist
 {
@@ -41,22 +42,21 @@ void LstFileType::open()
 
     _datFileItem->setPosition(0);
 
-    bool end = false;
-
+    std::string * line = new std::string();
     for(unsigned int i = 0; i != _datFileItem->size(); ++i)
     {
-        std::string * line = new std::string();
-        unsigned char ch;
-        while (ch = _datFileItem->readUint8() && ch != 0x0D && i < _datFileItem->size())
+        unsigned char ch = _datFileItem->readUint8();
+        if (ch != 0x0D)
         {
-            if (ch == 0x20) end = true;
-            if (!end) line->push_back(ch);
-            i++;
+            line->push_back(ch);
         }
-        end = false;
-        // skips \r\n
-        i++; i++;
-        _strings->push_back(line);
+        else
+        {
+            _strings->push_back(line);
+            line = new std::string();
+            ++i;
+            _datFileItem->skipBytes(1);
+        }
     }
 }
 
