@@ -20,13 +20,23 @@
 #ifndef LIBFALLTERGEIST_LSTFILETYPE_H
 #define LIBFALLTERGEIST_LSTFILETYPE_H
 
+#include <string>
+#include <vector>
+
 namespace libfalltergeist
 {
+class DatFileItem;
 
 class LstFileType
 {
+protected:
+    DatFileItem * _datFileItem;
+    std::vector<std::string *> * _strings;
 public:
-    LstFileType();
+    LstFileType(DatFileItem * datFileItem);
+    ~LstFileType();
+    void open();
+    std::vector<std::string *> * getStrings();
 };
 
 }

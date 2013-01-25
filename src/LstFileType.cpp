@@ -18,12 +18,51 @@
  */
 
 #include "../src/LstFileType.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-LstFileType::LstFileType()
+LstFileType::LstFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    _strings = 0;
+    open();
+}
+
+LstFileType::~LstFileType()
+{
+    delete _strings;
+}
+
+void LstFileType::open()
+{
+    // load strings from file
+    _strings = new std::vector<std::string *>;
+
+    _datFileItem->setPosition(0);
+
+    bool end = false;
+
+    for(unsigned int i = 0; i != _datFileItem->size(); ++i)
+    {
+        std::string * line = new std::string();
+        unsigned char ch;
+        while (ch = _datFileItem->readUint8() && ch != 0x0D && i < _datFileItem->size())
+        {
+            if (ch == 0x20) end = true;
+            if (!end) line->push_back(ch);
+            i++;
+        }
+        end = false;
+        // skips \r\n
+        i++; i++;
+        _strings->push_back(line);
+    }
+}
+
+std::vector<std::string *> * LstFileType::getStrings()
+{
+    return _strings;
 }
 
 }

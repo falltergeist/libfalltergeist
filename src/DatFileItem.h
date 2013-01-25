@@ -25,6 +25,7 @@ namespace libfalltergeist
 class DatFile;
 class FrmFileType;
 class PalFileType;
+class LstFileType;
 
 class DatFileItem
 {
@@ -75,6 +76,7 @@ public:
 
     FrmFileType * asFrmFileType();
     PalFileType * asPalFileType();
+    LstFileType * asLstFileType();
 
 };
 
