@@ -20,13 +20,35 @@
 #ifndef LIBFALLTERGEIST_AAFFILETYPE_H
 #define LIBFALLTERGEIST_AAFFILETYPE_H
 
+#include <vector>
+
 namespace libfalltergeist
 {
+class DatFileItem;
+class AafGlyph;
 
 class AafFileType
 {
+protected:
+    DatFileItem * _datFileItem;
+    std::vector<AafGlyph *> * _glyphs;
+    unsigned short _maximumHeight;
+    unsigned short _horizontalGap;
+    unsigned short _spaceWidth;
+    unsigned short _verticalGap;
 public:
-    AafFileType();
+    AafFileType(DatFileItem * datFileItem);
+    ~AafFileType();
+    void open();
+    std::vector<AafGlyph *> * getGlyphs();
+    unsigned short getMaximumHeight();
+    unsigned short getHorizontalGap();
+    unsigned short getVerticalGap();
+    unsigned short getSpaceWidth();
+    void setMaximumHeight(unsigned short height);
+    void setHorizontalGap(unsigned short gap);
+    void setVerticalGap(unsigned short gap);
+    void setSpaceWidth(unsigned short width);
 };
 
 }

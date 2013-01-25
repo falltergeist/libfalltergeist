@@ -20,13 +20,25 @@
 #ifndef LIBFALLTERGEIST_AAFGLYPH_H
 #define LIBFALLTERGEIST_AAFGLYPH_H
 
+#include <vector>
+
 namespace libfalltergeist
 {
 
 class AafGlyph
 {
+protected:
+    unsigned short _width;
+    unsigned short _height;
+    std::vector<unsigned char> * _data;
 public:
-    AafGlyph();
+    AafGlyph();    
+    ~AafGlyph();
+    std::vector<unsigned char> * getData();
+    unsigned short getWidth();
+    void setWidth(unsigned short width);
+    unsigned short getHeight();
+    void setHeight(unsigned short height);
 };
 
 }

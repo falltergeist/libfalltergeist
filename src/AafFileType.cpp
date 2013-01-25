@@ -18,12 +18,104 @@
  */
 
 #include "../src/AafFileType.h"
+#include "../src/AafGlyph.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-AafFileType::AafFileType()
+AafFileType::AafFileType(DatFileItem * datFileItem): _datFileItem(datFileItem)
 {
+    _glyphs = 0;
+    open();
+}
+
+AafFileType::~AafFileType()
+{
+    delete _glyphs;
+}
+
+void AafFileType::open()
+{
+    _glyphs = new std::vector<AafGlyph *>;
+    _datFileItem->setPosition(0);
+
+    // AAFF Signature
+    _datFileItem->skipBytes(4);
+
+    setMaximumHeight(_datFileItem->readUint16());
+
+    setHorizontalGap(_datFileItem->readUint16());
+
+    setSpaceWidth(_datFileItem->readUint16());
+
+    setVerticalGap(_datFileItem->readUint16());
+
+    unsigned int * _dataOffsets = new unsigned int[256];
+
+    // glyphs descriptions
+    for (unsigned int i = 0; i != 256; ++i)
+    {
+        AafGlyph * glyph = new AafGlyph();
+        glyph->setWidth(_datFileItem->readUint16());
+        glyph->setHeight(_datFileItem->readUint16());
+        _dataOffsets[i] = _datFileItem->readUint32();
+    }
+
+    //glyphs data
+    for (unsigned int i = 0; i != 256; ++i)
+    {
+        _datFileItem->setPosition(0x080C + _dataOffsets[i]);
+        for (unsigned int j = 0; j != _glyphs->at(i)->getWidth()*_glyphs->at(i)->getHeight(); ++j)
+        {
+            _glyphs->at(i)->getData()->push_back(_datFileItem->readUint8());
+        }
+    }
+}
+
+std::vector<AafGlyph *> * AafFileType::getGlyphs()
+{
+    return _glyphs;
+}
+
+unsigned short AafFileType::getHorizontalGap()
+{
+    return _horizontalGap;
+}
+
+void AafFileType::setHorizontalGap(unsigned short gap)
+{
+    _horizontalGap = gap;
+}
+
+unsigned short AafFileType::getMaximumHeight()
+{
+    return _maximumHeight;
+}
+
+void AafFileType::setMaximumHeight(unsigned short height)
+{
+    _maximumHeight = height;
+}
+
+unsigned short AafFileType::getSpaceWidth()
+{
+    return _spaceWidth;
+}
+
+void AafFileType::setSpaceWidth(unsigned short width)
+{
+    _spaceWidth = width;
+}
+
+unsigned short AafFileType::getVerticalGap()
+{
+    return _verticalGap;
+}
+
+void AafFileType::setVerticalGap(unsigned short gap)
+{
+    _verticalGap = gap;
 }
 
 }
