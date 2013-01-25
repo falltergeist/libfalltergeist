@@ -72,6 +72,8 @@ void AafFileType::open()
             _glyphs->at(i)->getData()->push_back(_datFileItem->readUint8());
         }
     }
+
+    delete [] _dataOffsets;
 }
 
 std::vector<AafGlyph *> * AafFileType::getGlyphs()
