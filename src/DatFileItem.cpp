@@ -23,6 +23,7 @@
 #include "../src/FrmFileType.h"
 #include "../src/PalFileType.h"
 #include "../src/LstFileType.h"
+#include "../src/AafFileType.h"
 #include <algorithm>
 #include <zlib.h>
 #include <iostream>
@@ -248,6 +249,12 @@ LstFileType * DatFileItem::asLstFileType()
 {
     LstFileType * lst = new LstFileType(this);
     return lst;
+}
+
+AafFileType * DatFileItem::asAafFileType()
+{
+    AafFileType * aaf = new AafFileType(this);
+    return aaf;
 }
 
 }

@@ -26,6 +26,7 @@ class DatFile;
 class FrmFileType;
 class PalFileType;
 class LstFileType;
+class AafFileType;
 
 class DatFileItem
 {
@@ -77,6 +78,7 @@ public:
     FrmFileType * asFrmFileType();
     PalFileType * asPalFileType();
     LstFileType * asLstFileType();
+    AafFileType * asAafFileType();
 
 };
 
