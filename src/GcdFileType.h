@@ -277,6 +277,7 @@ public:
     unsigned int armorClassBonus();
 
     //unsigned int unknownBonus;
+
     void setMeleeDamageBonus(unsigned int meleeDamageBonus);
     unsigned int meleeDamageBonus();
 
