@@ -28,6 +28,7 @@ class BioFileType
 {
 protected:
     DatFileItem * _datFileItem;
+    char * _text;
 public:
     BioFileType(DatFileItem * datFileItem);
     ~BioFileType();
@@ -35,6 +36,8 @@ public:
     DatFileItem * datFileItem();
 
     void open();
+
+    const char * text();
 };
 
 }

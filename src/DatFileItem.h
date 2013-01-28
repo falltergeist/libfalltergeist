@@ -28,6 +28,8 @@ class PalFileType;
 class LstFileType;
 class AafFileType;
 class MsgFileType;
+class BioFileType;
+class GcdFileType;
 
 class DatFileItem
 {
@@ -85,6 +87,8 @@ public:
     LstFileType * asLstFileType();
     AafFileType * asAafFileType();
     MsgFileType * asMsgFileType();
+    BioFileType * asBioFileType();
+    GcdFileType * asGcdFileType();
 
 };
 

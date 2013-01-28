@@ -25,6 +25,8 @@
 #include "../src/LstFileType.h"
 #include "../src/AafFileType.h"
 #include "../src/MsgFileType.h"
+#include "../src/BioFileType.h"
+#include "../src/GcdFileType.h"
 #include <algorithm>
 #include <zlib.h>
 #include <iostream>
@@ -49,6 +51,7 @@ DatFileItem::~DatFileItem()
     delete [] _data;
     delete [] _filename;
 }
+
 
 /**
  * Returns DatFile object
@@ -272,6 +275,18 @@ MsgFileType * DatFileItem::asMsgFileType()
 {
     MsgFileType * msg = new MsgFileType(this);
     return msg;
+}
+
+BioFileType * DatFileItem::asBioFileType()
+{
+    BioFileType * bio = new BioFileType(this);
+    return bio;
+}
+
+GcdFileType * DatFileItem::asGcdFileType()
+{
+    GcdFileType * gcd = new GcdFileType(this);
+    return gcd;
 }
 
 }

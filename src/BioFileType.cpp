@@ -25,10 +25,12 @@ namespace libfalltergeist
 
 BioFileType::BioFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    _text = 0;
 }
 
 BioFileType::~BioFileType()
 {
+    delete [] _text;
 }
 
 DatFileItem * BioFileType::datFileItem()
@@ -38,7 +40,14 @@ DatFileItem * BioFileType::datFileItem()
 
 void BioFileType::open()
 {
+    _text = new char[datFileItem()->size() + 1]();
+    datFileItem()->setPosition(0);
+    datFileItem()->readBytes(_text, datFileItem()->size());
+}
 
+const char * BioFileType::text()
+{
+    return _text;
 }
 
 }
