@@ -37,6 +37,21 @@ FrmFileType::~FrmFileType()
     delete _directions;
 }
 
+/**
+ * Alias to FrmFileType::getDatFileItem
+ * @brief FrmFileType::datFileItem
+ * @return
+ */
+DatFileItem * FrmFileType::datFileItem()
+{
+    return getDatFileItem();
+}
+
+DatFileItem * FrmFileType::getDatFileItem()
+{
+    return _datFileItem;
+}
+
 void FrmFileType::open()
 {
     // initialization
@@ -116,6 +131,16 @@ void FrmFileType::open()
 
 }
 
+/**
+ * Alias to FrmFileType::getVersion
+ * @brief FrmFileType::version
+ * @return
+ */
+unsigned int FrmFileType::version()
+{
+    return getVersion();
+}
+
 unsigned int FrmFileType::getVersion()
 {
     return _version;
@@ -124,6 +149,16 @@ unsigned int FrmFileType::getVersion()
 void FrmFileType::setVersion(unsigned int version)
 {
     _version = version;
+}
+
+/**
+ * Alias to FrmFileType::getFramesPerSecond
+ * @brief FrmFileType::framesPerSecond
+ * @return
+ */
+unsigned short FrmFileType::framesPerSecond()
+{
+    return getFramesPerSecond();
 }
 
 unsigned short FrmFileType::getFramesPerSecond()
@@ -136,6 +171,16 @@ void FrmFileType::setFramesPerSecond(unsigned short fps)
     _framesPerSecond = fps;
 }
 
+/**
+ * Alias to FrmFileType::getFramesPerDirection
+ * @brief FrmFileType::framesPerDirection
+ * @return
+ */
+unsigned short FrmFileType::framesPerDirection()
+{
+    return getFramesPerDirection();
+}
+
 unsigned short FrmFileType::getFramesPerDirection()
 {
     return _framesPerDirection;
@@ -146,6 +191,16 @@ void FrmFileType::setFramesPerDirection(unsigned short fpd)
     _framesPerDirection = fpd;
 }
 
+/**
+ * Alias to FrmFileType::getActionFrame
+ * @brief FrmFileType::actionFrame
+ * @return
+ */
+unsigned short FrmFileType::actionFrame()
+{
+    return getActionFrame();
+}
+
 unsigned short FrmFileType::getActionFrame()
 {
     return _actionFrame;
@@ -154,6 +209,16 @@ unsigned short FrmFileType::getActionFrame()
 void FrmFileType::setActionFrame(unsigned short number)
 {
     _actionFrame = number;
+}
+
+/**
+ * Alias to FrmFileType::getDirections
+ * @brief FrmFileType::directions
+ * @return
+ */
+std::vector<FrmDirection *> * FrmFileType::directions()
+{
+    return getDirections();
 }
 
 std::vector<FrmDirection *> * FrmFileType::getDirections()

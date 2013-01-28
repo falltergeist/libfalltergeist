@@ -37,14 +37,24 @@ protected:
 public:
     FrmFrame();
     ~FrmFrame();
-    unsigned short getWidth();
+
     void setWidth(unsigned short width);
-    unsigned short getHeight();
+    unsigned short width();
+    unsigned short getWidth();
+
     void setHeight(unsigned short height);
-    short getOffsetX();
+    unsigned short height();
+    unsigned short getHeight();
+
     void setOffsetX(short offsetX);
-    short getOffsetY();
+    short offsetX();
+    short getOffsetX();
+
     void setOffsetY(short offsetY);
+    short offsetY();
+    short getOffsetY();
+
+    std::vector<unsigned char> * colorIndexes();
     std::vector<unsigned char> * getColorIndexes();
 
 };

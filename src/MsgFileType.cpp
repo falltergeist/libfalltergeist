@@ -18,12 +18,39 @@
  */
 
 #include "../src/MsgFileType.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-MsgFileType::MsgFileType()
+MsgFileType::MsgFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    open();
+}
+
+MsgFileType::~MsgFileType()
+{
+
+}
+
+void MsgFileType::open()
+{
+
+}
+
+/**
+ * Alias to MsgFileType::getDatFileItem
+ * @brief MsgFileType::datFileItem
+ * @return
+ */
+DatFileItem * MsgFileType::datFileItem()
+{
+    return getDatFileItem();
+}
+
+DatFileItem * MsgFileType::getDatFileItem()
+{
+    return _datFileItem;
 }
 
 }

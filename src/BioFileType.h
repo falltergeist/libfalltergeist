@@ -22,11 +22,20 @@
 
 namespace libfalltergeist
 {
+class DatFileItem;
 
 class BioFileType
 {
+protected:
+    DatFileItem * _datFileItem;
 public:
-    BioFileType();
+    BioFileType(DatFileItem * datFileItem);
+    ~BioFileType();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
+    void open();
 };
 
 }

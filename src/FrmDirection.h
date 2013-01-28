@@ -37,12 +37,20 @@ protected:
 public:
     FrmDirection();
     ~FrmDirection();
-    short getShiftX();
+
     void setShiftX(short shiftX);
-    short getShiftY();
+    short shiftX();
+    short getShiftX();
+
     void setShiftY(short shiftY);
-    unsigned int getDataOffset();
+    short shiftY();
+    short getShiftY();
+
     void setDataOffset(unsigned int offset);
+    unsigned int dataOffset();
+    unsigned int getDataOffset();
+
+    std::vector<FrmFrame *> * frames();
     std::vector<FrmFrame *> * getFrames();
 };
 

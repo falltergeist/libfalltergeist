@@ -22,11 +22,20 @@
 
 namespace libfalltergeist
 {
+class DatFileItem;
 
 class FonFileType
 {
+protected:
+    DatFileItem * _datFileItem;
 public:
-    FonFileType();
+    FonFileType(DatFileItem * datFileItem);
+    ~FonFileType();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
+    void open();
 };
 
 }

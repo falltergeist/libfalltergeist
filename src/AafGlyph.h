@@ -34,11 +34,17 @@ protected:
 public:
     AafGlyph();    
     ~AafGlyph();
+
+    std::vector<unsigned char> * data();
     std::vector<unsigned char> * getData();
-    unsigned short getWidth();
+
     void setWidth(unsigned short width);
-    unsigned short getHeight();
+    unsigned short width();
+    unsigned short getWidth();
+
     void setHeight(unsigned short height);
+    unsigned short height();
+    unsigned short getHeight();
 };
 
 }

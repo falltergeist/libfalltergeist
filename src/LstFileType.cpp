@@ -35,6 +35,21 @@ LstFileType::~LstFileType()
     delete _strings;
 }
 
+/**
+ * Alias to LstFileType::getDatFileItem
+ * @brief LstFileType::datFileItem
+ * @return
+ */
+DatFileItem * LstFileType::datFileItem()
+{
+    return getDatFileItem();
+}
+
+DatFileItem * LstFileType::getDatFileItem()
+{
+    return _datFileItem;
+}
+
 void LstFileType::open()
 {
     // load strings from file
@@ -58,6 +73,16 @@ void LstFileType::open()
             _datFileItem->skipBytes(1);
         }
     }
+}
+
+/**
+ * Alias to LstFileType::getStrings
+ * @brief LstFileType::strings
+ * @return
+ */
+std::vector<std::string *> * LstFileType::strings()
+{
+    return getStrings();
 }
 
 std::vector<std::string *> * LstFileType::getStrings()

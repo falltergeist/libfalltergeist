@@ -127,6 +127,16 @@ void DatFile::setPosition(unsigned int position)
 }
 
 /**
+ * Alias to getPosition
+ * @brief DatFile::position
+ * @return
+ */
+unsigned int DatFile::position()
+{
+    return getPosition();
+}
+
+/**
  * Returns curent position in file
  * @brief DatFile::getPosition
  * @return
@@ -137,11 +147,21 @@ unsigned int DatFile::getPosition()
 }
 
 /**
- * Returns file size in bytes
+ * Alias to DatFile::getSize
  * @brief DatFile::size
  * @return
  */
 unsigned int DatFile::size(void)
+{
+    return getSize();
+}
+
+/**
+ * Returns file size in bytes
+ * @brief DatFile::size
+ * @return
+ */
+unsigned int DatFile::getSize(void)
 {
     if (!_stream || !_stream->is_open()) return 0;
     unsigned int oldPosition = _stream->tellg();
@@ -172,6 +192,16 @@ void DatFile::readBytes(char * destination, unsigned int numberOfBytes)
     unsigned int position = getPosition();
     unsigned int readed = _stream->readsome(destination, numberOfBytes);
     setPosition(position + numberOfBytes);
+}
+
+/**
+ * Alias to DatFile::getItems
+ * @brief DatFile::items
+ * @return
+ */
+std::vector<DatFileItem *> * DatFile::items()
+{
+    return getItems();
 }
 
 /**
@@ -220,7 +250,7 @@ std::vector<DatFileItem *> * DatFile::getItems()
             delete [] filename;
 
             //reading compression flag
-            item->setIsCompressed(readUint8() == 1 ? true : false);
+            item->setCompressed(readUint8() == 1 ? true : false);
 
             //reading unpacked size
             item->setUnpackedSize(readUint32());
@@ -289,7 +319,24 @@ char DatFile::readInt8()
     return (char) readUint8();
 }
 
-DatFileItem * DatFile::getItemByFilename(char * filename)
+/**
+ * Alias to DatFile::getItem
+ * @brief DatFile::item
+ * @param filename
+ * @return
+ */
+DatFileItem * DatFile::item(char * filename)
+{
+    return getItem(filename);
+}
+
+/**
+ * Returns item by filename
+ * @brief DatFile::getItem
+ * @param filename
+ * @return
+ */
+DatFileItem * DatFile::getItem(char * filename)
 {
     std::string name(filename);
     // Replace slashes and transform to lower case

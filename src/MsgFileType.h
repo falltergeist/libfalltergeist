@@ -22,11 +22,21 @@
 
 namespace libfalltergeist
 {
+class DatFileItem;
 
 class MsgFileType
 {
+protected:
+    DatFileItem * _datFileItem;
 public:
-    MsgFileType();
+    MsgFileType(DatFileItem * datFileItem);
+    ~MsgFileType();
+
+    void open();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
 };
 
 }

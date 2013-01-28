@@ -18,12 +18,38 @@
  */
 
 #include "../src/FonFileType.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-FonFileType::FonFileType()
+FonFileType::FonFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    open();
+}
+
+FonFileType::~FonFileType()
+{
+}
+
+/**
+ * Alias to FonFileType::getDatFileItem
+ * @brief FonFileType::datFileItem
+ * @return
+ */
+DatFileItem * FonFileType::datFileItem()
+{
+    return getDatFileItem();
+}
+
+DatFileItem * FonFileType::getDatFileItem()
+{
+    return _datFileItem;
+}
+
+void FonFileType::open()
+{
+
 }
 
 }

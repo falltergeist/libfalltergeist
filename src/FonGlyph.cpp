@@ -26,4 +26,8 @@ FonGlyph::FonGlyph()
 {
 }
 
+FonGlyph::~FonGlyph()
+{
+}
+
 }

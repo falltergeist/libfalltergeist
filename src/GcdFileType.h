@@ -22,11 +22,20 @@
 
 namespace libfalltergeist
 {
+class DatFileItem;
 
 class GcdFileType
 {
+protected:
+    DatFileItem * _datFileItem;
 public:
-    GcdFileType();
+    GcdFileType(DatFileItem * datFileItem);
+    ~GcdFileType();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
+    void open();
 };
 
 }

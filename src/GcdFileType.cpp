@@ -18,12 +18,40 @@
  */
 
 #include "../src/GcdFileType.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-GcdFileType::GcdFileType()
+GcdFileType::GcdFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+    open();
 }
+
+GcdFileType::~GcdFileType()
+{
+
+}
+
+void GcdFileType::open()
+{
+
+}
+
+/**
+ * Alias to GcdFileType::getDatFileItem
+ * @brief GcdFileType::datFileItem
+ * @return
+ */
+DatFileItem * GcdFileType::datFileItem()
+{
+    return getDatFileItem();
+}
+
+DatFileItem * GcdFileType::getDatFileItem()
+{
+    return _datFileItem;
+}
+
 
 }

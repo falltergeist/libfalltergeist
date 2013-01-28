@@ -27,6 +27,7 @@ class FonGlyph
 {
 public:
     FonGlyph();
+    ~FonGlyph();
 };
 
 }

@@ -27,6 +27,7 @@ class MsgMessage
 {
 public:
     MsgMessage();
+    ~MsgMessage();
 };
 
 }

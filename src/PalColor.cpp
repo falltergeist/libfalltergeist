@@ -22,24 +22,110 @@
 namespace libfalltergeist
 {
 
-PalColor::PalColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) : r(r), g(g), b(b), a(a)
+PalColor::PalColor(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)
 {
+    _red = red;
+    _green = green;
+    _blue = blue;
+    _alpha = alpha;
+}
+
+PalColor::~PalColor()
+{
+
+}
+
+void PalColor::setRed(unsigned char red)
+{
+    _red = red;
+}
+
+/**
+ * Alias to PalColor::getRed
+ * @brief PalColor::red
+ * @return
+ */
+unsigned char PalColor::red()
+{
+    return getRed();
+}
+
+unsigned char PalColor::getRed()
+{
+    return _red;
+}
+
+void PalColor::setGreen(unsigned char green)
+{
+    _green = green;
+}
+
+/**
+ * Alias to PalColor::getGreen
+ * @brief PalColor::green
+ * @return
+ */
+unsigned char PalColor::green()
+{
+    return getGreen();
+}
+
+unsigned char PalColor::getGreen()
+{
+    return _green;
+}
+
+void PalColor::setBlue(unsigned char blue)
+{
+    _blue = blue;
+}
+
+/**
+ * Alias to PalColor::getBlue
+ * @brief PalColor::blue
+ * @return
+ */
+unsigned char PalColor::blue()
+{
+    return getBlue();
+}
+
+unsigned char PalColor::getBlue()
+{
+    return _blue;
+}
+
+void PalColor::setAlpha(unsigned char alpha)
+{
+    _alpha = alpha;
+}
+
+/**
+ * Alias to PalColor::getAlpha
+ * @brief PalColor::alpha
+ * @return
+ */
+unsigned char PalColor::alpha()
+{
+    return getAlpha();
+}
+
+unsigned char PalColor::getAlpha()
+{
+    return _alpha;
 }
 
 PalColor::operator int()
 {
-    unsigned char k = 4;
-    int color = ((r * k) << 16) | ((b * k) << 8) | (b * k);
-    if (color == 0) return 0;
-    return (a << 24) | color;
+    return (int) (unsigned int) *this;
 }
 
 PalColor::operator unsigned int()
 {
     unsigned char k = 4;
-    unsigned int color = ((r * k) << 16) | ((g * k) << 8) | (b * k);
+    unsigned int color = ((red() * k) << 16) | ((green() * k) << 8) | (blue() * k);
     if (color == 0) return 0;
-    return (a << 24) | color;
+    return (alpha() << 24) | color;
 }
 
 }

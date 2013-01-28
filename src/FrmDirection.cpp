@@ -33,6 +33,16 @@ FrmDirection::~FrmDirection()
     delete _frames;
 }
 
+/**
+ * Alias to FrmDirection::getShiftX
+ * @brief FrmDirection::shiftX
+ * @return
+ */
+short FrmDirection::shiftX()
+{
+    return getShiftX();
+}
+
 short FrmDirection::getShiftX()
 {
     return _shiftX;
@@ -41,6 +51,16 @@ short FrmDirection::getShiftX()
 void FrmDirection::setShiftX(short shiftX)
 {
     _shiftX = shiftX;
+}
+
+/**
+ * Alias to FrmDirection getShiftY
+ * @brief FrmDirection::shiftY
+ * @return
+ */
+short FrmDirection::shiftY()
+{
+    return getShiftY();
 }
 
 short FrmDirection::getShiftY()
@@ -53,6 +73,16 @@ void FrmDirection::setShiftY(short shiftY)
     _shiftY = shiftY;
 }
 
+/**
+ * Alias to FrmDirection::getDataOffset
+ * @brief FrmDirection::dataOffset
+ * @return
+ */
+unsigned int FrmDirection::dataOffset()
+{
+    return getDataOffset();
+}
+
 unsigned int FrmDirection::getDataOffset()
 {
     return _dataOffset;
@@ -61,6 +91,16 @@ unsigned int FrmDirection::getDataOffset()
 void FrmDirection::setDataOffset(unsigned int offset)
 {
     _dataOffset = offset;
+}
+
+/**
+ * Alias to FrmDirection::getFrames
+ * @brief FrmDirection::frames
+ * @return
+ */
+std::vector<FrmFrame *> * FrmDirection::frames()
+{
+    return getFrames();
 }
 
 std::vector<FrmFrame *> * FrmDirection::getFrames()

@@ -18,12 +18,37 @@
  */
 
 #include "../src/BioFileType.h"
+#include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
-BioFileType::BioFileType()
+BioFileType::BioFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
+}
+
+BioFileType::~BioFileType()
+{
+}
+
+/**
+ * Alias to BioFileType::getDatFileItem
+ * @brief BioFileType::datFileItem
+ * @return
+ */
+DatFileItem * BioFileType::datFileItem()
+{
+    return getDatFileItem();
+}
+
+DatFileItem * BioFileType::getDatFileItem()
+{
+    return _datFileItem;
+}
+
+void BioFileType::open()
+{
+
 }
 
 }

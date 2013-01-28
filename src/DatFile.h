@@ -29,19 +29,16 @@ class DatFileItem;
 
 class DatFile
 {
+protected:
+    std::vector<DatFileItem *> * _items;
+    std::ifstream * _stream;
 public:
     DatFile();
     DatFile(char * pathToFile);
     ~DatFile();
     bool open(char * pathToFile);
-    bool isOpened();
-    void setPosition(unsigned int position);
-    unsigned int size(void);
-    unsigned int getPosition(void);
     bool close(void);
-    virtual std::vector<DatFileItem *> * getItems(void);
-    DatFileItem * getItemByFilename(char * filename);
-    //todo virtual std::vector<DatFileItem *> * getOpenedItems(void);
+    bool isOpened();
     unsigned int readUint32();
     int readInt32();
     unsigned short readUint16();
@@ -50,9 +47,20 @@ public:
     char readInt8();
     void readBytes(char * destination, unsigned int numberOfBytes);
     void skipBytes(unsigned int numberOfBytes);
-protected:
-    std::vector<DatFileItem *> * _items;
-    std::ifstream * _stream;
+
+    void setPosition(unsigned int position);
+    unsigned int position();
+    unsigned int getPosition();
+
+    unsigned int size();
+    unsigned int getSize();
+
+    virtual std::vector<DatFileItem *> * items();
+    virtual std::vector<DatFileItem *> * getItems();
+
+    DatFileItem * item(char * filename);
+    DatFileItem * getItem(char * filename);
+
 
 };
 

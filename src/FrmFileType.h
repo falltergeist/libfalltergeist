@@ -32,26 +32,36 @@ class FrmFileType
 protected:
     DatFileItem * _datFileItem;
     std::vector<FrmDirection *> * _directions;
-    // FRM file version
-    unsigned int _version;
-    // Animation frame rate
-    unsigned short _framesPerSecond;
-    // Frames per direction
-    unsigned short _framesPerDirection;
-    // Number of frame on which action is occurs
-    unsigned short _actionFrame;
+    unsigned int _version; // FRM file version
+    unsigned short _framesPerSecond; // Animation frame rate
+    unsigned short _framesPerDirection; // Frames per direction
+    unsigned short _actionFrame; // Number of frame on which action is occurs
 public:
-    void open();
     FrmFileType(DatFileItem * datFileItem);
     ~FrmFileType();
-    unsigned int getVersion();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
+    void open();
+
     void setVersion(unsigned int version);
-    unsigned short getFramesPerSecond();
+    unsigned int version();
+    unsigned int getVersion();
+
     void setFramesPerSecond(unsigned short fps);
-    unsigned short getFramesPerDirection();
+    unsigned short framesPerSecond();
+    unsigned short getFramesPerSecond();
+
     void setFramesPerDirection(unsigned short fpd);
-    unsigned short getActionFrame();
+    unsigned short framesPerDirection();
+    unsigned short getFramesPerDirection();
+
     void setActionFrame(unsigned short number);
+    unsigned short actionFrame();
+    unsigned short getActionFrame();
+
+    std::vector<FrmDirection *> * directions();
     std::vector<FrmDirection *> * getDirections();
 
 };

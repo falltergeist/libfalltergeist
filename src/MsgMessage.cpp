@@ -26,4 +26,9 @@ MsgMessage::MsgMessage()
 {
 }
 
+MsgMessage::~MsgMessage()
+{
+
+}
+
 }

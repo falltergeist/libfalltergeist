@@ -39,16 +39,30 @@ protected:
 public:
     AafFileType(DatFileItem * datFileItem);
     ~AafFileType();
+
     void open();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
+    std::vector<AafGlyph *> * glyphs();
     std::vector<AafGlyph *> * getGlyphs();
-    unsigned short getMaximumHeight();
-    unsigned short getHorizontalGap();
-    unsigned short getVerticalGap();
-    unsigned short getSpaceWidth();
+
     void setMaximumHeight(unsigned short height);
+    unsigned short maximumHeight();
+    unsigned short getMaximumHeight();
+
     void setHorizontalGap(unsigned short gap);
+    unsigned short horizontalGap();
+    unsigned short getHorizontalGap();
+
     void setVerticalGap(unsigned short gap);
+    unsigned short verticalGap();
+    unsigned short getVerticalGap();
+
     void setSpaceWidth(unsigned short width);
+    unsigned short spaceWidth();
+    unsigned short getSpaceWidth();
 };
 
 }

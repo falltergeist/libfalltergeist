@@ -35,7 +35,13 @@ protected:
 public:
     LstFileType(DatFileItem * datFileItem);
     ~LstFileType();
+
+    DatFileItem * datFileItem();
+    DatFileItem * getDatFileItem();
+
     void open();
+
+    std::vector<std::string *> * strings();
     std::vector<std::string *> * getStrings();
 };
 

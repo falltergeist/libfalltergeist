@@ -25,14 +25,34 @@ namespace libfalltergeist
 
 class PalColor
 {
+protected:
+    unsigned char _red;
+    unsigned char _green;
+    unsigned char _blue;
+    unsigned char _alpha;
 public:
-    PalColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-    unsigned char a;
+    PalColor(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255);
+    ~PalColor();
+
     operator int();
     operator unsigned int();
+
+    void setRed(unsigned char red);
+    unsigned char red();
+    unsigned char getRed();
+
+    void setGreen(unsigned char green);
+    unsigned char green();
+    unsigned char getGreen();
+
+    void setBlue(unsigned char blue);
+    unsigned char blue();
+    unsigned char getBlue();
+
+    void setAlpha(unsigned char alpha);
+    unsigned char alpha();
+    unsigned char getAlpha();
+
 };
 
 }
