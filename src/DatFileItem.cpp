@@ -50,21 +50,11 @@ DatFileItem::~DatFileItem()
 }
 
 /**
- * Alias to DatFileItem::getDatFile
- * @brief DatFileItem::datFile
- * @return
- */
-DatFile * DatFileItem::datFile()
-{
-    return getDatFile();
-}
-
-/**
  * Returns DatFile object
  * @brief DatFileItem::getDatFile
  * @return
  */
-DatFile * DatFileItem::getDatFile()
+DatFile * DatFileItem::datFile()
 {
     return _datFile;
 }
@@ -88,36 +78,15 @@ void DatFileItem::setFilename(char * filename)
 }
 
 /**
- * Alias to DatFileItem::getFilename
- * @brief DatFileItem::filename
- * @return
- */
-char * DatFileItem::filename()
-{
-    return getFilename();
-}
-
-/**
  * Returns filename with path
  * @brief DatFileItem::getFilename
  */
-char * DatFileItem::getFilename()
+char * DatFileItem::filename()
 {
     return _filename;
 }
 
-/**
- * Alias to DatFileItem::getDataOffset
- * @brief DatFileItem::dataOffset
- * @return
- */
 unsigned int DatFileItem::dataOffset()
-{
-    return getDataOffset();
-}
-
-
-unsigned int DatFileItem::getDataOffset()
 {
     return _dataOffset;
 }
@@ -127,17 +96,7 @@ void DatFileItem::setDataOffset(unsigned int offset)
     _dataOffset = offset;
 }
 
-/**
- * Alias to DatFileItem::getUnpackedSize
- * @brief DatFileItem::unpackedSize
- * @return
- */
 unsigned int DatFileItem::unpackedSize()
-{
-    return getUnpackedSize();
-}
-
-unsigned int DatFileItem::getUnpackedSize()
 {
     return _unpackedSize;
 }
@@ -147,17 +106,7 @@ void DatFileItem::setUnpackedSize(unsigned int size)
     _unpackedSize = size;
 }
 
-/**
- * Alias to DatFileItem::getPacketSize
- * @brief DatFileItem::packedSize
- * @return
- */
 unsigned int DatFileItem::packedSize()
-{
-    return getPackedSize();
-}
-
-unsigned int DatFileItem::getPackedSize()
 {
     return _packedSize;
 }
@@ -172,17 +121,7 @@ void DatFileItem::setCompressed(bool compressed)
     _compressed = compressed;
 }
 
-/**
- * Alias to DatFileItem::getCompressed
- * @brief DatFileItem::compressed
- * @return
- */
 bool DatFileItem::compressed()
-{
-    return getCompressed();
-}
-
-bool DatFileItem::getCompressed()
 {
     return _compressed;
 }
@@ -190,7 +129,7 @@ bool DatFileItem::getCompressed()
 unsigned int DatFileItem::readUint32()
 {
     open();
-    unsigned int pos = getPosition();
+    unsigned int pos = this->position();
     unsigned int value = (_data[pos] << 24)| (_data[pos+ 1] << 16) | (_data[pos + 2] << 8) | _data[pos + 3];
     setPosition(pos + 4);
     return value;
@@ -204,7 +143,7 @@ int DatFileItem::readInt32()
 unsigned short DatFileItem::readUint16()
 {
     open();
-    unsigned int pos = getPosition();
+    unsigned int pos = this->position();
     unsigned short value = (_data[pos] << 8) | _data[pos+ 1];
     setPosition(pos + 2);
     return value;
@@ -218,7 +157,7 @@ short DatFileItem::readInt16()
 unsigned char DatFileItem::readUint8()
 {
     open();
-    unsigned int pos = getPosition();
+    unsigned int pos = this->position();
     unsigned char value = _data[pos];
     setPosition(pos + 1);
     return value;
@@ -229,19 +168,9 @@ char DatFileItem::readInt8()
     return (char) readUint8();
 }
 
-/**
- * Alias to DatFileItem::getSize
- * @brief DatFileItem::size
- * @return
- */
 unsigned int DatFileItem::size()
 {
-    return getSize();
-}
-
-unsigned int DatFileItem::getSize()
-{
-    return getUnpackedSize();
+    return unpackedSize();
 }
 
 void DatFileItem::setPosition(unsigned int position)
@@ -249,17 +178,7 @@ void DatFileItem::setPosition(unsigned int position)
     _position = position;
 }
 
-/**
- * Alias to DatFileItem::getPosition
- * @brief DatFileItem::position
- * @return
- */
 unsigned int DatFileItem::position()
-{
-    return getPosition();
-}
-
-unsigned int DatFileItem::getPosition()
 {
     return _position;
 }
@@ -268,20 +187,20 @@ void DatFileItem::open()
 {
     if (isOpened()) return;
 
-    _data = new unsigned char[getUnpackedSize()]();
-    _datFile->setPosition(getDataOffset());
+    _data = new unsigned char[unpackedSize()]();
+    _datFile->setPosition(dataOffset());
 
-    if (getCompressed())
+    if (compressed())
     {
-        char * packedData = new char[getPackedSize()]();
-        _datFile->readBytes(packedData, getPackedSize());
+        char * packedData = new char[packedSize()]();
+        _datFile->readBytes(packedData, packedSize());
 
         // unpacking
         z_stream zStream;
-        zStream.total_in  = zStream.avail_in  = getPackedSize();
-        zStream.avail_in = getPackedSize();
+        zStream.total_in  = zStream.avail_in  = packedSize();
+        zStream.avail_in = packedSize();
         zStream.next_in  = (unsigned char *) packedData;
-        zStream.total_out = zStream.avail_out = getUnpackedSize();
+        zStream.total_out = zStream.avail_out = unpackedSize();
         zStream.next_out = (unsigned char *) _data;
         zStream.zalloc = Z_NULL;
         zStream.zfree = Z_NULL;
@@ -295,21 +214,21 @@ void DatFileItem::open()
     else
     {
         // just copying from dat file
-        _datFile->readBytes((char *)_data, getUnpackedSize());
+        _datFile->readBytes((char *)_data, unpackedSize());
     }
     _opened = true;
 }
 
 void DatFileItem::skipBytes(unsigned int numberOfBytes)
 {
-    setPosition(getPosition() + numberOfBytes);
+    setPosition(position() + numberOfBytes);
 }
 
 void DatFileItem::readBytes(char * destination, unsigned int numberOfBytes)
 {
     open();
-    memcpy(destination, _data + getPosition(), numberOfBytes);
-    setPosition(getPosition() + numberOfBytes);
+    memcpy(destination, _data + position(), numberOfBytes);
+    setPosition(position() + numberOfBytes);
 }
 
 bool DatFileItem::isOpened()

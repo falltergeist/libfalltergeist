@@ -33,7 +33,6 @@ public:
     ~GcdFileType();
 
     DatFileItem * datFileItem();
-    DatFileItem * getDatFileItem();
 
     void open();
 };

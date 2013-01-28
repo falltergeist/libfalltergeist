@@ -50,16 +50,12 @@ public:
 
     void setPosition(unsigned int position);
     unsigned int position();
-    unsigned int getPosition();
 
     unsigned int size();
-    unsigned int getSize();
 
     virtual std::vector<DatFileItem *> * items();
-    virtual std::vector<DatFileItem *> * getItems();
 
     DatFileItem * item(char * filename);
-    DatFileItem * getItem(char * filename);
 
 
 };

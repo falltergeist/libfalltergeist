@@ -37,17 +37,7 @@ FrmFileType::~FrmFileType()
     delete _directions;
 }
 
-/**
- * Alias to FrmFileType::getDatFileItem
- * @brief FrmFileType::datFileItem
- * @return
- */
 DatFileItem * FrmFileType::datFileItem()
-{
-    return getDatFileItem();
-}
-
-DatFileItem * FrmFileType::getDatFileItem()
 {
     return _datFileItem;
 }
@@ -76,26 +66,26 @@ void FrmFileType::open()
     {
         FrmDirection * direction = new FrmDirection();
         direction->setShiftX(_datFileItem->readUint16());
-        getDirections()->push_back(direction);
+        directions()->push_back(direction);
     }
 
     // Y shift
     for (unsigned int i = 0; i != 6; ++i)
     {
-        getDirections()->at(i)->setShiftY(_datFileItem->readInt16());
+        directions()->at(i)->setShiftY(_datFileItem->readInt16());
     }
 
     // Data offset
     for (unsigned int i = 0; i != 6; ++i)
     {
-        getDirections()->at(i)->setDataOffset(_datFileItem->readUint32());
+        directions()->at(i)->setDataOffset(_datFileItem->readUint32());
     }
 
     // for each direction
     for (unsigned int i = 0; i!= 6; ++i)
     {
         // jump to frames data at frames area
-        _datFileItem->setPosition(getDirections()->at(i)->getDataOffset() + 62);
+        _datFileItem->setPosition(directions()->at(i)->dataOffset() + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
@@ -121,27 +111,17 @@ void FrmFileType::open()
             for (unsigned int n = 0; n != dataSize; ++n)
             {
                 // Pixel color index
-                frame->getColorIndexes()->push_back(_datFileItem->readUint8());
+                frame->colorIndexes()->push_back(_datFileItem->readUint8());
             }
             // Appending frame to direction
-            getDirections()->at(i)->getFrames()->push_back(frame);
+            directions()->at(i)->frames()->push_back(frame);
         }
 
     }
 
 }
 
-/**
- * Alias to FrmFileType::getVersion
- * @brief FrmFileType::version
- * @return
- */
 unsigned int FrmFileType::version()
-{
-    return getVersion();
-}
-
-unsigned int FrmFileType::getVersion()
 {
     return _version;
 }
@@ -151,17 +131,7 @@ void FrmFileType::setVersion(unsigned int version)
     _version = version;
 }
 
-/**
- * Alias to FrmFileType::getFramesPerSecond
- * @brief FrmFileType::framesPerSecond
- * @return
- */
 unsigned short FrmFileType::framesPerSecond()
-{
-    return getFramesPerSecond();
-}
-
-unsigned short FrmFileType::getFramesPerSecond()
 {
     return _framesPerSecond;
 }
@@ -171,17 +141,7 @@ void FrmFileType::setFramesPerSecond(unsigned short fps)
     _framesPerSecond = fps;
 }
 
-/**
- * Alias to FrmFileType::getFramesPerDirection
- * @brief FrmFileType::framesPerDirection
- * @return
- */
 unsigned short FrmFileType::framesPerDirection()
-{
-    return getFramesPerDirection();
-}
-
-unsigned short FrmFileType::getFramesPerDirection()
 {
     return _framesPerDirection;
 }
@@ -191,17 +151,7 @@ void FrmFileType::setFramesPerDirection(unsigned short fpd)
     _framesPerDirection = fpd;
 }
 
-/**
- * Alias to FrmFileType::getActionFrame
- * @brief FrmFileType::actionFrame
- * @return
- */
 unsigned short FrmFileType::actionFrame()
-{
-    return getActionFrame();
-}
-
-unsigned short FrmFileType::getActionFrame()
 {
     return _actionFrame;
 }
@@ -211,17 +161,7 @@ void FrmFileType::setActionFrame(unsigned short number)
     _actionFrame = number;
 }
 
-/**
- * Alias to FrmFileType::getDirections
- * @brief FrmFileType::directions
- * @return
- */
 std::vector<FrmDirection *> * FrmFileType::directions()
-{
-    return getDirections();
-}
-
-std::vector<FrmDirection *> * FrmFileType::getDirections()
 {
     if (_directions != 0) return _directions;
     _directions = new std::vector<FrmDirection *>;

@@ -31,17 +31,7 @@ BioFileType::~BioFileType()
 {
 }
 
-/**
- * Alias to BioFileType::getDatFileItem
- * @brief BioFileType::datFileItem
- * @return
- */
 DatFileItem * BioFileType::datFileItem()
-{
-    return getDatFileItem();
-}
-
-DatFileItem * BioFileType::getDatFileItem()
 {
     return _datFileItem;
 }

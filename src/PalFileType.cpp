@@ -35,17 +35,7 @@ PalFileType::~PalFileType()
     delete _colors;
 }
 
-/**
- * Alias to PalFileType::getDatFileItem
- * @brief PalFileType::datFileItem
- * @return
- */
 DatFileItem * PalFileType::datFileItem()
-{
-    return getDatFileItem();
-}
-
-DatFileItem * PalFileType::getDatFileItem()
 {
     return _datFileItem;
 }
@@ -69,33 +59,12 @@ void PalFileType::open()
     }
 }
 
-/**
- * Alias to PalFileType::getColors
- * @brief PalFileType::colors
- * @return
- */
 std::vector<PalColor *> * PalFileType::colors()
-{
-    return getColors();
-}
-
-std::vector<PalColor *> * PalFileType::getColors()
 {
     return _colors;
 }
 
-/**
- * Alias to PalFileType::getColor
- * @brief PalFileType::color
- * @param index
- * @return
- */
 PalColor * PalFileType::color(unsigned char index)
-{
-    return getColor(index);
-}
-
-PalColor * PalFileType::getColor(unsigned char index)
 {
     return _colors->at(index);
 }

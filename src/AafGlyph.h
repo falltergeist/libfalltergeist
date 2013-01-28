@@ -36,15 +36,12 @@ public:
     ~AafGlyph();
 
     std::vector<unsigned char> * data();
-    std::vector<unsigned char> * getData();
 
     void setWidth(unsigned short width);
     unsigned short width();
-    unsigned short getWidth();
 
     void setHeight(unsigned short height);
     unsigned short height();
-    unsigned short getHeight();
 };
 
 }

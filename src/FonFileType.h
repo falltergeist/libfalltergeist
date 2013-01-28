@@ -33,7 +33,6 @@ public:
     ~FonFileType();
 
     DatFileItem * datFileItem();
-    DatFileItem * getDatFileItem();
 
     void open();
 };

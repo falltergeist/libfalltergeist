@@ -39,19 +39,15 @@ public:
 
     void setRed(unsigned char red);
     unsigned char red();
-    unsigned char getRed();
 
     void setGreen(unsigned char green);
     unsigned char green();
-    unsigned char getGreen();
 
     void setBlue(unsigned char blue);
     unsigned char blue();
-    unsigned char getBlue();
 
     void setAlpha(unsigned char alpha);
     unsigned char alpha();
-    unsigned char getAlpha();
 
 };
 

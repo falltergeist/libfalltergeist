@@ -38,15 +38,12 @@ public:
     ~PalFileType();
 
     DatFileItem * datFileItem();
-    DatFileItem * getDatFileItem();
 
     void open();    
 
     std::vector<PalColor *> * colors();
-    std::vector<PalColor *> * getColors();
 
     PalColor * color(unsigned char index);
-    PalColor * getColor(unsigned char index);
 
 };
 

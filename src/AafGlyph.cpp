@@ -34,17 +34,7 @@ AafGlyph::~AafGlyph()
     delete _data;
 }
 
-/**
- * Alias to AafGlyph::getHeight
- * @brief AafGlyph::height
- * @return
- */
 unsigned short AafGlyph::height()
-{
-    return getHeight();
-}
-
-unsigned short AafGlyph::getHeight()
 {
     return _height;
 }
@@ -54,17 +44,7 @@ void AafGlyph::setHeight(unsigned short height)
     _height = height;
 }
 
-/**
- * Alias to AafGlyph::getWidth
- * @brief AafGlyph::width
- * @return
- */
 unsigned short AafGlyph::width()
-{
-    return getWidth();
-}
-
-unsigned short AafGlyph::getWidth()
 {
     return _width;
 }
@@ -74,17 +54,7 @@ void AafGlyph::setWidth(unsigned short width)
     _width = width;
 }
 
-/**
- * Alias to AafGlyph::getData
- * @brief AafGlyph::data
- * @return
- */
 std::vector<unsigned char> * AafGlyph::data()
-{
-    return getData();
-}
-
-std::vector<unsigned char> * AafGlyph::getData()
 {
     return _data;
 }

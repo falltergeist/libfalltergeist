@@ -33,7 +33,6 @@ public:
     ~BioFileType();
 
     DatFileItem * datFileItem();
-    DatFileItem * getDatFileItem();
 
     void open();
 };

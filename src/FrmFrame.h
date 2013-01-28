@@ -40,22 +40,17 @@ public:
 
     void setWidth(unsigned short width);
     unsigned short width();
-    unsigned short getWidth();
 
     void setHeight(unsigned short height);
     unsigned short height();
-    unsigned short getHeight();
 
     void setOffsetX(short offsetX);
     short offsetX();
-    short getOffsetX();
 
     void setOffsetY(short offsetY);
     short offsetY();
-    short getOffsetY();
 
     std::vector<unsigned char> * colorIndexes();
-    std::vector<unsigned char> * getColorIndexes();
 
 };
 

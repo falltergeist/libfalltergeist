@@ -33,17 +33,7 @@ FrmFrame::~FrmFrame()
     delete _colorIndexes;
 }
 
-/**
- * Alias to FrmFrame::getWidth
- * @brief FrmFrame::width
- * @return
- */
 unsigned short FrmFrame::width()
-{
-    return getWidth();
-}
-
-unsigned short FrmFrame::getWidth()
 {
     return _width;
 }
@@ -53,17 +43,7 @@ void FrmFrame::setWidth(unsigned short width)
     _width = width;
 }
 
-/**
- * Alias to FrmFrame::getHeight
- * @brief FrmFrame::height
- * @return
- */
 unsigned short FrmFrame::height()
-{
-    return getHeight();
-}
-
-unsigned short FrmFrame::getHeight()
 {
     return _height;
 }
@@ -73,17 +53,7 @@ void FrmFrame::setHeight(unsigned short height)
     _height = height;
 }
 
-/**
- * Alias to FrmFrame::getOffsetX
- * @brief FrmFrame::offsetX
- * @return
- */
 short FrmFrame::offsetX()
-{
-    return getOffsetX();
-}
-
-short FrmFrame::getOffsetX()
 {
     return _offsetX;
 }
@@ -93,17 +63,7 @@ void FrmFrame::setOffsetX(short offsetX)
     _offsetX = offsetX;
 }
 
-/**
- * Alias to FrmFrame::getOffsetY
- * @brief FrmFrame::offsetY
- * @return
- */
 short FrmFrame::offsetY()
-{
-    return getOffsetY();
-}
-
-short FrmFrame::getOffsetY()
 {
     return _offsetY;
 }
@@ -113,17 +73,7 @@ void FrmFrame::setOffsetY(short offsetY)
     _offsetY = offsetY;
 }
 
-/**
- * Alias to FrmFrame::getColorIndexes
- * @brief FrmFrame::colorIndexes
- * @return
- */
 std::vector<unsigned char> * FrmFrame::colorIndexes()
-{
-    return getColorIndexes();
-}
-
-std::vector<unsigned char> * FrmFrame::getColorIndexes()
 {
     if (_colorIndexes != 0) return _colorIndexes;
     _colorIndexes = new std::vector<unsigned char>;

@@ -40,17 +40,7 @@ void PalColor::setRed(unsigned char red)
     _red = red;
 }
 
-/**
- * Alias to PalColor::getRed
- * @brief PalColor::red
- * @return
- */
 unsigned char PalColor::red()
-{
-    return getRed();
-}
-
-unsigned char PalColor::getRed()
 {
     return _red;
 }
@@ -60,17 +50,7 @@ void PalColor::setGreen(unsigned char green)
     _green = green;
 }
 
-/**
- * Alias to PalColor::getGreen
- * @brief PalColor::green
- * @return
- */
 unsigned char PalColor::green()
-{
-    return getGreen();
-}
-
-unsigned char PalColor::getGreen()
 {
     return _green;
 }
@@ -80,17 +60,7 @@ void PalColor::setBlue(unsigned char blue)
     _blue = blue;
 }
 
-/**
- * Alias to PalColor::getBlue
- * @brief PalColor::blue
- * @return
- */
 unsigned char PalColor::blue()
-{
-    return getBlue();
-}
-
-unsigned char PalColor::getBlue()
 {
     return _blue;
 }
@@ -100,17 +70,7 @@ void PalColor::setAlpha(unsigned char alpha)
     _alpha = alpha;
 }
 
-/**
- * Alias to PalColor::getAlpha
- * @brief PalColor::alpha
- * @return
- */
 unsigned char PalColor::alpha()
-{
-    return getAlpha();
-}
-
-unsigned char PalColor::getAlpha()
 {
     return _alpha;
 }

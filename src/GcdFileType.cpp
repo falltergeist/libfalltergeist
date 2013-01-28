@@ -38,17 +38,7 @@ void GcdFileType::open()
 
 }
 
-/**
- * Alias to GcdFileType::getDatFileItem
- * @brief GcdFileType::datFileItem
- * @return
- */
 DatFileItem * GcdFileType::datFileItem()
-{
-    return getDatFileItem();
-}
-
-DatFileItem * GcdFileType::getDatFileItem()
 {
     return _datFileItem;
 }

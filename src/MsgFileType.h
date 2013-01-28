@@ -35,7 +35,6 @@ public:
     void open();
 
     DatFileItem * datFileItem();
-    DatFileItem * getDatFileItem();
 
 };
 

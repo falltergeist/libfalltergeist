@@ -43,26 +43,20 @@ public:
     void open();
 
     DatFileItem * datFileItem();
-    DatFileItem * getDatFileItem();
 
     std::vector<AafGlyph *> * glyphs();
-    std::vector<AafGlyph *> * getGlyphs();
 
     void setMaximumHeight(unsigned short height);
     unsigned short maximumHeight();
-    unsigned short getMaximumHeight();
 
     void setHorizontalGap(unsigned short gap);
     unsigned short horizontalGap();
-    unsigned short getHorizontalGap();
 
     void setVerticalGap(unsigned short gap);
     unsigned short verticalGap();
-    unsigned short getVerticalGap();
 
     void setSpaceWidth(unsigned short width);
     unsigned short spaceWidth();
-    unsigned short getSpaceWidth();
 };
 
 }

@@ -127,33 +127,13 @@ void DatFile::setPosition(unsigned int position)
 }
 
 /**
- * Alias to getPosition
- * @brief DatFile::position
- * @return
- */
-unsigned int DatFile::position()
-{
-    return getPosition();
-}
-
-/**
  * Returns curent position in file
  * @brief DatFile::getPosition
  * @return
  */
-unsigned int DatFile::getPosition()
+unsigned int DatFile::position()
 {
     return _stream->tellg();
-}
-
-/**
- * Alias to DatFile::getSize
- * @brief DatFile::size
- * @return
- */
-unsigned int DatFile::size(void)
-{
-    return getSize();
 }
 
 /**
@@ -161,7 +141,7 @@ unsigned int DatFile::size(void)
  * @brief DatFile::size
  * @return
  */
-unsigned int DatFile::getSize(void)
+unsigned int DatFile::size(void)
 {
     if (!_stream || !_stream->is_open()) return 0;
     unsigned int oldPosition = _stream->tellg();
@@ -178,7 +158,7 @@ unsigned int DatFile::getSize(void)
  */
 void DatFile::skipBytes(unsigned int numberOfBytes)
 {
-    setPosition(getPosition() + numberOfBytes);
+    setPosition(position() + numberOfBytes);
 }
 
 /**
@@ -189,19 +169,9 @@ void DatFile::skipBytes(unsigned int numberOfBytes)
  */
 void DatFile::readBytes(char * destination, unsigned int numberOfBytes)
 {
-    unsigned int position = getPosition();
+    unsigned int position = this->position();
     unsigned int readed = _stream->readsome(destination, numberOfBytes);
     setPosition(position + numberOfBytes);
-}
-
-/**
- * Alias to DatFile::getItems
- * @brief DatFile::items
- * @return
- */
-std::vector<DatFileItem *> * DatFile::items()
-{
-    return getItems();
 }
 
 /**
@@ -209,7 +179,7 @@ std::vector<DatFileItem *> * DatFile::items()
  * @brief DatFile::getItems
  * @return
  */
-std::vector<DatFileItem *> * DatFile::getItems()
+std::vector<DatFileItem *> * DatFile::items()
 {
     if (!isOpened()) return 0;
 
@@ -271,7 +241,7 @@ std::vector<DatFileItem *> * DatFile::getItems()
 
 unsigned int DatFile::readUint32()
 {
-    unsigned int position = getPosition();
+    unsigned int position = this->position();
     unsigned int value;
     unsigned char * data = new unsigned char[4]();
     _stream->readsome((char *)data, 4);
@@ -289,7 +259,7 @@ int DatFile::readInt32()
 
 unsigned short DatFile::readUint16()
 {
-    unsigned int position = getPosition();
+    unsigned int position = this->position();
     unsigned short value;
     unsigned char * data = new unsigned char[2]();
     _stream->readsome((char *)data, 2);
@@ -307,7 +277,7 @@ short DatFile::readInt16()
 
 unsigned char DatFile::readUint8()
 {
-    unsigned int position = getPosition();
+    unsigned int position = this->position();
     unsigned char value;
     _stream->readsome((char *)&value, 1);
     setPosition(position + +1);
@@ -320,32 +290,21 @@ char DatFile::readInt8()
 }
 
 /**
- * Alias to DatFile::getItem
- * @brief DatFile::item
- * @param filename
- * @return
- */
-DatFileItem * DatFile::item(char * filename)
-{
-    return getItem(filename);
-}
-
-/**
  * Returns item by filename
  * @brief DatFile::getItem
  * @param filename
  * @return
  */
-DatFileItem * DatFile::getItem(char * filename)
+DatFileItem * DatFile::item(char * filename)
 {
     std::string name(filename);
     // Replace slashes and transform to lower case
     std::replace(name.begin(),name.end(),'\\','/');
     std::transform(name.begin(),name.end(),name.begin(), ::tolower);
     std::vector<DatFileItem *>::iterator it;
-    for (it = getItems()->begin(); it != getItems()->end(); ++it)
+    for (it = this->items()->begin(); it != this->items()->end(); ++it)
     {
-        if ((*it)->getFilename() == name)
+        if ((*it)->filename() == name)
         {
             return *it;
         }

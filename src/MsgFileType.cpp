@@ -38,17 +38,7 @@ void MsgFileType::open()
 
 }
 
-/**
- * Alias to MsgFileType::getDatFileItem
- * @brief MsgFileType::datFileItem
- * @return
- */
 DatFileItem * MsgFileType::datFileItem()
-{
-    return getDatFileItem();
-}
-
-DatFileItem * MsgFileType::getDatFileItem()
 {
     return _datFileItem;
 }
