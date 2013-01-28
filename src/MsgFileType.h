@@ -43,6 +43,8 @@ public:
 
     std::vector<MsgMessage *> * messages();
 
+    MsgMessage * message(unsigned int number);
+
 };
 
 }

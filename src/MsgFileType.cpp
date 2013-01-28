@@ -104,4 +104,18 @@ std::vector<MsgMessage *> * MsgFileType::messages()
     return _messages;
 }
 
+MsgMessage * MsgFileType::message(unsigned int number)
+{
+    std::vector<MsgMessage *>::iterator it;
+    for (it = this->messages()->begin(); it != this->messages()->end(); ++it)
+    {
+        if ((*it)->number() == number)
+        {
+            return *it;
+        }
+    }
+    return 0;
+
+}
+
 }
