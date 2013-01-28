@@ -25,9 +25,22 @@ namespace libfalltergeist
 
 class MsgMessage
 {
+protected:
+    unsigned int _number;
+    char * _sound;
+    char * _text;
 public:
     MsgMessage();
     ~MsgMessage();
+
+    void setNumber(unsigned int number);
+    unsigned int number();
+
+    void setSound(const char * sound);
+    const char * sound();
+
+    void setText(const char * text);
+    const char * text();
 };
 
 }

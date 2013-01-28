@@ -24,6 +24,7 @@
 #include "../src/PalFileType.h"
 #include "../src/LstFileType.h"
 #include "../src/AafFileType.h"
+#include "../src/MsgFileType.h"
 #include <algorithm>
 #include <zlib.h>
 #include <iostream>
@@ -265,6 +266,12 @@ AafFileType * DatFileItem::asAafFileType()
 {
     AafFileType * aaf = new AafFileType(this);
     return aaf;
+}
+
+MsgFileType * DatFileItem::asMsgFileType()
+{
+    MsgFileType * msg = new MsgFileType(this);
+    return msg;
 }
 
 }

@@ -18,17 +18,56 @@
  */
 
 #include "../src/MsgMessage.h"
+#include <cstring>
 
 namespace libfalltergeist
 {
 
 MsgMessage::MsgMessage()
 {
+    _number = 0;
+    _sound = 0;
+    _text = 0;
 }
 
 MsgMessage::~MsgMessage()
 {
+    delete [] _sound;
+    delete [] _text;
+}
 
+void MsgMessage::setNumber(unsigned int number)
+{
+    _number = number;
+}
+
+unsigned int MsgMessage::number()
+{
+    return _number;
+}
+
+void MsgMessage::setSound(const char * sound)
+{
+    delete [] _sound;
+    _sound = new char[strlen(sound) + 1]();
+    strcpy(_sound, sound);
+}
+
+const char * MsgMessage::sound()
+{
+    return _sound;
+}
+
+void MsgMessage::setText(const char * text)
+{
+    delete [] _text;
+    _text = new char[strlen(text)+1]();
+    strcpy(_text, text);
+}
+
+const char * MsgMessage::text()
+{
+    return _text;
 }
 
 }

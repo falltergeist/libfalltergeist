@@ -20,14 +20,19 @@
 #ifndef LIBFALLTERGEIST_MSGFILETYPE_H
 #define LIBFALLTERGEIST_MSGFILETYPE_H
 
+#include <vector>
+
 namespace libfalltergeist
 {
 class DatFileItem;
+class MsgMessage;
 
 class MsgFileType
 {
 protected:
     DatFileItem * _datFileItem;
+    std::vector<MsgMessage *> * _messages;
+
 public:
     MsgFileType(DatFileItem * datFileItem);
     ~MsgFileType();
@@ -35,6 +40,8 @@ public:
     void open();
 
     DatFileItem * datFileItem();
+
+    std::vector<MsgMessage *> * messages();
 
 };
 
