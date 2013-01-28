@@ -26,6 +26,7 @@ namespace libfalltergeist
 BioFileType::BioFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
     _text = 0;
+    open();
 }
 
 BioFileType::~BioFileType()
