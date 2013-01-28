@@ -44,58 +44,54 @@ void MsgFileType::open()
     datFileItem()->setPosition(0);
 
     unsigned int i = 0;
-    unsigned char chr;
-    while (i < datFileItem()->size())
+    unsigned char chr = 0;
+    while (chr != '{' && i < datFileItem()->size())
     {
-        chr = datFileItem()->readUint8();
-        // = 0;
-        std::string line = "";
-        while (chr != 0x0D)
+        chr = datFileItem()->readUint8(); i++;
+        if (chr == '{')
         {
-            chr = datFileItem()->readUint8();
-            if (chr != 0x0D && chr != 0x0A) line.push_back(chr);
-            i++;
-        }
-        // \r\n
-        i++;
-        if (line.c_str()[0] == '{')
-        {
-            std::string code = "";
+            std::string number = "";
             std::string sound = "";
             std::string text = "";
 
-            const char * data = line.c_str();
-            unsigned int j = 1;
-            while(j < line.length())
+            // number
+            while (chr != '}')
             {
-                if (data[j] == '}') break;
-                code.push_back(data[j]);
-                j++;
+                chr = datFileItem()->readUint8(); i++;
+                if (chr != '}') number.push_back(chr);
             }
-            j++; j++;
-            while(j < line.length())
+
+            // sound
+            while (chr != '{')
             {
-                if (data[j] == '}') break;
-                sound.push_back(data[j]);
-                j++;
+                chr = datFileItem()->readUint8(); i++;
             }
-            j++; j++;
-            while(j < line.length())
+
+            while (chr != '}')
             {
-                if (data[j] == '}') break;
-                text.push_back(data[j]);
-                j++;
+                chr = datFileItem()->readUint8(); i++;
+                if (chr != '}') sound.push_back(chr);
+            }
+
+            // text
+            while (chr != '{')
+            {
+                chr = datFileItem()->readUint8(); i++;
+            }
+
+            while (chr != '}')
+            {
+                chr = datFileItem()->readUint8(); i++;
+                if (chr != '}') text.push_back(chr);
             }
 
             MsgMessage * message = new MsgMessage();
-            message->setNumber(atoi(code.c_str()));
+            message->setNumber(atoi(number.c_str()));
             message->setSound(sound.c_str());
             message->setText(text.c_str());
-
             _messages->push_back(message);
         }
     }
-
 }
 
 DatFileItem * MsgFileType::datFileItem()
