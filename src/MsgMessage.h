@@ -41,6 +41,9 @@ public:
 
     void setText(const char * text);
     const char * text();
+
+    operator char * ();
+
 };
 
 }

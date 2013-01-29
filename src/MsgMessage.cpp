@@ -70,4 +70,9 @@ const char * MsgMessage::text()
     return _text;
 }
 
+MsgMessage::operator char *()
+{
+    return _text;
+}
+
 }
