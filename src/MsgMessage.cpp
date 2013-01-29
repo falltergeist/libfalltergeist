@@ -75,4 +75,9 @@ MsgMessage::operator char *()
     return _text;
 }
 
+MsgMessage::operator const char *()
+{
+    return (const char *) _text;
+}
+
 }

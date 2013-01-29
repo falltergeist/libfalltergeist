@@ -43,6 +43,7 @@ public:
     const char * text();
 
     operator char * ();
+    operator const char * ();
 
 };
 
