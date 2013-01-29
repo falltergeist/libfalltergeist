@@ -22,18 +22,26 @@
 
 namespace libfalltergeist
 {
+class AafFileType;
+class BioFileType;
 class DatFile;
 class FrmFileType;
-class PalFileType;
-class LstFileType;
-class AafFileType;
-class MsgFileType;
-class BioFileType;
 class GcdFileType;
+class LstFileType;
+class MsgFileType;
+class PalFileType;
 
 class DatFileItem
 {
 protected:
+    AafFileType * _asAaf;
+    BioFileType * _asBio;
+    FrmFileType * _asFrm;
+    GcdFileType * _asGcd;
+    LstFileType * _asLst;
+    MsgFileType * _asMsg;
+    PalFileType * _asPal;
+
     DatFile * _datFile; // DAT file object
     char * _filename; // filename with path (path/to/file.ext)
     unsigned int _dataOffset; // data offset in the DAT file

@@ -36,6 +36,13 @@ namespace libfalltergeist
 
 DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
 {
+    _asAaf = 0;
+    _asBio = 0;
+    _asFrm = 0;
+    _asGcd = 0;
+    _asLst = 0;
+    _asMsg = 0;
+    _asPal = 0;
     _data = 0;
     _filename = 0;
     _dataOffset = 0;
@@ -48,6 +55,13 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
 
 DatFileItem::~DatFileItem()
 {
+    delete _asAaf;
+    delete _asBio;
+    delete _asFrm;
+    delete _asGcd;
+    delete _asLst;
+    delete _asMsg;
+    delete _asPal;
     delete [] _data;
     delete [] _filename;
 }
@@ -249,44 +263,51 @@ void DatFileItem::close()
 
 FrmFileType * DatFileItem::asFrmFileType()
 {
-    FrmFileType * frm = new FrmFileType(this);
-    return frm;
+    if (_asFrm) return _asFrm;
+    _asFrm = new FrmFileType(this);
+    return _asFrm;
 }
 
 PalFileType * DatFileItem::asPalFileType()
 {
-    PalFileType * pal = new PalFileType(this);
-    return pal;
+    if (_asPal) return _asPal;
+    _asPal = new PalFileType(this);
+    return _asPal;
 }
 
 LstFileType * DatFileItem::asLstFileType()
 {
-    LstFileType * lst = new LstFileType(this);
-    return lst;
+    if (_asLst) return _asLst;
+    _asLst = new LstFileType(this);
+    return _asLst;
 }
 
 AafFileType * DatFileItem::asAafFileType()
 {
-    AafFileType * aaf = new AafFileType(this);
-    return aaf;
+    if (_asAaf) return _asAaf;
+    _asAaf = new AafFileType(this);
+    return _asAaf;
 }
 
 MsgFileType * DatFileItem::asMsgFileType()
 {
-    MsgFileType * msg = new MsgFileType(this);
-    return msg;
+    if (_asMsg) return _asMsg;
+    _asMsg = new MsgFileType(this);
+    return _asMsg;
 }
 
 BioFileType * DatFileItem::asBioFileType()
 {
-    BioFileType * bio = new BioFileType(this);
-    return bio;
+    if (_asBio) return _asBio;
+    _asBio = new BioFileType(this);
+    return _asBio;
 }
 
 GcdFileType * DatFileItem::asGcdFileType()
 {
-    GcdFileType * gcd = new GcdFileType(this);
-    return gcd;
+    if (_asGcd) return _asGcd;
+    _asGcd = new GcdFileType(this);
+    return _asGcd;
 }
 
 }
