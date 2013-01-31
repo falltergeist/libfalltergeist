@@ -124,12 +124,12 @@ protected:
 
     char * _name;
 
-    unsigned int _firstTaggedSkill;
-    unsigned int _secondTaggedSkill;
-    unsigned int _thirdTaggedSkill;
-    unsigned int _fourthTaggedSkill;
-    unsigned int _firstTrait;
-    unsigned int _secondTrait;
+    int _firstTaggedSkill;
+    int _secondTaggedSkill;
+    int _thirdTaggedSkill;
+    int _fourthTaggedSkill;
+    int _firstTrait;
+    int _secondTrait;
     unsigned int _characterPoints;
 public:
     GcdFileType(DatFileItem * datFileItem);
@@ -408,23 +408,23 @@ public:
     void setName(const char * name);
     const char * name();
 
-    void setFirstTaggedSkill(unsigned int firstTaggedSkill);
-    unsigned int firstTaggedSkill();
+    void setFirstTaggedSkill(int firstTaggedSkill);
+    int firstTaggedSkill();
 
-    void setSecondTaggedSkill(unsigned int secondTaggedSkill);
-    unsigned int secondTaggedSkill();
+    void setSecondTaggedSkill(int secondTaggedSkill);
+    int secondTaggedSkill();
 
-    void setThirdTaggedSkill(unsigned int thirdTaggedSkill);
-    unsigned int thirdTaggedSkill();
+    void setThirdTaggedSkill(int thirdTaggedSkill);
+    int thirdTaggedSkill();
 
-    void setFourthTaggedSkill(unsigned int fourthTaggedSkill);
-    unsigned int fourthTaggedSkill();
+    void setFourthTaggedSkill(int fourthTaggedSkill);
+    int fourthTaggedSkill();
 
-    void setFirstTrait(unsigned int firstTrait);
-    unsigned int firstTrait();
+    void setFirstTrait(int firstTrait);
+    int firstTrait();
 
-    void setSecondTrait(unsigned int secondTrait);
-    unsigned int secondTrait();
+    void setSecondTrait(int secondTrait);
+    int secondTrait();
 
     void setCharacterPoints(unsigned int characterPoints);
     unsigned int characterPoints();

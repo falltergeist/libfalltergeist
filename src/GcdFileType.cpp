@@ -152,12 +152,12 @@ void GcdFileType::open()
     setName(name);
     delete [] name;
 
-    setFirstTaggedSkill(datFileItem()->readUint32());
-    setSecondTaggedSkill(datFileItem()->readUint32());
-    setThirdTaggedSkill(datFileItem()->readUint32());
-    setFourthTaggedSkill(datFileItem()->readUint32());
-    setFirstTrait(datFileItem()->readUint32());
-    setSecondTrait(datFileItem()->readUint32());
+    setFirstTaggedSkill(datFileItem()->readInt32());
+    setSecondTaggedSkill(datFileItem()->readInt32());
+    setThirdTaggedSkill(datFileItem()->readInt32());
+    setFourthTaggedSkill(datFileItem()->readInt32());
+    setFirstTrait(datFileItem()->readInt32());
+    setSecondTrait(datFileItem()->readInt32());
     setCharacterPoints(datFileItem()->readUint32());
 }
 
@@ -1038,62 +1038,62 @@ const char * GcdFileType::name()
     return _name;
 }
 
-void GcdFileType::setFirstTaggedSkill(unsigned int firstTaggedSkill)
+void GcdFileType::setFirstTaggedSkill(int firstTaggedSkill)
 {
     _firstTaggedSkill = firstTaggedSkill;
 }
 
-unsigned int GcdFileType::firstTaggedSkill()
+int GcdFileType::firstTaggedSkill()
 {
     return _firstTaggedSkill;
 }
 
-void GcdFileType::setSecondTaggedSkill(unsigned int secondTaggedSkill)
+void GcdFileType::setSecondTaggedSkill(int secondTaggedSkill)
 {
     _secondTaggedSkill = secondTaggedSkill;
 }
 
-unsigned int GcdFileType::secondTaggedSkill()
+int GcdFileType::secondTaggedSkill()
 {
     return _secondTaggedSkill;
 }
 
-void GcdFileType::setThirdTaggedSkill(unsigned int thirdTaggedSkill)
+void GcdFileType::setThirdTaggedSkill(int thirdTaggedSkill)
 {
     _thirdTaggedSkill = thirdTaggedSkill;
 }
 
-unsigned int GcdFileType::thirdTaggedSkill()
+int GcdFileType::thirdTaggedSkill()
 {
     return _thirdTaggedSkill;
 }
 
-void GcdFileType::setFourthTaggedSkill(unsigned int fourthTaggedSkill)
+void GcdFileType::setFourthTaggedSkill(int fourthTaggedSkill)
 {
     _fourthTaggedSkill = fourthTaggedSkill;
 }
 
-unsigned int GcdFileType::fourthTaggedSkill()
+int GcdFileType::fourthTaggedSkill()
 {
     return _fourthTaggedSkill;
 }
 
-void GcdFileType::setFirstTrait(unsigned int firstTrait)
+void GcdFileType::setFirstTrait(int firstTrait)
 {
     _firstTrait = firstTrait;
 }
 
-unsigned int GcdFileType::firstTrait()
+int GcdFileType::firstTrait()
 {
     return _firstTrait;
 }
 
-void GcdFileType::setSecondTrait(unsigned int secondTrait)
+void GcdFileType::setSecondTrait(int secondTrait)
 {
     _secondTrait = secondTrait;
 }
 
-unsigned int GcdFileType::secondTrait()
+int GcdFileType::secondTrait()
 {
     return _secondTrait;
 }

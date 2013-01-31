@@ -57,4 +57,6 @@ set(HEADERS libfalltergeist.h
             src/PalFileType.h
             src/PalColor.h)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 add_library( falltergeist SHARED ${SOURCES})
