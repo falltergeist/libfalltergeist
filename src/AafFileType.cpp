@@ -32,6 +32,11 @@ AafFileType::AafFileType(DatFileItem * datFileItem): _datFileItem(datFileItem)
 
 AafFileType::~AafFileType()
 {
+    while(!_glyphs->empty())
+    {
+        delete _glyphs->back();
+        _glyphs->pop_back();
+    }
     delete _glyphs;
 }
 

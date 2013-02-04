@@ -34,6 +34,11 @@ MsgFileType::MsgFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 
 MsgFileType::~MsgFileType()
 {
+    while(!_messages->empty())
+    {
+        delete _messages->back();
+        _messages->pop_back();
+    }
     delete _messages;
 }
 
