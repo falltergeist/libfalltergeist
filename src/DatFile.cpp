@@ -81,7 +81,7 @@ void DatFile::setFilename(char * filename)
  */
 std::vector<DatFileItem *> * DatFile::items()
 {
-    if (!_items != 0) return _items;
+    if (_items != 0) return _items;
 
     _items = new std::vector<DatFileItem *>;
 
