@@ -33,19 +33,16 @@ class DatFile
 protected:
     std::vector<DatFileItem *> * _items;
     char * _filename;
-    unsigned int _littleEndian(unsigned int);
-    int _littleEndian(int);
-    unsigned short _littleEndian(unsigned short);
-    short _littleEndian(short);
 
 public:
     DatFile();
     DatFile(char * filename);
     ~DatFile();
 
-    virtual std::vector<DatFileItem *> * items();
+    std::vector<DatFileItem *> * items();
+    DatFileItem * item(char * filename);
 
-    //DatFileItem * item(char * filename);
+    unsigned int size();
 
     char * filename();
     void setFilename(char * filename);

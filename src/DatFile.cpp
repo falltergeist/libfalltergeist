@@ -73,6 +73,24 @@ void DatFile::setFilename(char * filename)
     memcpy(_filename, filename, strlen(filename));
 }
 
+unsigned int DatFile::size()
+{
+    std::ifstream * stream = new std::ifstream();
+    stream->open(filename(), std::ios_base::binary);
+    if (!stream->is_open())
+    {
+        std::cout << "Не удалось открыть DAT файл" << std::endl;
+        throw;
+    }
+
+    // reading file size from dat file
+    stream->seekg(0, std::ios::end);
+    unsigned int size = stream->tellg();
+    stream->close();
+    delete stream;
+    return size;
+}
+
 
 /**
  * Returns DatFile entries
@@ -87,81 +105,87 @@ std::vector<DatFileItem *> * DatFile::items()
 
     std::ifstream * stream = new std::ifstream();
     stream->open(filename(), std::ios_base::binary);
-    if (!stream->is_open()) throw;
+    if (!stream->is_open())
+    {
+        std::cout << "Не удалось открыть DAT файл" << std::endl;
+        throw;
+    }
 
     // reading file size from dat file
-    stream->seekg(4, std::ios::end);
+    stream->seekg(-4, std::ios::end);
     unsigned int datFileSize;
-    *stream >> datFileSize;
+    stream->read(reinterpret_cast<char *>(&datFileSize), 4);
 
-    std::cout << "DatFileSize: " << datFileSize << std::endl;
-    datFileSize = _littleEndian(datFileSize);
-    std::cout << "DatFileSize: " << datFileSize << std::endl;
+    // reading size of files tree
+    stream->seekg(-8, std::ios::end);
+    unsigned int filesTreeSize;
+    stream->read(reinterpret_cast<char *>(&filesTreeSize), 4);
 
+    // reading total number of items in dat file
+    stream->seekg(datFileSize - filesTreeSize - 8, std::ios::beg);
+    unsigned int filesTotalNumber;
+    stream->read(reinterpret_cast<char *>(&filesTotalNumber), 4);
 
-//        // reading size of files tree
-//        setPosition(size() - 8);
-//        unsigned int filesTreeSize = readUint32();
-//
-//        // reading total number of items in dat file
-//        setPosition(size() - filesTreeSize - 8);
-//        unsigned int filesTotalNumber = readUint32();
-//
-//        //reading files data one by one
-//        for (unsigned int i = 0; i != filesTotalNumber; ++i)
-//        {
-//            DatFileItem * item = new DatFileItem(this);
-//
-//            //reading fileName
-//            unsigned int filenameSize = readUint32();
-//            char * filename = new char[filenameSize + 1]();
-//            readBytes(filename, filenameSize);
-//            item->setFilename(filename);
-//            delete [] filename;
-//
-//            //reading compression flag
-//            item->setCompressed(readUint8() == 1 ? true : false);
-//
-//            //reading unpacked size
-//            item->setUnpackedSize(readUint32());
-//
-//            //reading packed size
-//            item->setPackedSize(readUint32());
-//
-//            //reading data offset from dat file begining
-//            item->setDataOffset(readUint32());
-//
-//            _items->push_back(item);
-//      }
-//        std::cout << "[OK]" << std::endl;
-//        std::cout << "Items loaded: " << filesTotalNumber << std::endl;
+    //reading files data one by one
+    for (unsigned int i = 0; i != filesTotalNumber; ++i)
+    {
+        DatFileItem * item = new DatFileItem(this);
+
+        //reading fileName
+        unsigned int filenameSize;
+        stream->read(reinterpret_cast<char *>(&filenameSize), 4);
+        char * filename = new char[filenameSize + 1]();
+        stream->read(filename, filenameSize);
+        item->setFilename(filename);
+        delete [] filename;
+
+        //reading compression flag
+        unsigned char flag;
+        stream->read(reinterpret_cast<char *>(&flag), 1);
+        item->setCompressed(flag == 1 ? true : false);
+
+        //reading unpacked size
+        unsigned int unpackedSize;
+        stream->read(reinterpret_cast<char *>(&unpackedSize), 4);
+        item->setUnpackedSize(unpackedSize);
+
+        //reading packed size
+        unsigned int packedSize;
+        stream->read(reinterpret_cast<char *>(&packedSize), 4);
+        item->setPackedSize(packedSize);
+
+        //reading data offset from dat file begining
+        unsigned int dataOffset;
+        stream->read(reinterpret_cast<char *>(&dataOffset), 4);
+        item->setDataOffset(dataOffset);
+
+        //std::cout << item->filename() << " " << (int) item->compressed() << " " << item->packedSize() << " " << item->unpackedSize() << std::endl;
+        _items->push_back(item);
+
+    }
+    stream->close();
+    delete stream;
     return _items;
 }
 
-unsigned int DatFile::_littleEndian(unsigned int data)
+DatFileItem * DatFile::item(char * filename)
 {
-    unsigned char * memp = reinterpret_cast<unsigned char *>(&data);
-    std::reverse(memp, memp + sizeof(data));
-    return data;
-    //return ( data[3] << 24) | (data[2] << 16) | ( data[1] << 8) | data[0];
+    std::string needle(filename);
+    std::replace(needle.begin(),needle.end(),'\\','/');
+    std::transform(needle.begin(),needle.end(),needle.begin(), ::tolower);
+
+    std::vector<DatFileItem *>::iterator it;
+    for (it = items()->begin(); it != items()->end(); ++it)
+    {
+        if (strcmp(filename, (*it)->filename()) == 0)
+        {
+            return *it;
+        }
+    }
+    return 0;
 }
 
-int DatFile::_littleEndian(int data)
-{
-    return (int) _littleEndian((unsigned int) data);
-}
 
-unsigned short DatFile::_littleEndian(unsigned short data)
-{
-    unsigned char * memp = reinterpret_cast<unsigned char *>(&data);
-    std::reverse(memp, memp + sizeof(data));
-    return data;
-}
-
-short DatFile::_littleEndian(short data)
-{
-    return (short) _littleEndian((unsigned short) data);
-}
 
 char * DatFile::getItemData(unsigned int offset, unsigned int size)
 {
@@ -169,10 +193,16 @@ char * DatFile::getItemData(unsigned int offset, unsigned int size)
 
     std::ifstream * stream = new std::ifstream();
     stream->open(filename(), std::ios_base::binary);
-    if (!stream->is_open()) throw;
+    if (!stream->is_open())
+    {
+        std::cout << "Не удалось открыть DAT файл" << std::endl;
+        throw;
+    }
     stream->seekg(offset, std::ios::beg);
     stream->readsome(data, size);
+    stream->close();
     delete stream;
+    return data;
 }
 
 }

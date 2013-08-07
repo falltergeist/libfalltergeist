@@ -60,6 +60,8 @@ public:
 
     char * data(void);
 
+    void unload();
+
 };
 
 }

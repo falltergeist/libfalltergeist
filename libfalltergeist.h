@@ -23,6 +23,7 @@
 
 #include "src/DatFile.h"
 #include "src/DatFileItem.h"
+/*
 #include "src/AafFileType.h"
 #include "src/AafGlyph.h"
 #include "src/BioFileType.h"
@@ -37,7 +38,7 @@
 #include "src/MsgMessage.h"
 #include "src/PalFileType.h"
 #include "src/PalColor.h"
-
+*/
 namespace libfalltergeist
 {
 

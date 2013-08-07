@@ -144,13 +144,12 @@ char * DatFileItem::data()
     // If file is not compressed
     if (!compressed())
     {
-        _data = datFile()->getItemData(dataOffset(), packedSize());
+        _data = datFile()->getItemData(dataOffset(), unpackedSize());
         return _data;
     }
 
     char * packedData = datFile()->getItemData(dataOffset(), packedSize());
     _data = new char[unpackedSize()];
-
     // unpacking
     z_stream zStream;
     zStream.total_in  = zStream.avail_in  = packedSize();
@@ -164,8 +163,18 @@ char * DatFileItem::data()
     inflateInit( &zStream );            // zlib function
     inflate( &zStream, Z_FINISH );      // zlib function
     inflateEnd( &zStream );             // zlib function
+    std::cout << "Распаковали" << std::endl;
+    delete [] packedData;
+    return _data;
+}
 
-     delete [] packedData;
+/**
+ * Makes memory used by file data free
+ */
+void DatFileItem::unload()
+{
+    delete [] _data;
+    _data = 0;
 }
 
 }
