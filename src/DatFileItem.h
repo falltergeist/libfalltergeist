@@ -22,35 +22,20 @@
 
 namespace libfalltergeist
 {
-class AafFileType;
-class BioFileType;
 class DatFile;
-class FrmFileType;
-class GcdFileType;
-class LstFileType;
-class MsgFileType;
-class PalFileType;
 
 class DatFileItem
 {
 protected:
-    AafFileType * _asAaf;
-    BioFileType * _asBio;
-    FrmFileType * _asFrm;
-    GcdFileType * _asGcd;
-    LstFileType * _asLst;
-    MsgFileType * _asMsg;
-    PalFileType * _asPal;
 
-    DatFile * _datFile; // DAT file object
+    DatFile * _datFile; // parent DAT file object
     char * _filename; // filename with path (path/to/file.ext)
     unsigned int _dataOffset; // data offset in the DAT file
     unsigned int _unpackedSize; // unpacked data size
     unsigned int _packedSize; // packed data size
     bool _compressed; // is packed?
-    unsigned char * _data;
-    unsigned int _position;
-    bool _opened;
+    char * _data;
+
 public:
 
     DatFileItem(DatFile * datFile);
@@ -73,30 +58,7 @@ public:
     void setCompressed(bool compressed);
     bool compressed();
 
-    unsigned int size();
-
-    void setPosition(unsigned int position);
-    unsigned int position();
-
-    unsigned int readUint32();
-    int readInt32();
-    unsigned short readUint16();
-    short readInt16();
-    unsigned char readUint8();
-    char readInt8();
-    void readBytes(char * destination, unsigned int numberOfBytes);
-    void skipBytes(unsigned int numberOfBytes);
-    void open();
-    bool isOpened();
-    void close();
-
-    FrmFileType * asFrmFileType();
-    PalFileType * asPalFileType();
-    LstFileType * asLstFileType();
-    AafFileType * asAafFileType();
-    MsgFileType * asMsgFileType();
-    BioFileType * asBioFileType();
-    GcdFileType * asGcdFileType();
+    char * data(void);
 
 };
 

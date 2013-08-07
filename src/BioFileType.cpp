@@ -41,9 +41,9 @@ DatFileItem * BioFileType::datFileItem()
 
 void BioFileType::open()
 {
-    _text = new char[datFileItem()->size() + 1]();
-    datFileItem()->setPosition(0);
-    datFileItem()->readBytes(_text, datFileItem()->size());
+//!    _text = new char[datFileItem()->size() + 1]();
+//!    datFileItem()->setPosition(0);
+//!    datFileItem()->readBytes(_text, datFileItem()->size());
 }
 
 const char * BioFileType::text()

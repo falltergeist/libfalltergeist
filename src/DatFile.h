@@ -20,6 +20,7 @@
 #ifndef LIBFALLTERGEIST_DATFILE_H
 #define LIBFALLTERGEIST_DATFILE_H
 
+#include <string.h>
 #include <vector>
 #include <fstream>
 
@@ -31,33 +32,25 @@ class DatFile
 {
 protected:
     std::vector<DatFileItem *> * _items;
-    std::ifstream * _stream;
+    char * _filename;
+    unsigned int _littleEndian(unsigned int);
+    int _littleEndian(int);
+    unsigned short _littleEndian(unsigned short);
+    short _littleEndian(short);
+
 public:
     DatFile();
-    DatFile(char * pathToFile);
+    DatFile(char * filename);
     ~DatFile();
-    bool open(char * pathToFile);
-    bool close(void);
-    bool isOpened();
-    unsigned int readUint32();
-    int readInt32();
-    unsigned short readUint16();
-    short readInt16();
-    unsigned char readUint8();
-    char readInt8();
-    void readBytes(char * destination, unsigned int numberOfBytes);
-    void skipBytes(unsigned int numberOfBytes);
-
-    void setPosition(unsigned int position);
-    unsigned int position();
-
-    unsigned int size();
 
     virtual std::vector<DatFileItem *> * items();
 
-    DatFileItem * item(char * filename);
+    //DatFileItem * item(char * filename);
 
+    char * filename();
+    void setFilename(char * filename);
 
+    char * getItemData(unsigned int offset, unsigned int size);
 };
 
 }
