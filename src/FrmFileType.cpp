@@ -45,19 +45,19 @@ DatFileItem * FrmFileType::datFileItem()
 void FrmFileType::open()
 {
     // initialization
-//!    _datFileItem->setPosition(0);
+    _datFileItem->setPosition(0);
 
     // Frm file version
-//!    _version = _datFileItem->readUint32();
+    _version = _datFileItem->readUint32();
 
     // Frames per second rate
-//!    _framesPerSecond = _datFileItem->readUint16();
+    _framesPerSecond = _datFileItem->readUint16();
 
     // Frame number on which action is occurs
-//!    _actionFrame = _datFileItem->readUint16();
+    _actionFrame = _datFileItem->readUint16();
 
     // Frames per one direction
-//!    _framesPerDirection = _datFileItem->readUint16();
+    _framesPerDirection = _datFileItem->readUint16();
 
     // directions data...
 
@@ -65,27 +65,27 @@ void FrmFileType::open()
     for (unsigned int i = 0; i != 6; ++i)
     {
         FrmDirection * direction = new FrmDirection();
-//!        direction->setShiftX(_datFileItem->readUint16());
+        direction->setShiftX(_datFileItem->readUint16());
         directions()->push_back(direction);
     }
 
     // Y shift
     for (unsigned int i = 0; i != 6; ++i)
     {
-//!        directions()->at(i)->setShiftY(_datFileItem->readInt16());
+        directions()->at(i)->setShiftY(_datFileItem->readInt16());
     }
 
     // Data offset
     for (unsigned int i = 0; i != 6; ++i)
     {
-//!        directions()->at(i)->setDataOffset(_datFileItem->readUint32());
+        directions()->at(i)->setDataOffset(_datFileItem->readUint32());
     }
 
     // for each direction
     for (unsigned int i = 0; i!= 6; ++i)
     {
         // jump to frames data at frames area
-//!        _datFileItem->setPosition(directions()->at(i)->dataOffset() + 62);
+        _datFileItem->setPosition(directions()->at(i)->dataOffset() + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
@@ -93,17 +93,17 @@ void FrmFileType::open()
             FrmFrame * frame = new FrmFrame();
 
             // Frame width
-//!            frame->setWidth(_datFileItem->readUint16());
+            frame->setWidth(_datFileItem->readUint16());
 
             // Frame height
-//!            frame->setHeight(_datFileItem->readUint16());
+            frame->setHeight(_datFileItem->readUint16());
 
             //Number of pixels for this frame
 
-//!            unsigned int dataSize = _datFileItem->readUint32();
+            unsigned int dataSize = _datFileItem->readUint32();
 
             // X offset
-//!            frame->setOffsetX(_datFileItem->readInt16());
+            frame->setOffsetX(_datFileItem->readInt16());
 
             // Y offset
             frame->setOffsetY(_datFileItem->readInt16());
