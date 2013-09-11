@@ -78,6 +78,7 @@ public:
     void setPosition(unsigned int position);
     unsigned int position();
 
+    void setData(char * data);
     char * getData();
 
     unsigned int readUint32();
@@ -90,6 +91,7 @@ public:
     void skipBytes(unsigned int numberOfBytes);
     void open();
     bool isOpened();
+    void isOpened(bool val);
     void close();
 
     FrmFileType * asFrmFileType();

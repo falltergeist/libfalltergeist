@@ -150,6 +150,11 @@ char * DatFileItem::getData()
     return (char * )_data;
 }
 
+void DatFileItem::setData(char * data)
+{
+    _data = (unsigned char *) data;
+}
+
 unsigned int DatFileItem::readUint32()
 {
     open();
@@ -258,6 +263,11 @@ void DatFileItem::readBytes(char * destination, unsigned int numberOfBytes)
 bool DatFileItem::isOpened()
 {
     return _opened;
+}
+
+void DatFileItem::isOpened(bool val)
+{
+    _opened = val;
 }
 
 void DatFileItem::close()
