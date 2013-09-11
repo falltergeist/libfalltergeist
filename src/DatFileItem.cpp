@@ -146,6 +146,7 @@ bool DatFileItem::compressed()
 
 char * DatFileItem::getData()
 {
+    open();
     return (char * )_data;
 }
 

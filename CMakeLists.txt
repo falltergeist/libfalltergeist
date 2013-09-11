@@ -23,39 +23,39 @@ project( libfalltergeist )
 
 set(SOURCES libfalltergeist.cpp
             src/DatFile.cpp
-            src/DatFileItem.cpp)
-#            src/AafFileType.cpp
-#            src/AafGlyph.cpp
-#            src/BioFileType.cpp
-#            src/FonFileType.cpp
-#            src/FonGlyph.cpp
-#            src/FrmFileType.cpp
-#            src/FrmDirection.cpp
-#            src/FrmFrame.cpp
-#            src/GcdFileType.cpp
-#            src/LstFileType.cpp
-#            src/MsgFileType.cpp
-#            src/MsgMessage.cpp
-#            src/PalFileType.cpp
-#            src/PalColor.cpp)
+            src/DatFileItem.cpp
+            src/AafFileType.cpp
+            src/AafGlyph.cpp
+            src/BioFileType.cpp
+            src/FonFileType.cpp
+            src/FonGlyph.cpp
+            src/FrmFileType.cpp
+            src/FrmDirection.cpp
+            src/FrmFrame.cpp
+            src/GcdFileType.cpp
+            src/LstFileType.cpp
+            src/MsgFileType.cpp
+            src/MsgMessage.cpp
+            src/PalFileType.cpp
+            src/PalColor.cpp)
 
 set(HEADERS libfalltergeist.h
             src/DatFile.h
-            src/DatFileItem.h)
-#            src/AafFileType.h
-#            src/AafGlyph.h
-#            src/BioFileType.h
-#            src/FonFileType.h
-#            src/FonGlyph.h
-#            src/FrmFileType.h
-#            src/FrmDirection.h
-#            src/FrmFrame.h
-#            src/GcdFileType.h
-#            src/LstFileType.h
-#            src/MsgFileType.h
-#            src/MsgMessage.h
-#            src/PalFileType.h
-#            src/PalColor.h)
+            src/DatFileItem.h
+            src/AafFileType.h
+            src/AafGlyph.h
+            src/BioFileType.h
+            src/FonFileType.h
+            src/FonGlyph.h
+            src/FrmFileType.h
+            src/FrmDirection.h
+            src/FrmFrame.h
+            src/GcdFileType.h
+            src/LstFileType.h
+            src/MsgFileType.h
+            src/MsgMessage.h
+            src/PalFileType.h
+            src/PalColor.h)
 
 set(CMAKE_BUILD_TYPE Debug)
 
