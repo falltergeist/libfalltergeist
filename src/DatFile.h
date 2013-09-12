@@ -32,10 +32,14 @@ class DatFile
 protected:
     std::vector<DatFileItem *> * _items;
     std::ifstream * _stream;
+    char * _pathToFile;
 public:
     DatFile();
     DatFile(char * pathToFile);
     ~DatFile();
+
+    char * pathToFile();
+
     bool open(char * pathToFile);
     bool close(void);
     bool isOpened();

@@ -20,8 +20,9 @@
 #include "../src/DatFile.h"
 #include "../src/DatFileItem.h"
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <algorithm>
+#include <string>
 
 namespace libfalltergeist
 {
@@ -32,6 +33,7 @@ namespace libfalltergeist
  */
 DatFile::DatFile()
 {
+    _pathToFile = 0;
     _items = 0;
     _stream = 0;
 }
@@ -42,6 +44,7 @@ DatFile::DatFile()
  */
 DatFile::DatFile(char * pathToFile)
 {
+    _pathToFile = 0;
     _items = 0;
     _stream = 0;
     open(pathToFile);
@@ -55,6 +58,12 @@ DatFile::~DatFile()
 {
     delete _items;
     delete _stream;
+    delete [] _pathToFile;
+}
+
+char * DatFile::pathToFile()
+{
+    return _pathToFile;
 }
 
 /**
@@ -65,17 +74,21 @@ DatFile::~DatFile()
  */
 bool DatFile::open(char * pathToFile)
 {
-    std::cout << "Opening DAT file: " << pathToFile << " ... ";
+    delete [] _pathToFile;
+    _pathToFile = new char[strlen(pathToFile)]();
+    strcpy(_pathToFile, pathToFile);
+
+    //std::cout << "Opening DAT file: " << pathToFile << " ... ";
     _stream = new std::ifstream();
     _stream->open(pathToFile, std::ios_base::binary);
     if (_stream->is_open())
     {
-        std::cout << "[OK]" << std::endl;
+        //std::cout << "[OK]" << std::endl;
         return true;
     }
     else
     {
-        std::cout << "[FAIL]" << std::endl;
+        //std::cout << "[FAIL]" << std::endl;
         return false;
     }
 }
@@ -185,7 +198,7 @@ std::vector<DatFileItem *> * DatFile::items()
 
     if (_items == 0)
     {
-        std::cout << "Loading DAT file items ... ";
+        //std::cout << "Loading DAT file items ... ";
 
         _items = new std::vector<DatFileItem *>;
 
@@ -194,12 +207,12 @@ std::vector<DatFileItem *> * DatFile::items()
         unsigned int datFileSize = readUint32();
         if (datFileSize != size())
         {
-            std::cout << "[FAIL]" << std::endl;
+            //std::cout << "[FAIL]" << std::endl;
             std::cout << "[ERROR] Wrong or corrupted DAT file";
             return 0;
         }
 
-        std::cout << size() << std::endl;
+        //std::cout << size() << std::endl;
 
         // reading size of files tree
         setPosition(size() - 8);
@@ -235,8 +248,8 @@ std::vector<DatFileItem *> * DatFile::items()
 
             _items->push_back(item);
         }
-        std::cout << "[OK]" << std::endl;
-        std::cout << "Items loaded: " << filesTotalNumber << std::endl;
+        //std::cout << "[OK]" << std::endl;
+        //std::cout << "Items loaded: " << filesTotalNumber << std::endl;
     }
     return _items;
 }

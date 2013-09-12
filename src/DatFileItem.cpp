@@ -62,8 +62,8 @@ DatFileItem::~DatFileItem()
     delete _asLst;
     delete _asMsg;
     delete _asPal;
-    delete [] _data;
-    delete [] _filename;
+    if (_data) delete [] _data;
+    if (_filename) delete [] _filename;
 }
 
 
