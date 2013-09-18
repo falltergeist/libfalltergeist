@@ -36,15 +36,15 @@ namespace libfalltergeist
 
 DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
 {
-    _asAaf = 0;
-    _asBio = 0;
-    _asFrm = 0;
-    _asGcd = 0;
-    _asLst = 0;
-    _asMsg = 0;
-    _asPal = 0;
-    _data = 0;
-    _filename = 0;
+    _asAaf = NULL;
+    _asBio = NULL;
+    _asFrm = NULL;
+    _asGcd = NULL;
+    _asLst = NULL;
+    _asMsg = NULL;
+    _asPal = NULL;
+    _data = NULL;
+    _filename = NULL;
     _dataOffset = 0;
     _unpackedSize = 0;
     _packedSize = 0;
@@ -62,8 +62,8 @@ DatFileItem::~DatFileItem()
     delete _asLst;
     delete _asMsg;
     delete _asPal;
-    if (_data) delete [] _data;
-    if (_filename) delete [] _filename;
+    delete [] _data;
+    delete [] _filename;
 }
 
 
@@ -82,9 +82,9 @@ DatFile * DatFileItem::datFile()
  * @brief DatFileItem::setFilename
  * @param filename
  */
-void DatFileItem::setFilename(char * filename)
+void DatFileItem::setFilename(const char * filename)
 {
-    if (_filename != 0) delete [] _filename;
+    delete [] _filename;
 
     // convert to lowercase and replace slashes
     std::string fname(filename);

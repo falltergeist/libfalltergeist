@@ -58,7 +58,7 @@ public:
 
     DatFile * datFile();
 
-    void setFilename(char * filename);
+    void setFilename(const char * filename);
     char * filename();
 
     void setDataOffset(unsigned int offset);

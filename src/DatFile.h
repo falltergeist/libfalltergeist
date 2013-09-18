@@ -35,12 +35,12 @@ protected:
     char * _pathToFile;
 public:
     DatFile();
-    DatFile(char * pathToFile);
+    DatFile(const char * pathToFile);
     ~DatFile();
 
     char * pathToFile();
 
-    bool open(char * pathToFile);
+    bool open(const char * pathToFile);
     bool close(void);
     bool isOpened();
     unsigned int readUint32();
@@ -59,7 +59,7 @@ public:
 
     virtual std::vector<DatFileItem *> * items();
 
-    DatFileItem * item(char * filename);
+    DatFileItem * item(const char * filename);
 
 
 };

@@ -33,7 +33,7 @@ namespace libfalltergeist
  */
 DatFile::DatFile()
 {
-    _pathToFile = 0;
+    _pathToFile = NULL;
     _items = 0;
     _stream = 0;
 }
@@ -42,9 +42,9 @@ DatFile::DatFile()
  * Opens selected DAT file
  * @brief DatFile::DatFile
  */
-DatFile::DatFile(char * pathToFile)
+DatFile::DatFile(const char * pathToFile)
 {
-    _pathToFile = 0;
+    _pathToFile = NULL;
     _items = 0;
     _stream = 0;
     open(pathToFile);
@@ -72,15 +72,15 @@ char * DatFile::pathToFile()
  * @param pathToFile
  * @return
  */
-bool DatFile::open(char * pathToFile)
+bool DatFile::open(const char * pathToFile)
 {
     delete [] _pathToFile;
-    _pathToFile = new char[strlen(pathToFile)]();
+    _pathToFile = new char[strlen(pathToFile)+1]();
     strcpy(_pathToFile, pathToFile);
 
     //std::cout << "Opening DAT file: " << pathToFile << " ... ";
     _stream = new std::ifstream();
-    _stream->open(pathToFile, std::ios_base::binary);
+    _stream->open(_pathToFile, std::ios_base::binary);
     if (_stream->is_open())
     {
         //std::cout << "[OK]" << std::endl;
@@ -196,10 +196,9 @@ std::vector<DatFileItem *> * DatFile::items()
 {
     if (!isOpened()) return 0;
 
+    // if items are not fetched yet
     if (_items == 0)
     {
-        //std::cout << "Loading DAT file items ... ";
-
         _items = new std::vector<DatFileItem *>;
 
         // reading data size from dat file
@@ -310,7 +309,7 @@ char DatFile::readInt8()
  * @param filename
  * @return
  */
-DatFileItem * DatFile::item(char * filename)
+DatFileItem * DatFile::item(const char * filename)
 {
     std::string name(filename);
     // Replace slashes and transform to lower case

@@ -28,11 +28,12 @@ endif(NOT ZLIB_FOUND)
 include_directories(ZLIB_INCLUDE_DIRS)
 
 set(SOURCES libfalltergeist.cpp
-            src/DatFile.cpp
-            src/DatFileItem.cpp
             src/AafFileType.cpp
             src/AafGlyph.cpp
             src/BioFileType.cpp
+            src/DatFile.cpp
+            src/DatFileItem.cpp
+            src/Exception.cpp
             src/FonFileType.cpp
             src/FonGlyph.cpp
             src/FrmFileType.cpp
@@ -46,11 +47,12 @@ set(SOURCES libfalltergeist.cpp
             src/PalColor.cpp)
 
 set(HEADERS libfalltergeist.h
-            src/DatFile.h
-            src/DatFileItem.h
             src/AafFileType.h
             src/AafGlyph.h
             src/BioFileType.h
+            src/DatFile.h
+            src/DatFileItem.h
+            src/Exception.h
             src/FonFileType.h
             src/FonGlyph.h
             src/FrmFileType.h
