@@ -44,7 +44,6 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
     _asMsg = NULL;
     _asPal = NULL;
     _data = NULL;
-    _filename = NULL;
     _dataOffset = 0;
     _unpackedSize = 0;
     _packedSize = 0;
@@ -63,43 +62,24 @@ DatFileItem::~DatFileItem()
     delete _asMsg;
     delete _asPal;
     delete [] _data;
-    delete [] _filename;
 }
 
-
-/**
- * Returns DatFile object
- * @brief DatFileItem::getDatFile
- * @return
- */
 DatFile * DatFileItem::datFile()
 {
     return _datFile;
 }
 
-/**
- * Sets filename with path
- * @brief DatFileItem::setFilename
- * @param filename
- */
-void DatFileItem::setFilename(const char * filename)
+void DatFileItem::setFilename(const std::string filename)
 {
-    delete [] _filename;
+    _filename.clear();
+    _filename.append(filename);
 
     // convert to lowercase and replace slashes
-    std::string fname(filename);
-    std::replace(fname.begin(),fname.end(),'\\','/');
-    std::transform(fname.begin(),fname.end(),fname.begin(), ::tolower);
-
-    _filename = new char[strlen(fname.c_str()) + 1]();
-    strcpy(_filename, fname.c_str());
+    std::replace(_filename.begin(),_filename.end(),'\\','/');
+    std::transform(_filename.begin(),_filename.end(),_filename.begin(), ::tolower);
 }
 
-/**
- * Returns filename with path
- * @brief DatFileItem::getFilename
- */
-char * DatFileItem::filename()
+std::string DatFileItem::filename()
 {
     return _filename;
 }

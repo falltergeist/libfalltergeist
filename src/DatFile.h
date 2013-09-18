@@ -32,15 +32,15 @@ class DatFile
 protected:
     std::vector<DatFileItem *> * _items;
     std::ifstream * _stream;
-    char * _pathToFile;
+    std::string _pathToFile;
 public:
     DatFile();
-    DatFile(const char * pathToFile);
+    DatFile(std::string pathToFile);
     ~DatFile();
 
-    char * pathToFile();
+    std::string pathToFile();
 
-    bool open(const char * pathToFile);
+    bool open(std::string pathToFile);
     bool close(void);
     bool isOpened();
     unsigned int readUint32();
@@ -59,7 +59,7 @@ public:
 
     virtual std::vector<DatFileItem *> * items();
 
-    DatFileItem * item(const char * filename);
+    DatFileItem * item(std::string filename);
 
 
 };

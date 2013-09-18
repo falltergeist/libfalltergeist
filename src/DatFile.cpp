@@ -33,7 +33,6 @@ namespace libfalltergeist
  */
 DatFile::DatFile()
 {
-    _pathToFile = NULL;
     _items = 0;
     _stream = 0;
 }
@@ -42,9 +41,8 @@ DatFile::DatFile()
  * Opens selected DAT file
  * @brief DatFile::DatFile
  */
-DatFile::DatFile(const char * pathToFile)
+DatFile::DatFile(std::string pathToFile)
 {
-    _pathToFile = NULL;
     _items = 0;
     _stream = 0;
     open(pathToFile);
@@ -58,39 +56,25 @@ DatFile::~DatFile()
 {
     delete _items;
     delete _stream;
-    delete [] _pathToFile;
 }
 
-char * DatFile::pathToFile()
+std::string DatFile::pathToFile()
 {
     return _pathToFile;
 }
 
-/**
- * Opens file stream
- * @brief DatFile::open
- * @param pathToFile
- * @return
- */
-bool DatFile::open(const char * pathToFile)
+bool DatFile::open(std::string pathToFile)
 {
-    delete [] _pathToFile;
-    _pathToFile = new char[strlen(pathToFile)+1]();
-    strcpy(_pathToFile, pathToFile);
+    _pathToFile.clear();
+    _pathToFile.append(pathToFile);
 
-    //std::cout << "Opening DAT file: " << pathToFile << " ... ";
     _stream = new std::ifstream();
-    _stream->open(_pathToFile, std::ios_base::binary);
+    _stream->open(_pathToFile.c_str(), std::ios_base::binary);
     if (_stream->is_open())
     {
-        //std::cout << "[OK]" << std::endl;
         return true;
     }
-    else
-    {
-        //std::cout << "[FAIL]" << std::endl;
-        return false;
-    }
+    return false;
 }
 
 /**
@@ -129,31 +113,16 @@ bool DatFile::close()
     return false;
 }
 
-/**
- * Sets current position in file
- * @brief DatFile::setPosition
- * @param position
- */
 void DatFile::setPosition(unsigned int position)
 {
     _stream->seekg(position, std::ios::beg);
 }
 
-/**
- * Returns curent position in file
- * @brief DatFile::getPosition
- * @return
- */
 unsigned int DatFile::position()
 {
     return _stream->tellg();
 }
 
-/**
- * Returns file size in bytes
- * @brief DatFile::size
- * @return
- */
 unsigned int DatFile::size(void)
 {
     if (!_stream || !_stream->is_open()) return 0;
@@ -164,34 +133,18 @@ unsigned int DatFile::size(void)
     return currentPosition;
 }
 
-/**
- * Skips some bytes
- * @brief DatFile::skipBytes
- * @param numberOfBytes
- */
 void DatFile::skipBytes(unsigned int numberOfBytes)
 {
     setPosition(position() + numberOfBytes);
 }
 
-/**
- * Reads some bytes to the selected destination
- * @brief DatFile::readBytes
- * @param destination
- * @param numberOfBytes
- */
 void DatFile::readBytes(char * destination, unsigned int numberOfBytes)
 {
     unsigned int position = this->position();
-    unsigned int readed = _stream->readsome(destination, numberOfBytes);
+    _stream->readsome(destination, numberOfBytes);
     setPosition(position + numberOfBytes);
 }
 
-/**
- * Returns DatFile entries
- * @brief DatFile::getItems
- * @return
- */
 std::vector<DatFileItem *> * DatFile::items()
 {
     if (!isOpened()) return 0;
@@ -309,7 +262,7 @@ char DatFile::readInt8()
  * @param filename
  * @return
  */
-DatFileItem * DatFile::item(const char * filename)
+DatFileItem * DatFile::item(const std::string filename)
 {
     std::string name(filename);
     // Replace slashes and transform to lower case
@@ -318,7 +271,7 @@ DatFileItem * DatFile::item(const char * filename)
     std::vector<DatFileItem *>::iterator it;
     for (it = this->items()->begin(); it != this->items()->end(); ++it)
     {
-        if ((*it)->filename() == name)
+        if (name.compare((*it)->filename()) == 0)
         {
             return *it;
         }

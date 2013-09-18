@@ -20,6 +20,8 @@
 #ifndef LIBFALLTERGEIST_DATFILEITEM_H
 #define LIBFALLTERGEIST_DATFILEITEM_H
 
+#include <string>
+
 namespace libfalltergeist
 {
 class AafFileType;
@@ -43,7 +45,7 @@ protected:
     PalFileType * _asPal;
 
     DatFile * _datFile; // DAT file object
-    char * _filename; // filename with path (path/to/file.ext)
+    std::string _filename; // filename with path (path/to/file.ext)
     unsigned int _dataOffset; // data offset in the DAT file
     unsigned int _unpackedSize; // unpacked data size
     unsigned int _packedSize; // packed data size
@@ -58,8 +60,8 @@ public:
 
     DatFile * datFile();
 
-    void setFilename(const char * filename);
-    char * filename();
+    void setFilename(const std::string filename);
+    std::string filename();
 
     void setDataOffset(unsigned int offset);
     unsigned int dataOffset();
