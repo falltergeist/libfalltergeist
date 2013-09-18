@@ -21,6 +21,12 @@ cmake_minimum_required( VERSION 2.8 )
 
 project( libfalltergeist )
 
+find_package(ZLIB REQUIRED)
+if(NOT ZLIB_FOUND)
+	  message(FATAL_ERROR "Zlib library not found")
+endif(NOT ZLIB_FOUND)
+include_directories(ZLIB_INCLUDE_DIRS)
+
 set(SOURCES libfalltergeist.cpp
             src/DatFile.cpp
             src/DatFileItem.cpp
@@ -60,3 +66,4 @@ set(HEADERS libfalltergeist.h
 set(CMAKE_BUILD_TYPE Debug)
 
 add_library( falltergeist SHARED ${SOURCES})
+target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
