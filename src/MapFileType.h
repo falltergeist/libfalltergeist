@@ -8,11 +8,13 @@ namespace libfalltergeist
 {
 
 class DatFileItem;
+class MapElevation;
 
 class MapFileType
 {
 protected:
     DatFileItem * _datFileItem;
+    std::vector<MapElevation *> * _elevations;
     unsigned int _version;
     std::string _name;
     unsigned int _defaultPosition;

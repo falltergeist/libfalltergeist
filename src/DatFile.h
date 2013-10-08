@@ -40,7 +40,7 @@ public:
 
     std::string pathToFile();
 
-    bool open(std::string pathToFile);
+    bool open(const std::string pathToFile);
     bool close(void);
     bool isOpened();
     unsigned int readUint32();
