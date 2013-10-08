@@ -41,6 +41,7 @@ set(SOURCES libfalltergeist.cpp
             src/FrmFrame.cpp
             src/GcdFileType.cpp
             src/LstFileType.cpp
+            src/MapFileType.cpp
             src/MsgFileType.cpp
             src/MsgMessage.cpp
             src/PalFileType.cpp
@@ -60,6 +61,7 @@ set(HEADERS libfalltergeist.h
             src/FrmFrame.h
             src/GcdFileType.h
             src/LstFileType.h
+            src/MapFileType.h
             src/MsgFileType.h
             src/MsgMessage.h
             src/PalFileType.h

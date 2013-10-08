@@ -24,6 +24,7 @@
 #include "../src/PalFileType.h"
 #include "../src/LstFileType.h"
 #include "../src/AafFileType.h"
+#include "../src/MapFileType.h"
 #include "../src/MsgFileType.h"
 #include "../src/BioFileType.h"
 #include "../src/GcdFileType.h"
@@ -41,6 +42,7 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
     _asFrm = NULL;
     _asGcd = NULL;
     _asLst = NULL;
+    _asMap = NULL;
     _asMsg = NULL;
     _asPal = NULL;
     _data = NULL;
@@ -59,6 +61,7 @@ DatFileItem::~DatFileItem()
     delete _asFrm;
     delete _asGcd;
     delete _asLst;
+    delete _asMap;
     delete _asMsg;
     delete _asPal;
     delete [] _data;
@@ -283,6 +286,13 @@ AafFileType * DatFileItem::asAafFileType()
     if (_asAaf) return _asAaf;
     _asAaf = new AafFileType(this);
     return _asAaf;
+}
+
+MapFileType * DatFileItem::asMapFileType()
+{
+    if (_asMap) return _asMap;
+    _asMap = new MapFileType(this);
+    return _asMap;
 }
 
 MsgFileType * DatFileItem::asMsgFileType()

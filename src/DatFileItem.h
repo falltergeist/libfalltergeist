@@ -31,6 +31,7 @@ class FrmFileType;
 class GcdFileType;
 class LstFileType;
 class MsgFileType;
+class MapFileType;
 class PalFileType;
 
 class DatFileItem
@@ -41,6 +42,7 @@ protected:
     FrmFileType * _asFrm;
     GcdFileType * _asGcd;
     LstFileType * _asLst;
+    MapFileType * _asMap;
     MsgFileType * _asMsg;
     PalFileType * _asPal;
 
@@ -100,6 +102,7 @@ public:
     PalFileType * asPalFileType();
     LstFileType * asLstFileType();
     AafFileType * asAafFileType();
+    MapFileType * asMapFileType();
     MsgFileType * asMsgFileType();
     BioFileType * asBioFileType();
     GcdFileType * asGcdFileType();
