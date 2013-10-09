@@ -46,7 +46,8 @@ set(SOURCES libfalltergeist.cpp
             src/MsgFileType.cpp
             src/MsgMessage.cpp
             src/PalFileType.cpp
-            src/PalColor.cpp)
+            src/PalColor.cpp
+            src/ProFileType.cpp)
 
 set(HEADERS libfalltergeist.h
             src/AafFileType.h
@@ -67,7 +68,8 @@ set(HEADERS libfalltergeist.h
             src/MsgFileType.h
             src/MsgMessage.h
             src/PalFileType.h
-            src/PalColor.h)
+            src/PalColor.h
+            src/ProFileType.h)
 
 set(CMAKE_BUILD_TYPE Debug)
 

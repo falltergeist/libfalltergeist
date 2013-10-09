@@ -1,6 +1,7 @@
 #include "../src/MapFileType.h"
 #include "../src/DatFileItem.h"
 #include "../src/MapElevation.h"
+#include "../src/ProFileType.h"
 
 #include <iostream>
 
@@ -169,6 +170,59 @@ void MapFileType::open()
     //OBJECTS
     int objectsTotal = datFileItem()->readInt32();
     std::cout << "Objects total: " << objectsTotal << std::endl;
+
+    for (unsigned int i = 0; i != elevations; ++i)
+    {
+        unsigned int objectsOnElevation = datFileItem()->readUint32();
+        std::cout << "Objects on elevation: " << objectsOnElevation << std::endl;
+        for (unsigned int j = 0; j != objectsOnElevation; ++j)
+        {
+            datFileItem()->skipBytes(4); // unknown
+            int hexPosition = datFileItem()->readInt32();
+            std::cout << "Hex Position: " << hexPosition << std::endl;
+            datFileItem()->skipBytes(4*4); // unknown
+            unsigned int frameNumber = datFileItem()->readUint32();
+            std::cout << "Frame number: " << frameNumber << std::endl;
+            unsigned int orientation = datFileItem()->readUint32();
+            std::cout << "Orientation: " << orientation << std::endl;
+            unsigned int FID = datFileItem()->readUint32();
+            std::cout << "FID: 0x" << std::hex << FID << std::endl;
+            datFileItem()->skipBytes(4); // flags?
+            unsigned int mapElevation = datFileItem()->readUint32();
+            std::cout << "Map Elevation: " << mapElevation << std::endl;
+            int PID = datFileItem()->readInt32();
+            std::cout << "PID: 0x" << std::hex << PID << std::endl;
+            datFileItem()->skipBytes(4*4); //unknown
+            int SID = datFileItem()->readInt32();
+            std::cout << "SID: 0x" << std::hex << SID << std::endl;
+            int scriptId = datFileItem()->readInt32();
+            std::cout << "Script Id: " << scriptId << std::endl;
+            unsigned int inventorySize = datFileItem()->readUint32();
+            std::cout << "Inventory size: " << inventorySize << std::endl;
+            datFileItem()->skipBytes(4*3); //unknown
+
+            switch (PID >> 24)
+            {
+                case ProFileType::TYPE_ITEMS:
+                    break;
+                case ProFileType::TYPE_CRITTERS:
+                    datFileItem()->skipBytes(10*4);
+                    break;
+                case ProFileType::TYPE_SCENERY:
+                    //datFileItem()->skip
+                    break;
+                case ProFileType::TYPE_WALLS:
+                    break;
+                case ProFileType::TYPE_TILES:
+                    break;
+                case ProFileType::TYPE_MISC:
+                    break;
+            }
+
+
+            return;
+        }
+    }
 
 
 }
