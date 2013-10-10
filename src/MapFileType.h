@@ -43,6 +43,7 @@ public:
     void open();
 
     DatFileItem * datFileItem();
+    std::vector<MapElevation *> * elevations();
 };
 
 

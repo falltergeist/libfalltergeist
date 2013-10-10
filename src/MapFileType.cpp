@@ -337,6 +337,7 @@ MapObject * MapFileType::_readObject()
             if (object->objectId() == 844) break; //Stripe
             if (object->objectId() == 845) break; //Stripe
             if (object->objectId() == 847) break; //Stripe
+            if (object->objectId() == 0x8d) break; // ????
 
             //if (FID == 0x02000015) break; // block.frm
             switch(object->objectSubtypeId())
@@ -407,6 +408,11 @@ MapObject * MapFileType::_readObject()
 DatFileItem * MapFileType::datFileItem()
 {
     return _datFileItem;
+}
+
+std::vector<MapElevation *> * MapFileType::elevations()
+{
+    return _elevations;
 }
 
 }
