@@ -43,29 +43,29 @@ DatFileItem * LstFileType::datFileItem()
 void LstFileType::open()
 {
     // load strings from file
-    _strings = new std::vector<std::string *>;
+    _strings = new std::vector<std::string>;
 
     _datFileItem->setPosition(0);
 
-    std::string * line = new std::string();
+    std::string line = "";
     for(unsigned int i = 0; i != _datFileItem->size(); ++i)
     {
         unsigned char ch = _datFileItem->readUint8();
         if (ch != 0x0D)
         {
-            line->push_back(ch);
+            line += ch;
         }
         else
         {
             _strings->push_back(line);
-            line = new std::string();
+            line = "";
             ++i;
             _datFileItem->skipBytes(1);
         }
     }
 }
 
-std::vector<std::string *> * LstFileType::strings()
+std::vector<std::string> * LstFileType::strings()
 {
     return _strings;
 }

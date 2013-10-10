@@ -34,10 +34,13 @@
 #include "src/GcdFileType.h"
 #include "src/LstFileType.h"
 #include "src/MapFileType.h"
+#include "src/MapElevation.h"
+#include "src/MapObject.h"
 #include "src/MsgFileType.h"
 #include "src/MsgMessage.h"
 #include "src/PalFileType.h"
 #include "src/PalColor.h"
+#include "src/ProFileType.h"
 
 namespace libfalltergeist
 {

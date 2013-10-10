@@ -9,10 +9,16 @@ namespace libfalltergeist
 
 class DatFileItem;
 class MapElevation;
+class ProFileType;
+class MapObject;
+
+typedef ProFileType * (*ProFileTypeLoaderCallback)(unsigned int);
 
 class MapFileType
 {
 protected:
+    ProFileTypeLoaderCallback _proFileTypeLoaderCallback;
+
     DatFileItem * _datFileItem;
     std::vector<MapElevation *> * _elevations;
     unsigned int _version;
@@ -28,8 +34,10 @@ protected:
 
     int _scriptId;
 
+    MapObject * _readObject();
+
 public:
-    MapFileType(DatFileItem * datFileItem);
+    MapFileType(DatFileItem * datFileItem, ProFileTypeLoaderCallback callback);
     ~MapFileType();
 
     void open();

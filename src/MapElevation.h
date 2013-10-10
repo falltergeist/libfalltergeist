@@ -3,6 +3,7 @@
 
 namespace libfalltergeist
 {
+class MapObject;
 
 class MapElevation
 {

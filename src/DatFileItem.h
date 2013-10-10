@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_DATFILEITEM_H
 
 #include <string>
+#include "../src/MapFileType.h"
 
 namespace libfalltergeist
 {
@@ -33,6 +34,7 @@ class LstFileType;
 class MsgFileType;
 class MapFileType;
 class PalFileType;
+class ProFileType;
 
 class DatFileItem
 {
@@ -45,6 +47,7 @@ protected:
     MapFileType * _asMap;
     MsgFileType * _asMsg;
     PalFileType * _asPal;
+    ProFileType * _asPro;
 
     DatFile * _datFile; // DAT file object
     std::string _filename; // filename with path (path/to/file.ext)
@@ -102,10 +105,11 @@ public:
     PalFileType * asPalFileType();
     LstFileType * asLstFileType();
     AafFileType * asAafFileType();
-    MapFileType * asMapFileType();
+    MapFileType * asMapFileType(ProFileTypeLoaderCallback callback);
     MsgFileType * asMsgFileType();
     BioFileType * asBioFileType();
     GcdFileType * asGcdFileType();
+    ProFileType * asProFileType();
 
 };
 

@@ -22,12 +22,13 @@
 #include "../src/DatFile.h"
 #include "../src/FrmFileType.h"
 #include "../src/PalFileType.h"
+#include "../src/ProFileType.h"
 #include "../src/LstFileType.h"
 #include "../src/AafFileType.h"
-#include "../src/MapFileType.h"
 #include "../src/MsgFileType.h"
 #include "../src/BioFileType.h"
 #include "../src/GcdFileType.h"
+#include "../src/ProFileType.h"
 #include <algorithm>
 #include <zlib.h>
 #include <iostream>
@@ -45,6 +46,7 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
     _asMap = NULL;
     _asMsg = NULL;
     _asPal = NULL;
+    _asPro = 0;
     _data = NULL;
     _dataOffset = 0;
     _unpackedSize = 0;
@@ -64,6 +66,7 @@ DatFileItem::~DatFileItem()
     delete _asMap;
     delete _asMsg;
     delete _asPal;
+    delete _asPro;
     delete [] _data;
 }
 
@@ -288,10 +291,10 @@ AafFileType * DatFileItem::asAafFileType()
     return _asAaf;
 }
 
-MapFileType * DatFileItem::asMapFileType()
+MapFileType * DatFileItem::asMapFileType(ProFileTypeLoaderCallback callback)
 {
     if (_asMap) return _asMap;
-    _asMap = new MapFileType(this);
+    _asMap = new MapFileType(this, callback);
     return _asMap;
 }
 
@@ -316,4 +319,10 @@ GcdFileType * DatFileItem::asGcdFileType()
     return _asGcd;
 }
 
+ProFileType * DatFileItem::asProFileType()
+{
+    if (_asPro) return _asPro;
+    _asPro = new ProFileType(this);
+    return _asPro;
+}
 }

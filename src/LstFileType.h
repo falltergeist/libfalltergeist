@@ -31,7 +31,7 @@ class LstFileType
 {
 protected:
     DatFileItem * _datFileItem;
-    std::vector<std::string *> * _strings;
+    std::vector<std::string> * _strings;
 public:
     LstFileType(DatFileItem * datFileItem);
     ~LstFileType();
@@ -40,7 +40,7 @@ public:
 
     void open();
 
-    std::vector<std::string *> * strings();
+    std::vector<std::string> * strings();
 };
 
 }
