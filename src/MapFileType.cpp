@@ -438,4 +438,14 @@ unsigned int MapFileType::defaultPosition()
     return _defaultPosition;
 }
 
+unsigned int MapFileType::defaultElevation()
+{
+    return _defaultElevation;
+}
+
+unsigned int MapFileType::defaultOrientation()
+{
+    return _defaultOrientaion;
+}
+
 }

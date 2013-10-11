@@ -45,6 +45,8 @@ public:
     DatFileItem * datFileItem();
     std::vector<MapElevation *> * elevations();
     unsigned int defaultPosition();
+    unsigned int defaultElevation();
+    unsigned int defaultOrientation();
 };
 
 
