@@ -33,22 +33,22 @@ FrmDirection::~FrmDirection()
     delete _frames;
 }
 
-short FrmDirection::shiftX()
+signed short FrmDirection::shiftX()
 {
     return _shiftX;
 }
 
-void FrmDirection::setShiftX(short shiftX)
+void FrmDirection::setShiftX(signed short shiftX)
 {
     _shiftX = shiftX;
 }
 
-short FrmDirection::shiftY()
+signed short FrmDirection::shiftY()
 {
     return _shiftY;
 }
 
-void FrmDirection::setShiftY(short shiftY)
+void FrmDirection::setShiftY(signed short shiftY)
 {
     _shiftY = shiftY;
 }

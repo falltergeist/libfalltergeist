@@ -166,7 +166,7 @@ unsigned short DatFileItem::readUint16()
 
 short DatFileItem::readInt16()
 {
-    return (short) readUint16();
+    return (signed short) readUint16();
 }
 
 unsigned char DatFileItem::readUint8()

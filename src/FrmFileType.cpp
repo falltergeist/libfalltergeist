@@ -103,10 +103,10 @@ void FrmFileType::open()
             unsigned int dataSize = _datFileItem->readUint32();
 
             // X offset
-            frame->setOffsetX(_datFileItem->readInt16());
+            frame->setOffsetX((signed short) _datFileItem->readInt16());
 
             // Y offset
-            frame->setOffsetY(_datFileItem->readInt16());
+            frame->setOffsetY((signed short) _datFileItem->readInt16());
 
             for (unsigned int n = 0; n != dataSize; ++n)
             {

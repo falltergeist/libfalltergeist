@@ -1,5 +1,6 @@
 #include "../src/ProFileType.h"
 #include "../src/DatFileItem.h"
+#include <iostream>
 
 namespace libfalltergeist
 {
@@ -35,6 +36,12 @@ void ProFileType::open()
 
     _frmTypeId = datFileItem()->readUint8();
     _frmOffset = datFileItem()->readInt8();
+
+    if (_frmOffset != 0)
+    {
+        std::cout << "FRM OFFSET: " << _frmOffset << std::endl;
+    }
+
     _frmId = datFileItem()->readUint16();
 
     switch (_objectTypeId)
@@ -178,6 +185,11 @@ unsigned int ProFileType::objectTypeId()
 unsigned int ProFileType::objectSubtypeId()
 {
     return _objectSubtypeId;
+}
+
+int ProFileType::frmOffset()
+{
+    return _frmOffset;
 }
 
 }

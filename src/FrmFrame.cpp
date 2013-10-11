@@ -58,17 +58,17 @@ short FrmFrame::offsetX()
     return _offsetX;
 }
 
-void FrmFrame::setOffsetX(short offsetX)
+void FrmFrame::setOffsetX(signed short offsetX)
 {
     _offsetX = offsetX;
 }
 
-short FrmFrame::offsetY()
+signed short FrmFrame::offsetY()
 {
     return _offsetY;
 }
 
-void FrmFrame::setOffsetY(short offsetY)
+void FrmFrame::setOffsetY(signed short offsetY)
 {
     _offsetY = offsetY;
 }

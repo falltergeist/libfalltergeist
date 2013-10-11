@@ -20,6 +20,10 @@
 #include "../src/LstFileType.h"
 #include "../src/DatFileItem.h"
 #include <iostream>
+#include <algorithm>
+#include <functional>
+#include <cctype>
+#include <locale>
 
 namespace libfalltergeist
 {
@@ -57,6 +61,7 @@ void LstFileType::open()
         }
         else
         {
+            line.erase(std::find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), line.end()); // rtrim
             _strings->push_back(line);
             line = "";
             ++i;

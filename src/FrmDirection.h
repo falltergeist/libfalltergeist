@@ -29,8 +29,8 @@ class FrmFrame;
 class FrmDirection
 {
 protected:
-    short _shiftX;
-    short _shiftY;
+    signed short _shiftX;
+    signed short _shiftY;
     unsigned int _dataOffset;
     std::vector<FrmFrame *> * _frames;
 
@@ -38,11 +38,11 @@ public:
     FrmDirection();
     ~FrmDirection();
 
-    void setShiftX(short shiftX);
-    short shiftX();
+    void setShiftX(signed short shiftX);
+    signed short shiftX();
 
-    void setShiftY(short shiftY);
-    short shiftY();
+    void setShiftY(signed short shiftY);
+    signed short shiftY();
 
     void setDataOffset(unsigned int offset);
     unsigned int dataOffset();

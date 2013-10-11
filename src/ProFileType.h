@@ -57,6 +57,7 @@ public:
 
     unsigned int objectTypeId();
     unsigned int objectSubtypeId();
+    int frmOffset();
 
 };
 }

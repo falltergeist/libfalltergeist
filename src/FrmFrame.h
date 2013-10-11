@@ -31,8 +31,8 @@ class FrmFrame
 protected:
     unsigned short _width;
     unsigned short _height;
-    short _offsetX;
-    short _offsetY;
+    signed short _offsetX;
+    signed short _offsetY;
     std::vector<unsigned char> * _colorIndexes;
 public:
     FrmFrame();
@@ -44,11 +44,11 @@ public:
     void setHeight(unsigned short height);
     unsigned short height();
 
-    void setOffsetX(short offsetX);
+    void setOffsetX(signed short offsetX);
     short offsetX();
 
-    void setOffsetY(short offsetY);
-    short offsetY();
+    void setOffsetY(signed short offsetY);
+    signed short offsetY();
 
     std::vector<unsigned char> * colorIndexes();
 

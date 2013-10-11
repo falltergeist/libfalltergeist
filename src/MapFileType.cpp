@@ -180,7 +180,7 @@ void MapFileType::open()
         {
             MapObject * object = _readObject();
             _elevations->at(i)->objects()->push_back(object);
-            /*
+
             std::cout << std::endl << "Unknown 1: 0x" << std::hex << object->unknown1() << std::endl;
             std::cout << "Hex position: 0x" << std::hex << object->hexPosition() << std::endl;
             std::cout << "Unknown 2: 0x" << std::hex << object->unknown2() << std::endl;
@@ -205,7 +205,7 @@ void MapFileType::open()
             std::cout << "Unknown 11: 0x" << std::hex << object->unknown11() << std::endl;
             std::cout << "Unknown 12: 0x" << std::hex << object->unknown12() << std::endl;
             std::cout << "Unknown 13: 0x" << std::hex << object->unknown13() << std::endl;
-            */
+
             //if (object->scriptTypeId() >= 0 && object->mapScriptId() >= 0)
             {
                 //throw "123";
@@ -223,6 +223,7 @@ void MapFileType::open()
 
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
+                    //j++;
                     //_readObject();
                     //datFileItem()->readUint32(); //unknown (items count?)
                     datFileItem()->skipBytes(4);
@@ -296,6 +297,8 @@ MapObject * MapFileType::_readObject()
     object->setUnknown12( datFileItem()->readUint32() );
     object->setUnknown13( datFileItem()->readUint32() );
 
+    ProFileType * pr ;
+
     switch (object->objectTypeId())
     {
         case ProFileType::TYPE_ITEM:
@@ -330,6 +333,20 @@ MapObject * MapFileType::_readObject()
         case ProFileType::TYPE_SCENERY:
             object->setObjectSubtypeId(_proFileTypeLoaderCallback(PID)->objectSubtypeId());
 
+            pr = _proFileTypeLoaderCallback(PID);
+            if (pr->frmOffset() != 0)
+            {
+                std::cout << " FRM OFFSET " << pr->frmOffset() << std::endl;
+            }
+
+            if (object->objectId() == 0x11) break; //
+            if (object->objectId() == 0x15) break; //
+            if (object->objectId() == 0x96) break;
+            if (object->objectId() == 0x1a5)
+            {
+                datFileItem()->skipBytes(4);
+                break; //
+            }
             if (object->objectId() == 0x43)  break; // SECRET BLOCKING HEX
             if (object->objectId() == 0x158) break; //Block Hex Auto Inviso
             if (object->objectId() == 840) break; //Stripe
@@ -355,8 +372,6 @@ MapObject * MapFileType::_readObject()
                     datFileItem()->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_DOOR:
-                    //if (((FID >> 24) == 0x2)  &&  ((FID & 0x00FFFFFF) == 0x15)) throw 2; // block.frm
-                    //if (((FID >> 24) == 0x2)  &&  ((FID & 0x00FFFFFF) == 0x359)) throw 3; // WTF??
 
                     datFileItem()->skipBytes(4);
                     break;
@@ -380,6 +395,7 @@ MapObject * MapFileType::_readObject()
         case ProFileType::TYPE_MISC:
             switch (object->objectId())
             {
+                case 0x10:
                 case 0x11:  // EXIT ?
                 case 0x12:
                 case 0x13:
@@ -387,13 +403,14 @@ MapObject * MapFileType::_readObject()
                 case 0x15:
                 case 0x17:
                 case 0x18:
+                case 0x21:
                     datFileItem()->skipBytes(4*4);
                     break;
                 case 0xC: // BLOCK
                     break;
                 default:
                     std::cout << "UNIDENTIFIED MISC" << std::endl;
-                    throw ":(";
+                    //throw ":(";
                     break;
             }
 
