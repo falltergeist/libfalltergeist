@@ -179,6 +179,8 @@ void MapFileType::open()
         for (unsigned int j = 0; j != objectsOnElevation; ++j)
         {
             MapObject * object = _readObject();
+            _elevations->at(i)->objects()->push_back(object);
+            /*
             std::cout << std::endl << "Unknown 1: 0x" << std::hex << object->unknown1() << std::endl;
             std::cout << "Hex position: 0x" << std::hex << object->hexPosition() << std::endl;
             std::cout << "Unknown 2: 0x" << std::hex << object->unknown2() << std::endl;
@@ -203,7 +205,7 @@ void MapFileType::open()
             std::cout << "Unknown 11: 0x" << std::hex << object->unknown11() << std::endl;
             std::cout << "Unknown 12: 0x" << std::hex << object->unknown12() << std::endl;
             std::cout << "Unknown 13: 0x" << std::hex << object->unknown13() << std::endl;
-
+            */
             //if (object->scriptTypeId() >= 0 && object->mapScriptId() >= 0)
             {
                 //throw "123";
@@ -263,7 +265,6 @@ void MapFileType::open()
 
 MapObject * MapFileType::_readObject()
 {
-    std::cout << "Pos: " << datFileItem()->position() << std::endl;
     MapObject * object = new MapObject();
 
     object->setUnknown1( datFileItem()->readUint32() );
@@ -413,6 +414,11 @@ DatFileItem * MapFileType::datFileItem()
 std::vector<MapElevation *> * MapFileType::elevations()
 {
     return _elevations;
+}
+
+unsigned int MapFileType::defaultPosition()
+{
+    return _defaultPosition;
 }
 
 }

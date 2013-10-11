@@ -37,6 +37,10 @@ protected:
     unsigned short _framesPerDirection; // Frames per direction
     unsigned short _actionFrame; // Number of frame on which action is occurs
 public:
+
+
+    enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_BACKGROUND, TYPE_INTERFACE, TYPE_INVENTORY };
+
     FrmFileType(DatFileItem * datFileItem);
     ~FrmFileType();
 
