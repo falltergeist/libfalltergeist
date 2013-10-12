@@ -20,6 +20,8 @@
 #ifndef LIBFALLTERGEIST_MSGMESSAGE_H
 #define LIBFALLTERGEIST_MSGMESSAGE_H
 
+#include <string>
+
 namespace libfalltergeist
 {
 
@@ -27,8 +29,8 @@ class MsgMessage
 {
 protected:
     unsigned int _number;
-    char * _sound;
-    char * _text;
+    std::string _sound;
+    std::string _text;
 public:
     MsgMessage();
     ~MsgMessage();
@@ -36,14 +38,14 @@ public:
     void setNumber(unsigned int number);
     unsigned int number();
 
-    void setSound(const char * sound);
-    const char * sound();
+    void setSound(std::string sound);
+    std::string sound();
 
-    void setText(const char * text);
-    const char * text();
+    void setText(std::string text);
+    std::string text();
 
-    operator char * ();
-    operator const char * ();
+    operator std::string ();
+    //operator const char * ();
 
 };
 

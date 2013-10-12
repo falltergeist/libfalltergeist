@@ -181,6 +181,7 @@ void MapFileType::open()
             MapObject * object = _readObject();
             _elevations->at(i)->objects()->push_back(object);
 
+            /*
             std::cout << std::endl << "Unknown 1: 0x" << std::hex << object->unknown1() << std::endl;
             std::cout << "Hex position: 0x" << std::hex << object->hexPosition() << std::endl;
             std::cout << "Unknown 2: 0x" << std::hex << object->unknown2() << std::endl;
@@ -205,6 +206,7 @@ void MapFileType::open()
             std::cout << "Unknown 11: 0x" << std::hex << object->unknown11() << std::endl;
             std::cout << "Unknown 12: 0x" << std::hex << object->unknown12() << std::endl;
             std::cout << "Unknown 13: 0x" << std::hex << object->unknown13() << std::endl;
+            */
 
             //if (object->scriptTypeId() >= 0 && object->mapScriptId() >= 0)
             {
@@ -230,6 +232,7 @@ void MapFileType::open()
                     MapObject * obj = _readObject();
                    // datFileItem()->readUint32(); //unknown
 
+                    /*
                     std::cout << std::endl << "-Unknown 2: 0x" << std::hex << obj->unknown2() << std::endl;
                     std::cout << "-Unknown 3: 0x" << std::hex << obj->unknown3() << std::endl;
                     std::cout << "-Unknown 4: 0x" << std::hex << obj->unknown4() << std::endl;
@@ -252,7 +255,7 @@ void MapFileType::open()
                     std::cout << "-Unknown 11: 0x" << std::hex << obj->unknown11() << std::endl;
                     std::cout << "-Unknown 12: 0x" << std::hex << obj->unknown12() << std::endl;
                     std::cout << "-Unknown 13: 0x" << std::hex << obj->unknown13() << std::endl;
-
+                    */
                 }
                 //datFileItem()->readUint32(); //unknown
                 //datFileItem()->skipBytes(8);

@@ -57,6 +57,7 @@ public:
 
     unsigned int objectTypeId();
     unsigned int objectSubtypeId();
+    unsigned int messageId();
     int frmOffset();
 
 };

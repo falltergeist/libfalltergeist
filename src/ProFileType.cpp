@@ -192,4 +192,9 @@ int ProFileType::frmOffset()
     return _frmOffset;
 }
 
+unsigned int ProFileType::messageId()
+{
+    return _messageId;
+}
+
 }

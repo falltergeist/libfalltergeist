@@ -26,14 +26,12 @@ namespace libfalltergeist
 MsgMessage::MsgMessage()
 {
     _number = 0;
-    _sound = 0;
-    _text = 0;
+    _sound = "";
+    _text = "";
 }
 
 MsgMessage::~MsgMessage()
 {
-    delete [] _sound;
-    delete [] _text;
 }
 
 void MsgMessage::setNumber(unsigned int number)
@@ -46,38 +44,34 @@ unsigned int MsgMessage::number()
     return _number;
 }
 
-void MsgMessage::setSound(const char * sound)
+void MsgMessage::setSound(std::string sound)
 {
-    delete [] _sound;
-    _sound = new char[strlen(sound) + 1]();
-    strcpy(_sound, sound);
+    _sound = sound;
 }
 
-const char * MsgMessage::sound()
+std::string MsgMessage::sound()
 {
     return _sound;
 }
 
-void MsgMessage::setText(const char * text)
+void MsgMessage::setText(std::string text)
 {
-    delete [] _text;
-    _text = new char[strlen(text)+1]();
-    strcpy(_text, text);
+    _text = text;
 }
 
-const char * MsgMessage::text()
+std::string MsgMessage::text()
 {
     return _text;
 }
 
-MsgMessage::operator char *()
+MsgMessage::operator std::string ()
 {
     return _text;
 }
 
-MsgMessage::operator const char *()
-{
-    return (const char *) _text;
-}
+//MsgMessage::operator const char *()
+//{
+//    return (const char *) _text;
+//}
 
 }

@@ -22,6 +22,7 @@
 #include "../src/MsgMessage.h"
 #include <string>
 #include <cstdlib>
+#include <iostream>
 
 namespace libfalltergeist
 {
@@ -63,7 +64,7 @@ void MsgFileType::open()
             while (chr != '}')
             {
                 chr = datFileItem()->readUint8(); i++;
-                if (chr != '}') number.push_back(chr);
+                if (chr != '}') number += chr;
             }
 
             // sound
@@ -75,7 +76,7 @@ void MsgFileType::open()
             while (chr != '}')
             {
                 chr = datFileItem()->readUint8(); i++;
-                if (chr != '}') sound.push_back(chr);
+                if (chr != '}') sound += chr;
             }
 
             // text
@@ -87,13 +88,13 @@ void MsgFileType::open()
             while (chr != '}')
             {
                 chr = datFileItem()->readUint8(); i++;
-                if (chr != '}') text.push_back(chr);
+                if (chr != '}') text += chr;
             }
 
             MsgMessage * message = new MsgMessage();
             message->setNumber(atoi(number.c_str()));
-            message->setSound(sound.c_str());
-            message->setText(text.c_str());
+            message->setSound(sound);
+            message->setText(text);
             _messages->push_back(message);
         }
     }
