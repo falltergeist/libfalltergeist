@@ -228,10 +228,10 @@ void MapFileType::open()
                     //j++;
                     //_readObject();
                     //datFileItem()->readUint32(); //unknown (items count?)
+
                     datFileItem()->skipBytes(4);
                     MapObject * obj = _readObject();
                    // datFileItem()->readUint32(); //unknown
-
                     /*
                     std::cout << std::endl << "-Unknown 2: 0x" << std::hex << obj->unknown2() << std::endl;
                     std::cout << "-Unknown 3: 0x" << std::hex << obj->unknown3() << std::endl;
@@ -259,6 +259,7 @@ void MapFileType::open()
                 }
                 //datFileItem()->readUint32(); //unknown
                 //datFileItem()->skipBytes(8);
+                //datFileItem()->skipBytes(4);
 
             }
 
@@ -312,16 +313,64 @@ MapObject * MapFileType::_readObject()
                     datFileItem()->skipBytes(4);
                     break;
                 case ProFileType::TYPE_ITEM_KEY:
+                    if (object->objectId() == 0x51)
+                    {
+                        break; //broken1.map
+                    }
                     datFileItem()->skipBytes(4);
                     break;
                 case ProFileType::TYPE_ITEM_MISC:
-                    datFileItem()->skipBytes(4);
+                    switch (object->objectId())
+                    {
+                        case 0x33:
+                        case 0x5b:
+                        case 0x4b:
+                        case 0x65:
+                        case 0xe1:
+                        case 0x1fc:
+                        case 0x1c8:
+                        case 0x6f:
+                        case 0x16b:
+                            datFileItem()->skipBytes(4*1);
+                            break;
+                        case 0x139:
+                        case 0xec:
+                        case 0x4f:
+                        case 0x74:
+                            datFileItem()->skipBytes(4*2);
+                            break;
+                    }
                     break;
                 case ProFileType::TYPE_ITEM_WEAPON:
+
+                    if (object->objectId() == 0x9e)  // ?? break
+                    {
+                        break;
+                    }
+                    if (object->objectId() == 0x121)  // ?? arvill2.map
+                    {
+                        datFileItem()->skipBytes(4*1);
+                        break;
+                    }
                     datFileItem()->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_ITEM_ARMOR:
+                    break;
                 case ProFileType::TYPE_ITEM_CONTAINER:
+                    if (object->objectId() == 0xf2) // broken1.map
+                    {
+                        datFileItem()->skipBytes(4*2);
+                    }
+                    if (object->objectId() == 0x7f)
+                    {
+                        datFileItem()->skipBytes(4); //    broken1.map
+                    }
+                    if (object->objectId() == 0x29)
+                    {
+                        datFileItem()->skipBytes(4); // 0x00000029   broken1.map
+                    }
+
+                    break;
                 case ProFileType::TYPE_ITEM_DRUG:
                     break;
                 default:
@@ -345,12 +394,15 @@ MapObject * MapFileType::_readObject()
             if (object->objectId() == 0x11) break; //
             if (object->objectId() == 0x15) break; //
             if (object->objectId() == 0x96) break;
+            if (object->objectId() == 0xc2) break;
+            if (object->objectId() == 0x195) break;
+
             if (object->objectId() == 0x1a5)
             {
                 datFileItem()->skipBytes(4);
                 break; //
             }
-            if (object->objectId() == 0x43)  break; // SECRET BLOCKING HEX
+            //if (object->objectId() == 0x43)  break; // SECRET BLOCKING HEX
             if (object->objectId() == 0x158) break; //Block Hex Auto Inviso
             if (object->objectId() == 840) break; //Stripe
             if (object->objectId() == 842) break; //Stripe
@@ -359,6 +411,8 @@ MapObject * MapFileType::_readObject()
             if (object->objectId() == 845) break; //Stripe
             if (object->objectId() == 847) break; //Stripe
             if (object->objectId() == 0x8d) break; // ????
+            if (object->objectId() == 0x6ac) break; // ??? ardead.map
+
 
             //if (FID == 0x02000015) break; // block.frm
             switch(object->objectSubtypeId())
@@ -368,6 +422,8 @@ MapObject * MapFileType::_readObject()
                     datFileItem()->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_STAIR:
+                    if (object->objectId() == 0x15b) break;
+                    if (object->objectId() == 0x43) break;
 
                     datFileItem()->skipBytes(4*2);
                     break;
@@ -375,11 +431,45 @@ MapObject * MapFileType::_readObject()
                     datFileItem()->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_DOOR:
-
+                    if (object->objectId() == 0x1) break;
+                    if (object->objectId() == 0x7)
+                    {
+                        break;
+                    }
                     datFileItem()->skipBytes(4);
                     break;
                 case ProFileType::TYPE_SCENERY_GENERIC:
-                    if (object->objectId() == 0x50d) // Elevator Stub
+
+                if (object->objectId() == 0x1e2)
+                {
+                    datFileItem()->skipBytes(4*1);
+                }
+
+                    if (object->objectId() == 0x245)
+                    {
+                        datFileItem()->skipBytes(4*1); // ??? broken1.map
+                    }
+                    else if (object->objectId() == 0x196)
+                    {
+                        datFileItem()->skipBytes(4*1); // ??? broken1.map
+                    }
+                    else if (object->objectId() == 0x15a)
+                    {
+                        datFileItem()->skipBytes(4*1); // ??? broken1.map
+                    }
+                    else if (object->objectId() == 0x1b6)
+                    {
+                        datFileItem()->skipBytes(4*1); // ??? broken1.map
+                    }
+                    else if (object->objectId() == 0x285)
+                    {
+                        datFileItem()->skipBytes(4*1); // ??? broken1.map
+                    }
+                    else if (object->objectId() == 0xc5)
+                    {
+                        datFileItem()->skipBytes(4*2); // ??? broken1.map
+                    }
+                    else if (object->objectId() == 0x50d) // Elevator Stub
                     {
                         datFileItem()->skipBytes(4*2);
                     }
@@ -391,19 +481,32 @@ MapObject * MapFileType::_readObject()
             }
             break;
         case ProFileType::TYPE_WALL:
-            //datFileItem()->skipBytes(4);
+        //0x461
+            if (object->objectId() == 0x460)
+            {
+                //
+                //datFileItem()->skipBytes(4);
+            }
+            if (object->objectId() == 0x461)
+            {
+                //
+                //datFileItem()->setPosition(datFileItem()->position() - 4);  // WTF??????
+            }
             break;
         case ProFileType::TYPE_TILE:
             break;
         case ProFileType::TYPE_MISC:
             switch (object->objectId())
             {
+
+
                 case 0x10:
                 case 0x11:  // EXIT ?
                 case 0x12:
                 case 0x13:
                 case 0x14:
                 case 0x15:
+                case 0x16:
                 case 0x17:
                 case 0x18:
                 case 0x21:
