@@ -142,6 +142,36 @@ void MapObject::setObjectId(unsigned int value)
     _objectId = value;
 }
 
+unsigned int MapObject::objectID1()
+{
+    return _objectID1;
+}
+
+void MapObject::setObjectID1(unsigned int value)
+{
+    _objectID1 = value;
+}
+
+unsigned int MapObject::objectID2()
+{
+    return _objectID2;
+}
+
+void MapObject::setObjectID2(unsigned int value)
+{
+    _objectID2 = value;
+}
+
+unsigned int MapObject::objectID3()
+{
+    return _objectID3;
+}
+
+void MapObject::setObjectID3(unsigned int value)
+{
+    _objectID3 = value;
+}
+
 unsigned int MapObject::objectSubtypeId()
 {
     return _objectSubtypeId;

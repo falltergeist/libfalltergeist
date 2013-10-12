@@ -22,6 +22,9 @@ protected:
     unsigned int _objectTypeId;
     unsigned int _objectId;
     unsigned int _objectSubtypeId;
+    unsigned int _objectID1;
+    unsigned int _objectID2;
+    unsigned int _objectID3;
     unsigned int _unknown7;
     unsigned int _unknown8;
     unsigned int _unknown9;
@@ -67,6 +70,12 @@ public:
     void setObjectId(unsigned int value);
     unsigned int objectSubtypeId();
     void setObjectSubtypeId(unsigned int value);
+    unsigned int objectID1();
+    void setObjectID1(unsigned int value);
+    unsigned int objectID2();
+    void setObjectID2(unsigned int value);
+    unsigned int objectID3();
+    void setObjectID3(unsigned int value);
     unsigned int unknown7();
     void setUnknown7(unsigned int value);
     unsigned int unknown8();
