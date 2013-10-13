@@ -34,7 +34,7 @@ protected:
 
     int _scriptId;
 
-    MapObject * _readObject();
+    MapObject * _readObject(bool child = false);
 
 public:
     MapFileType(DatFileItem * datFileItem, ProFileTypeLoaderCallback callback);
