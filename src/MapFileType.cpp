@@ -181,7 +181,7 @@ void MapFileType::open()
             MapObject * object = _readObject();
             _elevations->at(i)->objects()->push_back(object);
 
-            /*
+
             std::cout << std::endl << "Unknown 1: 0x" << std::hex << object->unknown1() << std::endl;
             std::cout << "Hex position: 0x" << std::hex << object->hexPosition() << std::endl;
             std::cout << "Unknown 2: 0x" << std::hex << object->unknown2() << std::endl;
@@ -206,7 +206,6 @@ void MapFileType::open()
             std::cout << "Unknown 11: 0x" << std::hex << object->unknown11() << std::endl;
             std::cout << "Unknown 12: 0x" << std::hex << object->unknown12() << std::endl;
             std::cout << "Unknown 13: 0x" << std::hex << object->unknown13() << std::endl;
-            */
 
             //if (object->scriptTypeId() >= 0 && object->mapScriptId() >= 0)
             {
@@ -232,7 +231,7 @@ void MapFileType::open()
                     datFileItem()->skipBytes(4);
                     MapObject * obj = _readObject();
                    // datFileItem()->readUint32(); //unknown
-                    /*
+
                     std::cout << std::endl << "-Unknown 2: 0x" << std::hex << obj->unknown2() << std::endl;
                     std::cout << "-Unknown 3: 0x" << std::hex << obj->unknown3() << std::endl;
                     std::cout << "-Unknown 4: 0x" << std::hex << obj->unknown4() << std::endl;
@@ -255,7 +254,7 @@ void MapFileType::open()
                     std::cout << "-Unknown 11: 0x" << std::hex << obj->unknown11() << std::endl;
                     std::cout << "-Unknown 12: 0x" << std::hex << obj->unknown12() << std::endl;
                     std::cout << "-Unknown 13: 0x" << std::hex << obj->unknown13() << std::endl;
-                    */
+
                 }
                 //datFileItem()->readUint32(); //unknown
                 //datFileItem()->skipBytes(8);
@@ -381,6 +380,11 @@ MapObject * MapFileType::_readObject()
             break;
         case ProFileType::TYPE_CRITTER:
             datFileItem()->skipBytes(10*4);
+            object->setFrmId(FID & 0x00000FFF);
+            object->setObjectID1((FID & 0x0000F000) >> 12);
+            object->setObjectID2((FID & 0x00FF0000) >> 16);
+            object->setFrmTypeId((FID & 0x0F000000) >> 24);
+            object->setObjectID3((FID & 0xF0000000) >> 28);
             break;
         case ProFileType::TYPE_SCENERY:
             object->setObjectSubtypeId(_proFileTypeLoaderCallback(PID)->objectSubtypeId());
@@ -431,12 +435,17 @@ MapObject * MapFileType::_readObject()
                     datFileItem()->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_DOOR:
-                    if (object->objectId() == 0x1) break;
-                    if (object->objectId() == 0x7)
+                    switch (object->objectId())
                     {
-                        break;
+                        case 0x284:
+                        case 0x1:
+                        case 0x101:
+                        case 0x7:
+                            break;
+                        default:
+                            datFileItem()->skipBytes(4);
+                            break;
                     }
-                    datFileItem()->skipBytes(4);
                     break;
                 case ProFileType::TYPE_SCENERY_GENERIC:
 
@@ -482,6 +491,7 @@ MapObject * MapFileType::_readObject()
             break;
         case ProFileType::TYPE_WALL:
         //0x461
+            //switch (0xc1)
             if (object->objectId() == 0x460)
             {
                 //
