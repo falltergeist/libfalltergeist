@@ -59,6 +59,7 @@ public:
     unsigned int objectSubtypeId();
     unsigned int messageId();
     int frmOffset();
+    unsigned int flagsExt();
 
 };
 }

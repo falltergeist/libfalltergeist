@@ -28,21 +28,27 @@ void ProFileType::open()
 {
     datFileItem()->setPosition(0);
 
-    _objectTypeId = datFileItem()->readUint8();
-    datFileItem()->skipBytes(1);
-    _objectId = datFileItem()->readUint16();
+    unsigned int PID = datFileItem()->readUint32();
+
+    _objectTypeId = (PID & 0x0F000000) >> 28;
+    _objectId = PID & 0x00000FFF;
+
 
     _messageId = datFileItem()->readUint32();
 
-    _frmTypeId = datFileItem()->readUint8();
-    _frmOffset = datFileItem()->readInt8();
+
+    unsigned int FID = datFileItem()->readUint32();
+
+    _frmTypeId = (FID & 0x0F000000) >> 28;
+    _frmOffset = (FID & 0x00FF0000) >> 16;
 
     if (_frmOffset != 0)
     {
         std::cout << "FRM OFFSET: " << _frmOffset << std::endl;
     }
 
-    _frmId = datFileItem()->readUint16();
+    _frmId = FID & 0x0000FFFF;
+
 
     switch (_objectTypeId)
     {
@@ -52,6 +58,8 @@ void ProFileType::open()
 
             _flags = datFileItem()->readUint32();
             _flagsExt = datFileItem()->readUint32();
+
+
 
             _scriptTypeId = datFileItem()->readUint8();
             datFileItem()->skipBytes(1);
@@ -195,6 +203,11 @@ int ProFileType::frmOffset()
 unsigned int ProFileType::messageId()
 {
     return _messageId;
+}
+
+unsigned int ProFileType::flagsExt()
+{
+    return _flagsExt;
 }
 
 }

@@ -57,7 +57,7 @@ void LstFileType::open()
     for(unsigned int i = 0; i != _datFileItem->size(); ++i)
     {
         unsigned char ch = _datFileItem->readUint8();
-        if (ch != 0x0D)
+        if (ch != 0x0D && ch != 0x0A)
         {
             line += ch;
         }
