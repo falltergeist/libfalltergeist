@@ -20,6 +20,12 @@
 #ifndef LIBFALLTERGEIST_PALCOLOR_H
 #define LIBFALLTERGEIST_PALCOLOR_H
 
+// C++ standard includes
+
+// libfalltergeist includes
+
+// Third party includes
+
 namespace libfalltergeist
 {
 

@@ -17,12 +17,15 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../src/DatFile.h"
-#include "../src/DatFileItem.h"
-#include <iostream>
-#include <string.h>
+// C++ standard includes
 #include <algorithm>
 #include <string>
+
+// libfalltergeist includes
+#include "../src/DatFile.h"
+#include "../src/DatFileItem.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {
@@ -159,12 +162,8 @@ std::vector<DatFileItem *> * DatFile::items()
         unsigned int datFileSize = readUint32();
         if (datFileSize != size())
         {
-            //std::cout << "[FAIL]" << std::endl;
-            std::cout << "[ERROR] Wrong or corrupted DAT file";
             return 0;
         }
-
-        //std::cout << size() << std::endl;
 
         // reading size of files tree
         setPosition(size() - 8);

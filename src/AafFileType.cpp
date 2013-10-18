@@ -17,9 +17,14 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard inludes
+
+// libfalltergeist includes
 #include "../src/AafFileType.h"
 #include "../src/AafGlyph.h"
 #include "../src/DatFileItem.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {

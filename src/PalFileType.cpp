@@ -17,9 +17,14 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard includes
+
+// libfalltergeist includes
 #include "../src/PalFileType.h"
 #include "../src/DatFileItem.h"
 #include "../src/PalColor.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {

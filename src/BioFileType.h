@@ -20,6 +20,12 @@
 #ifndef LIBFALLTERGEIST_BIOFILETYPE_H
 #define LIBFALLTERGEIST_BIOFILETYPE_H
 
+// C++ standard includes
+
+// libfalltergeist includes
+
+// Third party includes
+
 namespace libfalltergeist
 {
 class DatFileItem;

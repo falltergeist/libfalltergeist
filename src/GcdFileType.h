@@ -20,6 +20,13 @@
 #ifndef LIBFALLTERGEIST_GCDFILETYPE_H
 #define LIBFALLTERGEIST_GCDFILETYPE_H
 
+// C++ standard includes
+#include <string>
+
+// libfalltergeist includes
+
+// Third party includes
+
 namespace libfalltergeist
 {
 class DatFileItem;
@@ -122,7 +129,7 @@ protected:
     unsigned int _gamblingSkill;
     unsigned int _outdoorsmanSkill;
 
-    char * _name;
+    std::string _name;
 
     int _firstTaggedSkill;
     int _secondTaggedSkill;
@@ -405,8 +412,8 @@ public:
     void setOutdoorsmanSkill(unsigned int outdoorsmanSkill);
     unsigned int outdoorsmanSkill();
 
-    void setName(const char * name);
-    const char * name();
+    void setName(std::string name);
+    std::string name();
 
     void setFirstTaggedSkill(int firstTaggedSkill);
     int firstTaggedSkill();

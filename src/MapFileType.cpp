@@ -1,10 +1,33 @@
+/*
+ * Copyright 2012-2013 Falltergeist Developers.
+ *
+ * This file is part of Falltergeist.
+ *
+ * Falltergeist is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Falltergeist is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// C++ standard includes
+
+// libfalltergeist includes
 #include "../src/MapFileType.h"
 #include "../src/DatFileItem.h"
 #include "../src/MapElevation.h"
 #include "../src/MapObject.h"
 #include "../src/ProFileType.h"
+#include "../src/Exception.h"
 
-#include <iostream>
+// Third party includes
 
 namespace libfalltergeist
 {
@@ -40,34 +63,21 @@ void MapFileType::open()
     _localVarsNumber = datFileItem()->readUint32();
     _scriptId = datFileItem()->readInt32();
 
-    std::cout << "Version: " << _version << std::endl;
-    std::cout << "Name: " << _name << std::endl;
-    std::cout << "Default Position: " << _defaultPosition << std::endl;
-    std::cout << "Default Elevation: " << _defaultElevation << std::endl;
-    std::cout << "Default Orientaion: " << _defaultOrientaion << std::endl;
-    std::cout << "Local Vars: " << _localVarsNumber << std::endl;
-    std::cout << "Script Id: " << _scriptId << std::endl;
-
     _elevationsFlag = datFileItem()->readUint32();
-    std::cout << "Elevations flag: " << _elevationsFlag << std::endl;
     unsigned int elevations = 0;
     if ((_elevationsFlag & 1) == 0  )
     {
-        std::cout << "Elevation Flag: UNKNOWN" << std::endl;
     }
     if ((_elevationsFlag & 2) == 0)
     {
-        std::cout << "Elevation Flag: 0" << std::endl;
         elevations++;
     }
     if ((_elevationsFlag & 4) == 0)
     {
-        std::cout << "Elevation Flag: 1" << std::endl;
         elevations++;
     }
     if ((_elevationsFlag & 8) == 0)
     {
-        std::cout << "Elevation Flag: 2" << std::endl;
         elevations++;
     }
 
@@ -76,27 +86,23 @@ void MapFileType::open()
 
 
     _globalVarsNumber = datFileItem()->readUint32();
-    std::cout << "Global Vars: " << _globalVarsNumber << std::endl;
 
     _mapId = datFileItem()->readUint32();
-    std::cout << "Map Id: " << _mapId << std::endl;
 
     _timeTicks = datFileItem()->readUint32();
-    std::cout << "Time ticks: " << _timeTicks << std::endl;
 
     // unkonwn
     datFileItem()->skipBytes(4*44);
 
     // GLOBAL AND LOCAL VARS SECTION
 
-    //global variables
+    // global variables
     datFileItem()->skipBytes(4*_globalVarsNumber);    
 
-    //local variables
+    // local variables
     datFileItem()->skipBytes(4*_localVarsNumber);
 
     // TILES SECTION
-
     for (unsigned int i = 0; i < elevations; i++)
     {
         _elevations->push_back(new MapElevation);
@@ -105,36 +111,23 @@ void MapFileType::open()
         {
             _elevations->back()->roofTiles[i] = datFileItem()->readUint16();
             _elevations->back()->floorTiles[i] = datFileItem()->readUint16();
-
-            //std::cout << "Roof " << i << ": " << _elevations->back()->roofTiles[i] << std::endl;
-            //std::cout << "Floo " << i << ": " << _elevations->back()->floorTiles[i] << std::endl;
-
         }
     }
-    //datFileItem()->skipBytes(4*3);
     // SCRIPTS SECTION
     for (unsigned int i = 0; i < 5; i++)
     {
-        /* number of scripts used in this sequence */
         short count = datFileItem()->readInt32();
-        std::cout << "COUNT: " << count << std::endl;
         if (count > 0)
         {
-            /* loop counter must be modulo 16 (rounded up) */
             short loop = count;
             if (count%16 > 0 ) loop += 16 - count%16;
-            //std::cout << "LOOP: " << loop << std::endl;
 
             int check = 0;
-            /* read in all the scripts of this sequence */
             for (unsigned short j = 0; j < loop; j++)
             {
-                //READING SCRIPT
-                // skipping script data for now...
                 {
                     unsigned int PID = datFileItem()->readUint8();
                     datFileItem()->skipBytes(3);
-                    //std::cout << PID << std::endl;
                     switch (PID)
                     {
                         case 1:
@@ -148,21 +141,17 @@ void MapFileType::open()
                             break;
                     }
                 }
-
-                /* after every 16 scripts is the check block */
                 if ((j % 16) == 15)
                 {
                     unsigned int v = datFileItem()->readUint32();
-                    //std::cout << "V: " << v << std::endl;
                     check += v;
 
-                    /* don't know what this is for, so ignore it for now */
                     datFileItem()->readInt32();
                 }
              }
              if (check != count)
              {
-                 std::cout << "error reading scripts: check is incorrect" << std::endl;
+                 throw Exception("MapFileType::open() - rror reading scripts: check is incorrect");
                  break;
              }
         }
@@ -190,7 +179,7 @@ void MapFileType::open()
                 {
 
                     datFileItem()->skipBytes(4);  // items count ?
-                    MapObject * obj = _readObject(true);
+                    MapObject * obj = _readObject();
 
                 }
 
@@ -201,7 +190,7 @@ void MapFileType::open()
 
 }
 
-MapObject * MapFileType::_readObject(bool child)
+MapObject * MapFileType::_readObject()
 {
     MapObject * object = new MapObject();
 
@@ -261,8 +250,7 @@ MapObject * MapFileType::_readObject(bool child)
                 case ProFileType::TYPE_ITEM_DRUG:
                     break;
                 default:
-                    std::cout << "UNIDENTIFIED ITEM" << std::endl;
-                    throw ":(";
+                    throw Exception("MapFileType::_readObject() - unknown item type");
                     break;
             }
             break;
@@ -295,7 +283,7 @@ MapObject * MapFileType::_readObject(bool child)
                 case ProFileType::TYPE_SCENERY_GENERIC:
                     break;
                 default:
-                    std::cout << "UNIDENTIFIED SCENERY" << std::endl;
+                    throw Exception("MapFileType::_readObject() - unknown scenery type");
                     throw ":(";
                     break;
             }
@@ -316,8 +304,7 @@ MapObject * MapFileType::_readObject(bool child)
 
             break;
         default:
-            std::cout << "UNIDENTIFIED TYPE" << std::endl;
-            //throw ":(";
+            throw Exception("MapFileType::_readObject() - unknown type");
             break;
     }
     return object;

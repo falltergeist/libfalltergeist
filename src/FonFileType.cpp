@@ -17,8 +17,13 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard includes
+
+// libfalltergeist includes
 #include "../src/FonFileType.h"
 #include "../src/DatFileItem.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {

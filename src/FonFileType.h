@@ -20,6 +20,12 @@
 #ifndef LIBFALLTERGEIST_FONFILETYPE_H
 #define LIBFALLTERGEIST_FONFILETYPE_H
 
+// C++ standard includes
+
+// libfalltergeist includes
+
+// Third party includes
+
 namespace libfalltergeist
 {
 class DatFileItem;

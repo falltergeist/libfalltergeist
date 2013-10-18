@@ -20,7 +20,12 @@
 #ifndef LIBFALLTERGEIST_MSGMESSAGE_H
 #define LIBFALLTERGEIST_MSGMESSAGE_H
 
+// C++ standard includes
 #include <string>
+
+// libfalltergeist includes
+
+// Third party includes
 
 namespace libfalltergeist
 {

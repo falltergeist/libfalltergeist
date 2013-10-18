@@ -17,7 +17,11 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
+// C++ standard includes
+#include <string.h> // for memcpy
+#include <algorithm>
+
+// libfalltergeist includes
 #include "../src/DatFileItem.h"
 #include "../src/DatFile.h"
 #include "../src/FrmFileType.h"
@@ -29,9 +33,10 @@
 #include "../src/BioFileType.h"
 #include "../src/GcdFileType.h"
 #include "../src/ProFileType.h"
-#include <algorithm>
+
+// Third party includes
 #include <zlib.h>
-#include <iostream>
+
 
 namespace libfalltergeist
 {

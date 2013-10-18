@@ -17,11 +17,15 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard includes
+
+// libfalltergeist includes
 #include "../src/FrmFileType.h"
 #include "../src/DatFileItem.h"
 #include "../src/FrmDirection.h"
 #include "../src/FrmFrame.h"
-#include <iostream>
+
+// Third party includes
 
 namespace libfalltergeist
 {

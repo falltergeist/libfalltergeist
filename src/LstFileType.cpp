@@ -17,13 +17,14 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard includes
+#include <algorithm>
+
+// libfalltergeist includes
 #include "../src/LstFileType.h"
 #include "../src/DatFileItem.h"
-#include <iostream>
-#include <algorithm>
-#include <functional>
-#include <cctype>
-#include <locale>
+
+// Third party includes
 
 namespace libfalltergeist
 {

@@ -20,7 +20,6 @@
 #ifndef LIBFALLTERGEIST_H
 #define LIBFALLTERGEIST_H
 
-
 #include "src/DatFile.h"
 #include "src/DatFileItem.h"
 #include "src/AafFileType.h"

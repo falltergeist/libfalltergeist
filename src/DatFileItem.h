@@ -20,8 +20,13 @@
 #ifndef LIBFALLTERGEIST_DATFILEITEM_H
 #define LIBFALLTERGEIST_DATFILEITEM_H
 
+// C++ standard includes
 #include <string>
+
+// libfalltergeist includes
 #include "../src/MapFileType.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {

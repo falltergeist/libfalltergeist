@@ -1,6 +1,29 @@
+/*
+ * Copyright 2012-2013 Falltergeist Developers.
+ *
+ * This file is part of Falltergeist.
+ *
+ * Falltergeist is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Falltergeist is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// C++ standard includes
+
+// libfalltergeist includes
 #include "../src/ProFileType.h"
 #include "../src/DatFileItem.h"
-#include <iostream>
+
+// Third party includes
 
 namespace libfalltergeist
 {
@@ -42,11 +65,6 @@ void ProFileType::open()
     _frmTypeId = (FID & 0x0F000000) >> 28;
     _frmOffset = (FID & 0x00FF0000) >> 16;
 
-    if (_frmOffset != 0)
-    {
-        std::cout << "FRM OFFSET: " << _frmOffset << std::endl;
-    }
-
     _frmId = FID & 0x0000FFFF;
 
 
@@ -58,8 +76,6 @@ void ProFileType::open()
 
             _flags = datFileItem()->readUint32();
             _flagsExt = datFileItem()->readUint32();
-
-
 
             _scriptTypeId = datFileItem()->readUint8();
             datFileItem()->skipBytes(1);

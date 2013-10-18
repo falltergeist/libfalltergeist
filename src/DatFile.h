@@ -20,8 +20,13 @@
 #ifndef LIBFALLTERGEIST_DATFILE_H
 #define LIBFALLTERGEIST_DATFILE_H
 
+// C++ standard includes
 #include <vector>
 #include <fstream>
+
+// libfalltergeist includes
+
+// Third party includes
 
 namespace libfalltergeist
 {

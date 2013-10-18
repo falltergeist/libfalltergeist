@@ -17,12 +17,16 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard includes
+#include <string>
+#include <cstdlib>
+
+// libfalltergeist includes
 #include "../src/MsgFileType.h"
 #include "../src/DatFileItem.h"
 #include "../src/MsgMessage.h"
-#include <string>
-#include <cstdlib>
-#include <iostream>
+
+// Third party includes
 
 namespace libfalltergeist
 {

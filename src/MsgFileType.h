@@ -20,7 +20,12 @@
 #ifndef LIBFALLTERGEIST_MSGFILETYPE_H
 #define LIBFALLTERGEIST_MSGFILETYPE_H
 
+// C++ standard includes
 #include <vector>
+
+// libfalltergeist includes
+
+// Third party includes
 
 namespace libfalltergeist
 {

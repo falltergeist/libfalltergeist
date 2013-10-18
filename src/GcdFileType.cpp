@@ -17,22 +17,24 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// C++ standard includes
+
+// libfalltergeist includes
 #include "../src/GcdFileType.h"
 #include "../src/DatFileItem.h"
-#include <cstring>
+
+// Third party includes
 
 namespace libfalltergeist
 {
 
 GcdFileType::GcdFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
-    _name = 0;
     open();
 }
 
 GcdFileType::~GcdFileType()
 {
-    delete [] _name;
 }
 
 void GcdFileType::open()
@@ -147,7 +149,7 @@ void GcdFileType::open()
     datFileItem()->skipBytes(16);
 
     // name
-    char * name = new char[32];
+    char * name = new char[32]();
     datFileItem()->readBytes(name, 32);
     setName(name);
     delete [] name;
@@ -1026,14 +1028,12 @@ unsigned int GcdFileType::outdoorsmanSkill()
     return _outdoorsmanSkill;
 }
 
-void GcdFileType::setName(const char * name)
+void GcdFileType::setName(std::string name)
 {
-    delete [] _name;
-    _name = new char[strlen(name) + 1]();
-    strcpy(_name, name);
+    _name = name;
 }
 
-const char * GcdFileType::name()
+std::string GcdFileType::name()
 {
     return _name;
 }

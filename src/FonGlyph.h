@@ -20,6 +20,12 @@
 #ifndef LIBFALLTERGEIST_FONGLYPH_H
 #define LIBFALLTERGEIST_FONGLYPH_H
 
+// C++ standard includes
+
+// libfalltergeist includes
+
+// Third party includes
+
 namespace libfalltergeist
 {
 
