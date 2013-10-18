@@ -20,10 +20,12 @@
 // C++ standard includes
 #include <algorithm>
 #include <string>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/DatFile.h"
 #include "../src/DatFileItem.h"
+#include "../src/Exception.h"
 
 // Third party includes
 
@@ -157,102 +159,37 @@ std::vector<DatFileItem *> * DatFile::items()
     {
         _items = new std::vector<DatFileItem *>;
 
+        unsigned int datFileSize;
+        unsigned int filesTreeSize;
+        unsigned int filesTotalNumber;
+
         // reading data size from dat file
-        setPosition(size() - 4);
-        unsigned int datFileSize = readUint32();
+        setPosition(size() - 4);        
+        *this >> datFileSize;
+        std::cout << datFileSize << "|" << size() << std::endl;
         if (datFileSize != size())
         {
-            return 0;
+            throw Exception("DatFile::items() - wrong file size");
         }
-
         // reading size of files tree
         setPosition(size() - 8);
-        unsigned int filesTreeSize = readUint32();
+        *this >> filesTreeSize;
 
         // reading total number of items in dat file
         setPosition(size() - filesTreeSize - 8);
-        unsigned int filesTotalNumber = readUint32();
+        *this >> filesTotalNumber;
 
         //reading files data one by one
         for (unsigned int i = 0; i != filesTotalNumber; ++i)
         {
             DatFileItem * item = new DatFileItem(this);
 
-            //reading fileName
-            unsigned int filenameSize = readUint32();
-            char * filename = new char[filenameSize + 1]();
-            readBytes(filename, filenameSize);
-            item->setFilename(filename);
-            delete [] filename;
-
-            //reading compression flag
-            item->setCompressed(readUint8() == 1 ? true : false);
-
-            //reading unpacked size
-            item->setUnpackedSize(readUint32());
-
-            //reading packed size
-            item->setPackedSize(readUint32());
-
-            //reading data offset from dat file begining
-            item->setDataOffset(readUint32());
+            *this >> *item;
 
             _items->push_back(item);
         }
-        //std::cout << "[OK]" << std::endl;
-        //std::cout << "Items loaded: " << filesTotalNumber << std::endl;
     }
     return _items;
-}
-
-unsigned int DatFile::readUint32()
-{
-    unsigned int position = this->position();
-    unsigned int value;
-    unsigned char * data = new unsigned char[4]();
-    _stream->readsome((char *)data, 4);
-    // Little endian
-    value = ( data[3] << 24) | (data[2] << 16) | ( data[1] << 8) | data[0];
-    delete [] data;
-    setPosition(position + 4);
-    return value;
-}
-
-int DatFile::readInt32()
-{
-    return (int) readUint32();
-}
-
-unsigned short DatFile::readUint16()
-{
-    unsigned int position = this->position();
-    unsigned short value;
-    unsigned char * data = new unsigned char[2]();
-    _stream->readsome((char *)data, 2);
-    // Little endian
-    value = ( data[1] << 8) | data[0];
-    delete [] data;
-    setPosition(position + 2);
-    return value;
-}
-
-short DatFile::readInt16()
-{
-    return (short) readUint16();
-}
-
-unsigned char DatFile::readUint8()
-{
-    unsigned int position = this->position();
-    unsigned char value;
-    _stream->readsome((char *)&value, 1);
-    setPosition(position + +1);
-    return value;
-}
-
-char DatFile::readInt8()
-{
-    return (char) readUint8();
 }
 
 /**
@@ -276,6 +213,64 @@ DatFileItem * DatFile::item(const std::string filename)
         }
     }
     return 0;
+}
+
+DatFile& DatFile::operator>>(int &value)
+{
+    readBytes(reinterpret_cast<char *>(&value), sizeof(value));
+    return *this;
+}
+
+DatFile& DatFile::operator>>(unsigned int &value)
+{
+    return *this >> (int&) value;
+}
+
+DatFile& DatFile::operator>>(short &value)
+{
+    readBytes(reinterpret_cast<char *>(&value), sizeof(value));
+    return *this;
+}
+
+DatFile& DatFile::operator>>(unsigned short &value)
+{
+    return *this >> (short&) value;
+}
+
+DatFile& DatFile::operator>>(char &value)
+{
+    readBytes(reinterpret_cast<char *>(&value), sizeof(value));
+    return *this;
+}
+
+DatFile& DatFile::operator>>(unsigned char &value)
+{
+    return *this >> (char&) value;
+}
+
+DatFile& DatFile::operator>>(DatFileItem& item)
+{
+    unsigned int filenameSize;
+    unsigned char compressed;
+    unsigned int unpackedSize;
+    unsigned int packedSize;
+    unsigned int dataOffset;
+
+    *this >> filenameSize;
+
+    char * filename = new char[filenameSize + 1]();
+    readBytes(filename, filenameSize);
+    item.setFilename(filename);
+    delete [] filename;
+
+    *this >> compressed >> unpackedSize >> packedSize >> dataOffset;
+
+    item.setCompressed((bool) compressed);
+    item.setUnpackedSize(unpackedSize);
+    item.setPackedSize(packedSize);
+    item.setDataOffset(dataOffset);
+
+    return *this;
 }
 
 }

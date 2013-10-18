@@ -35,6 +35,8 @@ class GcdFileType
 {
 protected:
     DatFileItem * _datFileItem;
+    unsigned int _unknown1;
+    unsigned int _unknown2;
     // primary stats
     unsigned int _strength;
     unsigned int _perception;

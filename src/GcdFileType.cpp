@@ -39,49 +39,27 @@ GcdFileType::~GcdFileType()
 
 void GcdFileType::open()
 {
-    datFileItem()->setPosition(0);
-    // unknown 4 bytes
-    datFileItem()->skipBytes(4);
+    DatFileItem &item = *datFileItem();
+
+    item.setPosition(0);
+    // unknown 1
+    item >> _unknown1;
+
     // primary stats
-    setStrength(datFileItem()->readUint32());
-    setPerception(datFileItem()->readUint32());
-    setEndurance(datFileItem()->readUint32());
-    setCharisma(datFileItem()->readUint32());
-    setIntelligence(datFileItem()->readUint32());
-    setAgility(datFileItem()->readUint32());
-    setLuck(datFileItem()->readUint32());
+    item >> _strength >> _perception >> _endurance >> _charisma >> _intelligence >> _agility >> _luck;
 
     // secondary stats
-    setHitPoints(datFileItem()->readUint32());
-    setActionPoints(datFileItem()->readUint32());
-    setArmorClass(datFileItem()->readUint32());
+    item >> _hitPoints >> _actionPoints >> _armorClass;
 
-    // unknown
-    datFileItem()->skipBytes(4);
-    setMeleeDamage(datFileItem()->readUint32());
-    setCarryWeight(datFileItem()->readUint32());
-    setSequence(datFileItem()->readUint32());
-    setHealingRate(datFileItem()->readUint32());
-    setCriticalChance(datFileItem()->readUint32());
-    setCriticalHitModifier(datFileItem()->readUint32());
-    setDamageThresholdNormal(datFileItem()->readUint32());
-    setDamageThresholdLaser(datFileItem()->readUint32());
-    setDamageThresholdFire(datFileItem()->readUint32());
-    setDamageThresholdPlasma(datFileItem()->readUint32());
-    setDamageThresholdElectrical(datFileItem()->readUint32());
-    setDamageThresholdEMP(datFileItem()->readUint32());
-    setDamageThresholdExplosive(datFileItem()->readUint32());
-    setDamageResistanceNormal(datFileItem()->readUint32());
-    setDamageResistanceLaser(datFileItem()->readUint32());
-    setDamageResistanceFire(datFileItem()->readUint32());
-    setDamageResistancePlasma(datFileItem()->readUint32());
-    setDamageResistanceElectrical(datFileItem()->readUint32());
-    setDamageResistanceEMP(datFileItem()->readUint32());
-    setDamageResistanceExplosive(datFileItem()->readUint32());
-    setRadiationResistance(datFileItem()->readUint32());
-    setPoisonResistance(datFileItem()->readUint32());
-    setAge(datFileItem()->readUint32());
-    setGender(datFileItem()->readUint32());
+    // unknown 2
+    item >> _unknown2;
+
+    item >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier
+         >> _damageThresholdNormal >> _damageThresholdLaser >> _damageThresholdFire
+         >> _damageThresholdPlasma >> _damageThresholdElectrical >> _damageThresholdEMP >> _damageThresholdExplosive
+         >> _damageResistanceNormal >> _damageResistanceLaser >> _damageResistanceFire
+         >> _damageResistancePlasma >> _damageResistanceElectrical >> _damageResistanceEMP >> _damageResistanceExplosive
+         >> _radiationResistance >> _poisonResistance >> _age >> _gender;
 
     // bonuses to primary stats
     setStrengthBonus(datFileItem()->readUint32());

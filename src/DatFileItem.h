@@ -106,6 +106,13 @@ public:
     void isOpened(bool val);
     void close();
 
+    DatFileItem& operator>>(unsigned int &value);
+    DatFileItem& operator>>(int &value);
+    DatFileItem& operator>>(unsigned short &value);
+    DatFileItem& operator>>(short &value);
+    DatFileItem& operator>>(unsigned char &value);
+    DatFileItem& operator>>(char &value);
+
     FrmFileType * asFrmFileType();
     PalFileType * asPalFileType();
     LstFileType * asLstFileType();

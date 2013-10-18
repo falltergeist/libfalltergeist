@@ -48,35 +48,41 @@ DatFileItem * FrmFileType::datFileItem()
 
 void FrmFileType::open()
 {
+    DatFileItem &item = *datFileItem();
     // initialization
-    _datFileItem->setPosition(0);
+    item.setPosition(0);
 
     // Frm file version
-    _version = _datFileItem->readUint32();
+    item >> _version;
 
     // Frames per second rate
-    _framesPerSecond = _datFileItem->readUint16();
+    item >> _framesPerSecond;
 
     // Frame number on which action is occurs
-    _actionFrame = _datFileItem->readUint16();
+    item >> _actionFrame;
 
     // Frames per one direction
-    _framesPerDirection = _datFileItem->readUint16();
+    item >> _framesPerDirection;
 
     // directions data...
 
     // X shift
+    unsigned short shift;
+    FrmDirection * direction;
+
     for (unsigned int i = 0; i != 6; ++i)
     {
-        FrmDirection * direction = new FrmDirection();
-        direction->setShiftX(_datFileItem->readUint16());
+        direction = new FrmDirection();
+        item >> shift;
+        direction->setShiftX(shift);
         directions()->push_back(direction);
     }
 
     // Y shift
     for (unsigned int i = 0; i != 6; ++i)
     {
-        directions()->at(i)->setShiftY(_datFileItem->readInt16());
+        item >> shift;
+        directions()->at(i)->setShiftY(shift);
     }
 
     // Data offset

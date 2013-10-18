@@ -40,6 +40,7 @@
 #include "src/PalFileType.h"
 #include "src/PalColor.h"
 #include "src/ProFileType.h"
+#include "src/Exception.h"
 
 namespace libfalltergeist
 {

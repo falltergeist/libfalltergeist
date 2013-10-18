@@ -48,12 +48,6 @@ public:
     bool open(const std::string pathToFile);
     bool close(void);
     bool isOpened();
-    unsigned int readUint32();
-    int readInt32();
-    unsigned short readUint16();
-    short readInt16();
-    unsigned char readUint8();
-    char readInt8();
     void readBytes(char * destination, unsigned int numberOfBytes);
     void skipBytes(unsigned int numberOfBytes);
 
@@ -63,6 +57,14 @@ public:
     unsigned int size();
 
     virtual std::vector<DatFileItem *> * items();
+
+    DatFile& operator>>(int &value);
+    DatFile& operator>>(unsigned int &value);
+    DatFile& operator>>(short &value);
+    DatFile& operator>>(unsigned short &value);
+    DatFile& operator>>(char &value);
+    DatFile& operator>>(unsigned char &value);
+    DatFile& operator>>(DatFileItem &item);
 
     DatFileItem * item(std::string filename);
 

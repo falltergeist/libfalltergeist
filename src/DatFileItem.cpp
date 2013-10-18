@@ -82,8 +82,7 @@ DatFile * DatFileItem::datFile()
 
 void DatFileItem::setFilename(const std::string filename)
 {
-    _filename.clear();
-    _filename.append(filename);
+    _filename = filename;
 
     // convert to lowercase and replace slashes
     std::replace(_filename.begin(),_filename.end(),'\\','/');
@@ -267,6 +266,44 @@ void DatFileItem::close()
     delete [] _data;
     _opened = false;
 }
+
+DatFileItem& DatFileItem::operator>>(unsigned int &value)
+{
+    char * buff = reinterpret_cast<char *>(&value);
+    readBytes(buff, sizeof(value));
+    std::reverse(buff, buff + sizeof(value));
+    return *this;
+}
+
+DatFileItem& DatFileItem::operator>>(int &value)
+{
+    return *this >> (unsigned int&) value;
+}
+
+DatFileItem& DatFileItem::operator>>(unsigned short &value)
+{
+    char * buff = reinterpret_cast<char *>(&value);
+    readBytes(buff, sizeof(value));
+    std::reverse(buff, buff + sizeof(value));
+    return *this;
+}
+
+DatFileItem& DatFileItem::operator>>(short &value)
+{
+    return *this >> (unsigned short&) value;
+}
+
+DatFileItem& DatFileItem::operator>>(unsigned char &value)
+{
+    readBytes(reinterpret_cast<char *>(&value), sizeof(value));
+    return *this;
+}
+
+DatFileItem& DatFileItem::operator>>(char &value)
+{
+    return *this >> (unsigned char&) value;
+}
+
 
 FrmFileType * DatFileItem::asFrmFileType()
 {
