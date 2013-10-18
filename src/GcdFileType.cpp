@@ -62,69 +62,45 @@ void GcdFileType::open()
          >> _radiationResistance >> _poisonResistance >> _age >> _gender;
 
     // bonuses to primary stats
-    setStrengthBonus(datFileItem()->readUint32());
-    setPerceptionBonus(datFileItem()->readUint32());
-    setEnduranceBonus(datFileItem()->readUint32());
-    setCharismaBonus(datFileItem()->readUint32());
-    setIntelligenceBonus(datFileItem()->readUint32());
-    setAgilityBonus(datFileItem()->readUint32());
-    setLuckBonus(datFileItem()->readUint32());
+    item >> _strengthBonus >> _perceptionBonus >> _enduranceBonus >> _charismaBonus >> _intelligenceBonus
+         >> _agilityBonus >> _luckBonus;
 
     // bonuses to secondary stats
-    setHitPointsBonus(datFileItem()->readUint32());
-    setActionPointsBonus(datFileItem()->readUint32());
-    setArmorClassBonus(datFileItem()->readUint32());
+    item >> _hitPointsBonus >> _actionPointsBonus >> _armorClassBonus;
 
-    // unknown bonus
-    datFileItem()->skipBytes(4);
+    // unknown 3
+    item >> _unknown3;
 
-    setMeleeDamageBonus(datFileItem()->readUint32());
-    setCarryWeightBonus(datFileItem()->readUint32());
-    setSequenceBonus(datFileItem()->readUint32());
-    setHealingRateBonus(datFileItem()->readUint32());
-    setCriticalChanceBonus(datFileItem()->readUint32());
-    setCriticalHitModifierBonus(datFileItem()->readUint32());
-    setDamageThresholdNormalBonus(datFileItem()->readUint32());
-    setDamageThresholdLaserBonus(datFileItem()->readUint32());
-    setDamageThresholdFireBonus(datFileItem()->readUint32());
-    setDamageThresholdPlasmaBonus(datFileItem()->readUint32());
-    setDamageThresholdElectricalBonus(datFileItem()->readUint32());
-    setDamageThresholdEMPBonus(datFileItem()->readUint32());
-    setDamageThresholdExplosiveBonus(datFileItem()->readUint32());
-    setDamageResistanceNormalBonus(datFileItem()->readUint32());
-    setDamageResistanceLaserBonus(datFileItem()->readUint32());
-    setDamageResistanceFireBonus(datFileItem()->readUint32());
-    setDamageResistancePlasmaBonus(datFileItem()->readUint32());
-    setDamageResistanceElectricalBonus(datFileItem()->readUint32());
-    setDamageResistanceEMPBonus(datFileItem()->readUint32());
-    setDamageResistanceExplosiveBonus(datFileItem()->readUint32());
-    setRadiationResistanceBonus(datFileItem()->readUint32());
-    setPoisonResistanceBonus(datFileItem()->readUint32());
-    setAgeBonus(datFileItem()->readUint32());
-    setGenderBonus(datFileItem()->readUint32());
+    item >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
+         >> _criticalChanceBonus >> _criticalHitModifierBonus
+         >> _damageThresholdNormalBonus >> _damageThresholdLaserBonus >> _damageThresholdFireBonus >> _damageThresholdPlasmaBonus
+         >> _damageThresholdElectricalBonus >> _damageThresholdEMPBonus >> _damageThresholdExplosiveBonus
+         >> _damageResistanceNormalBonus >> _damageResistanceLaserBonus >> _damageResistanceFireBonus >> _damageResistancePlasmaBonus
+         >> _damageResistanceElectricalBonus >> _damageResistanceEMPBonus >> _damageResistanceExplosiveBonus
+         >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
 
     //skills
-    setSmallGunsSkill(datFileItem()->readUint32());
-    setBigGunsSkill(datFileItem()->readUint32());
-    setEnergyWeaponsSkill(datFileItem()->readUint32());
-    setUnarmedSkill(datFileItem()->readUint32());
-    setMeleeWeaponsSkill(datFileItem()->readUint32());
-    setThrowingWeaponsSkill(datFileItem()->readUint32());
-    setFirstAidSkill(datFileItem()->readUint32());
-    setDoctorSkill(datFileItem()->readUint32());
-    setSneakSkill(datFileItem()->readUint32());
-    setLockpickSkill(datFileItem()->readUint32());
-    setStealSkill(datFileItem()->readUint32());
-    setTrapsSkill(datFileItem()->readUint32());
-    setScienceSkill(datFileItem()->readUint32());
-    setRepairSkill(datFileItem()->readUint32());
-    setSpeechSkill(datFileItem()->readUint32());
-    setBarterSkill(datFileItem()->readUint32());
-    setGamblingSkill(datFileItem()->readUint32());
-    setOutdoorsmanSkill(datFileItem()->readUint32());
+    item >> _smallGunsSkill
+         >> _bigGunsSkill
+         >> _energyWeaponsSkill
+         >> _unarmedSkill
+         >> _meleeWeaponsSkill
+         >> _throwingWeaponsSkill
+         >> _firstAidSkill
+         >> _doctorSkill
+         >> _sneakSkill
+         >> _lockpickSkill
+         >> _stealSkill
+         >> _trapsSkill
+         >> _scienceSkill
+         >> _repairSkill
+         >> _speechSkill
+         >> _barterSkill
+         >> _gamblingSkill
+         >> _outdoorsmanSkill;
 
     // unknown
-    datFileItem()->skipBytes(16);
+    item >> _unknown4 >> _unknown5 >> _unknown6 >> _unknown7;
 
     // name
     char * name = new char[32]();
@@ -132,13 +108,13 @@ void GcdFileType::open()
     setName(name);
     delete [] name;
 
-    setFirstTaggedSkill(datFileItem()->readInt32());
-    setSecondTaggedSkill(datFileItem()->readInt32());
-    setThirdTaggedSkill(datFileItem()->readInt32());
-    setFourthTaggedSkill(datFileItem()->readInt32());
-    setFirstTrait(datFileItem()->readInt32());
-    setSecondTrait(datFileItem()->readInt32());
-    setCharacterPoints(datFileItem()->readUint32());
+    item >> _firstTaggedSkill
+         >> _secondTaggedSkill
+         >> _thirdTaggedSkill
+         >> _fourthTaggedSkill
+         >> _firstTrait
+         >> _secondTrait
+         >> _characterPoints;
 }
 
 DatFileItem * GcdFileType::datFileItem()

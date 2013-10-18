@@ -37,6 +37,11 @@ protected:
     DatFileItem * _datFileItem;
     unsigned int _unknown1;
     unsigned int _unknown2;
+    unsigned int _unknown3;
+    unsigned int _unknown4;
+    unsigned int _unknown5;
+    unsigned int _unknown6;
+    unsigned int _unknown7;
     // primary stats
     unsigned int _strength;
     unsigned int _perception;
