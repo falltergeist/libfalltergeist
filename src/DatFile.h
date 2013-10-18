@@ -23,6 +23,7 @@
 // C++ standard includes
 #include <vector>
 #include <fstream>
+#include <string>
 
 // libfalltergeist includes
 

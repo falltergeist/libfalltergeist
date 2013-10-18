@@ -19,8 +19,6 @@
 
 // C++ standard includes
 #include <algorithm>
-#include <string>
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/DatFile.h"
@@ -32,20 +30,12 @@
 namespace libfalltergeist
 {
 
-/**
- * Creates empty DAT file with no filename
- * @brief DatFile::DatFile
- */
 DatFile::DatFile()
 {
     _items = 0;
     _stream = 0;
 }
 
-/**
- * Opens selected DAT file
- * @brief DatFile::DatFile
- */
 DatFile::DatFile(std::string pathToFile)
 {
     _items = 0;
@@ -53,10 +43,6 @@ DatFile::DatFile(std::string pathToFile)
     open(pathToFile);
 }
 
-/**
- * Destroys DAT file object
- * @brief DatFile::~DatFile
- */
 DatFile::~DatFile()
 {
     delete _items;
@@ -82,11 +68,6 @@ bool DatFile::open(std::string pathToFile)
     return false;
 }
 
-/**
- * Check if file is opened
- * @brief DatFile::isOpened
- * @return
- */
 bool DatFile::isOpened()
 {
     if (_stream && _stream->is_open())
@@ -96,11 +77,6 @@ bool DatFile::isOpened()
     return false;
 }
 
-/**
- * Closes file stream
- * @brief DatFile::close
- * @return
- */
 bool DatFile::close()
 {
     if (_stream && _stream->is_open())
@@ -166,7 +142,6 @@ std::vector<DatFileItem *> * DatFile::items()
         // reading data size from dat file
         setPosition(size() - 4);        
         *this >> datFileSize;
-        std::cout << datFileSize << "|" << size() << std::endl;
         if (datFileSize != size())
         {
             throw Exception("DatFile::items() - wrong file size");
@@ -192,12 +167,6 @@ std::vector<DatFileItem *> * DatFile::items()
     return _items;
 }
 
-/**
- * Returns item by filename
- * @brief DatFile::getItem
- * @param filename
- * @return
- */
 DatFileItem * DatFile::item(const std::string filename)
 {
     std::string name(filename);

@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_BIOFILETYPE_H
 
 // C++ standard includes
+#include <string>
 
 // libfalltergeist includes
 
@@ -34,7 +35,7 @@ class BioFileType
 {
 protected:
     DatFileItem * _datFileItem;
-    char * _text;
+    std::string _text;
 public:
     BioFileType(DatFileItem * datFileItem);
     ~BioFileType();
@@ -43,7 +44,7 @@ public:
 
     void open();
 
-    const char * text();
+    std::string text();
 };
 
 }

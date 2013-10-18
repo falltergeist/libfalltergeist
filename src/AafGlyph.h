@@ -21,7 +21,6 @@
 #define LIBFALLTERGEIST_AAFGLYPH_H
 
 // C++ standard includes
-#include <vector>
 
 // libfalltergeist includes
 
@@ -35,12 +34,12 @@ class AafGlyph
 protected:
     unsigned short _width;
     unsigned short _height;
-    std::vector<unsigned char> * _data;
+    char * _data;
 public:
-    AafGlyph();    
+    AafGlyph(unsigned short width, unsigned short height);
     ~AafGlyph();
 
-    std::vector<unsigned char> * data();
+    char * data();
 
     void setWidth(unsigned short width);
     unsigned short width();

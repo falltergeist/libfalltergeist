@@ -47,40 +47,35 @@ AafFileType::~AafFileType()
 
 void AafFileType::open()
 {
+    DatFileItem &item = *datFileItem();
+
     _glyphs = new std::vector<AafGlyph *>;
-    _datFileItem->setPosition(0);
 
-    // AAFF Signature
-    _datFileItem->skipBytes(4);
+    item.setPosition(0);
 
-    setMaximumHeight(_datFileItem->readUint16());
+    item >> _signature; // "AAFF" Signature
 
-    setHorizontalGap(_datFileItem->readUint16());
-
-    setSpaceWidth(_datFileItem->readUint16());
-
-    setVerticalGap(_datFileItem->readUint16());
+    item >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
 
     unsigned int * _dataOffsets = new unsigned int[256];
 
     // glyphs descriptions
     for (unsigned int i = 0; i != 256; ++i)
     {
-        AafGlyph * glyph = new AafGlyph();
-        glyph->setWidth(_datFileItem->readUint16());
-        glyph->setHeight(_datFileItem->readUint16());
-        _dataOffsets[i] = _datFileItem->readUint32();
-        _glyphs->push_back(glyph);
+        unsigned short width, height;
+        unsigned int dataOffset;
+        item >> width
+             >> height
+             >> dataOffset;
+        _dataOffsets[i] = dataOffset;
+        _glyphs->push_back(new AafGlyph(width, height));
     }
 
     //glyphs data
     for (unsigned int i = 0; i != 256; ++i)
     {
-        _datFileItem->setPosition(0x080C + _dataOffsets[i]);
-        for (unsigned int j = 0; j != _glyphs->at(i)->width()*_glyphs->at(i)->height(); ++j)
-        {
-            _glyphs->at(i)->data()->push_back(_datFileItem->readUint8());
-        }
+        item.setPosition(0x080C + _dataOffsets[i]);
+        item.readBytes(_glyphs->at(i)->data(), _glyphs->at(i)->width()*_glyphs->at(i)->height());
     }
 
     delete [] _dataOffsets;

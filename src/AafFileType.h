@@ -37,6 +37,7 @@ class AafFileType
 protected:
     DatFileItem * _datFileItem;
     std::vector<AafGlyph *> * _glyphs;
+    unsigned int _signature;
     unsigned short _maximumHeight;
     unsigned short _horizontalGap;
     unsigned short _spaceWidth;
