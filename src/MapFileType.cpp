@@ -46,61 +46,35 @@ MapFileType::~MapFileType()
 
 void MapFileType::open()
 {
+    DatFileItem &item = *datFileItem();
+
     // HEADER
-    datFileItem()->setPosition(0);
-    _version = datFileItem()->readUint32();
+    item.setPosition(0);
+    item >> _version;
 
     char * buffer = new char[17]();
-    datFileItem()->readBytes(buffer, 16);
+    item.readBytes(buffer, 16);
     _name += buffer;
     delete [] buffer;
 
-    _defaultPosition = datFileItem()->readUint32();
-    _defaultElevation = datFileItem()->readUint32();
-    _defaultOrientaion = datFileItem()->readUint32();
+    item >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
+         >> _localVarsNumber >> _scriptId >> _elevationsFlag;
 
 
-    _localVarsNumber = datFileItem()->readUint32();
-    _scriptId = datFileItem()->readInt32();
-
-    _elevationsFlag = datFileItem()->readUint32();
     unsigned int elevations = 0;
-    if ((_elevationsFlag & 1) == 0  )
-    {
-    }
-    if ((_elevationsFlag & 2) == 0)
-    {
-        elevations++;
-    }
-    if ((_elevationsFlag & 4) == 0)
-    {
-        elevations++;
-    }
-    if ((_elevationsFlag & 8) == 0)
-    {
-        elevations++;
-    }
+    if ((_elevationsFlag & 2) == 0) elevations++;
+    if ((_elevationsFlag & 4) == 0) elevations++;
+    if ((_elevationsFlag & 8) == 0) elevations++;
 
-    //unknown 4 bytes
-    datFileItem()->skipBytes(4);
+    item >> _unknown1 >> _globalVarsNumber >> _mapId >> _timeTicks;
 
-
-    _globalVarsNumber = datFileItem()->readUint32();
-
-    _mapId = datFileItem()->readUint32();
-
-    _timeTicks = datFileItem()->readUint32();
-
-    // unkonwn
-    datFileItem()->skipBytes(4*44);
+    item.skipBytes(4*44); // unkonwn
 
     // GLOBAL AND LOCAL VARS SECTION
 
-    // global variables
-    datFileItem()->skipBytes(4*_globalVarsNumber);    
+    item.skipBytes(4*_globalVarsNumber); // global variables
 
-    // local variables
-    datFileItem()->skipBytes(4*_localVarsNumber);
+    item.skipBytes(4*_localVarsNumber); // local variables
 
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
@@ -109,8 +83,8 @@ void MapFileType::open()
 
         for (unsigned int i = 0; i < 10000; i++)
         {
-            _elevations->back()->roofTiles[i] = datFileItem()->readUint16();
-            _elevations->back()->floorTiles[i] = datFileItem()->readUint16();
+            item >> _elevations->back()->roofTiles[i];
+            item >>_elevations->back()->floorTiles[i];
         }
     }
     // SCRIPTS SECTION

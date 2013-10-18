@@ -47,17 +47,17 @@ DatFileItem * LstFileType::datFileItem()
 
 void LstFileType::open()
 {
-    // load strings from file
+    DatFileItem &item = *datFileItem();
 
     _strings = new std::vector<std::string>;
 
-
-    _datFileItem->setPosition(0);
+    item.setPosition(0);
 
     std::string line;
-    for(unsigned int i = 0; i != _datFileItem->size(); ++i)
+    unsigned char ch;
+    for(unsigned int i = 0; i != item.size(); ++i)
     {
-        unsigned char ch = _datFileItem->readUint8();
+        item >> ch;
         if (ch != 0x0D && ch != 0x0A)
         {
             line += ch;
@@ -68,7 +68,7 @@ void LstFileType::open()
             _strings->push_back(line);
             line.clear();
             ++i;
-            _datFileItem->skipBytes(1);
+            item >> ch;
         }
     }
 }

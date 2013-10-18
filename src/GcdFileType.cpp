@@ -104,7 +104,7 @@ void GcdFileType::open()
 
     // name
     char * name = new char[32]();
-    datFileItem()->readBytes(name, 32);
+    item.readBytes(name, 32);
     setName(name);
     delete [] name;
 

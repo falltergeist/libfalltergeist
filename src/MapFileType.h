@@ -55,6 +55,7 @@ protected:
     unsigned int _elevationsFlag;
     unsigned int _mapId;
     unsigned int _timeTicks;
+    unsigned int _unknown1;
 
     int _scriptId;
 
