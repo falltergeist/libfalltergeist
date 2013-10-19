@@ -25,7 +25,7 @@ find_package(ZLIB REQUIRED)
 if(NOT ZLIB_FOUND)
 	  message(FATAL_ERROR "Zlib library not found")
 endif(NOT ZLIB_FOUND)
-include_directories(ZLIB_INCLUDE_DIRS)
+include_directories(${ZLIB_INCLUDE_DIRS})
 
 set(SOURCES libfalltergeist.cpp
             src/AafFileType.cpp

@@ -35,50 +35,56 @@ class GcdFileType
 {
 protected:
     DatFileItem * _datFileItem;
-    unsigned int _unknown1;
-    unsigned int _unknown2;
-    unsigned int _unknown3;
-    unsigned int _unknown4;
-    unsigned int _unknown5;
-    unsigned int _unknown6;
-    unsigned int _unknown7;
+
+    // unknown
+    unsigned int
+                _unknown1,
+                _unknown2,
+                _unknown3,
+                _unknown4,
+                _unknown5,
+                _unknown6,
+                _unknown7;
     // primary stats
-    unsigned int _strength;
-    unsigned int _perception;
-    unsigned int _endurance;
-    unsigned int _charisma;
-    unsigned int _intelligence;
-    unsigned int _agility;
-    unsigned int _luck;
+    unsigned int
+                _strength,
+                _perception,
+                _endurance,
+                _charisma,
+                _intelligence,
+                _agility,
+                _luck;
     // secondary stats
-    unsigned int _hitPoints;
-    unsigned int _actionPoints;
-    unsigned int _armorClass;
+    unsigned int
+                _hitPoints,
+                _actionPoints,
+                _armorClass;
     //unsigned int unknown;
-    unsigned int _meleeDamage;
-    unsigned int _carryWeight;
-    unsigned int _sequence;
-    unsigned int _healingRate;
-    unsigned int _criticalChance;
-    unsigned int _criticalHitModifier;
-    unsigned int _damageThresholdNormal;
-    unsigned int _damageThresholdLaser;
-    unsigned int _damageThresholdFire;
-    unsigned int _damageThresholdPlasma;
-    unsigned int _damageThresholdElectrical;
-    unsigned int _damageThresholdEMP;
-    unsigned int _damageThresholdExplosive;
-    unsigned int _damageResistanceNormal;
-    unsigned int _damageResistanceLaser;
-    unsigned int _damageResistanceFire;
-    unsigned int _damageResistancePlasma;
-    unsigned int _damageResistanceElectrical;
-    unsigned int _damageResistanceEMP;
-    unsigned int _damageResistanceExplosive;
-    unsigned int _radiationResistance;
-    unsigned int _poisonResistance;
-    unsigned int _age;
-    unsigned int _gender;
+    unsigned int
+                _meleeDamage,
+                _carryWeight,
+                _sequence,
+                _healingRate,
+                _criticalChance,
+                _criticalHitModifier,
+                _damageThresholdNormal,
+                _damageThresholdLaser,
+                _damageThresholdFire,
+                _damageThresholdPlasma,
+                _damageThresholdElectrical,
+                _damageThresholdEMP,
+                _damageThresholdExplosive,
+                _damageResistanceNormal,
+                _damageResistanceLaser,
+                _damageResistanceFire,
+                _damageResistancePlasma,
+                _damageResistanceElectrical,
+                _damageResistanceEMP,
+                _damageResistanceExplosive,
+                _radiationResistance,
+                _poisonResistance,
+                _age,
+                _gender;
     // bonuses to primary stats
     unsigned int _strengthBonus;
     unsigned int _perceptionBonus;

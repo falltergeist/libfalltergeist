@@ -35,7 +35,7 @@
 #include "../src/ProFileType.h"
 
 // Third party includes
-#include <zlib.h>
+#include "zlib.h"
 
 
 namespace libfalltergeist
