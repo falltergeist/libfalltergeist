@@ -30,17 +30,31 @@ namespace libfalltergeist
 
 MapElevation::MapElevation()
 {
-    _objects = new std::list<MapObject *>;
+    _roofTiles = new std::vector<unsigned short>(10000);
+    _floorTiles = new std::vector<unsigned short>(10000);
+    _objects = new std::vector<MapObject *>;
 }
 
 MapElevation::~MapElevation()
 {
     delete _objects;
+    delete _roofTiles;
+    delete _floorTiles;
 }
 
-std::list<MapObject *> * MapElevation::objects()
+std::vector<MapObject *> * MapElevation::objects()
 {
     return _objects;
+}
+
+std::vector<unsigned short> * MapElevation::floorTiles()
+{
+    return _floorTiles;
+}
+
+std::vector<unsigned short> * MapElevation::roofTiles()
+{
+    return _roofTiles;
 }
 
 }

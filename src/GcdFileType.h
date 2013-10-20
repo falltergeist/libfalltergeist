@@ -37,120 +37,118 @@ protected:
     DatFileItem * _datFileItem;
 
     // unknown
-    unsigned int
-                _unknown1,
-                _unknown2,
-                _unknown3,
-                _unknown4,
-                _unknown5,
-                _unknown6,
-                _unknown7;
+    unsigned int _unknown1,
+                 _unknown2,
+                 _unknown3,
+                 _unknown4,
+                 _unknown5,
+                 _unknown6,
+                 _unknown7;
     // primary stats
-    unsigned int
-                _strength,
-                _perception,
-                _endurance,
-                _charisma,
-                _intelligence,
-                _agility,
-                _luck;
+    unsigned int _strength,
+                 _perception,
+                 _endurance,
+                 _charisma,
+                 _intelligence,
+                 _agility,
+                 _luck;
     // secondary stats
-    unsigned int
-                _hitPoints,
-                _actionPoints,
-                _armorClass;
+    unsigned int _hitPoints,
+                 _actionPoints,
+                 _armorClass;
     //unsigned int unknown;
-    unsigned int
-                _meleeDamage,
-                _carryWeight,
-                _sequence,
-                _healingRate,
-                _criticalChance,
-                _criticalHitModifier,
-                _damageThresholdNormal,
-                _damageThresholdLaser,
-                _damageThresholdFire,
-                _damageThresholdPlasma,
-                _damageThresholdElectrical,
-                _damageThresholdEMP,
-                _damageThresholdExplosive,
-                _damageResistanceNormal,
-                _damageResistanceLaser,
-                _damageResistanceFire,
-                _damageResistancePlasma,
-                _damageResistanceElectrical,
-                _damageResistanceEMP,
-                _damageResistanceExplosive,
-                _radiationResistance,
-                _poisonResistance,
-                _age,
-                _gender;
+    unsigned int _meleeDamage,
+                 _carryWeight,
+                 _sequence,
+                 _healingRate,
+                 _criticalChance,
+                 _criticalHitModifier,
+                 _damageThresholdNormal,
+                 _damageThresholdLaser,
+                 _damageThresholdFire,
+                 _damageThresholdPlasma,
+                 _damageThresholdElectrical,
+                 _damageThresholdEMP,
+                 _damageThresholdExplosive,
+                 _damageResistanceNormal,
+                 _damageResistanceLaser,
+                 _damageResistanceFire,
+                 _damageResistancePlasma,
+                 _damageResistanceElectrical,
+                 _damageResistanceEMP,
+                 _damageResistanceExplosive,
+                 _radiationResistance,
+                 _poisonResistance,
+                 _age,
+                 _gender;
     // bonuses to primary stats
-    unsigned int _strengthBonus;
-    unsigned int _perceptionBonus;
-    unsigned int _enduranceBonus;
-    unsigned int _charismaBonus;
-    unsigned int _intelligenceBonus;
-    unsigned int _agilityBonus;
-    unsigned int _luckBonus;
+    unsigned int _strengthBonus,
+                 _perceptionBonus,
+                 _enduranceBonus,
+                 _charismaBonus,
+                 _intelligenceBonus,
+                 _agilityBonus,
+                 _luckBonus;
     // bonuses to secondaty stats
-    unsigned int _hitPointsBonus;
-    unsigned int _actionPointsBonus;
-    unsigned int _armorClassBonus;
+    unsigned int _hitPointsBonus,
+                 _actionPointsBonus,
+                 _armorClassBonus;
     //unsigned int unknownBonus;
-    unsigned int _meleeDamageBonus;
-    unsigned int _carryWeightBonus;
-    unsigned int _sequenceBonus;
-    unsigned int _healingRateBonus;
-    unsigned int _criticalChanceBonus;
-    unsigned int _criticalHitModifierBonus;
-    unsigned int _damageThresholdNormalBonus;
-    unsigned int _damageThresholdLaserBonus;
-    unsigned int _damageThresholdFireBonus;
-    unsigned int _damageThresholdPlasmaBonus;
-    unsigned int _damageThresholdElectricalBonus;
-    unsigned int _damageThresholdEMPBonus;
-    unsigned int _damageThresholdExplosiveBonus;
-    unsigned int _damageResistanceNormalBonus;
-    unsigned int _damageResistanceLaserBonus;
-    unsigned int _damageResistanceFireBonus;
-    unsigned int _damageResistancePlasmaBonus;
-    unsigned int _damageResistanceElectricalBonus;
-    unsigned int _damageResistanceEMPBonus;
-    unsigned int _damageResistanceExplosiveBonus;
-    unsigned int _radiationResistanceBonus;
-    unsigned int _poisonResistanceBonus;
-    unsigned int _ageBonus;
-    unsigned int _genderBonus;
+    unsigned int _meleeDamageBonus,
+                 _carryWeightBonus,
+                 _sequenceBonus,
+                 _healingRateBonus,
+                 _criticalChanceBonus,
+                 _criticalHitModifierBonus,
+                 _damageThresholdNormalBonus,
+                 _damageThresholdLaserBonus,
+                 _damageThresholdFireBonus,
+                 _damageThresholdPlasmaBonus,
+                 _damageThresholdElectricalBonus,
+                 _damageThresholdEMPBonus,
+                 _damageThresholdExplosiveBonus,
+                 _damageResistanceNormalBonus,
+                 _damageResistanceLaserBonus,
+                 _damageResistanceFireBonus,
+                 _damageResistancePlasmaBonus,
+                 _damageResistanceElectricalBonus,
+                 _damageResistanceEMPBonus,
+                 _damageResistanceExplosiveBonus,
+                 _radiationResistanceBonus,
+                 _poisonResistanceBonus,
+                 _ageBonus,
+                 _genderBonus;
     //skills
-    unsigned int _smallGunsSkill;
-    unsigned int _bigGunsSkill;
-    unsigned int _energyWeaponsSkill;
-    unsigned int _unarmedSkill;
-    unsigned int _meleeWeaponsSkill;
-    unsigned int _throwingWeaponsSkill;
-    unsigned int _firstAidSkill;
-    unsigned int _doctorSkill;
-    unsigned int _sneakSkill;
-    unsigned int _lockpickSkill;
-    unsigned int _stealSkill;
-    unsigned int _trapsSkill;
-    unsigned int _scienceSkill;
-    unsigned int _repairSkill;
-    unsigned int _speechSkill;
-    unsigned int _barterSkill;
-    unsigned int _gamblingSkill;
-    unsigned int _outdoorsmanSkill;
+    unsigned int _smallGunsSkill,
+                 _bigGunsSkill,
+                 _energyWeaponsSkill,
+                 _unarmedSkill,
+                 _meleeWeaponsSkill,
+                 _throwingWeaponsSkill,
+                 _firstAidSkill,
+                 _doctorSkill,
+                 _sneakSkill,
+                 _lockpickSkill,
+                 _stealSkill,
+                 _trapsSkill,
+                 _scienceSkill,
+                 _repairSkill,
+                 _speechSkill,
+                 _barterSkill,
+                 _gamblingSkill,
+                 _outdoorsmanSkill;
 
     std::string _name;
 
-    int _firstTaggedSkill;
-    int _secondTaggedSkill;
-    int _thirdTaggedSkill;
-    int _fourthTaggedSkill;
-    int _firstTrait;
-    int _secondTrait;
+    int _firstTaggedSkill,
+        _secondTaggedSkill,
+        _thirdTaggedSkill,
+        _fourthTaggedSkill,
+        _firstTrait,
+        _secondTrait;
+
     unsigned int _characterPoints;
+
 public:
     GcdFileType(DatFileItem * datFileItem);
     ~GcdFileType();

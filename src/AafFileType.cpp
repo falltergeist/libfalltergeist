@@ -57,28 +57,29 @@ void AafFileType::open()
 
     item >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
 
-    unsigned int * _dataOffsets = new unsigned int[256];
+    std::vector<unsigned int> * dataOffsets = new std::vector<unsigned int>(256);
 
     // glyphs descriptions
     for (unsigned int i = 0; i != 256; ++i)
     {
         unsigned short width, height;
-        unsigned int dataOffset;
         item >> width
              >> height
-             >> dataOffset;
-        _dataOffsets[i] = dataOffset;
+             >> dataOffsets->at(i);
         _glyphs->push_back(new AafGlyph(width, height));
     }
 
-    //glyphs data
+    // glyphs data
     for (unsigned int i = 0; i != 256; ++i)
     {
-        item.setPosition(0x080C + _dataOffsets[i]);
-        item.readBytes(_glyphs->at(i)->data(), _glyphs->at(i)->width()*_glyphs->at(i)->height());
+        item.setPosition(0x080C + dataOffsets->at(i));
+        for (unsigned int j = 0; j != _glyphs->at(i)->width()*_glyphs->at(i)->height(); ++j)
+        {
+            item >> _glyphs->at(i)->data()->at(j);
+        }
     }
 
-    delete [] _dataOffsets;
+    delete dataOffsets;
 }
 
 DatFileItem * AafFileType::datFileItem()

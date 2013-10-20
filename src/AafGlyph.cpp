@@ -31,12 +31,12 @@ AafGlyph::AafGlyph(unsigned short width, unsigned short height)
 {
     _height = height;
     _width = width;
-    _data = new char[width*height]();
+    _data = new std::vector<unsigned char>(width*height);
 }
 
 AafGlyph::~AafGlyph()
 {
-    delete [] _data;
+    delete _data;
 }
 
 unsigned short AafGlyph::height()
@@ -59,7 +59,7 @@ void AafGlyph::setWidth(unsigned short width)
     _width = width;
 }
 
-char * AafGlyph::data()
+std::vector<unsigned char> * AafGlyph::data()
 {
     return _data;
 }

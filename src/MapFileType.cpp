@@ -83,8 +83,8 @@ void MapFileType::open()
 
         for (unsigned int i = 0; i < 10000; i++)
         {
-            item >> _elevations->back()->roofTiles[i];
-            item >>_elevations->back()->floorTiles[i];
+            item >> _elevations->back()->roofTiles()->at(i);
+            item >> _elevations->back()->floorTiles()->at(i);
         }
     }
     // SCRIPTS SECTION

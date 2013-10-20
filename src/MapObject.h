@@ -32,35 +32,35 @@ namespace libfalltergeist
 class MapObject
 {
 protected:
-    unsigned int _unknown1;
-             int _hexPosition;
-    unsigned int _unknown2;
-    unsigned int _unknown3;
-    unsigned int _unknown4;
-    unsigned int _unknown5;
-    unsigned int _frameNumber;
-    unsigned int _orientation;
-    unsigned int _frmTypeId;
-    unsigned int _frmId;
-    unsigned int _unknown6;
-    unsigned int _elevation;
-    unsigned int _objectTypeId;
-    unsigned int _objectId;
-    unsigned int _objectSubtypeId;
-    unsigned int _objectID1;
-    unsigned int _objectID2;
-    unsigned int _objectID3;
-    unsigned int _unknown7;
-    unsigned int _unknown8;
-    unsigned int _unknown9;
-    unsigned int _unknown10;
-             int _scriptTypeId;
-    unsigned int _scriptId;
-             int _mapScriptId;
-    unsigned int _inventorySize;
-    unsigned int _unknown11;
-    unsigned int _unknown12;
-    unsigned int _unknown13;
+    unsigned int _unknown1,
+                 _unknown2,
+                 _unknown3,
+                 _unknown4,
+                 _unknown5,
+                 _frameNumber,
+                 _orientation,
+                 _frmTypeId,
+                 _frmId,
+                 _unknown6,
+                 _elevation,
+                 _objectTypeId,
+                 _objectId,
+                 _objectSubtypeId,
+                 _objectID1,
+                 _objectID2,
+                 _objectID3,
+                 _unknown7,
+                 _unknown8,
+                 _unknown9,
+                 _unknown10,
+                 _scriptId,
+                 _inventorySize,
+                 _unknown11,
+                 _unknown12,
+                 _unknown13;
+    int _mapScriptId,
+        _scriptTypeId,
+        _hexPosition;
 public:
     MapObject();
     ~MapObject();

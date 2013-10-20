@@ -21,7 +21,7 @@
 #define LIBFALLTERGEIST_MAPELEVATION_H
 
 // C++ standard includes
-#include <list>
+#include <vector>
 
 // libfalltergeist includes
 
@@ -34,13 +34,15 @@ class MapObject;
 class MapElevation
 {
 protected:
+    std::vector<unsigned short> * _floorTiles;
+    std::vector<unsigned short> * _roofTiles;
+    std::vector<MapObject *> * _objects;
 public:
-    unsigned short floorTiles[10000];
-    unsigned short roofTiles[10000];
-    std::list<MapObject *> * _objects;
+    std::vector<MapObject *> * objects();
+    std::vector<unsigned short> * floorTiles();
+    std::vector<unsigned short> * roofTiles();
     MapElevation();
     ~MapElevation();
-    std::list<MapObject *> * objects();
 };
 
 }
