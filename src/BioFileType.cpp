@@ -45,12 +45,13 @@ DatFileItem * BioFileType::datFileItem()
 void BioFileType::open()
 {
     DatFileItem &item = *datFileItem();
-
-    char * text = new char[item.size() + 1]();
     item.setPosition(0);
-    item.readBytes(text, item.size());
-    _text += text;
-    delete [] text;
+    for (unsigned int i = 0; i != item.size(); ++i)
+    {
+        unsigned char ch;
+        item >> ch;
+        _text += ch;
+    }
 }
 
 std::string BioFileType::text()
