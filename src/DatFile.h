@@ -32,6 +32,7 @@
 namespace libfalltergeist
 {
 class DatFileItem;
+class DatFileEntry;
 
 class DatFile
 {
@@ -47,7 +48,6 @@ public:
     std::string pathToFile();
 
     bool open(const std::string pathToFile);
-    bool close(void);
     bool isOpened();
     void readBytes(char * destination, unsigned int numberOfBytes);
     void skipBytes(unsigned int numberOfBytes);
@@ -65,7 +65,7 @@ public:
     DatFile& operator>>(unsigned short &value);
     DatFile& operator>>(char &value);
     DatFile& operator>>(unsigned char &value);
-    DatFile& operator>>(DatFileItem &item);
+    DatFile& operator>>(DatFileEntry &entry);
 
     DatFileItem * item(std::string filename);
 

@@ -18,6 +18,7 @@
  */
 
 // C++ standard includes
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/MapFileType.h"
@@ -90,7 +91,8 @@ void MapFileType::open()
     // SCRIPTS SECTION
     for (unsigned int i = 0; i < 5; i++)
     {
-        short count = datFileItem()->readInt32();
+        unsigned int count;
+        item >> count;
         if (count > 0)
         {
             short loop = count;
@@ -100,9 +102,9 @@ void MapFileType::open()
             for (unsigned short j = 0; j < loop; j++)
             {
                 {
-                    unsigned int PID = datFileItem()->readUint8();
-                    datFileItem()->skipBytes(3);
-                    switch (PID)
+                    unsigned int PID;
+                    item >> PID;
+                    switch ((PID & 0xFF000000) >> 24)
                     {
                         case 1:
                             datFileItem()->skipBytes(17*4);
@@ -117,10 +119,11 @@ void MapFileType::open()
                 }
                 if ((j % 16) == 15)
                 {
-                    unsigned int v = datFileItem()->readUint32();
+                    unsigned int v;
+                    item >> v;
                     check += v;
 
-                    datFileItem()->readInt32();
+                    datFileItem()->skipBytes(4);
                 }
              }
              if (check != count)
@@ -132,11 +135,13 @@ void MapFileType::open()
     }
 
     //OBJECTS
-    int objectsTotal = datFileItem()->readInt32();
+    int objectsTotal;
+    item >> objectsTotal;
 
     for (unsigned int i = 0; i != elevations; ++i)
     {
-        unsigned int objectsOnElevation = datFileItem()->readUint32();
+        unsigned int objectsOnElevation;
+        item >> objectsOnElevation;
         for (unsigned int j = 0; j != objectsOnElevation; ++j)
         {
             MapObject * object = _readObject();
@@ -153,7 +158,7 @@ void MapFileType::open()
                 {
 
                     datFileItem()->skipBytes(4);  // items count ?
-                    MapObject * obj = _readObject();
+                    MapObject * subobject = _readObject();
 
                 }
 
@@ -168,36 +173,63 @@ MapObject * MapFileType::_readObject()
 {
     MapObject * object = new MapObject();
 
-    object->setUnknown1( datFileItem()->readUint32() );
-    object->setHexPosition( datFileItem()->readInt32() );
-    object->setUnknown2( datFileItem()->readUint32() );
-    object->setUnknown3( datFileItem()->readUint32() );
-    object->setUnknown4( datFileItem()->readUint32() );
-    object->setUnknown5( datFileItem()->readUint32() );
-    object->setFrameNumber( datFileItem()->readUint32() );
-    object->setOrientation( datFileItem()->readUint32() );
-    unsigned int FID = datFileItem()->readUint32();
+    DatFileItem& item = *datFileItem();
+
+    unsigned int uint32;
+    int int32;
+
+    item >> uint32;
+    object->setUnknown1( uint32 );
+    item >> int32;
+    object->setHexPosition( int32 );
+    item >> uint32;
+    object->setUnknown2( uint32 );
+    item >> uint32;
+    object->setUnknown3( uint32 );
+    item >> uint32;
+    object->setUnknown4( uint32 );
+    item >> uint32;
+    object->setUnknown5( uint32 );
+    item >> uint32;
+    object->setFrameNumber( uint32 );
+    item >> uint32;
+    object->setOrientation( uint32 );
+    unsigned int FID;
+    item >> FID;
     object->setFrmTypeId( FID >> 24 );
     object->setFrmId( 0x00FFFFFF & FID );
-    object->setUnknown6( datFileItem()->readUint32() );
-    object->setElevation( datFileItem()->readUint32() );
-    unsigned int PID = datFileItem()->readInt32();
+    item >> uint32;
+    object->setUnknown6( uint32 );
+    item >> uint32;
+    object->setElevation( uint32 );
+    unsigned int PID;
+    item >> PID;
     object->setObjectTypeId( PID >> 24 );
     object->setObjectId( 0x00FFFFFF & PID);
-    object->setUnknown7( datFileItem()->readUint32() );
-    object->setUnknown8( datFileItem()->readUint32() );
-    object->setUnknown9( datFileItem()->readUint32() );
-    object->setUnknown10( datFileItem()->readUint32() );
-    unsigned int SID = datFileItem()->readInt32();
+    item >> uint32;
+    object->setUnknown7( uint32 );
+    item >> uint32;
+    object->setUnknown8( uint32 );
+    item >> uint32;
+    object->setUnknown9( uint32 );
+    item >> uint32;
+    object->setUnknown10( uint32 );
+    unsigned int SID;
+    item >> SID;
     object->setScriptTypeId(SID >> 24);
     object->setScriptId( 0x00FFFFFF & SID);
-    object->setMapScriptId( datFileItem()->readInt32() );
-    object->setInventorySize( datFileItem()->readUint32() );
-    object->setUnknown11( datFileItem()->readUint32() );
-    object->setUnknown12( datFileItem()->readUint32() );
-    object->setUnknown13( datFileItem()->readUint32() );
+    item >> int32;
+    object->setMapScriptId( int32 );
+    item >> uint32;
+    object->setInventorySize( uint32 );
+    item >> uint32;
+    object->setUnknown11( uint32 );
+    item >> uint32;
+    object->setUnknown12( uint32 );
+    item >> uint32;
+    object->setUnknown13( uint32 );
 
-    ProFileType * pr ;
+    //ProFileType * pr ;
 
     switch (object->objectTypeId())
     {

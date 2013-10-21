@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <string>
+#include <fstream>
 
 // libfalltergeist includes
 #include "../src/MapFileType.h"
@@ -40,8 +41,9 @@ class MsgFileType;
 class MapFileType;
 class PalFileType;
 class ProFileType;
+class DatFileEntry;
 
-class DatFileItem
+class DatFileItem: public std::streambuf
 {
 protected:
     AafFileType * _asAaf;
@@ -54,57 +56,40 @@ protected:
     PalFileType * _asPal;
     ProFileType * _asPro;
 
-    DatFile * _datFile; // DAT file object
     std::string _filename; // filename with path (path/to/file.ext)
-    unsigned int _dataOffset; // data offset in the DAT file
-    unsigned int _unpackedSize; // unpacked data size
-    unsigned int _packedSize; // packed data size
-    bool _compressed; // is packed?
-    unsigned char * _data;
-    unsigned int _position;
-    bool _opened;
+
+    DatFileEntry * _datFileEntry;
+    std::ifstream * _stream;
+
+
+    char * _buffer;
+    int _size;
+
+    bool _initialized;
+    void _initialize();
+
 public:
 
-    DatFileItem(DatFile * datFile);
-    ~DatFileItem();
+    virtual std::streambuf::int_type underflow();
+    //virtual std::streampos seekpos(std::streampos sp, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out);
+    //virtual std::streambuf::int_type overflow(std::streambuf::int_type value);
+    //virtual int sync();
 
-    DatFile * datFile();
+    //DatFileItem(DatFile * datFile);
+    DatFileItem(std::ifstream * stream);
+    DatFileItem(DatFileEntry * datFileEntry);
+    ~DatFileItem();
 
     void setFilename(const std::string filename);
     std::string filename();
-
-    void setDataOffset(unsigned int offset);
-    unsigned int dataOffset();
-
-    void setUnpackedSize(unsigned int size);
-    unsigned int unpackedSize();
-
-    void setPackedSize(unsigned int size);
-    unsigned int packedSize();
-
-    void setCompressed(bool compressed);
-    bool compressed();
 
     unsigned int size();
 
     void setPosition(unsigned int position);
     unsigned int position();
 
-    void setData(char * data);
-    char * getData();
-
-    unsigned int readUint32();
-    int readInt32();
-    unsigned short readUint16();
-    short readInt16();
-    unsigned char readUint8();
-    char readInt8();
-    void readBytes(char * destination, unsigned int numberOfBytes);
+    void readBytes(char * destination, unsigned int size);
     void skipBytes(unsigned int numberOfBytes);
-    void open();
-    bool isOpened();
-    void isOpened(bool val);
-    void close();
 
     DatFileItem& operator>>(unsigned int &value);
     DatFileItem& operator>>(int &value);

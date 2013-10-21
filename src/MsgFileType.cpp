@@ -51,13 +51,16 @@ void MsgFileType::open()
 {
     _messages = new std::vector<MsgMessage *>;
 
-    datFileItem()->setPosition(0);
+    DatFileItem& item = *datFileItem();
+
+    item.setPosition(0);
 
     unsigned int i = 0;
     unsigned char chr = 0;
     while (chr != '{' && i < datFileItem()->size())
     {
-        chr = datFileItem()->readUint8(); i++;
+        item >> chr;
+        i++;
         if (chr == '{')
         {
             std::string number = "";
@@ -67,31 +70,36 @@ void MsgFileType::open()
             // number
             while (chr != '}')
             {
-                chr = datFileItem()->readUint8(); i++;
+                item >> chr;
+                i++;
                 if (chr != '}') number += chr;
             }
 
             // sound
             while (chr != '{')
             {
-                chr = datFileItem()->readUint8(); i++;
+                item >> chr;
+                i++;
             }
 
             while (chr != '}')
             {
-                chr = datFileItem()->readUint8(); i++;
+                item >> chr;
+                i++;
                 if (chr != '}') sound += chr;
             }
 
             // text
             while (chr != '{')
             {
-                chr = datFileItem()->readUint8(); i++;
+                item >> chr;
+                i++;
             }
 
             while (chr != '}')
             {
-                chr = datFileItem()->readUint8(); i++;
+                item >> chr;
+                i++;
                 if (chr != '}') text += chr;
             }
 

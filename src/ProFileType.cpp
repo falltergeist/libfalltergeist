@@ -49,18 +49,21 @@ DatFileItem * ProFileType::datFileItem()
 
 void ProFileType::open()
 {
-    datFileItem()->setPosition(0);
+    DatFileItem& item = *datFileItem();
+    item.setPosition(0);
 
-    unsigned int PID = datFileItem()->readUint32();
+    unsigned int PID;
+    item >> PID;
 
     _objectTypeId = (PID & 0x0F000000) >> 28;
     _objectId = PID & 0x00000FFF;
 
 
-    _messageId = datFileItem()->readUint32();
+    item >> _messageId;
 
 
-    unsigned int FID = datFileItem()->readUint32();
+    unsigned int FID;
+    item >> FID;
 
     _frmTypeId = (FID & 0x0F000000) >> 28;
     _frmOffset = (FID & 0x00FF0000) >> 16;
@@ -71,29 +74,30 @@ void ProFileType::open()
     switch (_objectTypeId)
     {
         case TYPE_ITEM:
-            _lightDistance = datFileItem()->readUint32();
-            _lightIntencity = datFileItem()->readUint32();
+        {
+            item >> _lightDistance >> _lightIntencity;
 
-            _flags = datFileItem()->readUint32();
-            _flagsExt = datFileItem()->readUint32();
+            item >> _flags >> _flagsExt;
 
-            _scriptTypeId = datFileItem()->readUint8();
-            datFileItem()->skipBytes(1);
-            _scriptId = datFileItem()->readUint16();
+            unsigned int SID;
+            item >> SID;
+            _scriptTypeId = (SID & 0xFF000000) >> 24;
+            _scriptId = SID & 0x0000FFFF;
 
-            _objectSubtypeId = datFileItem()->readUint32();
+            item >> _objectSubtypeId;
 
-            _materialId = datFileItem()->readUint32();
-            _containerSize = datFileItem()->readUint32();
+            item >> _materialId;
+            item >> _containerSize;
 
-            _weight = datFileItem()->readUint32();
-            _basePrice = datFileItem()->readUint32();
+            item >> _weight ;
+            item >> _basePrice;
 
-            _inventoryFrmTypeId = datFileItem()->readUint8();
-            datFileItem()->skipBytes(1);
-            _inventoryFrmTypeId = datFileItem()->readUint16();
+            unsigned int FID;
+            item >> FID;
+            _inventoryFrmTypeId = (FID & 0xFF000000) >> 24;
+            _inventoryFrmTypeId = FID & 0x00FFFF;
 
-            _soundId = datFileItem()->readUint8();
+            item >> _soundId;
 
             switch (_objectSubtypeId)
             {
@@ -133,71 +137,75 @@ void ProFileType::open()
                     break;
             }
             break;
+        }
         case TYPE_CRITTER:
-            _lightDistance = datFileItem()->readUint32();
-            _lightIntencity = datFileItem()->readUint32();
+        {
+            item >> _lightDistance >> _lightIntencity;
 
-            _flags = datFileItem()->readUint32();
-            _flagsExt = datFileItem()->readUint32();
+            item >> _flags >> _flagsExt;
 
-            _scriptTypeId = datFileItem()->readUint8();
-            datFileItem()->skipBytes(1);
-            _scriptId = datFileItem()->readUint16();
+            unsigned int SID;
+            item >> SID;
+            _scriptTypeId = (SID & 0xFF000000) >> 24;
+            _scriptId = SID & 0x0000FFFF;
 
-            _headFrmTypeId = datFileItem()->readUint8();
-            datFileItem()->skipBytes(1);
-            _headFrmId = datFileItem()->readUint16();
-
+            unsigned int FID;
+            _headFrmTypeId = (FID & 0xFF000000) >> 24;
+            _headFrmId = FID & 0x0000FFFF;
 
             // more ...
 
             break;
+        }
         case TYPE_SCENERY:
-            _lightDistance = datFileItem()->readUint32();
-            _lightIntencity = datFileItem()->readUint32();
+        {
+            item >> _lightDistance >> _lightIntencity;
 
-            _flags = datFileItem()->readUint32();
-            _flagsExt = datFileItem()->readUint32();
+            item >> _flags >> _flagsExt;
 
-            _scriptTypeId = datFileItem()->readUint8();
-            datFileItem()->skipBytes(1);
-            _scriptId = datFileItem()->readUint16();
+            unsigned int SID;
+            item >> SID;
+            _scriptTypeId = (SID & 0xFF000000) >> 24;
+            _scriptId = SID & 0x0000FFFF;
 
-            _objectSubtypeId = datFileItem()->readUint32();
+            item >> _objectSubtypeId;
 
-            _materialId = datFileItem()->readUint32();
+            item >> _materialId;
 
-            _soundId = datFileItem()->readUint8();
+            item >> _soundId;
 
             break;
+        }
         case TYPE_WALL:
-            _lightDistance = datFileItem()->readUint32();
-            _lightIntencity = datFileItem()->readUint32();
+        {
+            item >> _lightDistance >> _lightIntencity;
 
-            _flags = datFileItem()->readUint32();
-            _flagsExt = datFileItem()->readUint32();
+            item >> _flags >> _flagsExt;
 
-            _scriptTypeId = datFileItem()->readUint8();
-            datFileItem()->skipBytes(1);
-            _scriptId = datFileItem()->readUint16();
+            unsigned int SID;
+            item >> SID;
+            _scriptTypeId = (SID & 0xFF000000) >> 24;
+            _scriptId = SID & 0x0000FFFF;
 
-            _materialId = datFileItem()->readUint32();
+            item >> _materialId;
             break;
+        }
         case TYPE_TILE:
-            _flags = datFileItem()->readUint32();
-            _flagsExt = datFileItem()->readUint32();
+        {
+            item >> _flags >> _flagsExt;
 
-            datFileItem()->skipBytes(4); //unknown
+            item.skipBytes(4); //unknown
 
-            _materialId = datFileItem()->readUint32();
+            item >> _materialId;
             break;
+        }
         case TYPE_MISC:
-            _lightDistance = datFileItem()->readUint32();
-            _lightIntencity = datFileItem()->readUint32();
+        {
+            item >> _lightDistance >> _lightIntencity;
 
-            _flags = datFileItem()->readUint32();
-            _flagsExt = datFileItem()->readUint32();
+            item >> _flags >> _flagsExt;
             break;
+        }
     }
 }
 

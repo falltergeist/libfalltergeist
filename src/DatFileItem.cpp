@@ -20,9 +20,11 @@
 // C++ standard includes
 #include <string.h> // for memcpy
 #include <algorithm>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 #include "../src/DatFile.h"
 #include "../src/FrmFileType.h"
 #include "../src/PalFileType.h"
@@ -41,7 +43,7 @@
 namespace libfalltergeist
 {
 
-DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
+/*DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
 {
     _asAaf = NULL;
     _asBio = NULL;
@@ -59,7 +61,114 @@ DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
     _compressed = false;
     _opened = false;
     _position = 0;
+
+    _buffer = 0;
+    //
+}*/
+
+DatFileItem::DatFileItem(std::ifstream * stream)
+{
+    _asAaf = 0;
+    _asBio = 0;
+    _asFrm = 0;
+    _asGcd = 0;
+    _asLst = 0;
+    _asMap = 0;
+    _asMsg = 0;
+    _asPal = 0;
+    _asPro = 0;
+
+    _buffer = 0;
+    _initialized = false;
+    _stream = stream;
+    _datFileEntry = 0;
 }
+
+
+DatFileItem::DatFileItem(DatFileEntry * datFileEntry)
+{
+    _asAaf = 0;
+    _asBio = 0;
+    _asFrm = 0;
+    _asGcd = 0;
+    _asLst = 0;
+    _asMap = 0;
+    _asMsg = 0;
+    _asPal = 0;
+    _asPro = 0;
+
+    _buffer = 0;
+    _initialized = false;
+    _stream = 0;
+    _datFileEntry = datFileEntry;
+
+    setFilename(datFileEntry->filename());
+
+
+}
+
+void DatFileItem::_initialize()
+{
+    if (_initialized) return;
+
+    _initialized = true;
+
+    if (_stream != 0)
+    {
+        _stream->seekg(0, std::ios::end);
+        _size = _stream->tellg();
+        _stream->seekg(0, std::ios::beg);
+
+        _buffer = new char[_size];
+        _stream->readsome(_buffer, _size);
+        _stream->close();
+        setg(_buffer, _buffer, _buffer + _size);
+        return;
+    }
+
+    if (_datFileEntry != 0)
+    {
+        _buffer = new char[_datFileEntry->unpackedSize()];
+        _size = _datFileEntry->unpackedSize();
+
+        DatFile * datFile = _datFileEntry->datFile();
+        unsigned int oldPos = datFile->position();
+        datFile->setPosition(_datFileEntry->dataOffset());
+
+        if (_datFileEntry->compressed())
+        {
+            char * packedData = new char[_datFileEntry->packedSize()]();
+            datFile->readBytes(packedData, _datFileEntry->packedSize());
+
+            // unpacking
+            z_stream zStream;
+            zStream.total_in  = zStream.avail_in  = _datFileEntry->packedSize();
+            zStream.avail_in = _datFileEntry->packedSize();
+            zStream.next_in  = (unsigned char *)packedData;
+            zStream.total_out = zStream.avail_out = _size;
+            zStream.next_out = (unsigned char *)_buffer;
+            zStream.zalloc = Z_NULL;
+            zStream.zfree = Z_NULL;
+            zStream.opaque = Z_NULL;
+            inflateInit( &zStream );            // zlib function
+            inflate( &zStream, Z_FINISH );      // zlib function
+            inflateEnd( &zStream );             // zlib function
+
+            delete [] packedData;
+        }
+        else
+        {
+            // just copying from dat file
+            datFile->readBytes(_buffer, _size);
+        }
+
+        datFile->setPosition(oldPos);
+        setg(_buffer, _buffer, _buffer + _size);
+        return;
+
+    }
+}
+
 
 DatFileItem::~DatFileItem()
 {
@@ -72,12 +181,23 @@ DatFileItem::~DatFileItem()
     delete _asMsg;
     delete _asPal;
     delete _asPro;
-    delete [] _data;
+
+    delete [] _buffer;
 }
 
-DatFile * DatFileItem::datFile()
+unsigned int DatFileItem::size()
 {
-    return _datFile;
+    return _size;
+}
+
+std::streambuf::int_type DatFileItem::underflow()
+{
+    _initialize();
+    if (gptr() == egptr())
+    {
+        return traits_type::eof();
+    }
+    return traits_type::to_int_type(*gptr());
 }
 
 void DatFileItem::setFilename(const std::string filename)
@@ -94,183 +214,36 @@ std::string DatFileItem::filename()
     return _filename;
 }
 
-unsigned int DatFileItem::dataOffset()
+void DatFileItem::setPosition(unsigned int pos)
 {
-    return _dataOffset;
-}
-
-void DatFileItem::setDataOffset(unsigned int offset)
-{
-    _dataOffset = offset;
-}
-
-unsigned int DatFileItem::unpackedSize()
-{
-    return _unpackedSize;
-}
-
-void DatFileItem::setUnpackedSize(unsigned int size)
-{
-    _unpackedSize = size;
-}
-
-unsigned int DatFileItem::packedSize()
-{
-    return _packedSize;
-}
-
-void DatFileItem::setPackedSize(unsigned int size)
-{
-    _packedSize = size;
-}
-
-void DatFileItem::setCompressed(bool compressed)
-{
-    _compressed = compressed;
-}
-
-bool DatFileItem::compressed()
-{
-    return _compressed;
-}
-
-char * DatFileItem::getData()
-{
-    open();
-    return (char * )_data;
-}
-
-void DatFileItem::setData(char * data)
-{
-    _data = (unsigned char *) data;
-}
-
-unsigned int DatFileItem::readUint32()
-{
-    open();
-    unsigned int pos = this->position();
-    unsigned int value = (_data[pos] << 24)| (_data[pos+ 1] << 16) | (_data[pos + 2] << 8) | _data[pos + 3];
-    setPosition(pos + 4);
-    return value;
-}
-
-int DatFileItem::readInt32()
-{
-    return (int) readUint32();
-}
-
-unsigned short DatFileItem::readUint16()
-{
-    open();
-    unsigned int pos = this->position();
-    unsigned short value = (_data[pos] << 8) | _data[pos+ 1];
-    setPosition(pos + 2);
-    return value;
-}
-
-short DatFileItem::readInt16()
-{
-    return (signed short) readUint16();
-}
-
-unsigned char DatFileItem::readUint8()
-{
-    open();
-    unsigned int pos = this->position();
-    unsigned char value = _data[pos];
-    setPosition(pos + 1);
-    return value;
-}
-
-char DatFileItem::readInt8()
-{
-    return (char) readUint8();
-}
-
-unsigned int DatFileItem::size()
-{
-    return unpackedSize();
-}
-
-void DatFileItem::setPosition(unsigned int position)
-{
-    _position = position;
+    _initialize();
+    setg(_buffer, _buffer + pos, _buffer + _size);
 }
 
 unsigned int DatFileItem::position()
 {
-    return _position;
-}
-
-void DatFileItem::open()
-{
-    if (isOpened()) return;
-
-    _data = new unsigned char[unpackedSize()]();
-    _datFile->setPosition(dataOffset());
-
-    if (compressed())
-    {
-        char * packedData = new char[packedSize()]();
-        _datFile->readBytes(packedData, packedSize());
-
-        // unpacking
-        z_stream zStream;
-        zStream.total_in  = zStream.avail_in  = packedSize();
-        zStream.avail_in = packedSize();
-        zStream.next_in  = (unsigned char *) packedData;
-        zStream.total_out = zStream.avail_out = unpackedSize();
-        zStream.next_out = (unsigned char *) _data;
-        zStream.zalloc = Z_NULL;
-        zStream.zfree = Z_NULL;
-        zStream.opaque = Z_NULL;
-        inflateInit( &zStream );            // zlib function
-        inflate( &zStream, Z_FINISH );      // zlib function
-        inflateEnd( &zStream );             // zlib function
-
-        delete [] packedData;
-    }
-    else
-    {
-        // just copying from dat file
-        _datFile->readBytes((char *)_data, unpackedSize());
-    }
-    _opened = true;
+    _initialize();
+    return gptr() - eback();
 }
 
 void DatFileItem::skipBytes(unsigned int numberOfBytes)
 {
-    setPosition(position() + numberOfBytes);
+    _initialize();
+    setg(_buffer, gptr() + numberOfBytes, _buffer + _size);
 }
 
-void DatFileItem::readBytes(char * destination, unsigned int numberOfBytes)
+void DatFileItem::readBytes(char * destination, unsigned int size)
 {
-    open();
-    memcpy(destination, _data + position(), numberOfBytes);
-    setPosition(position() + numberOfBytes);
+    _initialize();
+    sgetn(destination, size);
 }
 
-bool DatFileItem::isOpened()
-{
-    return _opened;
-}
-
-void DatFileItem::isOpened(bool val)
-{
-    _opened = val;
-}
-
-void DatFileItem::close()
-{
-    if (!isOpened()) return;
-    delete [] _data;
-    _opened = false;
-}
 
 DatFileItem& DatFileItem::operator>>(unsigned int &value)
 {
+    _initialize();
     char * buff = reinterpret_cast<char *>(&value);
-    readBytes(buff, sizeof(value));
+    sgetn(buff, sizeof(value));
     std::reverse(buff, buff + sizeof(value));
     return *this;
 }
@@ -282,8 +255,9 @@ DatFileItem& DatFileItem::operator>>(int &value)
 
 DatFileItem& DatFileItem::operator>>(unsigned short &value)
 {
+    _initialize();
     char * buff = reinterpret_cast<char *>(&value);
-    readBytes(buff, sizeof(value));
+    sgetn(buff, sizeof(value));
     std::reverse(buff, buff + sizeof(value));
     return *this;
 }
@@ -295,7 +269,8 @@ DatFileItem& DatFileItem::operator>>(short &value)
 
 DatFileItem& DatFileItem::operator>>(unsigned char &value)
 {
-    readBytes(reinterpret_cast<char *>(&value), sizeof(value));
+    _initialize();
+    sgetn(reinterpret_cast<char *>(&value), sizeof(value));
     return *this;
 }
 

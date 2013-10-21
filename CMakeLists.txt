@@ -32,6 +32,7 @@ set(SOURCES libfalltergeist.cpp
             src/AafGlyph.cpp
             src/BioFileType.cpp
             src/DatFile.cpp
+            src/DatFileEntry.cpp
             src/DatFileItem.cpp
             src/Exception.cpp
             src/FonFileType.cpp
@@ -55,6 +56,7 @@ set(HEADERS libfalltergeist.h
             src/AafGlyph.h
             src/BioFileType.h
             src/DatFile.h
+            src/DatFileEntry.h
             src/DatFileItem.h
             src/Exception.h
             src/FonFileType.h

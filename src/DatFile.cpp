@@ -19,10 +19,12 @@
 
 // C++ standard includes
 #include <algorithm>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/DatFile.h"
 #include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 #include "../src/Exception.h"
 
 // Third party includes
@@ -77,22 +79,6 @@ bool DatFile::isOpened()
     return false;
 }
 
-bool DatFile::close()
-{
-    if (_stream && _stream->is_open())
-    {
-        _stream->close();
-        if (_stream->is_open())
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-    return false;
-}
 
 void DatFile::setPosition(unsigned int position)
 {
@@ -130,9 +116,11 @@ std::vector<DatFileItem *> * DatFile::items()
 {
     if (!isOpened()) return 0;
 
+
     // if items are not fetched yet
     if (_items == 0)
     {
+        unsigned int oldPos = position();
         _items = new std::vector<DatFileItem *>;
 
         unsigned int datFileSize;
@@ -140,7 +128,7 @@ std::vector<DatFileItem *> * DatFile::items()
         unsigned int filesTotalNumber;
 
         // reading data size from dat file
-        setPosition(size() - 4);        
+        setPosition(size() - 4);
         *this >> datFileSize;
         if (datFileSize != size())
         {
@@ -154,15 +142,18 @@ std::vector<DatFileItem *> * DatFile::items()
         setPosition(size() - filesTreeSize - 8);
         *this >> filesTotalNumber;
 
+
         //reading files data one by one
         for (unsigned int i = 0; i != filesTotalNumber; ++i)
         {
-            DatFileItem * item = new DatFileItem(this);
+            DatFileEntry * entry = new DatFileEntry(this);
 
-            *this >> *item;
+            *this >> *entry;
 
+            DatFileItem * item = new DatFileItem(entry);
             _items->push_back(item);
         }
+        setPosition(oldPos);
     }
     return _items;
 }
@@ -174,8 +165,11 @@ DatFileItem * DatFile::item(const std::string filename)
     std::replace(name.begin(),name.end(),'\\','/');
     std::transform(name.begin(),name.end(),name.begin(), ::tolower);
     std::vector<DatFileItem *>::iterator it;
+
+
     for (it = this->items()->begin(); it != this->items()->end(); ++it)
     {
+        //std::cout << (*it)->filename() << std::endl;
         if (name.compare((*it)->filename()) == 0)
         {
             return *it;
@@ -217,7 +211,7 @@ DatFile& DatFile::operator>>(unsigned char &value)
     return *this >> (char&) value;
 }
 
-DatFile& DatFile::operator>>(DatFileItem& item)
+DatFile& DatFile::operator>>(DatFileEntry& entry)
 {
     unsigned int filenameSize;
     unsigned char compressed;
@@ -229,15 +223,15 @@ DatFile& DatFile::operator>>(DatFileItem& item)
 
     char * filename = new char[filenameSize + 1]();
     readBytes(filename, filenameSize);
-    item.setFilename(filename);
+    entry.setFilename(filename);
     delete [] filename;
 
     *this >> compressed >> unpackedSize >> packedSize >> dataOffset;
 
-    item.setCompressed((bool) compressed);
-    item.setUnpackedSize(unpackedSize);
-    item.setPackedSize(packedSize);
-    item.setDataOffset(dataOffset);
+    entry.setCompressed((bool) compressed);
+    entry.setUnpackedSize(unpackedSize);
+    entry.setPackedSize(packedSize);
+    entry.setDataOffset(dataOffset);
 
     return *this;
 }

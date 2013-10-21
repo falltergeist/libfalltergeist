@@ -19,6 +19,7 @@
 
 // C++ standard includes
 #include <algorithm>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/LstFileType.h"
@@ -31,7 +32,7 @@ namespace libfalltergeist
 
 LstFileType::LstFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
-    _strings = 0;
+    _strings = new std::vector<std::string>;
     open();
 }
 
@@ -48,8 +49,6 @@ DatFileItem * LstFileType::datFileItem()
 void LstFileType::open()
 {
     DatFileItem &item = *datFileItem();
-
-    _strings = new std::vector<std::string>;
 
     item.setPosition(0);
 

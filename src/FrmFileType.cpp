@@ -18,6 +18,7 @@
  */
 
 // C++ standard includes
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/FrmFileType.h"
@@ -48,9 +49,11 @@ DatFileItem * FrmFileType::datFileItem()
 
 void FrmFileType::open()
 {
-    DatFileItem &item = *datFileItem();
+    DatFileItem &item = * datFileItem();
     // initialization
-    item.setPosition(0);
+    //item.setPosition(0);
+
+    item.pubseekpos(0);
 
     // Frm file version
     item >> _version;
@@ -63,6 +66,8 @@ void FrmFileType::open()
 
     // Frames per one direction
     item >> _framesPerDirection;
+
+
 
     // directions data...
 
@@ -88,40 +93,53 @@ void FrmFileType::open()
     // Data offset
     for (unsigned int i = 0; i != 6; ++i)
     {
-        directions()->at(i)->setDataOffset(_datFileItem->readUint32());
+        unsigned int offset;
+        item >> offset;
+        directions()->at(i)->setDataOffset(offset);
     }
 
     // for each direction
     for (unsigned int i = 0; i!= 6; ++i)
     {
         // jump to frames data at frames area
-        _datFileItem->setPosition(directions()->at(i)->dataOffset() + 62);
+        item.setPosition(directions()->at(i)->dataOffset() + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
         {
             FrmFrame * frame = new FrmFrame();
 
+            unsigned short width, height;
+
+            item >> width >> height;
+
             // Frame width
-            frame->setWidth(_datFileItem->readUint16());
+            frame->setWidth(width);
 
             // Frame height
-            frame->setHeight(_datFileItem->readUint16());
+            frame->setHeight(height);
 
             //Number of pixels for this frame
 
-            unsigned int dataSize = _datFileItem->readUint32();
+            unsigned int dataSize;
+            item >> dataSize;
+
+            short offsetX, offsetY;
+            item >> offsetX >> offsetY;
 
             // X offset
-            frame->setOffsetX((signed short) _datFileItem->readInt16());
+            frame->setOffsetX(offsetX);
 
             // Y offset
-            frame->setOffsetY((signed short) _datFileItem->readInt16());
+            frame->setOffsetY(offsetY);
+
 
             for (unsigned int n = 0; n != dataSize; ++n)
             {
                 // Pixel color index
-                frame->colorIndexes()->push_back(_datFileItem->readUint8());
+                unsigned char color;
+                item >> color;
+                frame->colorIndexes()->push_back(color);
             }
             // Appending frame to direction
             directions()->at(i)->frames()->push_back(frame);

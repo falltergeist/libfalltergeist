@@ -18,6 +18,7 @@
  */
 
 // C++ standard includes
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/PalFileType.h"
@@ -31,7 +32,7 @@ namespace libfalltergeist
 
 PalFileType::PalFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
 {
-    _colors = 0;
+    _colors = new std::vector<PalColor *>(256);
     open();
 }
 
@@ -47,20 +48,17 @@ DatFileItem * PalFileType::datFileItem()
 
 void PalFileType::open()
 {
-    _datFileItem->setPosition(0);
-    _colors = new std::vector<PalColor *>;
+    DatFileItem& item = *datFileItem();
 
     // zero color (transparent)
-    _colors->push_back(new PalColor(0,0,0,0));
-    _datFileItem->skipBytes(3);
+    _colors->at(0) = new PalColor(0, 0, 0, 0);
+    item.setPosition(3);
 
     for (unsigned int i = 1; i != 256; ++i)
     {
-        unsigned char r = _datFileItem->readUint8();
-        unsigned char g = _datFileItem->readUint8();
-        unsigned char b = _datFileItem->readUint8();        
-
-        _colors->push_back(new PalColor(r,g,b));
+        unsigned char r, g, b;
+        item >> r >> g >> b;
+        _colors->at(i) = new PalColor(r, g, b);
     }
 }
 

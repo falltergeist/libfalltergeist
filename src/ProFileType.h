@@ -65,7 +65,7 @@ protected:
     unsigned int _inventoryFrmTypeId;
     unsigned int _inventoryFrmId;
 
-    unsigned int _soundId;
+    unsigned char _soundId;
 
 
 public:
