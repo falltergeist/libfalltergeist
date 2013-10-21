@@ -23,7 +23,7 @@
 
 // libfalltergeist includes
 #include "../src/MsgFileType.h"
-#include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 #include "../src/MsgMessage.h"
 
 // Third party includes
@@ -31,35 +31,42 @@
 namespace libfalltergeist
 {
 
-MsgFileType::MsgFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+MsgFileType::MsgFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
     _messages = 0;
-    open();
+}
+
+MsgFileType::MsgFileType(std::ifstream * stream) : DatFileItem(stream)
+{
+    _messages = 0;
 }
 
 MsgFileType::~MsgFileType()
 {
-    while(!_messages->empty())
+    if (_messages != 0)
     {
-        delete _messages->back();
-        _messages->pop_back();
+        while(!_messages->empty())
+        {
+            delete _messages->back();
+            _messages->pop_back();
+        }
+        delete _messages;
     }
-    delete _messages;
 }
 
-void MsgFileType::open()
+void MsgFileType::_initialize()
 {
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
+
     _messages = new std::vector<MsgMessage *>;
-
-    DatFileItem& item = *datFileItem();
-
-    item.setPosition(0);
 
     unsigned int i = 0;
     unsigned char chr = 0;
-    while (chr != '{' && i < datFileItem()->size())
+    while (chr != '{' && i < this->size())
     {
-        item >> chr;
+        *this >> chr;
         i++;
         if (chr == '{')
         {
@@ -70,7 +77,7 @@ void MsgFileType::open()
             // number
             while (chr != '}')
             {
-                item >> chr;
+                *this >> chr;
                 i++;
                 if (chr != '}') number += chr;
             }
@@ -78,13 +85,13 @@ void MsgFileType::open()
             // sound
             while (chr != '{')
             {
-                item >> chr;
+                *this >> chr;
                 i++;
             }
 
             while (chr != '}')
             {
-                item >> chr;
+                *this >> chr;
                 i++;
                 if (chr != '}') sound += chr;
             }
@@ -92,13 +99,13 @@ void MsgFileType::open()
             // text
             while (chr != '{')
             {
-                item >> chr;
+                *this >> chr;
                 i++;
             }
 
             while (chr != '}')
             {
-                item >> chr;
+                *this >> chr;
                 i++;
                 if (chr != '}') text += chr;
             }
@@ -112,18 +119,15 @@ void MsgFileType::open()
     }
 }
 
-DatFileItem * MsgFileType::datFileItem()
-{
-    return _datFileItem;
-}
-
 std::vector<MsgMessage *> * MsgFileType::messages()
 {
+    _initialize();
     return _messages;
 }
 
 MsgMessage * MsgFileType::message(unsigned int number)
 {
+    _initialize();
     std::vector<MsgMessage *>::iterator it;
     for (it = this->messages()->begin(); it != this->messages()->end(); ++it)
     {
@@ -133,7 +137,6 @@ MsgMessage * MsgFileType::message(unsigned int number)
         }
     }
     return 0;
-
 }
 
 }

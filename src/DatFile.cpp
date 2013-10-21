@@ -19,13 +19,20 @@
 
 // C++ standard includes
 #include <algorithm>
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/DatFile.h"
 #include "../src/DatFileItem.h"
 #include "../src/DatFileEntry.h"
 #include "../src/Exception.h"
+#include "../src/AafFileType.h"
+#include "../src/BioFileType.h"
+#include "../src/FrmFileType.h"
+#include "../src/GcdFileType.h"
+#include "../src/MsgFileType.h"
+#include "../src/LstFileType.h"
+#include "../src/PalFileType.h"
+#include "../src/ProFileType.h"
 
 // Third party includes
 
@@ -150,7 +157,19 @@ std::vector<DatFileItem *> * DatFile::items()
 
             *this >> *entry;
 
-            DatFileItem * item = new DatFileItem(entry);
+            std::string extension = entry->filename().substr(entry->filename().length() - 3, 3);
+
+            DatFileItem * item;
+                 if (extension == "aaf") item = new AafFileType(entry);
+            else if (extension == "bio") item = new BioFileType(entry);
+            else if (extension == "frm") item = new FrmFileType(entry);
+            else if (extension == "gcd") item = new GcdFileType(entry);
+            else if (extension == "lst") item = new LstFileType(entry);
+            else if (extension == "msg") item = new MsgFileType(entry);
+            else if (extension == "pal") item = new PalFileType(entry);
+            else if (extension == "pro") item = new ProFileType(entry);
+            else item = new DatFileItem(entry);
+
             _items->push_back(item);
         }
         setPosition(oldPos);

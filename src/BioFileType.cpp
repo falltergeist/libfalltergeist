@@ -21,41 +21,42 @@
 
 // libfalltergeist includes
 #include "../src/BioFileType.h"
-#include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-BioFileType::BioFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+BioFileType::BioFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    open();
+}
+
+BioFileType::BioFileType(std::ifstream * stream) : DatFileItem(stream)
+{
 }
 
 BioFileType::~BioFileType()
 {
 }
 
-DatFileItem * BioFileType::datFileItem()
+void BioFileType::_initialize()
 {
-    return _datFileItem;
-}
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
-void BioFileType::open()
-{
-    DatFileItem &item = *datFileItem();
-    item.setPosition(0);
-    for (unsigned int i = 0; i != item.size(); ++i)
+    for (unsigned int i = 0; i != this->size(); ++i)
     {
         unsigned char ch;
-        item >> ch;
+        *this >> ch;
         _text += ch;
     }
 }
 
 std::string BioFileType::text()
 {
+    _initialize();
     return _text;
 }
 

@@ -24,25 +24,23 @@
 #include <string>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 
-class BioFileType
+class BioFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
     std::string _text;
+    void _initialize();
 public:
-    BioFileType(DatFileItem * datFileItem);
+    BioFileType(DatFileEntry * datFileEntry);
+    BioFileType(std::ifstream * stream);
     ~BioFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();
 
     std::string text();
 };

@@ -22,33 +22,32 @@
 
 // C++ standard includes
 #include <vector>
+#include <fstream>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
 class AafGlyph;
+class DatFileEntry;
 
-class AafFileType
+class AafFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
     std::vector<AafGlyph *> * _glyphs;
     unsigned int _signature;
     unsigned short _maximumHeight;
     unsigned short _horizontalGap;
     unsigned short _spaceWidth;
     unsigned short _verticalGap;
+    virtual void _initialize();
 public:
-    AafFileType(DatFileItem * datFileItem);
+    AafFileType(DatFileEntry * datFileEntry);
+    AafFileType(std::ifstream * stream);
     ~AafFileType();
-
-    void open();
-
-    DatFileItem * datFileItem();
 
     std::vector<AafGlyph *> * glyphs();
 

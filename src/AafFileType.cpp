@@ -23,39 +23,47 @@
 #include "../src/AafFileType.h"
 #include "../src/AafGlyph.h"
 #include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-AafFileType::AafFileType(DatFileItem * datFileItem): _datFileItem(datFileItem)
+AafFileType::AafFileType(DatFileEntry * datFileEntry): DatFileItem(datFileEntry)
 {
     _glyphs = 0;
-    open();
+}
+
+AafFileType::AafFileType(std::ifstream * stream): DatFileItem(stream)
+{
+    _glyphs = 0;
 }
 
 AafFileType::~AafFileType()
 {
-    while(!_glyphs->empty())
+    if (_glyphs != 0)
     {
-        delete _glyphs->back();
-        _glyphs->pop_back();
+        while(!_glyphs->empty())
+        {
+            delete _glyphs->back();
+            _glyphs->pop_back();
+        }
+        delete _glyphs;
     }
-    delete _glyphs;
+
 }
 
-void AafFileType::open()
+void AafFileType::_initialize()
 {
-    DatFileItem &item = *datFileItem();
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
     _glyphs = new std::vector<AafGlyph *>;
 
-    item.setPosition(0);
 
-    item >> _signature; // "AAFF" Signature
-
-    item >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
+    *this >> _signature >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
 
     std::vector<unsigned int> * dataOffsets = new std::vector<unsigned int>(256);
 
@@ -63,37 +71,32 @@ void AafFileType::open()
     for (unsigned int i = 0; i != 256; ++i)
     {
         unsigned short width, height;
-        item >> width
-             >> height
-             >> dataOffsets->at(i);
+        *this >> width >> height >> dataOffsets->at(i);
         _glyphs->push_back(new AafGlyph(width, height));
     }
 
     // glyphs data
     for (unsigned int i = 0; i != 256; ++i)
     {
-        item.setPosition(0x080C + dataOffsets->at(i));
+        setPosition(0x080C + dataOffsets->at(i));
         for (unsigned int j = 0; j != _glyphs->at(i)->width()*_glyphs->at(i)->height(); ++j)
         {
-            item >> _glyphs->at(i)->data()->at(j);
+            *this >> _glyphs->at(i)->data()->at(j);
         }
     }
 
     delete dataOffsets;
 }
 
-DatFileItem * AafFileType::datFileItem()
-{
-    return _datFileItem;
-}
-
 std::vector<AafGlyph *> * AafFileType::glyphs()
 {
+    _initialize();
     return _glyphs;
 }
 
 unsigned short AafFileType::horizontalGap()
 {
+    _initialize();
     return _horizontalGap;
 }
 
@@ -104,6 +107,7 @@ void AafFileType::setHorizontalGap(unsigned short gap)
 
 unsigned short AafFileType::maximumHeight()
 {
+    _initialize();
     return _maximumHeight;
 }
 
@@ -114,6 +118,7 @@ void AafFileType::setMaximumHeight(unsigned short height)
 
 unsigned short AafFileType::spaceWidth()
 {
+    _initialize();
     return _spaceWidth;
 }
 
@@ -124,6 +129,7 @@ void AafFileType::setSpaceWidth(unsigned short width)
 
 unsigned short AafFileType::verticalGap()
 {
+    _initialize();
     return _verticalGap;
 }
 

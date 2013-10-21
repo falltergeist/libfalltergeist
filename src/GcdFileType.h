@@ -24,18 +24,17 @@
 #include <string>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 
-class GcdFileType
+class GcdFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
-
     // unknown
     unsigned int _unknown1,
                  _unknown2,
@@ -149,13 +148,11 @@ protected:
 
     unsigned int _characterPoints;
 
+    virtual void _initialize();
 public:
-    GcdFileType(DatFileItem * datFileItem);
+    GcdFileType(DatFileEntry * datFileEntry);
+    GcdFileType(std::ifstream * stream);
     ~GcdFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();
 
     // primary stats
     void setStrength(unsigned int strength);

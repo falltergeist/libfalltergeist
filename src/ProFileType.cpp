@@ -21,83 +21,71 @@
 
 // libfalltergeist includes
 #include "../src/ProFileType.h"
-#include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-ProFileType::ProFileType(DatFileItem * datFileItem)
+ProFileType::ProFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    _datFileItem = datFileItem;
+}
 
-    _objectSubtypeId = 0;
-
-    open();
+ProFileType::ProFileType(std::ifstream * stream) : DatFileItem(stream)
+{
 }
 
 ProFileType::~ProFileType()
 {
 }
 
-
-DatFileItem * ProFileType::datFileItem()
+void ProFileType::_initialize()
 {
-    return _datFileItem;
-}
-
-void ProFileType::open()
-{
-    DatFileItem& item = *datFileItem();
-    item.setPosition(0);
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
     unsigned int PID;
-    item >> PID;
+    unsigned int FID;
+
+    *this >> PID >> _messageId >> FID;
 
     _objectTypeId = (PID & 0x0F000000) >> 28;
     _objectId = PID & 0x00000FFF;
-
-
-    item >> _messageId;
-
-
-    unsigned int FID;
-    item >> FID;
 
     _frmTypeId = (FID & 0x0F000000) >> 28;
     _frmOffset = (FID & 0x00FF0000) >> 16;
 
     _frmId = FID & 0x0000FFFF;
 
-
     switch (_objectTypeId)
     {
         case TYPE_ITEM:
         {
-            item >> _lightDistance >> _lightIntencity;
+            *this >> _lightDistance >> _lightIntencity;
 
-            item >> _flags >> _flagsExt;
+            *this >> _flags >> _flagsExt;
 
             unsigned int SID;
-            item >> SID;
+            *this >> SID;
             _scriptTypeId = (SID & 0xFF000000) >> 24;
             _scriptId = SID & 0x0000FFFF;
 
-            item >> _objectSubtypeId;
+            *this >> _objectSubtypeId;
 
-            item >> _materialId;
-            item >> _containerSize;
+            *this >> _materialId;
+            *this >> _containerSize;
 
-            item >> _weight ;
-            item >> _basePrice;
+            *this >> _weight ;
+            *this >> _basePrice;
 
             unsigned int FID;
-            item >> FID;
+            *this >> FID;
             _inventoryFrmTypeId = (FID & 0xFF000000) >> 24;
             _inventoryFrmTypeId = FID & 0x00FFFF;
 
-            item >> _soundId;
+            *this >> _soundId;
 
             switch (_objectSubtypeId)
             {
@@ -140,12 +128,12 @@ void ProFileType::open()
         }
         case TYPE_CRITTER:
         {
-            item >> _lightDistance >> _lightIntencity;
+            *this >> _lightDistance >> _lightIntencity;
 
-            item >> _flags >> _flagsExt;
+            *this >> _flags >> _flagsExt;
 
             unsigned int SID;
-            item >> SID;
+            *this >> SID;
             _scriptTypeId = (SID & 0xFF000000) >> 24;
             _scriptId = SID & 0x0000FFFF;
 
@@ -159,51 +147,51 @@ void ProFileType::open()
         }
         case TYPE_SCENERY:
         {
-            item >> _lightDistance >> _lightIntencity;
+            *this >> _lightDistance >> _lightIntencity;
 
-            item >> _flags >> _flagsExt;
+            *this >> _flags >> _flagsExt;
 
             unsigned int SID;
-            item >> SID;
+            *this >> SID;
             _scriptTypeId = (SID & 0xFF000000) >> 24;
             _scriptId = SID & 0x0000FFFF;
 
-            item >> _objectSubtypeId;
+            *this >> _objectSubtypeId;
 
-            item >> _materialId;
+            *this >> _materialId;
 
-            item >> _soundId;
+            *this >> _soundId;
 
             break;
         }
         case TYPE_WALL:
         {
-            item >> _lightDistance >> _lightIntencity;
+            *this >> _lightDistance >> _lightIntencity;
 
-            item >> _flags >> _flagsExt;
+            *this >> _flags >> _flagsExt;
 
             unsigned int SID;
-            item >> SID;
+            *this >> SID;
             _scriptTypeId = (SID & 0xFF000000) >> 24;
             _scriptId = SID & 0x0000FFFF;
 
-            item >> _materialId;
+            *this >> _materialId;
             break;
         }
         case TYPE_TILE:
         {
-            item >> _flags >> _flagsExt;
+            *this >> _flags >> _flagsExt;
 
-            item.skipBytes(4); //unknown
+            this->skipBytes(4); //unknown
 
-            item >> _materialId;
+            *this >> _materialId;
             break;
         }
         case TYPE_MISC:
         {
-            item >> _lightDistance >> _lightIntencity;
+            *this >> _lightDistance >> _lightIntencity;
 
-            item >> _flags >> _flagsExt;
+            *this >> _flags >> _flagsExt;
             break;
         }
     }
@@ -211,26 +199,31 @@ void ProFileType::open()
 
 unsigned int ProFileType::objectTypeId()
 {
+    _initialize();
     return _objectTypeId;
 }
 
 unsigned int ProFileType::objectSubtypeId()
 {
+    _initialize();
     return _objectSubtypeId;
 }
 
 int ProFileType::frmOffset()
 {
+    _initialize();
     return _frmOffset;
 }
 
 unsigned int ProFileType::messageId()
 {
+    _initialize();
     return _messageId;
 }
 
 unsigned int ProFileType::flagsExt()
 {
+    _initialize();
     return _flagsExt;
 }
 

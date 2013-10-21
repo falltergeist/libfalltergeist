@@ -31,30 +31,13 @@
 
 namespace libfalltergeist
 {
-class AafFileType;
-class BioFileType;
-class DatFile;
-class FrmFileType;
-class GcdFileType;
-class LstFileType;
-class MsgFileType;
 class MapFileType;
-class PalFileType;
-class ProFileType;
 class DatFileEntry;
 
 class DatFileItem: public std::streambuf
 {
 protected:
-    AafFileType * _asAaf;
-    BioFileType * _asBio;
-    FrmFileType * _asFrm;
-    GcdFileType * _asGcd;
-    LstFileType * _asLst;
     MapFileType * _asMap;
-    MsgFileType * _asMsg;
-    PalFileType * _asPal;
-    ProFileType * _asPro;
 
     std::string _filename; // filename with path (path/to/file.ext)
 
@@ -66,19 +49,14 @@ protected:
     int _size;
 
     bool _initialized;
-    void _initialize();
+    virtual void _initialize();
 
 public:
-
-    virtual std::streambuf::int_type underflow();
-    //virtual std::streampos seekpos(std::streampos sp, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out);
-    //virtual std::streambuf::int_type overflow(std::streambuf::int_type value);
-    //virtual int sync();
-
-    //DatFileItem(DatFile * datFile);
     DatFileItem(std::ifstream * stream);
     DatFileItem(DatFileEntry * datFileEntry);
     ~DatFileItem();
+
+    virtual std::streambuf::int_type underflow();
 
     void setFilename(const std::string filename);
     std::string filename();
@@ -98,15 +76,7 @@ public:
     DatFileItem& operator>>(unsigned char &value);
     DatFileItem& operator>>(char &value);
 
-    FrmFileType * asFrmFileType();
-    PalFileType * asPalFileType();
-    LstFileType * asLstFileType();
-    AafFileType * asAafFileType();
     MapFileType * asMapFileType(ProFileTypeLoaderCallback callback);
-    MsgFileType * asMsgFileType();
-    BioFileType * asBioFileType();
-    GcdFileType * asGcdFileType();
-    ProFileType * asProFileType();
 
 };
 

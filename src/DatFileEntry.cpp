@@ -18,6 +18,7 @@
  */
 
 // C++ standard includes
+#include <algorithm>
 
 // libfalltergeist includes
 #include "../src/DatFileEntry.h"
@@ -44,6 +45,8 @@ std::string DatFileEntry::filename()
 
 void DatFileEntry::setFilename(std::string value)
 {
+    std::replace(value.begin(),value.end(),'\\','/');
+    std::transform(value.begin(),value.end(),value.begin(), ::tolower);
     _filename = value;
 }
 

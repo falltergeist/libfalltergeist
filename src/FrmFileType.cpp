@@ -18,23 +18,26 @@
  */
 
 // C++ standard includes
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/FrmFileType.h"
-#include "../src/DatFileItem.h"
-#include "../src/FrmDirection.h"
 #include "../src/FrmFrame.h"
+#include "../src/FrmDirection.h"
+#include "../src/DatFileEntry.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-FrmFileType::FrmFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+FrmFileType::FrmFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
     _directions = 0;
-    open();
+}
+
+FrmFileType::FrmFileType(std::ifstream * stream) : DatFileItem(stream)
+{
+    _directions = 0;
 }
 
 FrmFileType::~FrmFileType()
@@ -42,67 +45,48 @@ FrmFileType::~FrmFileType()
     delete _directions;
 }
 
-DatFileItem * FrmFileType::datFileItem()
+void FrmFileType::_initialize()
 {
-    return _datFileItem;
-}
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
-void FrmFileType::open()
-{
-    DatFileItem &item = * datFileItem();
-    // initialization
-    //item.setPosition(0);
-
-    item.pubseekpos(0);
-
-    // Frm file version
-    item >> _version;
-
-    // Frames per second rate
-    item >> _framesPerSecond;
-
-    // Frame number on which action is occurs
-    item >> _actionFrame;
-
-    // Frames per one direction
-    item >> _framesPerDirection;
-
-
-
-    // directions data...
+    *this >> _version >> _framesPerSecond >> _actionFrame >> _framesPerDirection;
 
     // X shift
     unsigned short shift;
     FrmDirection * direction;
 
+    _directions = new std::vector<FrmDirection *>;
+
     for (unsigned int i = 0; i != 6; ++i)
     {
         direction = new FrmDirection();
-        item >> shift;
+        *this >> shift;
         direction->setShiftX(shift);
-        directions()->push_back(direction);
+        _directions->push_back(direction);
     }
 
     // Y shift
     for (unsigned int i = 0; i != 6; ++i)
     {
-        item >> shift;
-        directions()->at(i)->setShiftY(shift);
+        *this >> shift;
+        _directions->at(i)->setShiftY(shift);
     }
 
     // Data offset
     for (unsigned int i = 0; i != 6; ++i)
     {
         unsigned int offset;
-        item >> offset;
-        directions()->at(i)->setDataOffset(offset);
+        *this >> offset;
+        _directions->at(i)->setDataOffset(offset);
     }
 
     // for each direction
     for (unsigned int i = 0; i!= 6; ++i)
     {
         // jump to frames data at frames area
-        item.setPosition(directions()->at(i)->dataOffset() + 62);
+        DatFileItem::setPosition(_directions->at(i)->dataOffset() + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
@@ -111,7 +95,7 @@ void FrmFileType::open()
 
             unsigned short width, height;
 
-            item >> width >> height;
+            *this >> width >> height;
 
             // Frame width
             frame->setWidth(width);
@@ -120,12 +104,11 @@ void FrmFileType::open()
             frame->setHeight(height);
 
             //Number of pixels for this frame
-
             unsigned int dataSize;
-            item >> dataSize;
+            *this >> dataSize;
 
             short offsetX, offsetY;
-            item >> offsetX >> offsetY;
+            *this >> offsetX >> offsetY;
 
             // X offset
             frame->setOffsetX(offsetX);
@@ -138,11 +121,11 @@ void FrmFileType::open()
             {
                 // Pixel color index
                 unsigned char color;
-                item >> color;
+                *this >> color;
                 frame->colorIndexes()->push_back(color);
             }
             // Appending frame to direction
-            directions()->at(i)->frames()->push_back(frame);
+            _directions->at(i)->frames()->push_back(frame);
         }
 
     }
@@ -151,6 +134,7 @@ void FrmFileType::open()
 
 unsigned int FrmFileType::version()
 {
+    _initialize();
     return _version;
 }
 
@@ -161,6 +145,7 @@ void FrmFileType::setVersion(unsigned int version)
 
 unsigned short FrmFileType::framesPerSecond()
 {
+    _initialize();
     return _framesPerSecond;
 }
 
@@ -171,6 +156,7 @@ void FrmFileType::setFramesPerSecond(unsigned short fps)
 
 unsigned short FrmFileType::framesPerDirection()
 {
+    _initialize();
     return _framesPerDirection;
 }
 
@@ -181,6 +167,7 @@ void FrmFileType::setFramesPerDirection(unsigned short fpd)
 
 unsigned short FrmFileType::actionFrame()
 {
+    _initialize();
     return _actionFrame;
 }
 
@@ -191,8 +178,7 @@ void FrmFileType::setActionFrame(unsigned short number)
 
 std::vector<FrmDirection *> * FrmFileType::directions()
 {
-    if (_directions != 0) return _directions;
-    _directions = new std::vector<FrmDirection *>;
+    _initialize();
     return _directions;
 }
 

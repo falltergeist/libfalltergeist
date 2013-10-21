@@ -25,25 +25,23 @@
 #include <vector>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 
-class LstFileType
+class LstFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
     std::vector<std::string> * _strings;
+    virtual void _initialize();
 public:
-    LstFileType(DatFileItem * datFileItem);
+    LstFileType(DatFileEntry * datFileEntry);
+    LstFileType(std::ifstream * stream);
     ~LstFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();
 
     std::vector<std::string> * strings();
 };

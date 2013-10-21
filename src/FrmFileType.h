@@ -24,34 +24,30 @@
 #include <vector>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 class FrmDirection;
 
-class FrmFileType
+class FrmFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
     std::vector<FrmDirection *> * _directions;
-    unsigned int _version; // FRM file version
-    unsigned short _framesPerSecond; // Animation frame rate
-    unsigned short _framesPerDirection; // Frames per direction
-    unsigned short _actionFrame; // Number of frame on which action is occurs
+    unsigned int _version;
+    unsigned short _framesPerSecond,
+                   _framesPerDirection,
+                   _actionFrame;
+    virtual void _initialize();
 public:
-
-
     enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_BACKGROUND, TYPE_INTERFACE, TYPE_INVENTORY };
 
-    FrmFileType(DatFileItem * datFileItem);
+    FrmFileType(DatFileEntry * datFileEntry);
+    FrmFileType(std::ifstream * stream);
     ~FrmFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();
 
     void setVersion(unsigned int version);
     unsigned int version();

@@ -22,7 +22,7 @@
 
 // libfalltergeist includes
 #include "../src/PalFileType.h"
-#include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 #include "../src/PalColor.h"
 
 // Third party includes
@@ -30,10 +30,14 @@
 namespace libfalltergeist
 {
 
-PalFileType::PalFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+PalFileType::PalFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    _colors = new std::vector<PalColor *>(256);
-    open();
+    _colors = 0;
+}
+
+PalFileType::PalFileType(std::ifstream * stream) : DatFileItem(stream)
+{
+    _colors = 0;
 }
 
 PalFileType::~PalFileType()
@@ -41,34 +45,32 @@ PalFileType::~PalFileType()
     delete _colors;
 }
 
-DatFileItem * PalFileType::datFileItem()
+void PalFileType::_initialize()
 {
-    return _datFileItem;
-}
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(3);
 
-void PalFileType::open()
-{
-    DatFileItem& item = *datFileItem();
-
-    // zero color (transparent)
-    _colors->at(0) = new PalColor(0, 0, 0, 0);
-    item.setPosition(3);
+    _colors = new std::vector<PalColor *>(256);
+    _colors->at(0) = new PalColor(0, 0, 0, 0); // zero color (transparent)
 
     for (unsigned int i = 1; i != 256; ++i)
     {
         unsigned char r, g, b;
-        item >> r >> g >> b;
+        *this >> r >> g >> b;
         _colors->at(i) = new PalColor(r, g, b);
     }
 }
 
 std::vector<PalColor *> * PalFileType::colors()
 {
+    _initialize();
     return _colors;
 }
 
 PalColor * PalFileType::color(unsigned char index)
 {
+    _initialize();
     return _colors->at(index);
 }
 

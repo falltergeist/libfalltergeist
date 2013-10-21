@@ -24,27 +24,24 @@
 #include <vector>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 class MsgMessage;
 
-class MsgFileType
+class MsgFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
     std::vector<MsgMessage *> * _messages;
-
+    virtual void _initialize();
 public:
-    MsgFileType(DatFileItem * datFileItem);
+    MsgFileType(DatFileEntry * datFileEntry);
+    MsgFileType(std::ifstream * stream);
     ~MsgFileType();
-
-    void open();
-
-    DatFileItem * datFileItem();
 
     std::vector<MsgMessage *> * messages();
 

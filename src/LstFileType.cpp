@@ -23,17 +23,21 @@
 
 // libfalltergeist includes
 #include "../src/LstFileType.h"
-#include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-LstFileType::LstFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+LstFileType::LstFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    _strings = new std::vector<std::string>;
-    open();
+    _strings = 0;
+}
+
+LstFileType::LstFileType(std::ifstream * stream) : DatFileItem(stream)
+{
+    _strings = 0;
 }
 
 LstFileType::~LstFileType()
@@ -41,22 +45,19 @@ LstFileType::~LstFileType()
     delete _strings;
 }
 
-DatFileItem * LstFileType::datFileItem()
+void LstFileType::_initialize()
 {
-    return _datFileItem;
-}
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
-void LstFileType::open()
-{
-    DatFileItem &item = *datFileItem();
-
-    item.setPosition(0);
+    _strings = new std::vector<std::string>;
 
     std::string line;
     unsigned char ch;
-    for(unsigned int i = 0; i != item.size(); ++i)
+    for(unsigned int i = 0; i != this->size(); ++i)
     {
-        item >> ch;
+        *this >> ch;
         if (ch != 0x0D && ch != 0x0A)
         {
             line += ch;
@@ -67,13 +68,14 @@ void LstFileType::open()
             _strings->push_back(line);
             line.clear();
             ++i;
-            item >> ch;
+            *this >> ch;
         }
     }
 }
 
 std::vector<std::string> * LstFileType::strings()
 {
+    _initialize();
     return _strings;
 }
 

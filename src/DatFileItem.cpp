@@ -20,21 +20,11 @@
 // C++ standard includes
 #include <string.h> // for memcpy
 #include <algorithm>
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
 #include "../src/DatFileEntry.h"
 #include "../src/DatFile.h"
-#include "../src/FrmFileType.h"
-#include "../src/PalFileType.h"
-#include "../src/ProFileType.h"
-#include "../src/LstFileType.h"
-#include "../src/AafFileType.h"
-#include "../src/MsgFileType.h"
-#include "../src/BioFileType.h"
-#include "../src/GcdFileType.h"
-#include "../src/ProFileType.h"
 
 // Third party includes
 #include "zlib.h"
@@ -43,40 +33,9 @@
 namespace libfalltergeist
 {
 
-/*DatFileItem::DatFileItem(DatFile * datFile): _datFile(datFile)
-{
-    _asAaf = NULL;
-    _asBio = NULL;
-    _asFrm = NULL;
-    _asGcd = NULL;
-    _asLst = NULL;
-    _asMap = NULL;
-    _asMsg = NULL;
-    _asPal = NULL;
-    _asPro = 0;
-    _data = NULL;
-    _dataOffset = 0;
-    _unpackedSize = 0;
-    _packedSize = 0;
-    _compressed = false;
-    _opened = false;
-    _position = 0;
-
-    _buffer = 0;
-    //
-}*/
-
 DatFileItem::DatFileItem(std::ifstream * stream)
 {
-    _asAaf = 0;
-    _asBio = 0;
-    _asFrm = 0;
-    _asGcd = 0;
-    _asLst = 0;
     _asMap = 0;
-    _asMsg = 0;
-    _asPal = 0;
-    _asPro = 0;
 
     _buffer = 0;
     _initialized = false;
@@ -87,15 +46,7 @@ DatFileItem::DatFileItem(std::ifstream * stream)
 
 DatFileItem::DatFileItem(DatFileEntry * datFileEntry)
 {
-    _asAaf = 0;
-    _asBio = 0;
-    _asFrm = 0;
-    _asGcd = 0;
-    _asLst = 0;
     _asMap = 0;
-    _asMsg = 0;
-    _asPal = 0;
-    _asPro = 0;
 
     _buffer = 0;
     _initialized = false;
@@ -172,15 +123,7 @@ void DatFileItem::_initialize()
 
 DatFileItem::~DatFileItem()
 {
-    delete _asAaf;
-    delete _asBio;
-    delete _asFrm;
-    delete _asGcd;
-    delete _asLst;
     delete _asMap;
-    delete _asMsg;
-    delete _asPal;
-    delete _asPro;
 
     delete [] _buffer;
 }
@@ -279,35 +222,6 @@ DatFileItem& DatFileItem::operator>>(char &value)
     return *this >> (unsigned char&) value;
 }
 
-
-FrmFileType * DatFileItem::asFrmFileType()
-{
-    if (_asFrm) return _asFrm;
-    _asFrm = new FrmFileType(this);
-    return _asFrm;
-}
-
-PalFileType * DatFileItem::asPalFileType()
-{
-    if (_asPal) return _asPal;
-    _asPal = new PalFileType(this);
-    return _asPal;
-}
-
-LstFileType * DatFileItem::asLstFileType()
-{
-    if (_asLst) return _asLst;
-    _asLst = new LstFileType(this);
-    return _asLst;
-}
-
-AafFileType * DatFileItem::asAafFileType()
-{
-    if (_asAaf) return _asAaf;
-    _asAaf = new AafFileType(this);
-    return _asAaf;
-}
-
 MapFileType * DatFileItem::asMapFileType(ProFileTypeLoaderCallback callback)
 {
     if (_asMap) return _asMap;
@@ -315,31 +229,4 @@ MapFileType * DatFileItem::asMapFileType(ProFileTypeLoaderCallback callback)
     return _asMap;
 }
 
-MsgFileType * DatFileItem::asMsgFileType()
-{
-    if (_asMsg) return _asMsg;
-    _asMsg = new MsgFileType(this);
-    return _asMsg;
-}
-
-BioFileType * DatFileItem::asBioFileType()
-{
-    if (_asBio) return _asBio;
-    _asBio = new BioFileType(this);
-    return _asBio;
-}
-
-GcdFileType * DatFileItem::asGcdFileType()
-{
-    if (_asGcd) return _asGcd;
-    _asGcd = new GcdFileType(this);
-    return _asGcd;
-}
-
-ProFileType * DatFileItem::asProFileType()
-{
-    if (_asPro) return _asPro;
-    _asPro = new ProFileType(this);
-    return _asPro;
-}
 }

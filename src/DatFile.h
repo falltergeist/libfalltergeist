@@ -69,7 +69,6 @@ public:
 
     DatFileItem * item(std::string filename);
 
-
 };
 
 }

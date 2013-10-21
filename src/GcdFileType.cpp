@@ -28,98 +28,97 @@
 namespace libfalltergeist
 {
 
-GcdFileType::GcdFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+GcdFileType::GcdFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    open();
+}
+
+GcdFileType::GcdFileType(std::ifstream * stream) : DatFileItem(stream)
+{
 }
 
 GcdFileType::~GcdFileType()
 {
 }
 
-void GcdFileType::open()
+void GcdFileType::_initialize()
 {
-    DatFileItem &item = *datFileItem();
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
-    item.setPosition(0);
     // unknown 1
-    item >> _unknown1;
+    *this >> _unknown1;
 
     // primary stats
-    item >> _strength >> _perception >> _endurance >> _charisma >> _intelligence >> _agility >> _luck;
+    *this >> _strength >> _perception >> _endurance >> _charisma >> _intelligence >> _agility >> _luck;
 
     // secondary stats
-    item >> _hitPoints >> _actionPoints >> _armorClass;
+    *this >> _hitPoints >> _actionPoints >> _armorClass;
 
     // unknown 2
-    item >> _unknown2;
+    *this >> _unknown2;
 
-    item >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier
-         >> _damageThresholdNormal >> _damageThresholdLaser >> _damageThresholdFire
-         >> _damageThresholdPlasma >> _damageThresholdElectrical >> _damageThresholdEMP >> _damageThresholdExplosive
-         >> _damageResistanceNormal >> _damageResistanceLaser >> _damageResistanceFire
-         >> _damageResistancePlasma >> _damageResistanceElectrical >> _damageResistanceEMP >> _damageResistanceExplosive
-         >> _radiationResistance >> _poisonResistance >> _age >> _gender;
+    *this >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier
+          >> _damageThresholdNormal >> _damageThresholdLaser >> _damageThresholdFire
+          >> _damageThresholdPlasma >> _damageThresholdElectrical >> _damageThresholdEMP >> _damageThresholdExplosive
+          >> _damageResistanceNormal >> _damageResistanceLaser >> _damageResistanceFire
+          >> _damageResistancePlasma >> _damageResistanceElectrical >> _damageResistanceEMP >> _damageResistanceExplosive
+          >> _radiationResistance >> _poisonResistance >> _age >> _gender;
 
     // bonuses to primary stats
-    item >> _strengthBonus >> _perceptionBonus >> _enduranceBonus >> _charismaBonus >> _intelligenceBonus
-         >> _agilityBonus >> _luckBonus;
+    *this >> _strengthBonus >> _perceptionBonus >> _enduranceBonus >> _charismaBonus >> _intelligenceBonus
+          >> _agilityBonus >> _luckBonus;
 
     // bonuses to secondary stats
-    item >> _hitPointsBonus >> _actionPointsBonus >> _armorClassBonus;
+    *this >> _hitPointsBonus >> _actionPointsBonus >> _armorClassBonus;
 
     // unknown 3
-    item >> _unknown3;
+    *this >> _unknown3;
 
-    item >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
-         >> _criticalChanceBonus >> _criticalHitModifierBonus
-         >> _damageThresholdNormalBonus >> _damageThresholdLaserBonus >> _damageThresholdFireBonus >> _damageThresholdPlasmaBonus
-         >> _damageThresholdElectricalBonus >> _damageThresholdEMPBonus >> _damageThresholdExplosiveBonus
-         >> _damageResistanceNormalBonus >> _damageResistanceLaserBonus >> _damageResistanceFireBonus >> _damageResistancePlasmaBonus
-         >> _damageResistanceElectricalBonus >> _damageResistanceEMPBonus >> _damageResistanceExplosiveBonus
-         >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
+    *this >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
+          >> _criticalChanceBonus >> _criticalHitModifierBonus
+          >> _damageThresholdNormalBonus >> _damageThresholdLaserBonus >> _damageThresholdFireBonus >> _damageThresholdPlasmaBonus
+          >> _damageThresholdElectricalBonus >> _damageThresholdEMPBonus >> _damageThresholdExplosiveBonus
+          >> _damageResistanceNormalBonus >> _damageResistanceLaserBonus >> _damageResistanceFireBonus >> _damageResistancePlasmaBonus
+          >> _damageResistanceElectricalBonus >> _damageResistanceEMPBonus >> _damageResistanceExplosiveBonus
+          >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
 
     //skills
-    item >> _smallGunsSkill
-         >> _bigGunsSkill
-         >> _energyWeaponsSkill
-         >> _unarmedSkill
-         >> _meleeWeaponsSkill
-         >> _throwingWeaponsSkill
-         >> _firstAidSkill
-         >> _doctorSkill
-         >> _sneakSkill
-         >> _lockpickSkill
-         >> _stealSkill
-         >> _trapsSkill
-         >> _scienceSkill
-         >> _repairSkill
-         >> _speechSkill
-         >> _barterSkill
-         >> _gamblingSkill
-         >> _outdoorsmanSkill;
+    *this >> _smallGunsSkill
+          >> _bigGunsSkill
+          >> _energyWeaponsSkill
+          >> _unarmedSkill
+          >> _meleeWeaponsSkill
+          >> _throwingWeaponsSkill
+          >> _firstAidSkill
+          >> _doctorSkill
+          >> _sneakSkill
+          >> _lockpickSkill
+          >> _stealSkill
+          >> _trapsSkill
+          >> _scienceSkill
+          >> _repairSkill
+          >> _speechSkill
+          >> _barterSkill
+          >> _gamblingSkill
+          >> _outdoorsmanSkill;
 
     // unknown
-    item >> _unknown4 >> _unknown5 >> _unknown6 >> _unknown7;
+    *this >> _unknown4 >> _unknown5 >> _unknown6 >> _unknown7;
 
     // name
     char * name = new char[32]();
-    item.readBytes(name, 32);
+    this->readBytes(name, 32);
     setName(name);
     delete [] name;
 
-    item >> _firstTaggedSkill
-         >> _secondTaggedSkill
-         >> _thirdTaggedSkill
-         >> _fourthTaggedSkill
-         >> _firstTrait
-         >> _secondTrait
-         >> _characterPoints;
-}
-
-DatFileItem * GcdFileType::datFileItem()
-{
-    return _datFileItem;
+    *this >> _firstTaggedSkill
+          >> _secondTaggedSkill
+          >> _thirdTaggedSkill
+          >> _fourthTaggedSkill
+          >> _firstTrait
+          >> _secondTrait
+          >> _characterPoints;
 }
 
 void GcdFileType::setStrength(unsigned int strength)
@@ -129,6 +128,7 @@ void GcdFileType::setStrength(unsigned int strength)
 
 unsigned int GcdFileType::strength()
 {
+    _initialize();
     return _strength;
 }
 
@@ -139,6 +139,7 @@ void GcdFileType::setPerception(unsigned int perception)
 
 unsigned int GcdFileType::perception()
 {
+    _initialize();
     return _perception;
 }
 
@@ -149,6 +150,7 @@ void GcdFileType::setEndurance(unsigned int endurance)
 
 unsigned int GcdFileType::endurance()
 {
+    _initialize();
     return _endurance;
 }
 
@@ -159,6 +161,7 @@ void GcdFileType::setCharisma(unsigned int charisma)
 
 unsigned int GcdFileType::charisma()
 {
+    _initialize();
     return _charisma;
 }
 
@@ -169,6 +172,7 @@ void GcdFileType::setIntelligence(unsigned int intelligence)
 
 unsigned int GcdFileType::intelligence()
 {
+    _initialize();
     return _intelligence;
 }
 
@@ -179,6 +183,7 @@ void GcdFileType::setAgility(unsigned int agility)
 
 unsigned int GcdFileType::agility()
 {
+    _initialize();
     return _agility;
 }
 
@@ -189,6 +194,7 @@ void GcdFileType::setLuck(unsigned int luck)
 
 unsigned int GcdFileType::luck()
 {
+    _initialize();
     return _luck;
 }
 
@@ -199,6 +205,7 @@ void GcdFileType::setHitPoints(unsigned int hitPoints)
 
 unsigned int GcdFileType::hitPoints()
 {
+    _initialize();
     return _hitPoints;
 }
 
@@ -209,6 +216,7 @@ void GcdFileType::setActionPoints(unsigned int actionPoints)
 
 unsigned int GcdFileType::actionPoints()
 {
+    _initialize();
     return _actionPoints;
 }
 
@@ -219,6 +227,7 @@ void GcdFileType::setArmorClass(unsigned int armorClass)
 
 unsigned int GcdFileType::armorClass()
 {
+    _initialize();
     return _armorClass;
 }
 
@@ -229,6 +238,7 @@ void GcdFileType::setMeleeDamage(unsigned int meleeDamage)
 
 unsigned int GcdFileType::meleeDamage()
 {
+    _initialize();
     return _meleeDamage;
 }
 
@@ -239,6 +249,7 @@ void GcdFileType::setCarryWeight(unsigned int carryWeight)
 
 unsigned int GcdFileType::carryWeight()
 {
+    _initialize();
     return _carryWeight;
 }
 
@@ -249,6 +260,7 @@ void GcdFileType::setSequence(unsigned int sequence)
 
 unsigned int GcdFileType::sequence()
 {
+    _initialize();
     return _sequence;
 }
 
@@ -259,6 +271,7 @@ void GcdFileType::setHealingRate(unsigned int healingRate)
 
 unsigned int GcdFileType::healingRate()
 {
+    _initialize();
     return _healingRate;
 }
 
@@ -269,6 +282,7 @@ void GcdFileType::setCriticalChance(unsigned int criticalChance)
 
 unsigned int GcdFileType::criticalChance()
 {
+    _initialize();
     return _criticalChance;
 }
 
@@ -279,6 +293,7 @@ void GcdFileType::setCriticalHitModifier(unsigned int criticalHitModifier)
 
 unsigned int GcdFileType::criticalHitModifier()
 {
+    _initialize();
     return _criticalHitModifier;
 }
 
@@ -289,6 +304,7 @@ void GcdFileType::setDamageThresholdNormal(unsigned int damageThresholdNormal)
 
 unsigned int GcdFileType::damageThresholdNormal()
 {
+    _initialize();
     return _damageThresholdNormal;
 }
 
@@ -299,6 +315,7 @@ void GcdFileType::setDamageThresholdLaser(unsigned int damageThresholdLaser)
 
 unsigned int GcdFileType::damageThresholdLaser()
 {
+    _initialize();
     return _damageThresholdLaser;
 }
 
@@ -309,6 +326,7 @@ void GcdFileType::setDamageThresholdFire(unsigned int damageThresholdFire)
 
 unsigned int GcdFileType::damageThresholdFire()
 {
+    _initialize();
     return _damageThresholdFire;
 }
 
@@ -319,6 +337,7 @@ void GcdFileType::setDamageThresholdPlasma(unsigned int damageThresholdPlasma)
 
 unsigned int GcdFileType::damageThresholdPlasma()
 {
+    _initialize();
     return _damageThresholdPlasma;
 }
 
@@ -329,6 +348,7 @@ void GcdFileType::setDamageThresholdElectrical(unsigned int damageThresholdElect
 
 unsigned int GcdFileType::damageThresholdElectrical()
 {
+    _initialize();
     return _damageThresholdElectrical;
 }
 
@@ -339,6 +359,7 @@ void GcdFileType::setDamageThresholdEMP(unsigned int damageThresholdEMP)
 
 unsigned int GcdFileType::damageThresholdEMP()
 {
+    _initialize();
     return _damageThresholdEMP;
 }
 
@@ -349,6 +370,7 @@ void GcdFileType::setDamageThresholdExplosive(unsigned int damageThresholdExplos
 
 unsigned int GcdFileType::damageThresholdExplosive()
 {
+    _initialize();
     return _damageThresholdExplosive;
 }
 
@@ -359,6 +381,7 @@ void GcdFileType::setDamageResistanceNormal(unsigned int damageResistanceNormal)
 
 unsigned int GcdFileType::damageResistanceNormal()
 {
+    _initialize();
     return _damageResistanceNormal;
 }
 
@@ -369,6 +392,7 @@ void GcdFileType::setDamageResistanceLaser(unsigned int damageResistanceLaser)
 
 unsigned int GcdFileType::damageResistanceLaser()
 {
+    _initialize();
     return _damageResistanceLaser;
 }
 
@@ -379,6 +403,7 @@ void GcdFileType::setDamageResistanceFire(unsigned int damageResistanceFire)
 
 unsigned int GcdFileType::damageResistanceFire()
 {
+    _initialize();
     return _damageResistanceFire;
 }
 
@@ -389,6 +414,7 @@ void GcdFileType::setDamageResistancePlasma(unsigned int damageResistancePlasma)
 
 unsigned int GcdFileType::damageResistancePlasma()
 {
+    _initialize();
     return _damageResistancePlasma;
 }
 
@@ -399,6 +425,7 @@ void GcdFileType::setDamageResistanceElectrical(unsigned int damageResistanceEle
 
 unsigned int GcdFileType::damageResistanceElectrical()
 {
+    _initialize();
     return _damageResistanceElectrical;
 }
 
@@ -409,6 +436,7 @@ void GcdFileType::setDamageResistanceEMP(unsigned int damageResistanceEMP)
 
 unsigned int GcdFileType::damageResistanceEMP()
 {
+    _initialize();
     return _damageResistanceEMP;
 }
 
@@ -419,6 +447,7 @@ void GcdFileType::setDamageResistanceExplosive(unsigned int damageResistanceExpl
 
 unsigned int GcdFileType::damageResistanceExplosive()
 {
+    _initialize();
     return _damageResistanceExplosive;
 }
 
@@ -429,6 +458,7 @@ void GcdFileType::setRadiationResistance(unsigned int radiationResistance)
 
 unsigned int GcdFileType::radiationResistance()
 {
+    _initialize();
     return _radiationResistance;
 }
 
@@ -439,6 +469,7 @@ void GcdFileType::setPoisonResistance(unsigned int poisonResistance)
 
 unsigned int GcdFileType::poisonResistance()
 {
+    _initialize();
     return _poisonResistance;
 }
 
@@ -449,6 +480,7 @@ void GcdFileType::setAge(unsigned int age)
 
 unsigned int GcdFileType::age()
 {
+    _initialize();
     return _age;
 }
 
@@ -459,6 +491,7 @@ void GcdFileType::setGender(unsigned int gender)
 
 unsigned int GcdFileType::gender()
 {
+    _initialize();
     return _gender;
 }
 
@@ -469,6 +502,7 @@ void GcdFileType::setStrengthBonus(unsigned int strengthBonus)
 
 unsigned int GcdFileType::strengthBonus()
 {
+    _initialize();
     return _strengthBonus;
 }
 
@@ -479,6 +513,7 @@ void GcdFileType::setPerceptionBonus(unsigned int perceptionBonus)
 
 unsigned int GcdFileType::perceptionBonus()
 {
+    _initialize();
     return _perceptionBonus;
 }
 
@@ -489,6 +524,7 @@ void GcdFileType::setEnduranceBonus(unsigned int enduranceBonus)
 
 unsigned int GcdFileType::enduranceBonus()
 {
+    _initialize();
     return _enduranceBonus;
 }
 
@@ -499,6 +535,7 @@ void GcdFileType::setCharismaBonus(unsigned int charismaBonus)
 
 unsigned int GcdFileType::charismaBonus()
 {
+    _initialize();
     return _charismaBonus;
 }
 
@@ -509,6 +546,7 @@ void GcdFileType::setIntelligenceBonus(unsigned int intelligenceBonus)
 
 unsigned int GcdFileType::intelligenceBonus()
 {
+    _initialize();
     return _intelligenceBonus;
 }
 
@@ -519,6 +557,7 @@ void GcdFileType::setAgilityBonus(unsigned int agilityBonus)
 
 unsigned int GcdFileType::agilityBonus()
 {
+    _initialize();
     return _agilityBonus;
 }
 
@@ -529,6 +568,7 @@ void GcdFileType::setLuckBonus(unsigned int luckBonus)
 
 unsigned int GcdFileType::luckBonus()
 {
+    _initialize();
     return _luckBonus;
 }
 
@@ -539,6 +579,7 @@ void GcdFileType::setHitPointsBonus(unsigned int hitPointsBonus)
 
 unsigned int GcdFileType::hitPointsBonus()
 {
+    _initialize();
     return _hitPointsBonus;
 }
 
@@ -549,6 +590,7 @@ void GcdFileType::setActionPointsBonus(unsigned int actionPointsBonus)
 
 unsigned int GcdFileType::actionPointsBonus()
 {
+    _initialize();
     return _actionPointsBonus;
 }
 
@@ -559,6 +601,7 @@ void GcdFileType::setArmorClassBonus(unsigned int armorClassBonus)
 
 unsigned int GcdFileType::armorClassBonus()
 {
+    _initialize();
     return _armorClassBonus;
 }
 
@@ -569,6 +612,7 @@ void GcdFileType::setMeleeDamageBonus(unsigned int meleeDamageBonus)
 
 unsigned int GcdFileType::meleeDamageBonus()
 {
+    _initialize();
     return _meleeDamageBonus;
 }
 
@@ -579,6 +623,7 @@ void GcdFileType::setCarryWeightBonus(unsigned int carryWeightBonus)
 
 unsigned int GcdFileType::carryWeightBonus()
 {
+    _initialize();
     return _carryWeightBonus;
 }
 
@@ -589,6 +634,7 @@ void GcdFileType::setSequenceBonus(unsigned int sequenceBonus)
 
 unsigned int GcdFileType::sequenceBonus()
 {
+    _initialize();
     return _sequenceBonus;
 }
 
@@ -599,6 +645,7 @@ void GcdFileType::setHealingRateBonus(unsigned int healingRateBonus)
 
 unsigned int GcdFileType::healingRateBonus()
 {
+    _initialize();
     return _healingRateBonus;
 }
 
@@ -609,6 +656,7 @@ void GcdFileType::setCriticalChanceBonus(unsigned int criticalChanceBonus)
 
 unsigned int GcdFileType::criticalChanceBonus()
 {
+    _initialize();
     return _criticalChanceBonus;
 }
 
@@ -619,6 +667,7 @@ void GcdFileType::setCriticalHitModifierBonus(unsigned int criticalHitModifierBo
 
 unsigned int GcdFileType::criticalHitModifierBonus()
 {
+    _initialize();
     return _criticalHitModifierBonus;
 }
 
@@ -629,6 +678,7 @@ void GcdFileType::setDamageThresholdNormalBonus(unsigned int damageThresholdNorm
 
 unsigned int GcdFileType::damageThresholdNormalBonus()
 {
+    _initialize();
     return _damageThresholdNormalBonus;
 }
 
@@ -639,6 +689,7 @@ void GcdFileType::setDamageThresholdLaserBonus(unsigned int damageThresholdLaser
 
 unsigned int GcdFileType::damageThresholdLaserBonus()
 {
+    _initialize();
     return _damageThresholdLaserBonus;
 }
 
@@ -649,6 +700,7 @@ void GcdFileType::setDamageThresholdFireBonus(unsigned int damageThresholdFireBo
 
 unsigned int GcdFileType::damageThresholdFireBonus()
 {
+    _initialize();
     return _damageThresholdFireBonus;
 }
 
@@ -659,6 +711,7 @@ void GcdFileType::setDamageThresholdPlasmaBonus(unsigned int damageThresholdPlas
 
 unsigned int GcdFileType::damageThresholdPlasmaBonus()
 {
+    _initialize();
     return _damageThresholdPlasmaBonus;
 }
 
@@ -669,6 +722,7 @@ void GcdFileType::setDamageThresholdElectricalBonus(unsigned int damageThreshold
 
 unsigned int GcdFileType::damageThresholdElectricalBonus()
 {
+    _initialize();
     return _damageThresholdElectricalBonus;
 }
 
@@ -679,6 +733,7 @@ void GcdFileType::setDamageThresholdEMPBonus(unsigned int damageThresholdEMPBonu
 
 unsigned int GcdFileType::damageThresholdEMPBonus()
 {
+    _initialize();
     return _damageThresholdEMPBonus;
 }
 
@@ -689,6 +744,7 @@ void GcdFileType::setDamageThresholdExplosiveBonus(unsigned int damageThresholdE
 
 unsigned int GcdFileType::damageThresholdExplosiveBonus()
 {
+    _initialize();
     return _damageThresholdExplosiveBonus;
 }
 
@@ -699,6 +755,7 @@ void GcdFileType::setDamageResistanceNormalBonus(unsigned int damageResistanceNo
 
 unsigned int GcdFileType::damageResistanceNormalBonus()
 {
+    _initialize();
     return _damageResistanceNormalBonus;
 }
 
@@ -709,6 +766,7 @@ void GcdFileType::setDamageResistanceLaserBonus(unsigned int damageResistanceLas
 
 unsigned int GcdFileType::damageResistanceLaserBonus()
 {
+    _initialize();
     return _damageResistanceLaserBonus;
 }
 
@@ -719,6 +777,7 @@ void GcdFileType::setDamageResistanceFireBonus(unsigned int damageResistanceFire
 
 unsigned int GcdFileType::damageResistanceFireBonus()
 {
+    _initialize();
     return _damageResistanceFireBonus;
 }
 
@@ -729,6 +788,7 @@ void GcdFileType::setDamageResistancePlasmaBonus(unsigned int damageResistancePl
 
 unsigned int GcdFileType::damageResistancePlasmaBonus()
 {
+    _initialize();
     return _damageResistancePlasmaBonus;
 }
 
@@ -739,6 +799,7 @@ void GcdFileType::setDamageResistanceElectricalBonus(unsigned int damageResistan
 
 unsigned int GcdFileType::damageResistanceElectricalBonus()
 {
+    _initialize();
     return _damageResistanceElectricalBonus;
 }
 
@@ -749,6 +810,7 @@ void GcdFileType::setDamageResistanceEMPBonus(unsigned int damageResistanceEMPBo
 
 unsigned int GcdFileType::damageResistanceEMPBonus()
 {
+    _initialize();
     return _damageResistanceEMPBonus;
 }
 
@@ -759,6 +821,7 @@ void GcdFileType::setDamageResistanceExplosiveBonus(unsigned int damageResistanc
 
 unsigned int GcdFileType::damageResistanceExplosiveBonus()
 {
+    _initialize();
     return _damageResistanceExplosiveBonus;
 }
 
@@ -769,6 +832,7 @@ void GcdFileType::setRadiationResistanceBonus(unsigned int radiationResistanceBo
 
 unsigned int GcdFileType::radiationResistanceBonus()
 {
+    _initialize();
     return _radiationResistanceBonus;
 }
 
@@ -779,6 +843,7 @@ void GcdFileType::setPoisonResistanceBonus(unsigned int poisonResistanceBonus)
 
 unsigned int GcdFileType::poisonResistanceBonus()
 {
+    _initialize();
     return _poisonResistanceBonus;
 }
 
@@ -789,6 +854,7 @@ void GcdFileType::setAgeBonus(unsigned int ageBonus)
 
 unsigned int GcdFileType::ageBonus()
 {
+    _initialize();
     return _ageBonus;
 }
 
@@ -799,6 +865,7 @@ void GcdFileType::setGenderBonus(unsigned int genderBonus)
 
 unsigned int GcdFileType::genderBonus()
 {
+    _initialize();
     return _genderBonus;
 }
 
@@ -809,6 +876,7 @@ void GcdFileType::setSmallGunsSkill(unsigned int smallGunsSkill)
 
 unsigned int GcdFileType::smallGunsSkill()
 {
+    _initialize();
     return _smallGunsSkill;
 }
 
@@ -819,6 +887,7 @@ void GcdFileType::setBigGunsSkill(unsigned int bigGunsSkill)
 
 unsigned int GcdFileType::bigGunsSkill()
 {
+    _initialize();
     return _bigGunsSkill;
 }
 
@@ -829,6 +898,7 @@ void GcdFileType::setEnergyWeaponsSkill(unsigned int energyWeaponsSkill)
 
 unsigned int GcdFileType::energyWeaponsSkill()
 {
+    _initialize();
     return _energyWeaponsSkill;
 }
 
@@ -839,6 +909,7 @@ void GcdFileType::setUnarmedSkill(unsigned int unarmedSkill)
 
 unsigned int GcdFileType::unarmedSkill()
 {
+    _initialize();
     return _unarmedSkill;
 }
 
@@ -849,6 +920,7 @@ void GcdFileType::setMeleeWeaponsSkill(unsigned int meleeWeaponsSkill)
 
 unsigned int GcdFileType::meleeWeaponsSkill()
 {
+    _initialize();
     return _meleeWeaponsSkill;
 }
 
@@ -859,6 +931,7 @@ void GcdFileType::setThrowingWeaponsSkill(unsigned int throwingWeaponsSkill)
 
 unsigned int GcdFileType::throwingWeaponsSkill()
 {
+    _initialize();
     return _throwingWeaponsSkill;
 }
 
@@ -869,6 +942,7 @@ void GcdFileType::setFirstAidSkill(unsigned int firstAidSkill)
 
 unsigned int GcdFileType::firstAidSkill()
 {
+    _initialize();
     return _firstAidSkill;
 }
 
@@ -879,6 +953,7 @@ void GcdFileType::setDoctorSkill(unsigned int doctorSkill)
 
 unsigned int GcdFileType::doctorSkill()
 {
+    _initialize();
     return _doctorSkill;
 }
 
@@ -889,6 +964,7 @@ void GcdFileType::setSneakSkill(unsigned int sneakSkill)
 
 unsigned int GcdFileType::sneakSkill()
 {
+    _initialize();
     return _sneakSkill;
 }
 
@@ -899,6 +975,7 @@ void GcdFileType::setLockpickSkill(unsigned int lockpickSkill)
 
 unsigned int GcdFileType::lockpickSkill()
 {
+    _initialize();
     return _lockpickSkill;
 }
 
@@ -909,6 +986,7 @@ void GcdFileType::setStealSkill(unsigned int stealSkill)
 
 unsigned int GcdFileType::stealSkill()
 {
+    _initialize();
     return _stealSkill;
 }
 
@@ -919,6 +997,7 @@ void GcdFileType::setTrapsSkill(unsigned int trapsSkill)
 
 unsigned int GcdFileType::trapsSkill()
 {
+    _initialize();
     return _trapsSkill;
 }
 
@@ -929,6 +1008,7 @@ void GcdFileType::setScienceSkill(unsigned int scienceSkill)
 
 unsigned int GcdFileType::scienceSkill()
 {
+    _initialize();
     return _scienceSkill;
 }
 
@@ -939,6 +1019,7 @@ void GcdFileType::setRepairSkill(unsigned int repairSkill)
 
 unsigned int GcdFileType::repairSkill()
 {
+    _initialize();
     return _repairSkill;
 }
 
@@ -949,6 +1030,7 @@ void GcdFileType::setSpeechSkill(unsigned int speechSkill)
 
 unsigned int GcdFileType::speechSkill()
 {
+    _initialize();
     return _speechSkill;
 }
 
@@ -959,6 +1041,7 @@ void GcdFileType::setBarterSkill(unsigned int barterSkill)
 
 unsigned int GcdFileType::barterSkill()
 {
+    _initialize();
     return _barterSkill;
 }
 
@@ -969,6 +1052,7 @@ void GcdFileType::setGamblingSkill(unsigned int gamblingSkill)
 
 unsigned int GcdFileType::gamblingSkill()
 {
+    _initialize();
     return _gamblingSkill;
 }
 
@@ -979,6 +1063,7 @@ void GcdFileType::setOutdoorsmanSkill(unsigned int outdoorsmanSkill)
 
 unsigned int GcdFileType::outdoorsmanSkill()
 {
+    _initialize();
     return _outdoorsmanSkill;
 }
 
@@ -989,6 +1074,7 @@ void GcdFileType::setName(std::string name)
 
 std::string GcdFileType::name()
 {
+    _initialize();
     return _name;
 }
 
@@ -999,6 +1085,7 @@ void GcdFileType::setFirstTaggedSkill(int firstTaggedSkill)
 
 int GcdFileType::firstTaggedSkill()
 {
+    _initialize();
     return _firstTaggedSkill;
 }
 
@@ -1009,6 +1096,7 @@ void GcdFileType::setSecondTaggedSkill(int secondTaggedSkill)
 
 int GcdFileType::secondTaggedSkill()
 {
+    _initialize();
     return _secondTaggedSkill;
 }
 
@@ -1019,6 +1107,7 @@ void GcdFileType::setThirdTaggedSkill(int thirdTaggedSkill)
 
 int GcdFileType::thirdTaggedSkill()
 {
+    _initialize();
     return _thirdTaggedSkill;
 }
 
@@ -1029,6 +1118,7 @@ void GcdFileType::setFourthTaggedSkill(int fourthTaggedSkill)
 
 int GcdFileType::fourthTaggedSkill()
 {
+    _initialize();
     return _fourthTaggedSkill;
 }
 
@@ -1039,6 +1129,7 @@ void GcdFileType::setFirstTrait(int firstTrait)
 
 int GcdFileType::firstTrait()
 {
+    _initialize();
     return _firstTrait;
 }
 
@@ -1049,6 +1140,7 @@ void GcdFileType::setSecondTrait(int secondTrait)
 
 int GcdFileType::secondTrait()
 {
+    _initialize();
     return _secondTrait;
 }
 
@@ -1059,6 +1151,7 @@ void GcdFileType::setCharacterPoints(unsigned int characterPoints)
 
 unsigned int GcdFileType::characterPoints()
 {
+    _initialize();
     return _characterPoints;
 }
 

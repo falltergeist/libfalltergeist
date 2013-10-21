@@ -24,27 +24,24 @@
 #include <vector>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 class PalColor;
 
-class PalFileType
+class PalFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
     std::vector<PalColor *> * _colors;
-
+    virtual void _initialize();
 public:
-    PalFileType(DatFileItem * datFileItem);
+    PalFileType(DatFileEntry * datFileEntry);
+    PalFileType(std::ifstream * stream);
     ~PalFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();    
 
     std::vector<PalColor *> * colors();
 

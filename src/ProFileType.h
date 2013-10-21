@@ -23,18 +23,17 @@
 // C++ standard includes
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
+class DatFileEntry;
 
-class ProFileType
+class ProFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
-
     unsigned int _objectTypeId;
     unsigned int _objectSubtypeId;
     unsigned int _objectId;
@@ -67,18 +66,15 @@ protected:
 
     unsigned char _soundId;
 
-
+    virtual void _initialize();
 public:
     enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_MISC };
     enum { TYPE_ITEM_ARMOR = 0, TYPE_ITEM_CONTAINER, TYPE_ITEM_DRUG, TYPE_ITEM_WEAPON, TYPE_ITEM_AMMO, TYPE_ITEM_MISC, TYPE_ITEM_KEY };
     enum { TYPE_SCENERY_DOOR = 0, TYPE_SCENERY_STAIR, TYPE_SCENERY_ELEVATOR, TYPE_SCENERY_LADDER_BOTTOM, TYPE_SCENERY_LADDER_TOP, TYPE_SCENERY_GENERIC };
 
-    ProFileType(DatFileItem * datFileItem);
+    ProFileType(DatFileEntry * datFileEntry);
+    ProFileType(std::ifstream * stream);
     ~ProFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();
 
     unsigned int objectTypeId();
     unsigned int objectSubtypeId();
