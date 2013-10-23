@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_MAPOBJECT_H
 
 // C++ standard includes
+#include <vector>
 
 // libfalltergeist includes
 
@@ -61,6 +62,7 @@ protected:
     int _mapScriptId,
         _scriptTypeId,
         _hexPosition;
+    std::vector<MapObject *> * _children;
 public:
     MapObject();
     ~MapObject();
@@ -124,6 +126,7 @@ public:
     unsigned int unknown13();
     void setUnknown13(unsigned int value);
 
+    std::vector<MapObject *> * children();
 };
 
 }

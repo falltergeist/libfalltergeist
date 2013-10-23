@@ -98,7 +98,7 @@ void MapFileType::open()
             short loop = count;
             if (count%16 > 0 ) loop += 16 - count%16;
 
-            int check = 0;
+            unsigned int check = 0;
             for (unsigned short j = 0; j < loop; j++)
             {
                 {
@@ -157,9 +157,9 @@ void MapFileType::open()
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
 
-                    datFileItem()->skipBytes(4);  // items count ?
+                    datFileItem()->skipBytes(4);  // items count ?                    
                     MapObject * subobject = _readObject();
-
+                    object->children()->push_back(subobject);
                 }
 
             }

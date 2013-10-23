@@ -138,6 +138,7 @@ void ProFileType::_initialize()
             _scriptId = SID & 0x0000FFFF;
 
             unsigned int FID;
+            *this >> FID;
             _headFrmTypeId = (FID & 0xFF000000) >> 24;
             _headFrmId = FID & 0x0000FFFF;
 

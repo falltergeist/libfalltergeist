@@ -79,7 +79,7 @@ void AafFileType::_initialize()
     for (unsigned int i = 0; i != 256; ++i)
     {
         setPosition(0x080C + dataOffsets->at(i));
-        for (unsigned int j = 0; j != _glyphs->at(i)->width()*_glyphs->at(i)->height(); ++j)
+        for (int j = 0; j != _glyphs->at(i)->width()*_glyphs->at(i)->height(); ++j)
         {
             *this >> _glyphs->at(i)->data()->at(j);
         }

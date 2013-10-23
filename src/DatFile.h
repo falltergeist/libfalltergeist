@@ -43,7 +43,7 @@ protected:
 public:
     DatFile();
     DatFile(std::string pathToFile);
-    ~DatFile();
+    virtual ~DatFile();
 
     std::string pathToFile();
 
