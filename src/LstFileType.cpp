@@ -64,7 +64,12 @@ void LstFileType::_initialize()
         }
         else
         {
-            line.erase(std::find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), line.end()); // rtrim
+            // rtrim
+            line.erase(std::find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), line.end());
+            // to lower
+            std::replace(line.begin(),line.end(),'\\','/');
+            std::transform(line.begin(),line.end(),line.begin(), ::tolower);
+
             _strings->push_back(line);
             line.clear();
             ++i;
