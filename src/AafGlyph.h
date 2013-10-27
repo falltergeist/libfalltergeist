@@ -35,17 +35,17 @@ class AafGlyph
 protected:
     unsigned short _width;
     unsigned short _height;
-    std::vector<unsigned char> * _data;
+    std::vector<unsigned char>* _data;
 public:
     AafGlyph(unsigned short width, unsigned short height);
     ~AafGlyph();
 
-    std::vector<unsigned char> * data();
+    std::vector<unsigned char>* data();
 
-    void setWidth(unsigned short width);
+    AafGlyph* setWidth(unsigned short width);
     unsigned short width();
 
-    void setHeight(unsigned short height);
+    AafGlyph* setHeight(unsigned short height);
     unsigned short height();
 };
 

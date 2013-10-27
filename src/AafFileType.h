@@ -37,7 +37,7 @@ class DatFileEntry;
 class AafFileType : public DatFileItem
 {
 protected:
-    std::vector<AafGlyph *> * _glyphs;
+    std::vector<AafGlyph*>* _glyphs = 0;
     unsigned int _signature;
     unsigned short _maximumHeight;
     unsigned short _horizontalGap;
@@ -45,22 +45,22 @@ protected:
     unsigned short _verticalGap;
     virtual void _initialize();
 public:
-    AafFileType(DatFileEntry * datFileEntry);
-    AafFileType(std::ifstream * stream);
+    AafFileType(DatFileEntry* datFileEntry);
+    AafFileType(std::ifstream* stream);
     ~AafFileType();
 
-    std::vector<AafGlyph *> * glyphs();
+    std::vector<AafGlyph*>* glyphs();
 
-    void setMaximumHeight(unsigned short height);
+    AafFileType* setMaximumHeight(unsigned short height);
     unsigned short maximumHeight();
 
-    void setHorizontalGap(unsigned short gap);
+    AafFileType* setHorizontalGap(unsigned short gap);
     unsigned short horizontalGap();
 
-    void setVerticalGap(unsigned short gap);
+    AafFileType* setVerticalGap(unsigned short gap);
     unsigned short verticalGap();
 
-    void setSpaceWidth(unsigned short width);
+    AafFileType* setSpaceWidth(unsigned short width);
     unsigned short spaceWidth();
 };
 

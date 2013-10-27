@@ -29,6 +29,7 @@
 #include "../src/BioFileType.h"
 #include "../src/FrmFileType.h"
 #include "../src/GcdFileType.h"
+#include "../src/MapFileType.h"
 #include "../src/MsgFileType.h"
 #include "../src/LstFileType.h"
 #include "../src/PalFileType.h"
@@ -41,15 +42,12 @@ namespace libfalltergeist
 
 DatFile::DatFile()
 {
-    _items = 0;
-    _stream = 0;
 }
 
-DatFile::DatFile(std::string pathToFile)
+DatFile::DatFile(std::string filename)
 {
-    _items = 0;
-    _stream = 0;
-    open(pathToFile);
+    setFilename(filename);
+    _initialize();
 }
 
 DatFile::~DatFile()
@@ -58,38 +56,34 @@ DatFile::~DatFile()
     delete _stream;
 }
 
-std::string DatFile::pathToFile()
+std::string DatFile::filename()
 {
-    return _pathToFile;
+    return _filename;
 }
 
-bool DatFile::open(std::string pathToFile)
+DatFile* DatFile::setFilename(std::string filename)
 {
-    _pathToFile.clear();
-    _pathToFile.append(pathToFile);
+    _filename = filename;
+    return this;
+}
+
+void DatFile::_initialize()
+{
+    if (_initialized) return;
+    _initialized = true;
 
     _stream = new std::ifstream();
-    _stream->open(_pathToFile.c_str(), std::ios_base::binary);
-    if (_stream->is_open())
+    _stream->open(filename(), std::ios_base::binary);
+    if (!_stream->is_open())
     {
-        return true;
+        throw Exception("DatFile::_initialize() - can't open stream: " + filename());
     }
-    return false;
 }
 
-bool DatFile::isOpened()
-{
-    if (_stream && _stream->is_open())
-    {
-        return true;
-    }
-    return false;
-}
-
-
-void DatFile::setPosition(unsigned int position)
+DatFile* DatFile::setPosition(unsigned int position)
 {
     _stream->seekg(position, std::ios::beg);
+    return this;
 }
 
 unsigned int DatFile::position()
@@ -99,31 +93,29 @@ unsigned int DatFile::position()
 
 unsigned int DatFile::size(void)
 {
-    if (!_stream || !_stream->is_open()) return 0;
-    unsigned int oldPosition = _stream->tellg();
+    auto oldPosition = _stream->tellg();
     _stream->seekg(0,std::ios::end);
-    unsigned int currentPosition = _stream->tellg();
+    auto currentPosition = _stream->tellg();
     _stream->seekg(oldPosition, std::ios::beg);
     return currentPosition;
 }
 
-void DatFile::skipBytes(unsigned int numberOfBytes)
+DatFile* DatFile::skipBytes(unsigned int numberOfBytes)
 {
     setPosition(position() + numberOfBytes);
+    return this;
 }
 
-void DatFile::readBytes(char * destination, unsigned int numberOfBytes)
+DatFile* DatFile::readBytes(char * destination, unsigned int numberOfBytes)
 {
     unsigned int position = this->position();
     _stream->readsome(destination, numberOfBytes);
     setPosition(position + numberOfBytes);
+    return this;
 }
 
 std::vector<DatFileItem *> * DatFile::items()
 {
-    if (!isOpened()) return 0;
-
-
     // if items are not fetched yet
     if (_items == 0)
     {
@@ -149,7 +141,6 @@ std::vector<DatFileItem *> * DatFile::items()
         setPosition(size() - filesTreeSize - 8);
         *this >> filesTotalNumber;
 
-
         //reading files data one by one
         for (unsigned int i = 0; i != filesTotalNumber; ++i)
         {
@@ -165,6 +156,7 @@ std::vector<DatFileItem *> * DatFile::items()
             else if (extension == "frm") item = new FrmFileType(entry);
             else if (extension == "gcd") item = new GcdFileType(entry);
             else if (extension == "lst") item = new LstFileType(entry);
+            else if (extension == "map") item = new MapFileType(entry);
             else if (extension == "msg") item = new MsgFileType(entry);
             else if (extension == "pal") item = new PalFileType(entry);
             else if (extension == "pro") item = new ProFileType(entry);

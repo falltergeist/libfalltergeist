@@ -36,7 +36,7 @@ class MsgMessage;
 class MsgFileType : public DatFileItem
 {
 protected:
-    std::vector<MsgMessage *> * _messages;
+    std::vector<MsgMessage *>* _messages;
     virtual void _initialize();
 public:
     MsgFileType(DatFileEntry * datFileEntry);

@@ -27,10 +27,8 @@
 namespace libfalltergeist
 {
 
-AafGlyph::AafGlyph(unsigned short width, unsigned short height)
+AafGlyph::AafGlyph(unsigned short width, unsigned short height) : _width(width), _height(height)
 {
-    _height = height;
-    _width = width;
     _data = new std::vector<unsigned char>(width*height);
 }
 
@@ -44,9 +42,10 @@ unsigned short AafGlyph::height()
     return _height;
 }
 
-void AafGlyph::setHeight(unsigned short height)
+AafGlyph* AafGlyph::setHeight(unsigned short height)
 {
     _height = height;
+    return this;
 }
 
 unsigned short AafGlyph::width()
@@ -54,12 +53,13 @@ unsigned short AafGlyph::width()
     return _width;
 }
 
-void AafGlyph::setWidth(unsigned short width)
+AafGlyph* AafGlyph::setWidth(unsigned short width)
 {
     _width = width;
+    return this;
 }
 
-std::vector<unsigned char> * AafGlyph::data()
+std::vector<unsigned char>* AafGlyph::data()
 {
     return _data;
 }

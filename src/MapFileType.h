@@ -25,26 +25,24 @@
 #include <vector>
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-
-class DatFileItem;
 class MapElevation;
 class ProFileType;
 class MapObject;
 
-typedef ProFileType * (*ProFileTypeLoaderCallback)(unsigned int);
+typedef ProFileType* (*ProFileTypeLoaderCallback)(unsigned int);
 
-class MapFileType
+class MapFileType : public DatFileItem
 {
 protected:
-    ProFileTypeLoaderCallback _proFileTypeLoaderCallback;
+    ProFileTypeLoaderCallback _proFileTypeLoaderCallback = 0;
 
-    DatFileItem * _datFileItem;
-    std::vector<MapElevation *> * _elevations;
+    std::vector<MapElevation*>* _elevations = 0;
     unsigned int _version;
     std::string _name;
     unsigned int _defaultPosition;
@@ -59,16 +57,19 @@ protected:
 
     int _scriptId;
 
-    MapObject * _readObject();
+    MapObject* _readObject();
+    virtual void _initialize();
+
 
 public:
-    MapFileType(DatFileItem * datFileItem, ProFileTypeLoaderCallback callback);
+    MapFileType(DatFileEntry * datFileEntry);
+    MapFileType(std::ifstream * stream);
     ~MapFileType();
 
-    void open();
+    MapFileType* setCallback(ProFileTypeLoaderCallback callback);
+    ProFileTypeLoaderCallback callback();
 
-    DatFileItem * datFileItem();
-    std::vector<MapElevation *> * elevations();
+    std::vector<MapElevation*>* elevations();
     unsigned int defaultPosition();
     unsigned int defaultElevation();
     unsigned int defaultOrientation();

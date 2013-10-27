@@ -37,27 +37,27 @@ class DatFileEntry;
 class DatFile
 {
 protected:
-    std::vector<DatFileItem *> * _items;
-    std::ifstream * _stream;
-    std::string _pathToFile;
+    std::vector<DatFileItem *> * _items = 0;
+    std::ifstream * _stream = 0;
+    std::string _filename;
+    bool _initialized = false;
+    void _initialize();
 public:
     DatFile();
     DatFile(std::string pathToFile);
     virtual ~DatFile();
 
-    std::string pathToFile();
+    std::string filename();
+    DatFile* setFilename(std::string filename);
 
-    bool open(const std::string pathToFile);
-    bool isOpened();
-    void readBytes(char * destination, unsigned int numberOfBytes);
-    void skipBytes(unsigned int numberOfBytes);
+    std::vector<DatFileItem*>* items();
+    DatFileItem* item(std::string filename);
 
-    void setPosition(unsigned int position);
+    DatFile* readBytes(char* destination, unsigned int numberOfBytes);
+    DatFile* skipBytes(unsigned int numberOfBytes);
+    DatFile* setPosition(unsigned int position);
     unsigned int position();
-
     unsigned int size();
-
-    virtual std::vector<DatFileItem *> * items();
 
     DatFile& operator>>(int &value);
     DatFile& operator>>(unsigned int &value);
@@ -66,9 +66,6 @@ public:
     DatFile& operator>>(char &value);
     DatFile& operator>>(unsigned char &value);
     DatFile& operator>>(DatFileEntry &entry);
-
-    DatFileItem * item(std::string filename);
-
 };
 
 }

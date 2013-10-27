@@ -25,49 +25,42 @@
 #include <fstream>
 
 // libfalltergeist includes
-#include "../src/MapFileType.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class MapFileType;
 class DatFileEntry;
 
 class DatFileItem: public std::streambuf
 {
 protected:
-    MapFileType * _asMap;
-
-    std::string _filename; // filename with path (path/to/file.ext)
-
-    DatFileEntry * _datFileEntry;
-    std::ifstream * _stream;
+    std::string _filename;
+    DatFileEntry* _datFileEntry = 0;
+    std::ifstream* _stream = 0;
 
 
-    char * _buffer;
+    char* _buffer = 0;
     int _size;
 
-    bool _initialized;
+    bool _initialized = false;
     virtual void _initialize();
 
 public:
-    DatFileItem(std::ifstream * stream);
-    DatFileItem(DatFileEntry * datFileEntry);
+    DatFileItem(std::ifstream* stream);
+    DatFileItem(DatFileEntry* datFileEntry);
     ~DatFileItem();
 
     virtual std::streambuf::int_type underflow();
 
-    void setFilename(const std::string filename);
+    DatFileItem* setFilename(const std::string filename);
     std::string filename();
 
-    unsigned int size();
-
-    void setPosition(unsigned int position);
+    DatFileItem* readBytes(char* destination, unsigned int size);
+    DatFileItem* skipBytes(unsigned int numberOfBytes);
+    DatFileItem* setPosition(unsigned int position);
     unsigned int position();
-
-    void readBytes(char * destination, unsigned int size);
-    void skipBytes(unsigned int numberOfBytes);
+    unsigned int size();
 
     DatFileItem& operator>>(unsigned int &value);
     DatFileItem& operator>>(int &value);
@@ -76,7 +69,6 @@ public:
     DatFileItem& operator>>(unsigned char &value);
     DatFileItem& operator>>(char &value);
 
-    MapFileType * asMapFileType(ProFileTypeLoaderCallback callback);
 
 };
 

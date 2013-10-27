@@ -35,33 +35,19 @@ namespace libfalltergeist
 
 DatFileItem::DatFileItem(std::ifstream * stream)
 {
-    _asMap = 0;
-
-    _buffer = 0;
-    _initialized = false;
     _stream = stream;
-    _datFileEntry = 0;
 }
 
 
 DatFileItem::DatFileItem(DatFileEntry * datFileEntry)
 {
-    _asMap = 0;
-
-    _buffer = 0;
-    _initialized = false;
-    _stream = 0;
     _datFileEntry = datFileEntry;
-
     setFilename(datFileEntry->filename());
-
-
 }
 
 void DatFileItem::_initialize()
 {
     if (_initialized) return;
-
     _initialized = true;
 
     if (_stream != 0)
@@ -79,6 +65,7 @@ void DatFileItem::_initialize()
 
     if (_datFileEntry != 0)
     {
+
         _buffer = new char[_datFileEntry->unpackedSize()];
         _size = _datFileEntry->unpackedSize();
 
@@ -109,22 +96,18 @@ void DatFileItem::_initialize()
         }
         else
         {
-            // just copying from dat file
             datFile->readBytes(_buffer, _size);
         }
 
         datFile->setPosition(oldPos);
         setg(_buffer, _buffer, _buffer + _size);
         return;
-
     }
 }
 
 
 DatFileItem::~DatFileItem()
 {
-    delete _asMap;
-
     delete [] _buffer;
 }
 
@@ -143,13 +126,14 @@ std::streambuf::int_type DatFileItem::underflow()
     return traits_type::to_int_type(*gptr());
 }
 
-void DatFileItem::setFilename(const std::string filename)
+DatFileItem* DatFileItem::setFilename(const std::string filename)
 {
     _filename = filename;
 
     // convert to lowercase and replace slashes
     std::replace(_filename.begin(),_filename.end(),'\\','/');
     std::transform(_filename.begin(),_filename.end(),_filename.begin(), ::tolower);
+    return this;
 }
 
 std::string DatFileItem::filename()
@@ -157,10 +141,11 @@ std::string DatFileItem::filename()
     return _filename;
 }
 
-void DatFileItem::setPosition(unsigned int pos)
+DatFileItem* DatFileItem::setPosition(unsigned int pos)
 {
     _initialize();
     setg(_buffer, _buffer + pos, _buffer + _size);
+    return this;
 }
 
 unsigned int DatFileItem::position()
@@ -169,16 +154,18 @@ unsigned int DatFileItem::position()
     return gptr() - eback();
 }
 
-void DatFileItem::skipBytes(unsigned int numberOfBytes)
+DatFileItem* DatFileItem::skipBytes(unsigned int numberOfBytes)
 {
     _initialize();
     setg(_buffer, gptr() + numberOfBytes, _buffer + _size);
+    return this;
 }
 
-void DatFileItem::readBytes(char * destination, unsigned int size)
+DatFileItem* DatFileItem::readBytes(char * destination, unsigned int size)
 {
     _initialize();
     sgetn(destination, size);
+    return this;
 }
 
 
@@ -220,13 +207,6 @@ DatFileItem& DatFileItem::operator>>(unsigned char &value)
 DatFileItem& DatFileItem::operator>>(char &value)
 {
     return *this >> (unsigned char&) value;
-}
-
-MapFileType * DatFileItem::asMapFileType(ProFileTypeLoaderCallback callback)
-{
-    if (_asMap) return _asMap;
-    _asMap = new MapFileType(this, callback);
-    return _asMap;
 }
 
 }

@@ -22,7 +22,7 @@
 
 // libfalltergeist includes
 #include "../src/MapFileType.h"
-#include "../src/DatFileItem.h"
+#include "../src/DatFileEntry.h"
 #include "../src/MapElevation.h"
 #include "../src/MapObject.h"
 #include "../src/ProFileType.h"
@@ -33,11 +33,12 @@
 namespace libfalltergeist
 {
 
-MapFileType::MapFileType(DatFileItem * datFileItem, ProFileTypeLoaderCallback callback) : _datFileItem(datFileItem)
+MapFileType::MapFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    _proFileTypeLoaderCallback = callback;
-    _elevations = new std::vector<MapElevation *>;
-    open();
+}
+
+MapFileType::MapFileType(std::ifstream * stream) : DatFileItem(stream)
+{
 }
 
 MapFileType::~MapFileType()
@@ -45,21 +46,23 @@ MapFileType::~MapFileType()
     delete _elevations;
 }
 
-void MapFileType::open()
+void MapFileType::_initialize()
 {
-    DatFileItem &item = *datFileItem();
+    if (_initialized) return;
+    if (_proFileTypeLoaderCallback == 0) throw Exception("MapFileType::_initialize() - proto loader callback not defined");
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 
-    // HEADER
-    item.setPosition(0);
-    item >> _version;
+    _elevations = new std::vector<MapElevation *>;
 
-    char * buffer = new char[17]();
-    item.readBytes(buffer, 16);
+    *this >> _version;
+
+    char buffer[17] = {0};
+    this->readBytes(buffer, 16);
     _name += buffer;
-    delete [] buffer;
 
-    item >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
-         >> _localVarsNumber >> _scriptId >> _elevationsFlag;
+    *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
+          >> _localVarsNumber >> _scriptId >> _elevationsFlag;
 
 
     unsigned int elevations = 0;
@@ -67,15 +70,15 @@ void MapFileType::open()
     if ((_elevationsFlag & 4) == 0) elevations++;
     if ((_elevationsFlag & 8) == 0) elevations++;
 
-    item >> _unknown1 >> _globalVarsNumber >> _mapId >> _timeTicks;
+    *this >> _unknown1 >> _globalVarsNumber >> _mapId >> _timeTicks;
 
-    item.skipBytes(4*44); // unkonwn
+    this->skipBytes(4*44); // unkonwn
 
     // GLOBAL AND LOCAL VARS SECTION
 
-    item.skipBytes(4*_globalVarsNumber); // global variables
+    this->skipBytes(4*_globalVarsNumber); // global variables
 
-    item.skipBytes(4*_localVarsNumber); // local variables
+    this->skipBytes(4*_localVarsNumber); // local variables
 
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
@@ -84,15 +87,15 @@ void MapFileType::open()
 
         for (unsigned int i = 0; i < 10000; i++)
         {
-            item >> _elevations->back()->roofTiles()->at(i);
-            item >> _elevations->back()->floorTiles()->at(i);
+            *this >> _elevations->back()->roofTiles()->at(i);
+            *this >> _elevations->back()->floorTiles()->at(i);
         }
     }
     // SCRIPTS SECTION
     for (unsigned int i = 0; i < 5; i++)
     {
         unsigned int count;
-        item >> count;
+        *this >> count;
         if (count > 0)
         {
             short loop = count;
@@ -103,27 +106,27 @@ void MapFileType::open()
             {
                 {
                     unsigned int PID;
-                    item >> PID;
+                    *this >> PID;
                     switch ((PID & 0xFF000000) >> 24)
                     {
                         case 1:
-                            datFileItem()->skipBytes(17*4);
+                            this->skipBytes(17*4);
                             break;
                         case 2:
-                            datFileItem()->skipBytes(16*4);
+                            this->skipBytes(16*4);
                             break;
                         default:
-                            datFileItem()->skipBytes(15*4);
+                            this->skipBytes(15*4);
                             break;
                     }
                 }
                 if ((j % 16) == 15)
                 {
                     unsigned int v;
-                    item >> v;
+                    *this >> v;
                     check += v;
 
-                    datFileItem()->skipBytes(4);
+                    this->skipBytes(4);
                 }
              }
              if (check != count)
@@ -136,12 +139,12 @@ void MapFileType::open()
 
     //OBJECTS
     int objectsTotal;
-    item >> objectsTotal;
+    *this >> objectsTotal;
 
     for (unsigned int i = 0; i != elevations; ++i)
     {
         unsigned int objectsOnElevation;
-        item >> objectsOnElevation;
+        *this >> objectsOnElevation;
         for (unsigned int j = 0; j != objectsOnElevation; ++j)
         {
             MapObject * object = _readObject();
@@ -157,7 +160,7 @@ void MapFileType::open()
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
 
-                    datFileItem()->skipBytes(4);  // items count ?                    
+                    this->skipBytes(4);  // items count ?
                     MapObject * subobject = _readObject();
                     object->children()->push_back(subobject);
                 }
@@ -173,81 +176,80 @@ MapObject * MapFileType::_readObject()
 {
     MapObject * object = new MapObject();
 
-    DatFileItem& item = *datFileItem();
-
     unsigned int uint32;
     int int32;
 
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown1( uint32 );
-    item >> int32;
+    *this >> int32;
     object->setHexPosition( int32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown2( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown3( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown4( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown5( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setFrameNumber( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setOrientation( uint32 );
     unsigned int FID;
-    item >> FID;
+    *this >> FID;
     object->setFrmTypeId( FID >> 24 );
     object->setFrmId( 0x00FFFFFF & FID );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown6( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setElevation( uint32 );
     unsigned int PID;
-    item >> PID;
+    *this >> PID;
     object->setObjectTypeId( PID >> 24 );
     object->setObjectId( 0x00FFFFFF & PID);
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown7( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown8( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown9( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown10( uint32 );
     unsigned int SID;
-    item >> SID;
+    *this >> SID;
     object->setScriptTypeId(SID >> 24);
     object->setScriptId( 0x00FFFFFF & SID);
-    item >> int32;
+    *this >> int32;
     object->setMapScriptId( int32 );
-    item >> uint32;
+    *this >> uint32;
     object->setInventorySize( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown11( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown12( uint32 );
-    item >> uint32;
+    *this >> uint32;
     object->setUnknown13( uint32 );
 
     //ProFileType * pr ;
+    ProFileTypeLoaderCallback protoCallback = callback();
 
     switch (object->objectTypeId())
     {
         case ProFileType::TYPE_ITEM:
-            object->setObjectSubtypeId(_proFileTypeLoaderCallback(PID)->objectSubtypeId());
+            object->setObjectSubtypeId(protoCallback(PID)->objectSubtypeId());
             switch(object->objectSubtypeId())
             {
                 case ProFileType::TYPE_ITEM_AMMO:
-                    datFileItem()->skipBytes(4);
+                    this->skipBytes(4);
                     break;
                 case ProFileType::TYPE_ITEM_KEY:
-                    datFileItem()->skipBytes(4);
+                    this->skipBytes(4);
                     break;
                 case ProFileType::TYPE_ITEM_MISC:
-                    datFileItem()->skipBytes(4);
+                    this->skipBytes(4);
                     break;
                 case ProFileType::TYPE_ITEM_WEAPON:
-                    datFileItem()->skipBytes(4*2);
+                    this->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_ITEM_ARMOR:
                     break;
@@ -261,7 +263,7 @@ MapObject * MapFileType::_readObject()
             }
             break;
         case ProFileType::TYPE_CRITTER:
-            datFileItem()->skipBytes(10*4);
+            this->skipBytes(10*4);
 
             object->setFrmId(FID & 0x00000FFF);
             object->setObjectID1((FID & 0x0000F000) >> 12);
@@ -270,21 +272,21 @@ MapObject * MapFileType::_readObject()
             object->setObjectID3((FID & 0xF0000000) >> 28);
             break;
         case ProFileType::TYPE_SCENERY:
-            object->setObjectSubtypeId(_proFileTypeLoaderCallback(PID)->objectSubtypeId());
+            object->setObjectSubtypeId(protoCallback(PID)->objectSubtypeId());
             switch(object->objectSubtypeId())
             {
                 case ProFileType::TYPE_SCENERY_LADDER_TOP:
                 case ProFileType::TYPE_SCENERY_LADDER_BOTTOM:
-                    datFileItem()->skipBytes(4*2);
+                    this->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_STAIR:
-                    datFileItem()->skipBytes(4*2);
+                    this->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_ELEVATOR:
-                    datFileItem()->skipBytes(4*2);
+                    this->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_DOOR:
-                    datFileItem()->skipBytes(4*1);
+                    this->skipBytes(4*1);
                     break;
                 case ProFileType::TYPE_SCENERY_GENERIC:
                     break;
@@ -299,15 +301,14 @@ MapObject * MapFileType::_readObject()
         case ProFileType::TYPE_TILE:
             break;
         case ProFileType::TYPE_MISC:
-            if (object->objectId() == 0xc)
+            switch(object->objectId())
             {
-
+                case 0xC:
+                    break;
+                default:
+                    this->skipBytes(4*4);
+                    break;
             }
-            else
-            {
-                datFileItem()->skipBytes(4*4);
-            }
-
             break;
         default:
             throw Exception("MapFileType::_readObject() - unknown type");
@@ -316,28 +317,38 @@ MapObject * MapFileType::_readObject()
     return object;
 }
 
-DatFileItem * MapFileType::datFileItem()
-{
-    return _datFileItem;
-}
-
 std::vector<MapElevation *> * MapFileType::elevations()
 {
+    _initialize();
     return _elevations;
+}
+
+MapFileType* MapFileType::setCallback(ProFileTypeLoaderCallback callback)
+{
+    _proFileTypeLoaderCallback = callback;
+    return this;
+}
+
+ProFileTypeLoaderCallback MapFileType::callback()
+{
+    return _proFileTypeLoaderCallback;
 }
 
 unsigned int MapFileType::defaultPosition()
 {
+    _initialize();
     return _defaultPosition;
 }
 
 unsigned int MapFileType::defaultElevation()
 {
+    _initialize();
     return _defaultElevation;
 }
 
 unsigned int MapFileType::defaultOrientation()
 {
+    _initialize();
     return _defaultOrientaion;
 }
 
