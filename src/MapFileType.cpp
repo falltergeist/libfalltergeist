@@ -43,7 +43,6 @@ MapFileType::MapFileType(std::ifstream * stream) : DatFileItem(stream)
 
 MapFileType::~MapFileType()
 {
-    delete _elevations;
 }
 
 void MapFileType::_initialize()
@@ -52,8 +51,6 @@ void MapFileType::_initialize()
     if (_proFileTypeLoaderCallback == 0) throw Exception("MapFileType::_initialize() - proto loader callback not defined");
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
-
-    _elevations = new std::vector<MapElevation *>;
 
     *this >> _version;
 
@@ -83,12 +80,12 @@ void MapFileType::_initialize()
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
     {
-        _elevations->push_back(new MapElevation);
+        _elevations.push_back(new MapElevation);
 
         for (unsigned int i = 0; i < 10000; i++)
         {
-            *this >> _elevations->back()->roofTiles()->at(i);
-            *this >> _elevations->back()->floorTiles()->at(i);
+            *this >> _elevations.back()->roofTiles()->at(i);
+            *this >> _elevations.back()->floorTiles()->at(i);
         }
     }
     // SCRIPTS SECTION
@@ -132,12 +129,11 @@ void MapFileType::_initialize()
              if (check != count)
              {
                  throw Exception("MapFileType::open() - rror reading scripts: check is incorrect");
-                 break;
              }
         }
     }
 
-    //OBJECTS
+    //OBJECTS SECTION
     int objectsTotal;
     *this >> objectsTotal;
 
@@ -148,28 +144,19 @@ void MapFileType::_initialize()
         for (unsigned int j = 0; j != objectsOnElevation; ++j)
         {
             MapObject * object = _readObject();
-            _elevations->at(i)->objects()->push_back(object);
-
-            if (object->objectId() == 0) throw 999;
+            _elevations.at(i)->objects()->push_back(object);
 
             if (object->inventorySize() > 0)
             {
-
-                if (object->inventorySize() > objectsOnElevation) throw 777;
-
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
-
                     this->skipBytes(4);  // items count ?
                     MapObject * subobject = _readObject();
                     object->children()->push_back(subobject);
                 }
-
             }
-
         }
     }
-
 }
 
 MapObject * MapFileType::_readObject()
@@ -230,13 +217,10 @@ MapObject * MapFileType::_readObject()
     *this >> uint32;
     object->setUnknown13( uint32 );
 
-    //ProFileType * pr ;
-    ProFileTypeLoaderCallback protoCallback = callback();
-
     switch (object->objectTypeId())
     {
         case ProFileType::TYPE_ITEM:
-            object->setObjectSubtypeId(protoCallback(PID)->objectSubtypeId());
+            object->setObjectSubtypeId(callback()(PID)->objectSubtypeId());
             switch(object->objectSubtypeId())
             {
                 case ProFileType::TYPE_ITEM_AMMO:
@@ -259,7 +243,6 @@ MapObject * MapFileType::_readObject()
                     break;
                 default:
                     throw Exception("MapFileType::_readObject() - unknown item type");
-                    break;
             }
             break;
         case ProFileType::TYPE_CRITTER:
@@ -272,7 +255,7 @@ MapObject * MapFileType::_readObject()
             object->setObjectID3((FID & 0xF0000000) >> 28);
             break;
         case ProFileType::TYPE_SCENERY:
-            object->setObjectSubtypeId(protoCallback(PID)->objectSubtypeId());
+            object->setObjectSubtypeId(callback()(PID)->objectSubtypeId());
             switch(object->objectSubtypeId())
             {
                 case ProFileType::TYPE_SCENERY_LADDER_TOP:
@@ -292,8 +275,6 @@ MapObject * MapFileType::_readObject()
                     break;
                 default:
                     throw Exception("MapFileType::_readObject() - unknown scenery type");
-                    throw ":(";
-                    break;
             }
             break;
         case ProFileType::TYPE_WALL:
@@ -312,15 +293,14 @@ MapObject * MapFileType::_readObject()
             break;
         default:
             throw Exception("MapFileType::_readObject() - unknown type");
-            break;
     }
     return object;
 }
 
-std::vector<MapElevation *> * MapFileType::elevations()
+std::vector<MapElevation*>* MapFileType::elevations()
 {
     _initialize();
-    return _elevations;
+    return &_elevations;
 }
 
 MapFileType* MapFileType::setCallback(ProFileTypeLoaderCallback callback)

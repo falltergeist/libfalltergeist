@@ -42,7 +42,7 @@ class MapFileType : public DatFileItem
 protected:
     ProFileTypeLoaderCallback _proFileTypeLoaderCallback = 0;
 
-    std::vector<MapElevation*>* _elevations = 0;
+    std::vector<MapElevation*> _elevations;
     unsigned int _version;
     std::string _name;
     unsigned int _defaultPosition;
@@ -62,8 +62,8 @@ protected:
 
 
 public:
-    MapFileType(DatFileEntry * datFileEntry);
-    MapFileType(std::ifstream * stream);
+    MapFileType(DatFileEntry* datFileEntry);
+    MapFileType(std::ifstream* stream);
     ~MapFileType();
 
     MapFileType* setCallback(ProFileTypeLoaderCallback callback);
