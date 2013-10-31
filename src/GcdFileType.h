@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <string>
+#include <vector>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
@@ -44,13 +45,10 @@ protected:
                  _unknown6,
                  _unknown7;
     // primary stats
-    unsigned int _strength,
-                 _perception,
-                 _endurance,
-                 _charisma,
-                 _intelligence,
-                 _agility,
-                 _luck;
+    std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
+    // bonuses to primary stats
+    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
+    
     // secondary stats
     unsigned int _hitPoints,
                  _actionPoints,
@@ -80,14 +78,6 @@ protected:
                  _poisonResistance,
                  _age,
                  _gender;
-    // bonuses to primary stats
-    unsigned int _strengthBonus,
-                 _perceptionBonus,
-                 _enduranceBonus,
-                 _charismaBonus,
-                 _intelligenceBonus,
-                 _agilityBonus,
-                 _luckBonus;
     // bonuses to secondaty stats
     unsigned int _hitPointsBonus,
                  _actionPointsBonus,
@@ -150,31 +140,17 @@ protected:
 
     virtual void _initialize();
 public:
-    GcdFileType(DatFileEntry * datFileEntry);
-    GcdFileType(std::ifstream * stream);
+    enum {STATS_STRENGTH = 0, STATS_PERCEPTION, STATS_ENDURANCE, STATS_CHARISMA, STATS_INTELLIGENCE, STATS_AGILITY, STATS_LUCK };
+    
+    GcdFileType(DatFileEntry* datFileEntry);
+    GcdFileType(std::ifstream* stream);
     ~GcdFileType();
 
-    // primary stats
-    void setStrength(unsigned int strength);
-    unsigned int strength();
-
-    void setPerception(unsigned int perception);
-    unsigned int perception();
-
-    void setEndurance(unsigned int endurance);
-    unsigned int endurance();
-
-    void setCharisma(unsigned int charisma);
-    unsigned int charisma();
-
-    void setIntelligence(unsigned int intelligence);
-    unsigned int intelligence();
-
-    void setAgility(unsigned int agility);
-    unsigned int agility();
-
-    void setLuck(unsigned int luck);
-    unsigned int luck();
+    void setStat(unsigned int number, unsigned int value);
+    unsigned int stat(unsigned int number);
+    
+    void setStatBonus(unsigned int number, unsigned int value);
+    unsigned int statBonus(unsigned int number);
 
     // secondary stats
     void setHitPoints(unsigned int hitPoints);
@@ -258,28 +234,6 @@ public:
 
     void setGender(unsigned int gender);
     unsigned int gender();
-
-    // bonuses to primary stats
-    void setStrengthBonus(unsigned int strengthBonus);
-    unsigned int strengthBonus();
-
-    void setPerceptionBonus(unsigned int perceptionBonus);
-    unsigned int perceptionBonus();
-
-    void setEnduranceBonus(unsigned int enduranceBonus);
-    unsigned int enduranceBonus();
-
-    void setCharismaBonus(unsigned int charismaBonus);
-    unsigned int charismaBonus();
-
-    void setIntelligenceBonus(unsigned int intelligenceBonus);
-    unsigned int intelligenceBonus();
-
-    void setAgilityBonus(unsigned int agilityBonus);
-    unsigned int agilityBonus();
-
-    void setLuckBonus(unsigned int luckBonus);
-    unsigned int luckBonus();
 
     // bonuses to secondaty stats
     void setHitPointsBonus(unsigned int hitPointsBonus);

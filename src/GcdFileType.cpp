@@ -22,6 +22,7 @@
 // libfalltergeist includes
 #include "../src/GcdFileType.h"
 #include "../src/DatFileItem.h"
+#include "../src/Exception.h"
 
 // Third party includes
 
@@ -46,12 +47,18 @@ void GcdFileType::_initialize()
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
 
+    unsigned int uint32;
+    
     // unknown 1
     *this >> _unknown1;
 
     // primary stats
-    *this >> _strength >> _perception >> _endurance >> _charisma >> _intelligence >> _agility >> _luck;
-
+    for (unsigned int i = STATS_STRENGTH; i <= STATS_LUCK; i++)
+    {
+        *this >> uint32;
+        setStat(i, uint32);
+    }
+    
     // secondary stats
     *this >> _hitPoints >> _actionPoints >> _armorClass;
 
@@ -66,8 +73,11 @@ void GcdFileType::_initialize()
           >> _radiationResistance >> _poisonResistance >> _age >> _gender;
 
     // bonuses to primary stats
-    *this >> _strengthBonus >> _perceptionBonus >> _enduranceBonus >> _charismaBonus >> _intelligenceBonus
-          >> _agilityBonus >> _luckBonus;
+    for (unsigned int i = STATS_STRENGTH; i <= STATS_LUCK; i++)
+    {
+        *this >> uint32;
+        setStatBonus(i, uint32);
+    }
 
     // bonuses to secondary stats
     *this >> _hitPointsBonus >> _actionPointsBonus >> _armorClassBonus;
@@ -121,81 +131,30 @@ void GcdFileType::_initialize()
           >> _characterPoints;
 }
 
-void GcdFileType::setStrength(unsigned int strength)
-{
-    _strength = strength;
-}
-
-unsigned int GcdFileType::strength()
+unsigned int GcdFileType::stat(unsigned int number)
 {
     _initialize();
-    return _strength;
+    if (number > 7) throw Exception("GcdFileType::stat() - number out of range: " + std::to_string(number));
+    return _stats.at(number);
 }
 
-void GcdFileType::setPerception(unsigned int perception)
+void GcdFileType::setStat(unsigned int number, unsigned int value)
 {
-    _perception = perception;
+    if (number > 7) throw Exception("GcdFileType::setStat() - number out of range: " + std::to_string(number));
+    _stats.at(number) = value;
 }
 
-unsigned int GcdFileType::perception()
-{
-    _initialize();
-    return _perception;
-}
-
-void GcdFileType::setEndurance(unsigned int endurance)
-{
-    _endurance = endurance;
-}
-
-unsigned int GcdFileType::endurance()
+unsigned int GcdFileType::statBonus(unsigned int number)
 {
     _initialize();
-    return _endurance;
+    if (number > 7) throw Exception("GcdFileType::statBonus() - number out of range: " + std::to_string(number));
+    return _statsBonus.at(number);
 }
 
-void GcdFileType::setCharisma(unsigned int charisma)
+void GcdFileType::setStatBonus(unsigned int number, unsigned int value)
 {
-    _charisma = charisma;
-}
-
-unsigned int GcdFileType::charisma()
-{
-    _initialize();
-    return _charisma;
-}
-
-void GcdFileType::setIntelligence(unsigned int intelligence)
-{
-    _intelligence = intelligence;
-}
-
-unsigned int GcdFileType::intelligence()
-{
-    _initialize();
-    return _intelligence;
-}
-
-void GcdFileType::setAgility(unsigned int agility)
-{
-    _agility = agility;
-}
-
-unsigned int GcdFileType::agility()
-{
-    _initialize();
-    return _agility;
-}
-
-void GcdFileType::setLuck(unsigned int luck)
-{
-    _luck = luck;
-}
-
-unsigned int GcdFileType::luck()
-{
-    _initialize();
-    return _luck;
+    if (number > 7) throw Exception("GcdFileType::setStatBonus() - number out of range: " + std::to_string(number));
+    _statsBonus.at(number) = value;
 }
 
 void GcdFileType::setHitPoints(unsigned int hitPoints)
@@ -493,83 +452,6 @@ unsigned int GcdFileType::gender()
 {
     _initialize();
     return _gender;
-}
-
-void GcdFileType::setStrengthBonus(unsigned int strengthBonus)
-{
-    _strengthBonus = strengthBonus;
-}
-
-unsigned int GcdFileType::strengthBonus()
-{
-    _initialize();
-    return _strengthBonus;
-}
-
-void GcdFileType::setPerceptionBonus(unsigned int perceptionBonus)
-{
-    _perceptionBonus = perceptionBonus;
-}
-
-unsigned int GcdFileType::perceptionBonus()
-{
-    _initialize();
-    return _perceptionBonus;
-}
-
-void GcdFileType::setEnduranceBonus(unsigned int enduranceBonus)
-{
-    _enduranceBonus = enduranceBonus;
-}
-
-unsigned int GcdFileType::enduranceBonus()
-{
-    _initialize();
-    return _enduranceBonus;
-}
-
-void GcdFileType::setCharismaBonus(unsigned int charismaBonus)
-{
-    _charismaBonus = charismaBonus;
-}
-
-unsigned int GcdFileType::charismaBonus()
-{
-    _initialize();
-    return _charismaBonus;
-}
-
-void GcdFileType::setIntelligenceBonus(unsigned int intelligenceBonus)
-{
-    _intelligenceBonus = intelligenceBonus;
-}
-
-unsigned int GcdFileType::intelligenceBonus()
-{
-    _initialize();
-    return _intelligenceBonus;
-}
-
-void GcdFileType::setAgilityBonus(unsigned int agilityBonus)
-{
-    _agilityBonus = agilityBonus;
-}
-
-unsigned int GcdFileType::agilityBonus()
-{
-    _initialize();
-    return _agilityBonus;
-}
-
-void GcdFileType::setLuckBonus(unsigned int luckBonus)
-{
-    _luckBonus = luckBonus;
-}
-
-unsigned int GcdFileType::luckBonus()
-{
-    _initialize();
-    return _luckBonus;
 }
 
 void GcdFileType::setHitPointsBonus(unsigned int hitPointsBonus)
