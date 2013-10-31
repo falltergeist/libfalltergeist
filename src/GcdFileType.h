@@ -47,7 +47,9 @@ protected:
     // primary stats
     std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
     // bonuses to primary stats
-    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};    
+    // skills
+    std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     
     // secondary stats
     unsigned int _hitPoints,
@@ -107,25 +109,6 @@ protected:
                  _poisonResistanceBonus,
                  _ageBonus,
                  _genderBonus;
-    //skills
-    unsigned int _smallGunsSkill,
-                 _bigGunsSkill,
-                 _energyWeaponsSkill,
-                 _unarmedSkill,
-                 _meleeWeaponsSkill,
-                 _throwingWeaponsSkill,
-                 _firstAidSkill,
-                 _doctorSkill,
-                 _sneakSkill,
-                 _lockpickSkill,
-                 _stealSkill,
-                 _trapsSkill,
-                 _scienceSkill,
-                 _repairSkill,
-                 _speechSkill,
-                 _barterSkill,
-                 _gamblingSkill,
-                 _outdoorsmanSkill;
 
     std::string _name;
 
@@ -141,6 +124,44 @@ protected:
     virtual void _initialize();
 public:
     enum {STATS_STRENGTH = 0, STATS_PERCEPTION, STATS_ENDURANCE, STATS_CHARISMA, STATS_INTELLIGENCE, STATS_AGILITY, STATS_LUCK };
+    enum { SKILLS_1 = 0, // Small Guns
+           SKILLS_2, // Big Guns
+           SKILLS_3, // Energy Weapons
+           SKILLS_4, // Unarmed
+           SKILLS_5, // Melee Weapons
+           SKILLS_6, // Throwing
+           SKILLS_7, // First Aid
+           SKILLS_8, // Doctor
+           SKILLS_9, // Sneak
+           SKILLS_10, // Lockpick
+           SKILLS_11, // Steal
+           SKILLS_12, // Traps
+           SKILLS_13, // Science
+           SKILLS_14, // Repair
+           SKILLS_15, // Speech
+           SKILLS_16, // Barter
+           SKILLS_17, // Gambling
+           SKILLS_18  // Outdoorsman
+    };
+    enum { SKILLS_SMALL_GUNS = 0,
+           SKILLS_BIG_GUNS,
+           SKILLS_ENERGY_WEAPONS,
+           SKILLS_UNARMED,
+           SKILLS_MELEE_WEAPONS,
+           SKILLS_THROWING,
+           SKILLS_FIRST_AID,
+           SKILLS_DOCTOR,
+           SKILLS_SNEAK,
+           SKILLS_LOCKPICK,
+           SKILLS_STEAL,
+           SKILLS_TRAPS,
+           SKILLS_SCIENCE,
+           SKILLS_REPAIR,
+           SKILLS_SPEECH,
+           SKILLS_BARTER,
+           SKILLS_GAMBLING,
+           SKILLS_OUTDOORSMAN
+    };
     
     GcdFileType(DatFileEntry* datFileEntry);
     GcdFileType(std::ifstream* stream);
@@ -152,6 +173,9 @@ public:
     void setStatBonus(unsigned int number, unsigned int value);
     unsigned int statBonus(unsigned int number);
 
+    void setSkill(unsigned int number, unsigned int value);
+    unsigned int skill(unsigned int number);
+    
     // secondary stats
     void setHitPoints(unsigned int hitPoints);
     unsigned int hitPoints();
@@ -318,61 +342,6 @@ public:
 
     void setGenderBonus(unsigned int genderBonus);
     unsigned int genderBonus();
-
-    //skills
-    void setSmallGunsSkill(unsigned int smallGunsSkill);
-    unsigned int smallGunsSkill();
-
-    void setBigGunsSkill(unsigned int bigGunsSkill);
-    unsigned int bigGunsSkill();
-
-    void setEnergyWeaponsSkill(unsigned int energyWeaponsSkill);
-    unsigned int energyWeaponsSkill();
-
-    void setUnarmedSkill(unsigned int unarmedSkill);
-    unsigned int unarmedSkill();
-
-    void setMeleeWeaponsSkill(unsigned int meleeWeaponsSkill);
-    unsigned int meleeWeaponsSkill();
-
-    void setThrowingWeaponsSkill(unsigned int throwingWeaponsSkill);
-    unsigned int throwingWeaponsSkill();
-
-    void setFirstAidSkill(unsigned int firstAidSkill);
-    unsigned int firstAidSkill();
-
-    void setDoctorSkill(unsigned int doctorSkill);
-    unsigned int doctorSkill();
-
-    void setSneakSkill(unsigned int sneakSkill);
-    unsigned int sneakSkill();
-
-    void setLockpickSkill(unsigned int lockpickSkill);
-    unsigned int lockpickSkill();
-
-    void setStealSkill(unsigned int stealSkill);
-    unsigned int stealSkill();
-
-    void setTrapsSkill(unsigned int trapsSkill);
-    unsigned int trapsSkill();
-
-    void setScienceSkill(unsigned int scienceSkill);
-    unsigned int scienceSkill();
-
-    void setRepairSkill(unsigned int repairSkill);
-    unsigned int repairSkill();
-
-    void setSpeechSkill(unsigned int speechSkill);
-    unsigned int speechSkill();
-
-    void setBarterSkill(unsigned int barterSkill);
-    unsigned int barterSkill();
-
-    void setGamblingSkill(unsigned int gamblingSkill);
-    unsigned int gamblingSkill();
-
-    void setOutdoorsmanSkill(unsigned int outdoorsmanSkill);
-    unsigned int outdoorsmanSkill();
 
     void setName(std::string name);
     std::string name();

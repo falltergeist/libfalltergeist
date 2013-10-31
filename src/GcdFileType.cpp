@@ -94,24 +94,11 @@ void GcdFileType::_initialize()
           >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
 
     //skills
-    *this >> _smallGunsSkill
-          >> _bigGunsSkill
-          >> _energyWeaponsSkill
-          >> _unarmedSkill
-          >> _meleeWeaponsSkill
-          >> _throwingWeaponsSkill
-          >> _firstAidSkill
-          >> _doctorSkill
-          >> _sneakSkill
-          >> _lockpickSkill
-          >> _stealSkill
-          >> _trapsSkill
-          >> _scienceSkill
-          >> _repairSkill
-          >> _speechSkill
-          >> _barterSkill
-          >> _gamblingSkill
-          >> _outdoorsmanSkill;
+    for (unsigned int i = SKILLS_1; i <= SKILLS_18; i++)
+    {
+        *this >> uint32;
+        setSkill(i, uint32);
+    }
 
     // unknown
     *this >> _unknown4 >> _unknown5 >> _unknown6 >> _unknown7;
@@ -134,27 +121,40 @@ void GcdFileType::_initialize()
 unsigned int GcdFileType::stat(unsigned int number)
 {
     _initialize();
-    if (number > 7) throw Exception("GcdFileType::stat() - number out of range: " + std::to_string(number));
+    if (number > 6) throw Exception("GcdFileType::stat() - number out of range: " + std::to_string(number));
     return _stats.at(number);
 }
 
 void GcdFileType::setStat(unsigned int number, unsigned int value)
 {
-    if (number > 7) throw Exception("GcdFileType::setStat() - number out of range: " + std::to_string(number));
+    if (number > 6) throw Exception("GcdFileType::setStat() - number out of range: " + std::to_string(number));
     _stats.at(number) = value;
 }
 
 unsigned int GcdFileType::statBonus(unsigned int number)
 {
     _initialize();
-    if (number > 7) throw Exception("GcdFileType::statBonus() - number out of range: " + std::to_string(number));
+    if (number > 6) throw Exception("GcdFileType::statBonus() - number out of range: " + std::to_string(number));
     return _statsBonus.at(number);
 }
 
 void GcdFileType::setStatBonus(unsigned int number, unsigned int value)
 {
-    if (number > 7) throw Exception("GcdFileType::setStatBonus() - number out of range: " + std::to_string(number));
+    if (number > 6) throw Exception("GcdFileType::setStatBonus() - number out of range: " + std::to_string(number));
     _statsBonus.at(number) = value;
+}
+
+unsigned int GcdFileType::skill(unsigned int number)
+{
+    _initialize();
+    if (number > 17) throw Exception("GcdFileType::skill() - number out of range: " + std::to_string(number));
+    return _skills.at(number);
+}
+
+void GcdFileType::setSkill(unsigned int number, unsigned int value)
+{
+    if (number > 17) throw Exception("GcdFileType::setSkill() - number out of range: " + std::to_string(number));
+    _skills.at(number) = value;
 }
 
 void GcdFileType::setHitPoints(unsigned int hitPoints)
@@ -749,204 +749,6 @@ unsigned int GcdFileType::genderBonus()
 {
     _initialize();
     return _genderBonus;
-}
-
-void GcdFileType::setSmallGunsSkill(unsigned int smallGunsSkill)
-{
-    _smallGunsSkill = smallGunsSkill;
-}
-
-unsigned int GcdFileType::smallGunsSkill()
-{
-    _initialize();
-    return _smallGunsSkill;
-}
-
-void GcdFileType::setBigGunsSkill(unsigned int bigGunsSkill)
-{
-    _bigGunsSkill = bigGunsSkill;
-}
-
-unsigned int GcdFileType::bigGunsSkill()
-{
-    _initialize();
-    return _bigGunsSkill;
-}
-
-void GcdFileType::setEnergyWeaponsSkill(unsigned int energyWeaponsSkill)
-{
-    _energyWeaponsSkill = energyWeaponsSkill;
-}
-
-unsigned int GcdFileType::energyWeaponsSkill()
-{
-    _initialize();
-    return _energyWeaponsSkill;
-}
-
-void GcdFileType::setUnarmedSkill(unsigned int unarmedSkill)
-{
-    _unarmedSkill = unarmedSkill;
-}
-
-unsigned int GcdFileType::unarmedSkill()
-{
-    _initialize();
-    return _unarmedSkill;
-}
-
-void GcdFileType::setMeleeWeaponsSkill(unsigned int meleeWeaponsSkill)
-{
-    _meleeWeaponsSkill = meleeWeaponsSkill;
-}
-
-unsigned int GcdFileType::meleeWeaponsSkill()
-{
-    _initialize();
-    return _meleeWeaponsSkill;
-}
-
-void GcdFileType::setThrowingWeaponsSkill(unsigned int throwingWeaponsSkill)
-{
-    _throwingWeaponsSkill = throwingWeaponsSkill;
-}
-
-unsigned int GcdFileType::throwingWeaponsSkill()
-{
-    _initialize();
-    return _throwingWeaponsSkill;
-}
-
-void GcdFileType::setFirstAidSkill(unsigned int firstAidSkill)
-{
-    _firstAidSkill = firstAidSkill;
-}
-
-unsigned int GcdFileType::firstAidSkill()
-{
-    _initialize();
-    return _firstAidSkill;
-}
-
-void GcdFileType::setDoctorSkill(unsigned int doctorSkill)
-{
-    _doctorSkill = doctorSkill;
-}
-
-unsigned int GcdFileType::doctorSkill()
-{
-    _initialize();
-    return _doctorSkill;
-}
-
-void GcdFileType::setSneakSkill(unsigned int sneakSkill)
-{
-    _sneakSkill = sneakSkill;
-}
-
-unsigned int GcdFileType::sneakSkill()
-{
-    _initialize();
-    return _sneakSkill;
-}
-
-void GcdFileType::setLockpickSkill(unsigned int lockpickSkill)
-{
-    _lockpickSkill = lockpickSkill;
-}
-
-unsigned int GcdFileType::lockpickSkill()
-{
-    _initialize();
-    return _lockpickSkill;
-}
-
-void GcdFileType::setStealSkill(unsigned int stealSkill)
-{
-    _stealSkill = stealSkill;
-}
-
-unsigned int GcdFileType::stealSkill()
-{
-    _initialize();
-    return _stealSkill;
-}
-
-void GcdFileType::setTrapsSkill(unsigned int trapsSkill)
-{
-    _trapsSkill = trapsSkill;
-}
-
-unsigned int GcdFileType::trapsSkill()
-{
-    _initialize();
-    return _trapsSkill;
-}
-
-void GcdFileType::setScienceSkill(unsigned int scienceSkill)
-{
-    _scienceSkill = scienceSkill;
-}
-
-unsigned int GcdFileType::scienceSkill()
-{
-    _initialize();
-    return _scienceSkill;
-}
-
-void GcdFileType::setRepairSkill(unsigned int repairSkill)
-{
-    _repairSkill = repairSkill;
-}
-
-unsigned int GcdFileType::repairSkill()
-{
-    _initialize();
-    return _repairSkill;
-}
-
-void GcdFileType::setSpeechSkill(unsigned int speechSkill)
-{
-    _speechSkill = speechSkill;
-}
-
-unsigned int GcdFileType::speechSkill()
-{
-    _initialize();
-    return _speechSkill;
-}
-
-void GcdFileType::setBarterSkill(unsigned int barterSkill)
-{
-    _barterSkill = barterSkill;
-}
-
-unsigned int GcdFileType::barterSkill()
-{
-    _initialize();
-    return _barterSkill;
-}
-
-void GcdFileType::setGamblingSkill(unsigned int gamblingSkill)
-{
-    _gamblingSkill = gamblingSkill;
-}
-
-unsigned int GcdFileType::gamblingSkill()
-{
-    _initialize();
-    return _gamblingSkill;
-}
-
-void GcdFileType::setOutdoorsmanSkill(unsigned int outdoorsmanSkill)
-{
-    _outdoorsmanSkill = outdoorsmanSkill;
-}
-
-unsigned int GcdFileType::outdoorsmanSkill()
-{
-    _initialize();
-    return _outdoorsmanSkill;
 }
 
 void GcdFileType::setName(std::string name)
