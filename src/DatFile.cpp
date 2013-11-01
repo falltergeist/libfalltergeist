@@ -236,10 +236,10 @@ DatFile& DatFile::operator>>(DatFileEntry& entry)
 
     *this >> filenameSize;
 
-    char * filename = new char[filenameSize + 1]();
-    readBytes(filename, filenameSize);
+    std::string filename;
+    filename.resize(filenameSize);
+    readBytes(&filename[0], filenameSize);
     entry.setFilename(filename);
-    delete [] filename;
 
     *this >> compressed >> unpackedSize >> packedSize >> dataOffset;
 
