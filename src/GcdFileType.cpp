@@ -21,7 +21,6 @@
 
 // libfalltergeist includes
 #include "../src/GcdFileType.h"
-#include "../src/DatFileItem.h"
 #include "../src/Exception.h"
 
 // Third party includes

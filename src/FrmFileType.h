@@ -30,7 +30,6 @@
 
 namespace libfalltergeist
 {
-class DatFileEntry;
 class FrmDirection;
 
 class FrmFileType : public DatFileItem

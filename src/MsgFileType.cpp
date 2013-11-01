@@ -23,7 +23,6 @@
 
 // libfalltergeist includes
 #include "../src/MsgFileType.h"
-#include "../src/DatFileEntry.h"
 #include "../src/MsgMessage.h"
 #include "../src/Exception.h"
 

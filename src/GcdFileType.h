@@ -31,7 +31,6 @@
 
 namespace libfalltergeist
 {
-class DatFileEntry;
 
 class GcdFileType : public DatFileItem
 {

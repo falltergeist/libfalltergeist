@@ -32,7 +32,6 @@
 namespace libfalltergeist
 {
 class AafGlyph;
-class DatFileEntry;
 
 class AafFileType : public DatFileItem
 {

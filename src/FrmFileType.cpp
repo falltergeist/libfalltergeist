@@ -23,7 +23,6 @@
 #include "../src/FrmFileType.h"
 #include "../src/FrmFrame.h"
 #include "../src/FrmDirection.h"
-#include "../src/DatFileEntry.h"
 
 // Third party includes
 

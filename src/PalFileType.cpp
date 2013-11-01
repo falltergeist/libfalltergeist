@@ -21,7 +21,6 @@
 
 // libfalltergeist includes
 #include "../src/PalFileType.h"
-#include "../src/DatFileEntry.h"
 #include "../src/PalColor.h"
 
 // Third party includes

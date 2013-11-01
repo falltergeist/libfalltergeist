@@ -23,24 +23,21 @@
 // C++ standard includes
 
 // libfalltergeist includes
+#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class DatFileItem;
 
-class FonFileType
+class FonFileType : public DatFileItem
 {
 protected:
-    DatFileItem * _datFileItem;
+    virtual void _initialize();
 public:
-    FonFileType(DatFileItem * datFileItem);
-    ~FonFileType();
-
-    DatFileItem * datFileItem();
-
-    void open();
+    FonFileType(DatFileEntry* datFileEntry);
+    FonFileType(std::ifstream* stream);
+    virtual ~FonFileType();
 };
 
 }

@@ -30,7 +30,6 @@
 
 namespace libfalltergeist
 {
-class DatFileEntry;
 class PalColor;
 
 class PalFileType : public DatFileItem

@@ -22,7 +22,6 @@
 
 // libfalltergeist includes
 #include "../src/MapFileType.h"
-#include "../src/DatFileEntry.h"
 #include "../src/MapElevation.h"
 #include "../src/MapObject.h"
 #include "../src/ProFileType.h"

@@ -30,7 +30,6 @@
 
 namespace libfalltergeist
 {
-class DatFileEntry;
 
 class BioFileType : public DatFileItem
 {

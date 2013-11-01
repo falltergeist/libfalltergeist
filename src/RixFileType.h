@@ -17,11 +17,10 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_MSGFILETYPE_H
-#define LIBFALLTERGEIST_MSGFILETYPE_H
+#ifndef LIBFALLTERGEIST_RIXFILETYPE_H
+#define	LIBFALLTERGEIST_RIXFILETYPE_H
 
 // C++ standard includes
-#include <vector>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
@@ -30,23 +29,15 @@
 
 namespace libfalltergeist
 {
-class MsgMessage;
-
-class MsgFileType : public DatFileItem
+    
+class RixFileType : public DatFileItem
 {
-protected:
-    std::vector<MsgMessage*> _messages;
-    virtual void _initialize();
 public:
-    MsgFileType(DatFileEntry* datFileEntry);
-    MsgFileType(std::ifstream* stream);
-    ~MsgFileType();
-
-    std::vector<MsgMessage*>* messages();
-
-    MsgMessage* message(unsigned int number);
-
+    RixFileType(DatFileEntry* datFileEntry);
+    RixFileType(std::ifstream* stream);
+    virtual ~RixFileType();
 };
 
 }
-#endif // LIBFALLTERGEIST_MSGFILETYPE_H
+#endif	/* LIBFALLTERGEIST_RIXFILETYPE_H */
+

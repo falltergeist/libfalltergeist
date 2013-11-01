@@ -29,7 +29,6 @@
 
 namespace libfalltergeist
 {
-class DatFileEntry;
 
 class ProFileType : public DatFileItem
 {

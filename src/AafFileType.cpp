@@ -22,7 +22,6 @@
 // libfalltergeist includes
 #include "../src/AafFileType.h"
 #include "../src/AafGlyph.h"
-#include "../src/DatFileEntry.h"
 
 // Third party includes
 

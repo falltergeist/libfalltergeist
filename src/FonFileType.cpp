@@ -21,30 +21,30 @@
 
 // libfalltergeist includes
 #include "../src/FonFileType.h"
-#include "../src/DatFileItem.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-FonFileType::FonFileType(DatFileItem * datFileItem) : _datFileItem(datFileItem)
+FonFileType::FonFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
 {
-    open();
+}
+
+FonFileType::FonFileType(std::ifstream* stream) : DatFileItem(stream)
+{
 }
 
 FonFileType::~FonFileType()
 {
 }
 
-DatFileItem * FonFileType::datFileItem()
-{
-    return _datFileItem;
-}
 
-void FonFileType::open()
+void FonFileType::_initialize()
 {
-
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
 }
 
 }

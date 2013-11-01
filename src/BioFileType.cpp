@@ -21,7 +21,6 @@
 
 // libfalltergeist includes
 #include "../src/BioFileType.h"
-#include "../src/DatFileEntry.h"
 
 // Third party includes
 

@@ -21,7 +21,6 @@
 
 // libfalltergeist includes
 #include "../src/ProFileType.h"
-#include "../src/DatFileEntry.h"
 
 // Third party includes
 
@@ -56,34 +55,49 @@ void ProFileType::_initialize()
 
     _frmTypeId = (FID & 0x0F000000) >> 28;
     _frmOffset = (FID & 0x00FF0000) >> 16;
-
     _frmId = FID & 0x0000FFFF;
 
     switch (_objectTypeId)
     {
-        case TYPE_ITEM:
-        {
+        case TYPE_TILE:
+            break;
+        default:
             *this >> _lightDistance >> _lightIntencity;
+            break;
+    }
 
-            *this >> _flags >> _flagsExt;
-
+    *this >> _flags >> _flagsExt;
+    
+    switch (_objectTypeId)
+    {
+        case TYPE_ITEM:
+        case TYPE_CRITTER:
+        case TYPE_SCENERY:
+        case TYPE_WALL:
             unsigned int SID;
             *this >> SID;
             _scriptTypeId = (SID & 0xFF000000) >> 24;
             _scriptId = SID & 0x0000FFFF;
-
+            break;
+        case TYPE_TILE:
+        case TYPE_MISC:
+            break;
+    }    
+    
+    switch (_objectTypeId)
+    {
+        case TYPE_ITEM:
+        {
             *this >> _objectSubtypeId;
-
             *this >> _materialId;
             *this >> _containerSize;
-
             *this >> _weight ;
             *this >> _basePrice;
 
             unsigned int FID;
             *this >> FID;
             _inventoryFrmTypeId = (FID & 0xFF000000) >> 24;
-            _inventoryFrmTypeId = FID & 0x00FFFF;
+            _inventoryFrmId = FID & 0x00FFFF;
 
             *this >> _soundId;
 
@@ -128,15 +142,6 @@ void ProFileType::_initialize()
         }
         case TYPE_CRITTER:
         {
-            *this >> _lightDistance >> _lightIntencity;
-
-            *this >> _flags >> _flagsExt;
-
-            unsigned int SID;
-            *this >> SID;
-            _scriptTypeId = (SID & 0xFF000000) >> 24;
-            _scriptId = SID & 0x0000FFFF;
-
             unsigned int FID;
             *this >> FID;
             _headFrmTypeId = (FID & 0xFF000000) >> 24;
@@ -148,51 +153,25 @@ void ProFileType::_initialize()
         }
         case TYPE_SCENERY:
         {
-            *this >> _lightDistance >> _lightIntencity;
-
-            *this >> _flags >> _flagsExt;
-
-            unsigned int SID;
-            *this >> SID;
-            _scriptTypeId = (SID & 0xFF000000) >> 24;
-            _scriptId = SID & 0x0000FFFF;
-
             *this >> _objectSubtypeId;
-
             *this >> _materialId;
-
             *this >> _soundId;
 
             break;
         }
         case TYPE_WALL:
         {
-            *this >> _lightDistance >> _lightIntencity;
-
-            *this >> _flags >> _flagsExt;
-
-            unsigned int SID;
-            *this >> SID;
-            _scriptTypeId = (SID & 0xFF000000) >> 24;
-            _scriptId = SID & 0x0000FFFF;
-
             *this >> _materialId;
             break;
         }
         case TYPE_TILE:
         {
-            *this >> _flags >> _flagsExt;
-
             this->skipBytes(4); //unknown
-
             *this >> _materialId;
             break;
         }
         case TYPE_MISC:
         {
-            *this >> _lightDistance >> _lightIntencity;
-
-            *this >> _flags >> _flagsExt;
             break;
         }
     }

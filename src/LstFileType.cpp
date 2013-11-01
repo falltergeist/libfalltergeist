@@ -19,11 +19,9 @@
 
 // C++ standard includes
 #include <algorithm>
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/LstFileType.h"
-#include "../src/DatFileEntry.h"
 
 // Third party includes
 
