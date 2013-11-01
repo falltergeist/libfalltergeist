@@ -32,17 +32,14 @@ namespace libfalltergeist
 
 FrmFileType::FrmFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
 {
-    _directions = 0;
 }
 
 FrmFileType::FrmFileType(std::ifstream * stream) : DatFileItem(stream)
 {
-    _directions = 0;
 }
 
 FrmFileType::~FrmFileType()
 {
-    delete _directions;
 }
 
 void FrmFileType::_initialize()
@@ -57,21 +54,19 @@ void FrmFileType::_initialize()
     unsigned short shift;
     FrmDirection * direction;
 
-    _directions = new std::vector<FrmDirection *>;
-
     for (unsigned int i = 0; i != 6; ++i)
     {
         direction = new FrmDirection();
         *this >> shift;
         direction->setShiftX(shift);
-        _directions->push_back(direction);
+        _directions.push_back(direction);
     }
 
     // Y shift
     for (unsigned int i = 0; i != 6; ++i)
     {
         *this >> shift;
-        _directions->at(i)->setShiftY(shift);
+        _directions.at(i)->setShiftY(shift);
     }
 
     // Data offset
@@ -79,14 +74,14 @@ void FrmFileType::_initialize()
     {
         unsigned int offset;
         *this >> offset;
-        _directions->at(i)->setDataOffset(offset);
+        _directions.at(i)->setDataOffset(offset);
     }
 
     // for each direction
     for (unsigned int i = 0; i!= 6; ++i)
     {
         // jump to frames data at frames area
-        DatFileItem::setPosition(_directions->at(i)->dataOffset() + 62);
+        DatFileItem::setPosition(_directions.at(i)->dataOffset() + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
@@ -125,11 +120,9 @@ void FrmFileType::_initialize()
                 frame->colorIndexes()->push_back(color);
             }
             // Appending frame to direction
-            _directions->at(i)->frames()->push_back(frame);
+            _directions.at(i)->frames()->push_back(frame);
         }
-
     }
-
 }
 
 unsigned int FrmFileType::version()
@@ -176,10 +169,10 @@ void FrmFileType::setActionFrame(unsigned short number)
     _actionFrame = number;
 }
 
-std::vector<FrmDirection *> * FrmFileType::directions()
+std::vector<FrmDirection*>* FrmFileType::directions()
 {
     _initialize();
-    return _directions;
+    return &_directions;
 }
 
 }

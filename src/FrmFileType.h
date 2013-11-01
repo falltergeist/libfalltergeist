@@ -36,7 +36,7 @@ class FrmDirection;
 class FrmFileType : public DatFileItem
 {
 protected:
-    std::vector<FrmDirection *> * _directions;
+    std::vector<FrmDirection*> _directions;
     unsigned int _version;
     unsigned short _framesPerSecond,
                    _framesPerDirection,
@@ -45,8 +45,8 @@ protected:
 public:
     enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_BACKGROUND, TYPE_INTERFACE, TYPE_INVENTORY };
 
-    FrmFileType(DatFileEntry * datFileEntry);
-    FrmFileType(std::ifstream * stream);
+    FrmFileType(DatFileEntry* datFileEntry);
+    FrmFileType(std::ifstream* stream);
     ~FrmFileType();
 
     void setVersion(unsigned int version);
@@ -61,7 +61,7 @@ public:
     void setActionFrame(unsigned short number);
     unsigned short actionFrame();
 
-    std::vector<FrmDirection *> * directions();
+    std::vector<FrmDirection*> * directions();
 
 };
 

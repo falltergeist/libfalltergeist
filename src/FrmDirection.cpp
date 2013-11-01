@@ -30,12 +30,10 @@ namespace libfalltergeist
 
 FrmDirection::FrmDirection()
 {
-    _frames = 0;
 }
 
 FrmDirection::~FrmDirection()
 {
-    delete _frames;
 }
 
 signed short FrmDirection::shiftX()
@@ -68,11 +66,9 @@ void FrmDirection::setDataOffset(unsigned int offset)
     _dataOffset = offset;
 }
 
-std::vector<FrmFrame *> * FrmDirection::frames()
+std::vector<FrmFrame*>* FrmDirection::frames()
 {
-    if (_frames != 0) return _frames;
-    _frames = new std::vector<FrmFrame *>;
-    return _frames;
+    return &_frames;
 }
 
 }

@@ -30,12 +30,10 @@ namespace libfalltergeist
 
 FrmFrame::FrmFrame()
 {
-    _colorIndexes = 0;
 }
 
 FrmFrame::~FrmFrame()
 {
-    delete _colorIndexes;
 }
 
 unsigned short FrmFrame::width()
@@ -80,9 +78,7 @@ void FrmFrame::setOffsetY(signed short offsetY)
 
 std::vector<unsigned char> * FrmFrame::colorIndexes()
 {
-    if (_colorIndexes != 0) return _colorIndexes;
-    _colorIndexes = new std::vector<unsigned char>;
-    return _colorIndexes;
+    return &_colorIndexes;
 }
 
 

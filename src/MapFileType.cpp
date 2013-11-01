@@ -84,8 +84,10 @@ void MapFileType::_initialize()
 
         for (unsigned int i = 0; i < 10000; i++)
         {
-            *this >> _elevations.back()->roofTiles()->at(i);
-            *this >> _elevations.back()->floorTiles()->at(i);
+            unsigned short roof, floor;
+            *this >> roof >> floor;
+            _elevations.back()->roofTiles()->push_back(roof);
+            _elevations.back()->floorTiles()->push_back(floor);
         }
     }
     // SCRIPTS SECTION

@@ -37,11 +37,11 @@ protected:
     signed short _shiftX;
     signed short _shiftY;
     unsigned int _dataOffset;
-    std::vector<FrmFrame *> * _frames;
+    std::vector<FrmFrame*> _frames;
 
 public:
     FrmDirection();
-    ~FrmDirection();
+    virtual ~FrmDirection();
 
     void setShiftX(signed short shiftX);
     signed short shiftX();
@@ -52,7 +52,7 @@ public:
     void setDataOffset(unsigned int offset);
     unsigned int dataOffset();
 
-    std::vector<FrmFrame *> * frames();
+    std::vector<FrmFrame*>* frames();
 };
 
 }

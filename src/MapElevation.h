@@ -34,13 +34,13 @@ class MapObject;
 class MapElevation
 {
 protected:
-    std::vector<unsigned short> * _floorTiles;
-    std::vector<unsigned short> * _roofTiles;
-    std::vector<MapObject *> * _objects;
+    std::vector<unsigned short> _floorTiles;
+    std::vector<unsigned short> _roofTiles;
+    std::vector<MapObject*> _objects;
 public:
-    std::vector<MapObject *> * objects();
-    std::vector<unsigned short> * floorTiles();
-    std::vector<unsigned short> * roofTiles();
+    std::vector<MapObject*> * objects();
+    std::vector<unsigned short>* floorTiles();
+    std::vector<unsigned short>* roofTiles();
     MapElevation();
     ~MapElevation();
 };

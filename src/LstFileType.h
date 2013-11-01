@@ -36,14 +36,14 @@ class DatFileEntry;
 class LstFileType : public DatFileItem
 {
 protected:
-    std::vector<std::string> * _strings;
+    std::vector<std::string> _strings;
     virtual void _initialize();
 public:
-    LstFileType(DatFileEntry * datFileEntry);
-    LstFileType(std::ifstream * stream);
+    LstFileType(DatFileEntry* datFileEntry);
+    LstFileType(std::ifstream* stream);
     ~LstFileType();
 
-    std::vector<std::string> * strings();
+    std::vector<std::string>* strings();
 };
 
 }

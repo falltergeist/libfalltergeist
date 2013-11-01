@@ -38,10 +38,10 @@ protected:
     unsigned short _height;
     signed short _offsetX;
     signed short _offsetY;
-    std::vector<unsigned char> * _colorIndexes;
+    std::vector<unsigned char> _colorIndexes;
 public:
     FrmFrame();
-    ~FrmFrame();
+    virtual ~FrmFrame();
 
     void setWidth(unsigned short width);
     unsigned short width();
@@ -55,7 +55,7 @@ public:
     void setOffsetY(signed short offsetY);
     signed short offsetY();
 
-    std::vector<unsigned char> * colorIndexes();
+    std::vector<unsigned char>* colorIndexes();
 
 };
 

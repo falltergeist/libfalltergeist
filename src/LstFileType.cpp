@@ -30,19 +30,16 @@
 namespace libfalltergeist
 {
 
-LstFileType::LstFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
+LstFileType::LstFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
 {
-    _strings = 0;
 }
 
-LstFileType::LstFileType(std::ifstream * stream) : DatFileItem(stream)
+LstFileType::LstFileType(std::ifstream* stream) : DatFileItem(stream)
 {
-    _strings = 0;
 }
 
 LstFileType::~LstFileType()
 {
-    delete _strings;
 }
 
 void LstFileType::_initialize()
@@ -50,8 +47,6 @@ void LstFileType::_initialize()
     if (_initialized) return;
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
-
-    _strings = new std::vector<std::string>;
 
     std::string line;
     unsigned char ch;
@@ -70,7 +65,7 @@ void LstFileType::_initialize()
             std::replace(line.begin(),line.end(),'\\','/');
             std::transform(line.begin(),line.end(),line.begin(), ::tolower);
 
-            _strings->push_back(line);
+            _strings.push_back(line);
             line.clear();
             ++i;
             *this >> ch;
@@ -78,10 +73,10 @@ void LstFileType::_initialize()
     }
 }
 
-std::vector<std::string> * LstFileType::strings()
+std::vector<std::string>* LstFileType::strings()
 {
     _initialize();
-    return _strings;
+    return &_strings;
 }
 
 }
