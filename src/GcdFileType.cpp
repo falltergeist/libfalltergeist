@@ -65,12 +65,20 @@ void GcdFileType::_initialize()
     // unknown 2
     *this >> _unknown2;
 
-    *this >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier
-          >> _damageThresholdNormal >> _damageThresholdLaser >> _damageThresholdFire
-          >> _damageThresholdPlasma >> _damageThresholdElectrical >> _damageThresholdEMP >> _damageThresholdExplosive
-          >> _damageResistanceNormal >> _damageResistanceLaser >> _damageResistanceFire
-          >> _damageResistancePlasma >> _damageResistanceElectrical >> _damageResistanceEMP >> _damageResistanceExplosive
-          >> _radiationResistance >> _poisonResistance >> _age >> _gender;
+    *this >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier;
+    
+    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    {
+        *this >> uint32;
+        setDamage(i, uint32);
+    }
+    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    {
+        *this >> uint32;
+        setResistance(i, uint32);
+    }
+    
+    *this >> _radiationResistance >> _poisonResistance >> _age >> _gender;
 
     // bonuses to primary stats
     for (unsigned int i = STATS_STRENGTH; i <= STATS_LUCK; i++)
@@ -86,12 +94,18 @@ void GcdFileType::_initialize()
     *this >> _unknown3;
 
     *this >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
-          >> _criticalChanceBonus >> _criticalHitModifierBonus
-          >> _damageThresholdNormalBonus >> _damageThresholdLaserBonus >> _damageThresholdFireBonus >> _damageThresholdPlasmaBonus
-          >> _damageThresholdElectricalBonus >> _damageThresholdEMPBonus >> _damageThresholdExplosiveBonus
-          >> _damageResistanceNormalBonus >> _damageResistanceLaserBonus >> _damageResistanceFireBonus >> _damageResistancePlasmaBonus
-          >> _damageResistanceElectricalBonus >> _damageResistanceEMPBonus >> _damageResistanceExplosiveBonus
-          >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
+          >> _criticalChanceBonus >> _criticalHitModifierBonus;
+    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    {
+        *this >> uint32;
+        setDamageBonus(i, uint32);
+    }
+    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    {
+        *this >> uint32;
+        setResistanceBonus(i, uint32);
+    }
+    *this >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
 
     //skills
     for (unsigned int i = SKILLS_1; i <= SKILLS_18; i++)
@@ -120,8 +134,8 @@ void GcdFileType::_initialize()
 
 unsigned int GcdFileType::stat(unsigned int number)
 {
-    _initialize();
     if (number > 6) throw Exception("GcdFileType::stat() - number out of range: " + std::to_string(number));
+    _initialize();
     return _stats.at(number);
 }
 
@@ -133,8 +147,8 @@ void GcdFileType::setStat(unsigned int number, unsigned int value)
 
 unsigned int GcdFileType::statBonus(unsigned int number)
 {
-    _initialize();
     if (number > 6) throw Exception("GcdFileType::statBonus() - number out of range: " + std::to_string(number));
+    _initialize();
     return _statsBonus.at(number);
 }
 
@@ -146,8 +160,8 @@ void GcdFileType::setStatBonus(unsigned int number, unsigned int value)
 
 unsigned int GcdFileType::skill(unsigned int number)
 {
-    _initialize();
     if (number > 17) throw Exception("GcdFileType::skill() - number out of range: " + std::to_string(number));
+    _initialize();
     return _skills.at(number);
 }
 
@@ -155,6 +169,58 @@ void GcdFileType::setSkill(unsigned int number, unsigned int value)
 {
     if (number > 17) throw Exception("GcdFileType::setSkill() - number out of range: " + std::to_string(number));
     _skills.at(number) = value;
+}
+
+unsigned int GcdFileType::damage(unsigned int type)
+{
+    if (type > 6) throw Exception("GcdFileType::damage() - type out of range: " + std::to_string(type));
+    _initialize();
+    return _damage.at(type);
+}
+
+void GcdFileType::setDamage(unsigned int type, unsigned int value)
+{
+    if (type > 6) throw Exception("GcdFileType::setDamage() - type out of range: " + std::to_string(type));
+    _damage.at(type) = value;    
+}
+
+unsigned int GcdFileType::damageBonus(unsigned int type)
+{
+    if (type > 6) throw Exception("GcdFileType::damageBonus() - type out of range: " + std::to_string(type));
+    _initialize();
+    return _damageBonus.at(type);
+}
+
+void GcdFileType::setDamageBonus(unsigned int type, unsigned int value)
+{
+    if (type > 6) throw Exception("GcdFileType::setDamageBonus() - type out of range: " + std::to_string(type));
+    _damageBonus.at(type) = value;    
+}
+
+unsigned int GcdFileType::resistance(unsigned int type)
+{
+    if (type > 6) throw Exception("GcdFileType::resistance() - type out of range: " + std::to_string(type));
+    _initialize();
+    return _resistance.at(type);
+}
+
+void GcdFileType::setResistance(unsigned int type, unsigned int value)
+{
+    if (type > 6) throw Exception("GcdFileType::setResistance() - type out of range: " + std::to_string(type));
+    _resistance.at(type) = value;
+}
+
+unsigned int GcdFileType::resistanceBonus(unsigned int type)
+{
+    if (type > 6) throw Exception("GcdFileType::resistanceBonus() - type out of range: " + std::to_string(type));
+    _initialize();
+    return _resistanceBonus.at(type);
+}
+
+void GcdFileType::setResistanceBonus(unsigned int type, unsigned int value)
+{
+    if (type > 6) throw Exception("GcdFileType::setResistanceBonus() - type out of range: " + std::to_string(type));
+    _resistanceBonus.at(type) = value;
 }
 
 void GcdFileType::setHitPoints(unsigned int hitPoints)
@@ -254,160 +320,6 @@ unsigned int GcdFileType::criticalHitModifier()
 {
     _initialize();
     return _criticalHitModifier;
-}
-
-void GcdFileType::setDamageThresholdNormal(unsigned int damageThresholdNormal)
-{
-    _damageThresholdNormal = damageThresholdNormal;
-}
-
-unsigned int GcdFileType::damageThresholdNormal()
-{
-    _initialize();
-    return _damageThresholdNormal;
-}
-
-void GcdFileType::setDamageThresholdLaser(unsigned int damageThresholdLaser)
-{
-    _damageThresholdLaser = damageThresholdLaser;
-}
-
-unsigned int GcdFileType::damageThresholdLaser()
-{
-    _initialize();
-    return _damageThresholdLaser;
-}
-
-void GcdFileType::setDamageThresholdFire(unsigned int damageThresholdFire)
-{
-    _damageThresholdFire = damageThresholdFire;
-}
-
-unsigned int GcdFileType::damageThresholdFire()
-{
-    _initialize();
-    return _damageThresholdFire;
-}
-
-void GcdFileType::setDamageThresholdPlasma(unsigned int damageThresholdPlasma)
-{
-    _damageThresholdPlasma = damageThresholdPlasma;
-}
-
-unsigned int GcdFileType::damageThresholdPlasma()
-{
-    _initialize();
-    return _damageThresholdPlasma;
-}
-
-void GcdFileType::setDamageThresholdElectrical(unsigned int damageThresholdElectrical)
-{
-    _damageThresholdElectrical = damageThresholdElectrical;
-}
-
-unsigned int GcdFileType::damageThresholdElectrical()
-{
-    _initialize();
-    return _damageThresholdElectrical;
-}
-
-void GcdFileType::setDamageThresholdEMP(unsigned int damageThresholdEMP)
-{
-    _damageThresholdEMP = damageThresholdEMP;
-}
-
-unsigned int GcdFileType::damageThresholdEMP()
-{
-    _initialize();
-    return _damageThresholdEMP;
-}
-
-void GcdFileType::setDamageThresholdExplosive(unsigned int damageThresholdExplosive)
-{
-    _damageThresholdExplosive = damageThresholdExplosive;
-}
-
-unsigned int GcdFileType::damageThresholdExplosive()
-{
-    _initialize();
-    return _damageThresholdExplosive;
-}
-
-void GcdFileType::setDamageResistanceNormal(unsigned int damageResistanceNormal)
-{
-    _damageResistanceNormal = damageResistanceNormal;
-}
-
-unsigned int GcdFileType::damageResistanceNormal()
-{
-    _initialize();
-    return _damageResistanceNormal;
-}
-
-void GcdFileType::setDamageResistanceLaser(unsigned int damageResistanceLaser)
-{
-    _damageResistanceLaser = damageResistanceLaser;
-}
-
-unsigned int GcdFileType::damageResistanceLaser()
-{
-    _initialize();
-    return _damageResistanceLaser;
-}
-
-void GcdFileType::setDamageResistanceFire(unsigned int damageResistanceFire)
-{
-    _damageResistanceFire = damageResistanceFire;
-}
-
-unsigned int GcdFileType::damageResistanceFire()
-{
-    _initialize();
-    return _damageResistanceFire;
-}
-
-void GcdFileType::setDamageResistancePlasma(unsigned int damageResistancePlasma)
-{
-    _damageResistancePlasma = damageResistancePlasma;
-}
-
-unsigned int GcdFileType::damageResistancePlasma()
-{
-    _initialize();
-    return _damageResistancePlasma;
-}
-
-void GcdFileType::setDamageResistanceElectrical(unsigned int damageResistanceElectrical)
-{
-    _damageResistanceElectrical = damageResistanceElectrical;
-}
-
-unsigned int GcdFileType::damageResistanceElectrical()
-{
-    _initialize();
-    return _damageResistanceElectrical;
-}
-
-void GcdFileType::setDamageResistanceEMP(unsigned int damageResistanceEMP)
-{
-    _damageResistanceEMP = damageResistanceEMP;
-}
-
-unsigned int GcdFileType::damageResistanceEMP()
-{
-    _initialize();
-    return _damageResistanceEMP;
-}
-
-void GcdFileType::setDamageResistanceExplosive(unsigned int damageResistanceExplosive)
-{
-    _damageResistanceExplosive = damageResistanceExplosive;
-}
-
-unsigned int GcdFileType::damageResistanceExplosive()
-{
-    _initialize();
-    return _damageResistanceExplosive;
 }
 
 void GcdFileType::setRadiationResistance(unsigned int radiationResistance)
@@ -551,160 +463,6 @@ unsigned int GcdFileType::criticalHitModifierBonus()
 {
     _initialize();
     return _criticalHitModifierBonus;
-}
-
-void GcdFileType::setDamageThresholdNormalBonus(unsigned int damageThresholdNormalBonus)
-{
-    _damageThresholdNormalBonus = damageThresholdNormalBonus;
-}
-
-unsigned int GcdFileType::damageThresholdNormalBonus()
-{
-    _initialize();
-    return _damageThresholdNormalBonus;
-}
-
-void GcdFileType::setDamageThresholdLaserBonus(unsigned int damageThresholdLaserBonus)
-{
-    _damageThresholdLaserBonus = damageThresholdLaserBonus;
-}
-
-unsigned int GcdFileType::damageThresholdLaserBonus()
-{
-    _initialize();
-    return _damageThresholdLaserBonus;
-}
-
-void GcdFileType::setDamageThresholdFireBonus(unsigned int damageThresholdFireBonus)
-{
-    _damageThresholdFireBonus = damageThresholdFireBonus;
-}
-
-unsigned int GcdFileType::damageThresholdFireBonus()
-{
-    _initialize();
-    return _damageThresholdFireBonus;
-}
-
-void GcdFileType::setDamageThresholdPlasmaBonus(unsigned int damageThresholdPlasmaBonus)
-{
-    _damageThresholdPlasmaBonus = damageThresholdPlasmaBonus;
-}
-
-unsigned int GcdFileType::damageThresholdPlasmaBonus()
-{
-    _initialize();
-    return _damageThresholdPlasmaBonus;
-}
-
-void GcdFileType::setDamageThresholdElectricalBonus(unsigned int damageThresholdElectricalBonus)
-{
-    _damageThresholdElectricalBonus = damageThresholdElectricalBonus;
-}
-
-unsigned int GcdFileType::damageThresholdElectricalBonus()
-{
-    _initialize();
-    return _damageThresholdElectricalBonus;
-}
-
-void GcdFileType::setDamageThresholdEMPBonus(unsigned int damageThresholdEMPBonus)
-{
-    _damageThresholdEMPBonus = damageThresholdEMPBonus;
-}
-
-unsigned int GcdFileType::damageThresholdEMPBonus()
-{
-    _initialize();
-    return _damageThresholdEMPBonus;
-}
-
-void GcdFileType::setDamageThresholdExplosiveBonus(unsigned int damageThresholdExplosiveBonus)
-{
-    _damageThresholdExplosiveBonus = damageThresholdExplosiveBonus;
-}
-
-unsigned int GcdFileType::damageThresholdExplosiveBonus()
-{
-    _initialize();
-    return _damageThresholdExplosiveBonus;
-}
-
-void GcdFileType::setDamageResistanceNormalBonus(unsigned int damageResistanceNormalBonus)
-{
-    _damageResistanceNormalBonus = damageResistanceNormalBonus;
-}
-
-unsigned int GcdFileType::damageResistanceNormalBonus()
-{
-    _initialize();
-    return _damageResistanceNormalBonus;
-}
-
-void GcdFileType::setDamageResistanceLaserBonus(unsigned int damageResistanceLaserBonus)
-{
-    _damageResistanceLaserBonus = damageResistanceLaserBonus;
-}
-
-unsigned int GcdFileType::damageResistanceLaserBonus()
-{
-    _initialize();
-    return _damageResistanceLaserBonus;
-}
-
-void GcdFileType::setDamageResistanceFireBonus(unsigned int damageResistanceFireBonus)
-{
-    _damageResistanceFireBonus = damageResistanceFireBonus;
-}
-
-unsigned int GcdFileType::damageResistanceFireBonus()
-{
-    _initialize();
-    return _damageResistanceFireBonus;
-}
-
-void GcdFileType::setDamageResistancePlasmaBonus(unsigned int damageResistancePlasmaBonus)
-{
-    _damageResistancePlasmaBonus = damageResistancePlasmaBonus;
-}
-
-unsigned int GcdFileType::damageResistancePlasmaBonus()
-{
-    _initialize();
-    return _damageResistancePlasmaBonus;
-}
-
-void GcdFileType::setDamageResistanceElectricalBonus(unsigned int damageResistanceElectricalBonus)
-{
-    _damageResistanceElectricalBonus = damageResistanceElectricalBonus;
-}
-
-unsigned int GcdFileType::damageResistanceElectricalBonus()
-{
-    _initialize();
-    return _damageResistanceElectricalBonus;
-}
-
-void GcdFileType::setDamageResistanceEMPBonus(unsigned int damageResistanceEMPBonus)
-{
-    _damageResistanceEMPBonus = damageResistanceEMPBonus;
-}
-
-unsigned int GcdFileType::damageResistanceEMPBonus()
-{
-    _initialize();
-    return _damageResistanceEMPBonus;
-}
-
-void GcdFileType::setDamageResistanceExplosiveBonus(unsigned int damageResistanceExplosiveBonus)
-{
-    _damageResistanceExplosiveBonus = damageResistanceExplosiveBonus;
-}
-
-unsigned int GcdFileType::damageResistanceExplosiveBonus()
-{
-    _initialize();
-    return _damageResistanceExplosiveBonus;
 }
 
 void GcdFileType::setRadiationResistanceBonus(unsigned int radiationResistanceBonus)

@@ -50,6 +50,12 @@ protected:
     std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};    
     // skills
     std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    // damage
+    std::vector<unsigned int> _damage = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _damageBonus = {0, 0, 0, 0, 0, 0, 0};
+    // resistance
+    std::vector<unsigned int> _resistance = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
     
     // secondary stats
     unsigned int _hitPoints,
@@ -62,20 +68,6 @@ protected:
                  _healingRate,
                  _criticalChance,
                  _criticalHitModifier,
-                 _damageThresholdNormal,
-                 _damageThresholdLaser,
-                 _damageThresholdFire,
-                 _damageThresholdPlasma,
-                 _damageThresholdElectrical,
-                 _damageThresholdEMP,
-                 _damageThresholdExplosive,
-                 _damageResistanceNormal,
-                 _damageResistanceLaser,
-                 _damageResistanceFire,
-                 _damageResistancePlasma,
-                 _damageResistanceElectrical,
-                 _damageResistanceEMP,
-                 _damageResistanceExplosive,
                  _radiationResistance,
                  _poisonResistance,
                  _age,
@@ -91,20 +83,6 @@ protected:
                  _healingRateBonus,
                  _criticalChanceBonus,
                  _criticalHitModifierBonus,
-                 _damageThresholdNormalBonus,
-                 _damageThresholdLaserBonus,
-                 _damageThresholdFireBonus,
-                 _damageThresholdPlasmaBonus,
-                 _damageThresholdElectricalBonus,
-                 _damageThresholdEMPBonus,
-                 _damageThresholdExplosiveBonus,
-                 _damageResistanceNormalBonus,
-                 _damageResistanceLaserBonus,
-                 _damageResistanceFireBonus,
-                 _damageResistancePlasmaBonus,
-                 _damageResistanceElectricalBonus,
-                 _damageResistanceEMPBonus,
-                 _damageResistanceExplosiveBonus,
                  _radiationResistanceBonus,
                  _poisonResistanceBonus,
                  _ageBonus,
@@ -163,6 +141,15 @@ public:
            SKILLS_OUTDOORSMAN
     };
     
+    enum { DAMAGE_NORMAL = 0,
+           DAMAGE_LASER,
+           DAMAGE_FIRE,
+           DAMAGE_PLASMA,
+           DAMAGE_ELECTRICAL,
+           DAMAGE_EMP,
+           DAMAGE_EXPLOSIVE
+    };
+    
     GcdFileType(DatFileEntry* datFileEntry);
     GcdFileType(std::ifstream* stream);
     ~GcdFileType();
@@ -175,6 +162,18 @@ public:
 
     void setSkill(unsigned int number, unsigned int value);
     unsigned int skill(unsigned int number);
+    
+    void setDamage(unsigned int type, unsigned int value);
+    unsigned int damage(unsigned int type);
+    
+    void setDamageBonus(unsigned int type, unsigned int value);
+    unsigned int damageBonus(unsigned int type);
+    
+    void setResistance(unsigned int type, unsigned int value);
+    unsigned int resistance(unsigned int type);
+    
+    void setResistanceBonus(unsigned int type, unsigned int value);
+    unsigned int resistanceBonus(unsigned int type);
     
     // secondary stats
     void setHitPoints(unsigned int hitPoints);
@@ -204,48 +203,6 @@ public:
 
     void setCriticalHitModifier(unsigned int criticalHitModifier);
     unsigned int criticalHitModifier();
-
-    void setDamageThresholdNormal(unsigned int damageThresholdNormal);
-    unsigned int damageThresholdNormal();
-
-    void setDamageThresholdLaser(unsigned int damageThresholdLaser);
-    unsigned int damageThresholdLaser();
-
-    void setDamageThresholdFire(unsigned int damageThresholdFire);
-    unsigned int damageThresholdFire();
-
-    void setDamageThresholdPlasma(unsigned int damageThresholdPlasma);
-    unsigned int damageThresholdPlasma();
-
-    void setDamageThresholdElectrical(unsigned int damageThresholdElectrical);
-    unsigned int damageThresholdElectrical();
-
-    void setDamageThresholdEMP(unsigned int damageThresholdEMP);
-    unsigned int damageThresholdEMP();
-
-    void setDamageThresholdExplosive(unsigned int damageThresholdExplosive);
-    unsigned int damageThresholdExplosive();
-
-    void setDamageResistanceNormal(unsigned int damageResistanceNormal);
-    unsigned int damageResistanceNormal();
-
-    void setDamageResistanceLaser(unsigned int damageResistanceLaser);
-    unsigned int damageResistanceLaser();
-
-    void setDamageResistanceFire(unsigned int damageResistanceFire);
-    unsigned int damageResistanceFire();
-
-    void setDamageResistancePlasma(unsigned int damageResistancePlasma);
-    unsigned int damageResistancePlasma();
-
-    void setDamageResistanceElectrical(unsigned int damageResistanceElectrical);
-    unsigned int damageResistanceElectrical();
-
-    void setDamageResistanceEMP(unsigned int damageResistanceEMP);
-    unsigned int damageResistanceEMP();
-
-    void setDamageResistanceExplosive(unsigned int damageResistanceExplosive);
-    unsigned int damageResistanceExplosive();
 
     void setRadiationResistance(unsigned int radiationResistance);
     unsigned int radiationResistance();
@@ -288,48 +245,6 @@ public:
 
     void setCriticalHitModifierBonus(unsigned int criticalHitModifierBonus);
     unsigned int criticalHitModifierBonus();
-
-    void setDamageThresholdNormalBonus(unsigned int damageThresholdNormalBonus);
-    unsigned int damageThresholdNormalBonus();
-
-    void setDamageThresholdLaserBonus(unsigned int damageThresholdLaserBonus);
-    unsigned int damageThresholdLaserBonus();
-
-    void setDamageThresholdFireBonus(unsigned int damageThresholdFireBonus);
-    unsigned int damageThresholdFireBonus();
-
-    void setDamageThresholdPlasmaBonus(unsigned int damageThresholdPlasmaBonus);
-    unsigned int damageThresholdPlasmaBonus();
-
-    void setDamageThresholdElectricalBonus(unsigned int damageThresholdElectricalBonus);
-    unsigned int damageThresholdElectricalBonus();    
-
-    void setDamageThresholdEMPBonus(unsigned int damageThresholdEMPBonus);
-    unsigned int damageThresholdEMPBonus();
-
-    void setDamageThresholdExplosiveBonus(unsigned int damageThresholdExplosiveBonus);
-    unsigned int damageThresholdExplosiveBonus();
-
-    void setDamageResistanceNormalBonus(unsigned int damageResistanceNormalBonus);
-    unsigned int damageResistanceNormalBonus();
-
-    void setDamageResistanceLaserBonus(unsigned int damageResistanceLaserBonus);
-    unsigned int damageResistanceLaserBonus();
-
-    void setDamageResistanceFireBonus(unsigned int damageResistanceFireBonus);
-    unsigned int damageResistanceFireBonus();
-
-    void setDamageResistancePlasmaBonus(unsigned int damageResistancePlasmaBonus);
-    unsigned int damageResistancePlasmaBonus();
-
-    void setDamageResistanceElectricalBonus(unsigned int damageResistanceElectricalBonus);
-    unsigned int damageResistanceElectricalBonus();
-
-    void setDamageResistanceEMPBonus(unsigned int damageResistanceEMPBonus);
-    unsigned int damageResistanceEMPBonus();
-
-    void setDamageResistanceExplosiveBonus(unsigned int damageResistanceExplosiveBonus);
-    unsigned int damageResistanceExplosiveBonus();
 
     void setRadiationResistanceBonus(unsigned int radiationResistanceBonus);
     unsigned int radiationResistanceBonus();
