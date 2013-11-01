@@ -30,6 +30,7 @@
 #include "../src/FonFileType.h"
 #include "../src/FrmFileType.h"
 #include "../src/GcdFileType.h"
+#include "../src/IntFileType.h"
 #include "../src/MapFileType.h"
 #include "../src/MsgFileType.h"
 #include "../src/LstFileType.h"
@@ -158,6 +159,7 @@ std::vector<DatFileItem *> * DatFile::items()
             else if (extension == "fon") item = new FonFileType(entry);
             else if (extension == "frm") item = new FrmFileType(entry);
             else if (extension == "gcd") item = new GcdFileType(entry);
+            else if (extension == "int") item = new IntFileType(entry);
             else if (extension == "lst") item = new LstFileType(entry);
             else if (extension == "map") item = new MapFileType(entry);
             else if (extension == "msg") item = new MsgFileType(entry);

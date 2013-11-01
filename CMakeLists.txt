@@ -41,6 +41,7 @@ set(SOURCES libfalltergeist.cpp
             src/FrmDirection.cpp
             src/FrmFrame.cpp
             src/GcdFileType.cpp
+            src/IntFileType.cpp
             src/LstFileType.cpp
             src/MapElevation.cpp
             src/MapObject.cpp
@@ -66,6 +67,7 @@ set(HEADERS libfalltergeist.h
             src/FrmDirection.h
             src/FrmFrame.h
             src/GcdFileType.h
+            src/IntFileType.h
             src/LstFileType.h
             src/MapElevation.h
             src/MapObject.h

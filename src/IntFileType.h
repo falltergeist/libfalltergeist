@@ -17,36 +17,28 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef LIBFALLTERGEIST_INTFILETYPE_H
+#define LIBFALLTERGEIST_INTFILETYPE_H
 
-#include "src/DatFile.h"
-#include "src/DatFileItem.h"
-#include "src/AafFileType.h"
-#include "src/AafGlyph.h"
-#include "src/BioFileType.h"
-#include "src/FonFileType.h"
-#include "src/FonGlyph.h"
-#include "src/FrmFileType.h"
-#include "src/FrmDirection.h"
-#include "src/FrmFrame.h"
-#include "src/GcdFileType.h"
-#include "src/IntFileType.h"
-#include "src/LstFileType.h"
-#include "src/MapFileType.h"
-#include "src/MapElevation.h"
-#include "src/MapObject.h"
-#include "src/MsgFileType.h"
-#include "src/MsgMessage.h"
-#include "src/PalFileType.h"
-#include "src/PalColor.h"
-#include "src/ProFileType.h"
-#include "src/RixFileType.h"
-#include "src/Exception.h"
+// C++ standard includes
+
+// libfalltergeist includes
+#include "../src/DatFileItem.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {
 
-}
+class IntFileType : public DatFileItem
+{
+protected:
+    virtual void _initialize();
+public:
+    IntFileType(DatFileEntry * datFileEntry);
+    IntFileType(std::ifstream * stream);
+    virtual ~IntFileType();
+};
 
-#endif // LIBFALLTERGEIST_H
+}
+#endif // LIBFALLTERGEIST_INTFILETYPE_H
