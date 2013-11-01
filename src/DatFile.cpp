@@ -27,6 +27,7 @@
 #include "../src/Exception.h"
 #include "../src/AafFileType.h"
 #include "../src/BioFileType.h"
+#include "../src/FonFileType.h"
 #include "../src/FrmFileType.h"
 #include "../src/GcdFileType.h"
 #include "../src/MapFileType.h"
@@ -34,6 +35,7 @@
 #include "../src/LstFileType.h"
 #include "../src/PalFileType.h"
 #include "../src/ProFileType.h"
+#include "../src/RixFileType.h"
 
 // Third party includes
 
@@ -153,6 +155,7 @@ std::vector<DatFileItem *> * DatFile::items()
             DatFileItem * item;
                  if (extension == "aaf") item = new AafFileType(entry);
             else if (extension == "bio") item = new BioFileType(entry);
+            else if (extension == "fon") item = new FonFileType(entry);
             else if (extension == "frm") item = new FrmFileType(entry);
             else if (extension == "gcd") item = new GcdFileType(entry);
             else if (extension == "lst") item = new LstFileType(entry);
@@ -160,6 +163,7 @@ std::vector<DatFileItem *> * DatFile::items()
             else if (extension == "msg") item = new MsgFileType(entry);
             else if (extension == "pal") item = new PalFileType(entry);
             else if (extension == "pro") item = new ProFileType(entry);
+            else if (extension == "rix") item = new RixFileType(entry);
             else item = new DatFileItem(entry);
 
             _items->push_back(item);

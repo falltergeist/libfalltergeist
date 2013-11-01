@@ -18,9 +18,14 @@
  */
 
 // C++ standard includes
+#include <vector>
+#include <algorithm>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/RixFileType.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {
@@ -35,6 +40,72 @@ RixFileType::RixFileType(std::ifstream* stream) : DatFileItem(stream)
 
 RixFileType::~RixFileType()
 {
+}
+
+void RixFileType::_initialize()
+{
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
+    
+    this->readBytes(&_signature[0], 4);
+    
+    *this >> _width >> _height >> _unknown1;
+    
+    std::reverse(&reinterpret_cast<char&>(_width), &reinterpret_cast<char&>(_width) + sizeof(_width));    
+    std::reverse(&reinterpret_cast<char&>(_height),&reinterpret_cast<char&>(_height) + sizeof(_height));    
+    
+    unsigned char k = 4;
+    
+    // Palette
+    for (int i = 0; i != 256; ++i)
+    {
+        unsigned char r, g, b;
+        *this >> r >> g >> b;
+        unsigned int color = 0xFF000000 | ((r*k) << 16) | ((g*k) << 8) | b*k;  // ARGB
+        _palette.push_back(color);
+    }
+    
+    // Data
+    for (int i = 0; i != _width*_height; ++i)
+    {
+        unsigned char ch;
+        *this >> ch;
+        _data.push_back(ch);
+    }
+}
+
+std::vector<unsigned int>* RixFileType::palette()
+{
+    _initialize();
+    return &_palette;
+}
+
+std::vector<unsigned char>* RixFileType::data()
+{
+    return &_data;
+}
+
+unsigned short RixFileType::width()
+{
+    _initialize();
+    return _width;
+}
+
+void RixFileType::setWidth(unsigned short value)
+{
+    _width = value;
+}
+
+unsigned short RixFileType::height()
+{
+    _initialize();
+    return _height;
+}
+
+void RixFileType::setHeight(unsigned short value)
+{
+    _height = value;
 }
 
 }
