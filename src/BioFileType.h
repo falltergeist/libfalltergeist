@@ -38,8 +38,8 @@ protected:
     std::string _text;
     void _initialize();
 public:
-    BioFileType(DatFileEntry * datFileEntry);
-    BioFileType(std::ifstream * stream);
+    BioFileType(DatFileEntry* datFileEntry);
+    BioFileType(std::ifstream* stream);
     ~BioFileType();
 
     std::string text();

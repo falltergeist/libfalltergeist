@@ -37,7 +37,7 @@ class DatFileEntry;
 class AafFileType : public DatFileItem
 {
 protected:
-    std::vector<AafGlyph*>* _glyphs = 0;
+    std::vector<AafGlyph*> _glyphs;
     unsigned int _signature;
     unsigned short _maximumHeight;
     unsigned short _horizontalGap;

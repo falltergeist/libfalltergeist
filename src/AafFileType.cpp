@@ -39,14 +39,10 @@ AafFileType::AafFileType(std::ifstream* stream): DatFileItem(stream)
 
 AafFileType::~AafFileType()
 {
-    if (_glyphs != 0)
+    while(!_glyphs.empty())
     {
-        while(!_glyphs->empty())
-        {
-            delete _glyphs->back();
-            _glyphs->pop_back();
-        }
-        delete _glyphs;
+        delete _glyphs.back();
+        _glyphs.pop_back();
     }
 }
 
@@ -56,8 +52,6 @@ void AafFileType::_initialize()
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
 
-    _glyphs = new std::vector<AafGlyph*>;
-
     *this >> _signature >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
 
     // glyphs descriptions
@@ -66,17 +60,19 @@ void AafFileType::_initialize()
     {
         unsigned short width, height;
         *this >> width >> height >> dataOffsets.at(i);
-        _glyphs->push_back(new AafGlyph(width, height));
+        _glyphs.push_back(new AafGlyph(width, height));
     }
 
     // glyphs data
     for (auto i = 0; i != 256; ++i)
     {
         setPosition(0x080C + dataOffsets.at(i));
-        auto glyph = _glyphs->at(i);
+        auto glyph = _glyphs.at(i);
         for (auto j = 0; j != glyph->width()*glyph->height(); ++j)
         {
-            *this >> glyph->data()->at(j);
+            unsigned char byte;
+            *this >> byte;
+            glyph->data()->push_back(byte);
         }
     }
 }
@@ -84,7 +80,7 @@ void AafFileType::_initialize()
 std::vector<AafGlyph*>* AafFileType::glyphs()
 {
     _initialize();
-    return _glyphs;
+    return &_glyphs;
 }
 
 unsigned short AafFileType::horizontalGap()

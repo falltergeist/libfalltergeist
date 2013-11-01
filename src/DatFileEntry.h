@@ -34,14 +34,14 @@ class DatFile;
 class DatFileEntry
 {
 protected:
-    DatFile * _datFile;
+    DatFile* _datFile;
     std::string _filename;
     unsigned int _packedSize;
     unsigned int _unpackedSize;
     unsigned int _dataOffset;
     bool _compressed;
 public:
-    DatFileEntry(DatFile * datFile);
+    DatFileEntry(DatFile* datFile);
     ~DatFileEntry();
 
     std::string filename();
@@ -59,7 +59,7 @@ public:
     bool compressed();
     void setCompressed(bool value);
 
-    DatFile * datFile();
+    DatFile* datFile();
 
 };
 
