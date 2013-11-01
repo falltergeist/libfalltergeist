@@ -46,7 +46,7 @@ void PalFileType::_initialize()
     DatFileItem::_initialize();
     DatFileItem::setPosition(3);
 
-    _colors.push_back(new PalColor(0, 0, 0, 0)); // zero color (transparent)
+    _colors.push_back(new PalColor(0, 0, 9, 0)); // zero color (transparent)
 
     for (unsigned int i = 1; i != 256; ++i)
     {
