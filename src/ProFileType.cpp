@@ -28,11 +28,11 @@
 namespace libfalltergeist
 {
 
-ProFileType::ProFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
+ProFileType::ProFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 
-ProFileType::ProFileType(std::ifstream * stream) : DatFileItem(stream)
+ProFileType::ProFileType(std::ifstream* stream) : DatFileItem(stream)
 {
 }
 

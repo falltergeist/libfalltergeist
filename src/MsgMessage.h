@@ -33,7 +33,7 @@ namespace libfalltergeist
 class MsgMessage
 {
 protected:
-    unsigned int _number;
+    unsigned int _number = 0;
     std::string _sound;
     std::string _text;
 public:
@@ -50,8 +50,6 @@ public:
     std::string text();
 
     operator std::string ();
-    //operator const char * ();
-
 };
 
 }

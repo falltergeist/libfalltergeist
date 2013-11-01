@@ -36,16 +36,16 @@ class PalColor;
 class PalFileType : public DatFileItem
 {
 protected:
-    std::vector<PalColor *> * _colors;
+    std::vector<PalColor*> _colors;
     virtual void _initialize();
 public:
-    PalFileType(DatFileEntry * datFileEntry);
-    PalFileType(std::ifstream * stream);
+    PalFileType(DatFileEntry* datFileEntry);
+    PalFileType(std::ifstream* stream);
     ~PalFileType();
 
-    std::vector<PalColor *> * colors();
+    std::vector<PalColor*>* colors();
 
-    PalColor * color(unsigned char index);
+    PalColor* color(unsigned char index);
 
 };
 

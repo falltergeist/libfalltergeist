@@ -72,8 +72,8 @@ public:
     enum { TYPE_ITEM_ARMOR = 0, TYPE_ITEM_CONTAINER, TYPE_ITEM_DRUG, TYPE_ITEM_WEAPON, TYPE_ITEM_AMMO, TYPE_ITEM_MISC, TYPE_ITEM_KEY };
     enum { TYPE_SCENERY_DOOR = 0, TYPE_SCENERY_STAIR, TYPE_SCENERY_ELEVATOR, TYPE_SCENERY_LADDER_BOTTOM, TYPE_SCENERY_LADDER_TOP, TYPE_SCENERY_GENERIC };
 
-    ProFileType(DatFileEntry * datFileEntry);
-    ProFileType(std::ifstream * stream);
+    ProFileType(DatFileEntry* datFileEntry);
+    ProFileType(std::ifstream* stream);
     ~ProFileType();
 
     unsigned int objectTypeId();

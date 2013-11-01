@@ -29,9 +29,6 @@ namespace libfalltergeist
 
 MsgMessage::MsgMessage()
 {
-    _number = 0;
-    _sound = "";
-    _text = "";
 }
 
 MsgMessage::~MsgMessage()
@@ -72,10 +69,5 @@ MsgMessage::operator std::string ()
 {
     return _text;
 }
-
-//MsgMessage::operator const char *()
-//{
-//    return (const char *) _text;
-//}
 
 }

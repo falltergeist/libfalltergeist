@@ -25,32 +25,27 @@
 #include "../src/MsgFileType.h"
 #include "../src/DatFileEntry.h"
 #include "../src/MsgMessage.h"
+#include "../src/Exception.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-MsgFileType::MsgFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
+MsgFileType::MsgFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
 {
-    _messages = 0;
 }
 
-MsgFileType::MsgFileType(std::ifstream * stream) : DatFileItem(stream)
+MsgFileType::MsgFileType(std::ifstream* stream) : DatFileItem(stream)
 {
-    _messages = 0;
 }
 
 MsgFileType::~MsgFileType()
 {
-    if (_messages != 0)
+    while(!_messages.empty())
     {
-        while(!_messages->empty())
-        {
-            delete _messages->back();
-            _messages->pop_back();
-        }
-        delete _messages;
+        delete _messages.back();
+        _messages.pop_back();
     }
 }
 
@@ -59,8 +54,6 @@ void MsgFileType::_initialize()
     if (_initialized) return;
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
-
-    _messages = new std::vector<MsgMessage *>;
 
     unsigned int i = 0;
     unsigned char chr = 0;
@@ -110,33 +103,33 @@ void MsgFileType::_initialize()
                 if (chr != '}') text += chr;
             }
 
-            MsgMessage * message = new MsgMessage();
+            MsgMessage* message = new MsgMessage();
             message->setNumber(atoi(number.c_str()));
             message->setSound(sound);
             message->setText(text);
-            _messages->push_back(message);
+            _messages.push_back(message);
         }
     }
 }
 
-std::vector<MsgMessage *> * MsgFileType::messages()
+std::vector<MsgMessage*>* MsgFileType::messages()
 {
     _initialize();
-    return _messages;
+    return &_messages;
 }
 
-MsgMessage * MsgFileType::message(unsigned int number)
+MsgMessage* MsgFileType::message(unsigned int number)
 {
     _initialize();
-    std::vector<MsgMessage *>::iterator it;
-    for (it = this->messages()->begin(); it != this->messages()->end(); ++it)
+    std::vector<MsgMessage*>::iterator it;
+    for (it = _messages.begin(); it != _messages.end(); ++it)
     {
         if ((*it)->number() == number)
         {
             return *it;
         }
     }
-    return 0;
+    throw new Exception("MsgFileType::message() - number is out of range: " + std::to_string(number));
 }
 
 }
