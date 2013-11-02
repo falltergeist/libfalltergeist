@@ -60,19 +60,19 @@ void IntFileType::_initialize()
 
     std::cout << "Functions table size: " << std::dec << functionsTableSize << std::endl;
 
-    std::map<unsigned int, unsigned int> identificators;
+    std::map<unsigned int, unsigned int> functions;
 
     for (unsigned int i = 0; i != functionsTableSize; ++i)
     {
 
-        unsigned int identificator;
-        *this >> identificator;
+        unsigned int nameOffset;
+        unsigned int entryPoint;
+        *this >> nameOffset;
         skipBytes(12);
-        unsigned int offset;
-        *this >> offset;
+        *this >> entryPoint;
         skipBytes(4);
-        identificators.insert(std::make_pair(identificator, offset));
-        //std::cout << std::hex << identificator << " : " << offset << std::endl;
+        functions.insert(std::make_pair(nameOffset, entryPoint));
+        //std::cout << "Function: nameOffset = " << std::hex << nameOffset << " : entryPoint = " << entryPoint << std::endl;
     }
 
     // IDENTIFICATORS TABLE
@@ -80,6 +80,7 @@ void IntFileType::_initialize()
     *this >> identificatorsTableSize;
     std::cout << "Identificators table size: " << std::dec << identificatorsTableSize << std::endl;
 
+    std::map<unsigned int, std::string> identificators;
     unsigned int j = 0;
     while (j < identificatorsTableSize)
     {
@@ -87,7 +88,7 @@ void IntFileType::_initialize()
         std::string name;
         *this >> length;
         j += 2;
-        unsigned int offset = j + 4;
+        unsigned int nameOffset = j + 4;
         for (unsigned int i = 0; i != length; ++i, ++j)
         {
             unsigned char ch;
@@ -95,19 +96,14 @@ void IntFileType::_initialize()
             if (ch != 0) name.push_back(ch);
         }
 
-        for (auto it = identificators.begin(); it != identificators.end(); ++it)
-        {
-            if (it->first == offset)
-            {
-                _functions.insert(std::make_pair(it->second, name));
-            }
-        }
-
+        identificators.insert(std::make_pair(nameOffset, name));
+        //std::cout << "Inentificator: nameOffset = " << std::hex << nameOffset << " : name = " << name << std::endl;
     }
 
-    for (auto it = _functions.begin(); it != _functions.end(); ++it)
+    for (auto it = functions.begin(); it != functions.end(); ++it)
     {
-        std::cout << it->second << std::endl;
+        _functionsName.push_back(identificators.at(it->first));
+        _functions.insert(std::make_pair(identificators.at(it->first), it->second));
     }
 
     unsigned int signature; // must be 0xFFFFFFFF
@@ -130,11 +126,6 @@ void IntFileType::_initialize()
     {
         std::cout << "Strings table size: 0xFFFFFFFF" << std::endl;
     }
-
-
-
-
-
 }
 
 void IntFileType::test()
@@ -146,10 +137,15 @@ unsigned int IntFileType::function(std::string name)
 {
     for (auto it = _functions.begin(); it != _functions.end(); ++it)
     {
-        if (it->second == name) return it->first;
+        if (it->first == name) return it->second;
     }
     throw Exception("IntFileType::function() - function not found: " + name);
 }
 
+unsigned int IntFileType::function(unsigned int index)
+{
+    if (index >= _functionsName.size()) throw Exception("IntFileType::function() - function not found: " + std::to_string(index));
+    return function(_functionsName.at(index));
+}
 
 }

@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <map>
+#include <vector>
 #include <string>
 
 // libfalltergeist includes
@@ -35,7 +36,8 @@ namespace libfalltergeist
 class IntFileType : public DatFileItem
 {
 protected:
-    std::map<unsigned int, std::string> _functions;
+    std::vector<std::string> _functionsName;
+    std::map<std::string, unsigned int> _functions;
     virtual void _initialize();
     unsigned int _entryPoint;
 public:
@@ -44,6 +46,7 @@ public:
     virtual ~IntFileType();
     void test();
     unsigned int function(std::string name);
+    unsigned int function(unsigned int index);
 };
 
 }
