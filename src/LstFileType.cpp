@@ -57,6 +57,9 @@ void LstFileType::_initialize()
         }
         else
         {
+            // strip comments
+            if (auto pos = line.find(";")) line = line.substr(0, pos);
+
             // rtrim
             line.erase(std::find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), line.end());
             // to lower
@@ -76,5 +79,6 @@ std::vector<std::string>* LstFileType::strings()
     _initialize();
     return &_strings;
 }
+
 
 }
