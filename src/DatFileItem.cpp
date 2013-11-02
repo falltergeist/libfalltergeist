@@ -113,6 +113,7 @@ DatFileItem::~DatFileItem()
 
 unsigned int DatFileItem::size()
 {
+    _initialize();
     return _size;
 }
 
