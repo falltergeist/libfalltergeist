@@ -24,6 +24,7 @@
 #include "../src/MapFileType.h"
 #include "../src/MapElevation.h"
 #include "../src/MapObject.h"
+#include "../src/MapScript.h"
 #include "../src/ProFileType.h"
 #include "../src/Exception.h"
 
@@ -92,7 +93,7 @@ void MapFileType::_initialize()
     // SCRIPTS SECTION
     for (unsigned int i = 0; i < 5; i++)
     {
-        unsigned int count;
+        unsigned int count;        
         *this >> count;
         if (count > 0)
         {
@@ -103,20 +104,51 @@ void MapFileType::_initialize()
             for (unsigned short j = 0; j < loop; j++)
             {
                 {
-                    unsigned int PID;
+                    int PID;
                     *this >> PID;
+
+                    auto script = new MapScript(PID);
+                    this->skipBytes(4); // unknown1
+
                     switch ((PID & 0xFF000000) >> 24)
                     {
                         case 1:
-                            this->skipBytes(17*4);
+                            this->skipBytes(4); //unknown 2
+                            this->skipBytes(4); //unknown 3
                             break;
                         case 2:
-                            this->skipBytes(16*4);
+                            this->skipBytes(4); //unknown 2
                             break;
                         default:
-                            this->skipBytes(15*4);
                             break;
                     }
+                    this->skipBytes(4); //unknown 4
+                    int scriptId;
+                    *this >> scriptId;
+                    script->setScriptId(scriptId);
+                    this->skipBytes(4); //unknown 5
+                    this->skipBytes(4); //unknown 6
+                    this->skipBytes(4); //unknown 7
+                    this->skipBytes(4); //unknown 8
+                    this->skipBytes(4); //unknown 9
+                    this->skipBytes(4); //unknown 10
+                    this->skipBytes(4); //unknown 11
+                    this->skipBytes(4); //unknown 12
+                    this->skipBytes(4); //unknown 13
+                    this->skipBytes(4); //unknown 14
+                    this->skipBytes(4); //unknown 15
+                    this->skipBytes(4); //unknown 16
+
+                    if (j < count)
+                    {
+                        std::cout << "Map script: 0x" << std::hex << script->PID() << std::endl;
+                        _scripts.push_back(script);
+                    }
+                    else
+                    {
+                        delete script;
+                    }
+
                 }
                 if ((j % 16) == 15)
                 {
@@ -193,6 +225,7 @@ MapObject * MapFileType::_readObject()
     object->setElevation( uint32 );
     unsigned int PID;
     *this >> PID;
+
     object->setObjectTypeId( PID >> 24 );
     object->setObjectId( 0x00FFFFFF & PID);
     *this >> uint32;
@@ -203,12 +236,29 @@ MapObject * MapFileType::_readObject()
     object->setUnknown9( uint32 );
     *this >> uint32;
     object->setUnknown10( uint32 );
-    unsigned int SID;
-    *this >> SID;
-    object->setScriptTypeId(SID >> 24);
-    object->setScriptId( 0x00FFFFFF & SID);
     *this >> int32;
-    object->setMapScriptId( int32 );
+    if (int32 != -1)
+    {
+        for (auto it = _scripts.begin(); it != _scripts.end(); ++it)
+        {
+            if ((*it)->PID() == int32)
+            {
+                std::cout << "Map script: " <<  std::dec << (*it)->scriptId() << std::endl;
+                object->setMapScriptId((*it)->scriptId());
+            }
+        }
+    }
+
+    *this >> int32;
+    if (int32 != -1)
+    {
+        std::cout << "SID: " << std::dec <<  int32 << std::endl;
+        object->setScriptId(int32);
+    }
+    if (PID == 0x01000003)
+    {
+        std::cout << "!!! " << int32 << std::endl;
+    }
     *this >> uint32;
     object->setInventorySize( uint32 );
     *this >> uint32;
@@ -331,6 +381,11 @@ unsigned int MapFileType::defaultOrientation()
 {
     _initialize();
     return _defaultOrientaion;
+}
+
+int MapFileType::scriptId()
+{
+    return _scriptId;
 }
 
 }

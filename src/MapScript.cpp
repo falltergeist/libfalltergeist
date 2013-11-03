@@ -17,34 +17,38 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_LSTFILETYPE_H
-#define LIBFALLTERGEIST_LSTFILETYPE_H
-
 // C++ standard includes
-#include <string>
-#include <vector>
 
 // libfalltergeist includes
-#include "../src/DatFileItem.h"
+#include "../src/MapScript.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
 
-class LstFileType : public DatFileItem
+MapScript::MapScript(int PID)
 {
-protected:
-    std::vector<std::string> _strings;
-    virtual void _initialize();
-    void _addString(std::string line);
-public:
-    LstFileType(DatFileEntry* datFileEntry);
-    LstFileType(std::ifstream* stream);
-    ~LstFileType();
+    _PID = PID;
+}
 
-    std::vector<std::string>* strings();
-};
+MapScript::~MapScript()
+{
+}
+
+int MapScript::PID()
+{
+    return _PID;
+}
+
+int MapScript::scriptId()
+{
+    return _scriptId;
+}
+
+void MapScript::setScriptId(int value)
+{
+    _scriptId = value;
+}
 
 }
-#endif // LIBFALLTERGEIST_LSTFILETYPE_H

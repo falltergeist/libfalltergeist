@@ -62,9 +62,9 @@ void MsgFileType::_initialize()
         i++;
         if (chr == '{')
         {
-            std::string number = "";
-            std::string sound = "";
-            std::string text = "";
+            std::string number;
+            std::string sound;
+            std::string text;
 
             // number
             while (chr != '}')
@@ -103,7 +103,7 @@ void MsgFileType::_initialize()
             }
 
             MsgMessage* message = new MsgMessage();
-            message->setNumber(atoi(number.c_str()));
+            message->setNumber(std::stoi(number));
             message->setSound(sound);
             message->setText(text);
             _messages.push_back(message);
@@ -128,7 +128,7 @@ MsgMessage* MsgFileType::message(unsigned int number)
             return *it;
         }
     }
-    throw new Exception("MsgFileType::message() - number is out of range: " + std::to_string(number));
+    throw Exception("MsgFileType::message() - number is out of range: " + std::to_string(number));
 }
 
 }

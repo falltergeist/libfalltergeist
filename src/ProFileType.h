@@ -52,8 +52,8 @@ protected:
     unsigned int _flags;
     unsigned int _flagsExt;
 
-    unsigned int _scriptTypeId;
-    unsigned int _scriptId;
+    int _scriptTypeId = -1;
+    int _scriptId = -1;
 
     unsigned int _materialId;
     unsigned int _containerSize;
@@ -77,6 +77,7 @@ public:
 
     unsigned int objectTypeId();
     unsigned int objectSubtypeId();
+    int scriptId();
     unsigned int messageId();
     int frmOffset();
     unsigned int flagsExt();

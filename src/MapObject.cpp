@@ -113,6 +113,11 @@ void MapObject::setOrientation(unsigned int value)
     _orientation = value;
 }
 
+unsigned int MapObject::FID()
+{
+    return (_frmTypeId << 24) | _frmId;
+}
+
 unsigned int MapObject::frmTypeId()
 {
     return _frmTypeId;
@@ -151,6 +156,11 @@ unsigned int MapObject::elevation()
 void MapObject::setElevation(unsigned int value)
 {
     _elevation = value;
+}
+
+unsigned int MapObject::PID()
+{
+    return (_objectID3 << 28) |(_objectTypeId << 24) | (_objectID2 << 16) | (_objectID1 << 12) | _objectId;
 }
 
 unsigned int MapObject::objectTypeId()
@@ -253,22 +263,12 @@ void MapObject::setUnknown9(unsigned int value)
     _unknown9 = value;
 }
 
-int MapObject::scriptTypeId()
-{
-    return _scriptTypeId;
-}
-
-void MapObject::setScriptTypeId(int value)
-{
-    _scriptTypeId = value;
-}
-
-unsigned int MapObject::scriptId()
+int MapObject::scriptId()
 {
     return _scriptId;
 }
 
-void MapObject::setScriptId(unsigned int value)
+void MapObject::setScriptId(int value)
 {
     _scriptId = value;
 }

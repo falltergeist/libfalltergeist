@@ -34,6 +34,7 @@ namespace libfalltergeist
 class MapElevation;
 class ProFileType;
 class MapObject;
+class MapScript;
 
 typedef ProFileType* (*ProFileTypeLoaderCallback)(unsigned int);
 
@@ -43,6 +44,7 @@ protected:
     ProFileTypeLoaderCallback _proFileTypeLoaderCallback = 0;
 
     std::vector<MapElevation*> _elevations;
+    std::vector<MapScript*> _scripts;
     unsigned int _version;
     std::string _name;
     unsigned int _defaultPosition;
@@ -73,6 +75,7 @@ public:
     unsigned int defaultPosition();
     unsigned int defaultElevation();
     unsigned int defaultOrientation();
+    int scriptId();
 };
 
 

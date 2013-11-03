@@ -50,12 +50,13 @@ void ProFileType::_initialize()
 
     *this >> PID >> _messageId >> FID;
 
-    _objectTypeId = (PID & 0x0F000000) >> 28;
+    _objectTypeId = (PID & 0x0F000000) >> 24;
     _objectId = PID & 0x00000FFF;
 
-    _frmTypeId = (FID & 0x0F000000) >> 28;
+    _frmTypeId = (FID & 0x0F000000) >> 24;
     _frmOffset = (FID & 0x00FF0000) >> 16;
     _frmId = FID & 0x0000FFFF;
+
 
     switch (_objectTypeId)
     {
@@ -67,23 +68,26 @@ void ProFileType::_initialize()
     }
 
     *this >> _flags >> _flagsExt;
-    
+
     switch (_objectTypeId)
     {
         case TYPE_ITEM:
         case TYPE_CRITTER:
         case TYPE_SCENERY:
         case TYPE_WALL:
-            unsigned int SID;
+            int SID;
             *this >> SID;
-            _scriptTypeId = (SID & 0xFF000000) >> 24;
-            _scriptId = SID & 0x0000FFFF;
+            if (SID != -1)
+            {
+                _scriptTypeId = (SID & 0x0F000000) >> 24;
+                _scriptId = SID & 0x0000FFFF;
+            }
             break;
         case TYPE_TILE:
         case TYPE_MISC:
             break;
     }    
-    
+
     switch (_objectTypeId)
     {
         case TYPE_ITEM:
@@ -172,9 +176,11 @@ void ProFileType::_initialize()
         }
         case TYPE_MISC:
         {
+            this->skipBytes(4); // unknown
             break;
         }
     }
+
 }
 
 unsigned int ProFileType::objectTypeId()
@@ -205,6 +211,12 @@ unsigned int ProFileType::flagsExt()
 {
     _initialize();
     return _flagsExt;
+}
+
+int ProFileType::scriptId()
+{
+    _initialize();
+    return _scriptId;
 }
 
 }

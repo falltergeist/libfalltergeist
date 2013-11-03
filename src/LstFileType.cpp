@@ -57,21 +57,33 @@ void LstFileType::_initialize()
         }
         else
         {
-            // strip comments
-            if (auto pos = line.find(";")) line = line.substr(0, pos);
-
-            // rtrim
-            line.erase(std::find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), line.end());
-            // to lower
-            std::replace(line.begin(),line.end(),'\\','/');
-            std::transform(line.begin(),line.end(),line.begin(), ::tolower);
-
-            _strings.push_back(line);
+            _addString(line);
             line.clear();
             ++i;
             *this >> ch;
         }
     }
+    if (line.size() != 0)
+    {
+        _addString(line);
+    }
+}
+
+void LstFileType::_addString(std::string line)
+{
+    // strip comments
+    if (auto pos = line.find(";")) line = line.substr(0, pos);
+
+    // rtrim
+    line.erase(std::find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), line.end());
+
+    // replace slashes
+    std::replace(line.begin(),line.end(),'\\','/');
+
+    // to lower
+    std::transform(line.begin(),line.end(),line.begin(), ::tolower);
+
+    _strings.push_back(line);
 }
 
 std::vector<std::string>* LstFileType::strings()

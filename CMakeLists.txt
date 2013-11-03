@@ -46,6 +46,7 @@ set(SOURCES libfalltergeist.cpp
             src/MapElevation.cpp
             src/MapObject.cpp
             src/MapFileType.cpp
+            src/MapScript.cpp
             src/MsgFileType.cpp
             src/MsgMessage.cpp
             src/PalFileType.cpp
@@ -72,6 +73,7 @@ set(HEADERS libfalltergeist.h
             src/MapElevation.h
             src/MapObject.h
             src/MapFileType.h
+            src/MapScript.h
             src/MsgFileType.h
             src/MsgMessage.h
             src/PalFileType.h

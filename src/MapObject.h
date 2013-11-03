@@ -44,24 +44,23 @@ protected:
                  _frmId,
                  _unknown6,
                  _elevation,
-                 _objectTypeId,
-                 _objectId,
-                 _objectSubtypeId,
-                 _objectID1,
-                 _objectID2,
-                 _objectID3,
+                 _objectTypeId = 0,
+                 _objectId = 0,
+                 _objectSubtypeId = 0,
+                 _objectID1 = 0,
+                 _objectID2 = 0,
+                 _objectID3 = 0,
                  _unknown7,
                  _unknown8,
                  _unknown9,
                  _unknown10,
-                 _scriptId,
                  _inventorySize,
                  _unknown11,
                  _unknown12,
                  _unknown13;
-    int _mapScriptId,
-        _scriptTypeId,
-        _hexPosition;
+    int _mapScriptId = -1,
+        _scriptId = -1,
+        _hexPosition = -1;
     std::vector<MapObject *> * _children;
 public:
     MapObject();
@@ -83,6 +82,7 @@ public:
     void setFrameNumber(unsigned int value);
     unsigned int orientation();
     void setOrientation(unsigned int value);
+    unsigned int FID();
     unsigned int frmTypeId();
     void setFrmTypeId(unsigned int value);
     unsigned int frmId();
@@ -91,6 +91,7 @@ public:
     void setUnknown6(unsigned int value);
     unsigned int elevation();
     void setElevation(unsigned int value);
+    unsigned int PID();
     unsigned int objectTypeId();
     void setObjectTypeId(unsigned int value);
     unsigned int objectId();
@@ -111,10 +112,8 @@ public:
     void setUnknown9(unsigned int value);
     unsigned int unknown10();
     void setUnknown10(unsigned int value);
-    int scriptTypeId();
-    void setScriptTypeId(int value);
-    unsigned int scriptId();
-    void setScriptId(unsigned int value);
+    int scriptId();
+    void setScriptId(int value);
     int mapScriptId();
     void setMapScriptId(int value);
     unsigned int inventorySize();
