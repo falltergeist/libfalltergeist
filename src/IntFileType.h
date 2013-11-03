@@ -36,17 +36,21 @@ namespace libfalltergeist
 class IntFileType : public DatFileItem
 {
 protected:
-    std::vector<std::string> _functionsName;
-    std::map<std::string, unsigned int> _functions;
+    std::map<unsigned int, std::string> _functions;
+    std::vector<unsigned int> _functionsOffsets;
+    std::map<unsigned int, std::string> _identificators;
+    std::vector<std::string> _strings;
     virtual void _initialize();
     unsigned int _entryPoint;
 public:
     IntFileType(DatFileEntry * datFileEntry);
     IntFileType(std::ifstream * stream);
     virtual ~IntFileType();
-    void test();
+
     unsigned int function(std::string name);
     unsigned int function(unsigned int index);
+
+    std::map<unsigned int, std::string>* identificators();
 };
 
 }

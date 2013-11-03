@@ -58,7 +58,7 @@ void IntFileType::_initialize()
     unsigned int functionsTableSize;
     *this >> functionsTableSize;
 
-    std::cout << "Functions table size: " << std::dec << functionsTableSize << std::endl;
+    std::cout << std::hex << this->position() << " Functions table size: " << std::dec << functionsTableSize << std::endl;
 
     std::map<unsigned int, unsigned int> functions;
 
@@ -72,15 +72,15 @@ void IntFileType::_initialize()
         *this >> entryPoint;
         skipBytes(4);
         functions.insert(std::make_pair(nameOffset, entryPoint));
-        //std::cout << "Function: nameOffset = " << std::hex << nameOffset << " : entryPoint = " << entryPoint << std::endl;
+        _functionsOffsets.push_back(entryPoint);
+        std::cout << "Function: name = 0x" << std::hex << nameOffset << " : entryPoint = 0x" << entryPoint << std::endl;
     }
 
     // IDENTIFICATORS TABLE
     unsigned int identificatorsTableSize;
     *this >> identificatorsTableSize;
-    std::cout << "Identificators table size: " << std::dec << identificatorsTableSize << std::endl;
+    std::cout << std::hex << this->position() <<  "Identificators table size: " << std::dec << identificatorsTableSize << std::endl;
 
-    std::map<unsigned int, std::string> identificators;
     unsigned int j = 0;
     while (j < identificatorsTableSize)
     {
@@ -96,14 +96,13 @@ void IntFileType::_initialize()
             if (ch != 0) name.push_back(ch);
         }
 
-        identificators.insert(std::make_pair(nameOffset, name));
-        //std::cout << "Inentificator: nameOffset = " << std::hex << nameOffset << " : name = " << name << std::endl;
+        _identificators.insert(std::make_pair(nameOffset, name));
+        std::cout << "Identificator: " << std::hex << "0x" << nameOffset << " - " << name << std::endl;
     }
 
     for (auto it = functions.begin(); it != functions.end(); ++it)
     {
-        _functionsName.push_back(identificators.at(it->first));
-        _functions.insert(std::make_pair(identificators.at(it->first), it->second));
+        _functions.insert(std::make_pair( it->second, _identificators.at(it->first)));
     }
 
     unsigned int signature; // must be 0xFFFFFFFF
@@ -117,35 +116,53 @@ void IntFileType::_initialize()
 
     if (stringsTableSize != 0xFFFFFFFF)
     {
-        std::cout << "Strings table size: " << std::dec << stringsTableSize << std::endl;
-        skipBytes(stringsTableSize);
-        *this >> signature;
-        std::cout << "Signature: " << std::hex << signature << std::endl;
-    }
-    else
-    {
-        std::cout << "Strings table size: 0xFFFFFFFF" << std::endl;
-    }
-}
+        std::cout << std::hex << this->position() <<  "Strings table size: " << std::dec << stringsTableSize << std::endl;
+        unsigned int j = 0;
+        while (j < stringsTableSize)
+        {
+            unsigned short length;
+            std::string name;
+            *this >> length;
+            j += 2;
+            for (unsigned int i = 0; i != length; ++i, ++j)
+            {
+                unsigned char ch;
+                *this >> ch;
+                if (ch != 0) name.push_back(ch);
+            }
 
-void IntFileType::test()
-{
-    _initialize();
+            _strings.push_back(name);
+            std::cout << "String: " << name << std::endl;
+        }
+
+        *this >> signature;
+    }
 }
 
 unsigned int IntFileType::function(std::string name)
 {
     for (auto it = _functions.begin(); it != _functions.end(); ++it)
     {
-        if (it->first == name) return it->second;
+        if (it->second == name) return it->first;
     }
-    throw Exception("IntFileType::function() - function not found: " + name);
+    throw Exception("IntFileType::function(string) - function not found: " + name);
 }
 
 unsigned int IntFileType::function(unsigned int index)
 {
-    if (index >= _functionsName.size()) throw Exception("IntFileType::function() - function not found: " + std::to_string(index));
-    return function(_functionsName.at(index));
+    try
+    {
+        return _functionsOffsets.at(index);
+    }
+    catch (...)
+    {
+        throw Exception("IntFileType::function(int) - function not found: " + std::to_string(index));
+    }
+}
+
+std::map<unsigned int, std::string>* IntFileType::identificators()
+{
+    return &_identificators;
 }
 
 }
