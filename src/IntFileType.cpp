@@ -124,6 +124,7 @@ void IntFileType::_initialize()
             std::string name;
             *this >> length;
             j += 2;
+            unsigned int nameOffset = j + 4;
             for (unsigned int i = 0; i != length; ++i, ++j)
             {
                 unsigned char ch;
@@ -131,8 +132,8 @@ void IntFileType::_initialize()
                 if (ch != 0) name.push_back(ch);
             }
 
-            _strings.push_back(name);
-            std::cout << "String: " << name << std::endl;
+            _strings.insert(std::make_pair(nameOffset, name));
+            std::cout << "String: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
         }
 
         *this >> signature;
@@ -163,6 +164,11 @@ unsigned int IntFileType::function(unsigned int index)
 std::map<unsigned int, std::string>* IntFileType::identificators()
 {
     return &_identificators;
+}
+
+std::map<unsigned int, std::string>* IntFileType::strings()
+{
+    return &_strings;
 }
 
 }
