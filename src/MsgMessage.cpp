@@ -65,6 +65,11 @@ std::string MsgMessage::text()
     return _text;
 }
 
+std::string* MsgMessage::textPointer()
+{
+    return &_text;
+}
+
 MsgMessage::operator std::string ()
 {
     return _text;

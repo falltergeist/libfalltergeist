@@ -48,6 +48,7 @@ public:
 
     void setText(std::string text);
     std::string text();
+    std::string* textPointer();
 
     operator std::string ();
 };
