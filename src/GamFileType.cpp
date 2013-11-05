@@ -17,37 +17,33 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+// C++ standard includes
 
-#include "src/DatFile.h"
-#include "src/DatFileItem.h"
-#include "src/AafFileType.h"
-#include "src/AafGlyph.h"
-#include "src/BioFileType.h"
-#include "src/FonFileType.h"
-#include "src/FonGlyph.h"
-#include "src/FrmFileType.h"
-#include "src/FrmDirection.h"
-#include "src/FrmFrame.h"
-#include "src/GamFileType.h"
-#include "src/GcdFileType.h"
-#include "src/IntFileType.h"
-#include "src/LstFileType.h"
-#include "src/MapFileType.h"
-#include "src/MapElevation.h"
-#include "src/MapObject.h"
-#include "src/MsgFileType.h"
-#include "src/MsgMessage.h"
-#include "src/PalFileType.h"
-#include "src/PalColor.h"
-#include "src/ProFileType.h"
-#include "src/RixFileType.h"
-#include "src/Exception.h"
+// libfalltergeist includes
+#include "../src/GamFileType.h"
+
+// Third party includes
 
 namespace libfalltergeist
 {
 
+GamFileType::GamFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+{
 }
 
-#endif // LIBFALLTERGEIST_H
+GamFileType::GamFileType(std::ifstream* stream) : DatFileItem(stream)
+{
+}
+
+GamFileType::~GamFileType()
+{
+}
+
+void GamFileType::_initialize()
+{
+    if (_initialized) return;
+    DatFileItem::_initialize();
+    DatFileItem::setPosition(0);
+}
+
+}

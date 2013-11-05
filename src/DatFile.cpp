@@ -29,6 +29,7 @@
 #include "../src/BioFileType.h"
 #include "../src/FonFileType.h"
 #include "../src/FrmFileType.h"
+#include "../src/GamFileType.h"
 #include "../src/GcdFileType.h"
 #include "../src/IntFileType.h"
 #include "../src/MapFileType.h"
@@ -158,6 +159,7 @@ std::vector<DatFileItem *> * DatFile::items()
             else if (extension == "bio") item = new BioFileType(entry);
             else if (extension == "fon") item = new FonFileType(entry);
             else if (extension == "frm") item = new FrmFileType(entry);
+            else if (extension == "gam") item = new GamFileType(entry);
             else if (extension == "gcd") item = new GcdFileType(entry);
             else if (extension == "int") item = new IntFileType(entry);
             else if (extension == "lst") item = new LstFileType(entry);

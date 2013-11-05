@@ -57,7 +57,7 @@ protected:
     unsigned int _timeTicks;
     unsigned int _unknown1;
 
-    int _scriptId;
+    int _scriptId = -1;
 
     MapObject* _readObject();
     virtual void _initialize();

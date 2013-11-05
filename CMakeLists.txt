@@ -40,6 +40,7 @@ set(SOURCES libfalltergeist.cpp
             src/FrmFileType.cpp
             src/FrmDirection.cpp
             src/FrmFrame.cpp
+            src/GamFileType.cpp
             src/GcdFileType.cpp
             src/IntFileType.cpp
             src/LstFileType.cpp
@@ -67,6 +68,7 @@ set(HEADERS libfalltergeist.h
             src/FrmFileType.h
             src/FrmDirection.h
             src/FrmFrame.h
+            src/GamFileType.h
             src/GcdFileType.h
             src/IntFileType.h
             src/LstFileType.h
