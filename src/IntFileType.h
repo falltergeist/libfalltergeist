@@ -41,7 +41,6 @@ protected:
     std::map<unsigned int, std::string> _identificators;
     std::map<unsigned int, std::string> _strings;
     virtual void _initialize();
-    unsigned int _entryPoint;
 public:
     IntFileType(DatFileEntry * datFileEntry);
     IntFileType(std::ifstream * stream);

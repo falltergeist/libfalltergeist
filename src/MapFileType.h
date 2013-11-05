@@ -50,8 +50,8 @@ protected:
     unsigned int _defaultPosition;
     unsigned int _defaultElevation;
     unsigned int _defaultOrientaion;
-    unsigned int _localVarsNumber;
-    unsigned int _globalVarsNumber;
+    unsigned int _SVARNumber;
+    unsigned int _MVARNumber;
     unsigned int _elevationsFlag;
     unsigned int _mapId;
     unsigned int _timeTicks;

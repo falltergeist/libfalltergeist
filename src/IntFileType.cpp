@@ -48,23 +48,17 @@ void IntFileType::_initialize()
     DatFileItem::setPosition(0);
 
 
-    // HEADER
-    setPosition(12);
-    *this >> _entryPoint;
-    std::cout << "Entry point: " << std::hex << _entryPoint << std::endl;
-
     // FUNCTIONS TABLE
     setPosition(42);
-    unsigned int functionsTableSize;
-    *this >> functionsTableSize;
+    unsigned int tableSize;
+    *this >> tableSize;
 
-    std::cout << std::hex << this->position() << " Functions table size: " << std::dec << functionsTableSize << std::endl;
+    // @todo Delete this line
+    std::cout << std::hex << this->position() << " Functions table size: " << std::dec << tableSize << std::endl;
 
     std::map<unsigned int, unsigned int> functions;
-
-    for (unsigned int i = 0; i != functionsTableSize; ++i)
+    for (unsigned int i = 0; i != tableSize; ++i)
     {
-
         unsigned int nameOffset;
         unsigned int entryPoint;
         *this >> nameOffset;
@@ -72,17 +66,18 @@ void IntFileType::_initialize()
         *this >> entryPoint;
         skipBytes(4);
         functions.insert(std::make_pair(nameOffset, entryPoint));
-        _functionsOffsets.push_back(entryPoint);
-        std::cout << "Function: name = 0x" << std::hex << nameOffset << " : entryPoint = 0x" << entryPoint << std::endl;
+        _functionsOffsets.push_back(entryPoint); // to find function entry point by number
+        // @todo Delete this line
+        std::cout << "Function: nameOffset - 0x"<< std::hex << nameOffset << " entryPoint - " << entryPoint << std::endl;
     }
 
     // IDENTIFICATORS TABLE
-    unsigned int identificatorsTableSize;
-    *this >> identificatorsTableSize;
-    std::cout << std::hex << this->position() <<  "Identificators table size: " << std::dec << identificatorsTableSize << std::endl;
+    *this >> tableSize;
+    // @todo Delete this line
+    std::cout << std::hex << this->position() <<  "Identificators table size: " << std::dec << tableSize << std::endl;
 
     unsigned int j = 0;
-    while (j < identificatorsTableSize)
+    while (j < tableSize)
     {
         unsigned short length;
         std::string name;
@@ -95,30 +90,29 @@ void IntFileType::_initialize()
             *this >> ch;
             if (ch != 0) name.push_back(ch);
         }
-
-        _identificators.insert(std::make_pair(nameOffset, name));
-        std::cout << "Identificator: " << std::hex << "0x" << nameOffset << " - " << name << std::endl;
+        _identificators.insert(std::make_pair(nameOffset, name)); // names of functions and variables
+        // @todo Delete this line
+        std::cout << "Identificator: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
     }
+
+    this->skipBytes(4); // signature 0xFFFFFFFF
 
     for (auto it = functions.begin(); it != functions.end(); ++it)
     {
-        _functions.insert(std::make_pair( it->second, _identificators.at(it->first)));
+        _functions.insert(std::make_pair( it->second, _identificators.at(it->first))); // to access functions by name
     }
 
-    unsigned int signature; // must be 0xFFFFFFFF
-    *this >> signature;
-    std::cout << "Signature: " << std::hex << signature << std::endl;
 
     // STRINGS TABLE
 
-    unsigned int stringsTableSize;
-    *this >> stringsTableSize;
+    *this >> tableSize;
 
-    if (stringsTableSize != 0xFFFFFFFF)
+    if (tableSize != 0xFFFFFFFF)
     {
-        std::cout << std::hex << this->position() <<  "Strings table size: " << std::dec << stringsTableSize << std::endl;
+        // @todo Delete this line
+        std::cout << std::hex << this->position() <<  "Strings table size: " << std::dec << tableSize << std::endl;
         unsigned int j = 0;
-        while (j < stringsTableSize)
+        while (j < tableSize)
         {
             unsigned short length;
             std::string name;
@@ -133,10 +127,10 @@ void IntFileType::_initialize()
             }
 
             _strings.insert(std::make_pair(nameOffset, name));
+
+            // @todo Delete this line
             std::cout << "String: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
         }
-
-        *this >> signature;
     }
 }
 

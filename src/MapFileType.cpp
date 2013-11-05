@@ -59,7 +59,7 @@ void MapFileType::_initialize()
     _name += buffer;
 
     *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
-          >> _localVarsNumber >> _scriptId >> _elevationsFlag;
+          >> _SVARNumber >> _scriptId >> _elevationsFlag;
 
 
     unsigned int elevations = 0;
@@ -67,15 +67,27 @@ void MapFileType::_initialize()
     if ((_elevationsFlag & 4) == 0) elevations++;
     if ((_elevationsFlag & 8) == 0) elevations++;
 
-    *this >> _unknown1 >> _globalVarsNumber >> _mapId >> _timeTicks;
+    *this >> _unknown1 >> _MVARNumber >> _mapId >> _timeTicks;
 
     this->skipBytes(4*44); // unkonwn
 
-    // GLOBAL AND LOCAL VARS SECTION
+    // MVAR AND SVAR SECTION
+    std::cout << "MVARS: " << std::dec << _MVARNumber << std::endl;
+    for (unsigned int i = 0; i != _MVARNumber; ++i)
+    {
+        unsigned int value;
+        *this >> value;
+        std::cout << "MVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
+    }
 
-    this->skipBytes(4*_globalVarsNumber); // global variables
+    std::cout << "SVARS: " << std::dec << _SVARNumber << std::endl;
+    for (unsigned int i = 0; i != _SVARNumber; ++i)
+    {
+        unsigned int value;
+        *this >> value;
+        std::cout << "SVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
+    }
 
-    this->skipBytes(4*_localVarsNumber); // local variables
 
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
