@@ -19,6 +19,7 @@
 
 // C++ standard includes
 #include <iostream>
+#include <algorithm>
 
 // libfalltergeist includes
 #include "../src/MapFileType.h"
@@ -54,12 +55,13 @@ void MapFileType::_initialize()
 
     *this >> _version;
 
-    char buffer[17] = {0};
-    this->readBytes(buffer, 16);
-    _name += buffer;
+    _name.resize(16);
+    this->readBytes(&_name[0], 16);
+    std::transform(_name.begin(),_name.end(),_name.begin(), ::tolower);
+
 
     *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
-          >> _SVARNumber >> _scriptId >> _elevationsFlag;
+          >> _SVARsize >> _scriptId >> _elevationsFlag;
 
 
     unsigned int elevations = 0;
@@ -67,25 +69,26 @@ void MapFileType::_initialize()
     if ((_elevationsFlag & 4) == 0) elevations++;
     if ((_elevationsFlag & 8) == 0) elevations++;
 
-    *this >> _unknown1 >> _MVARNumber >> _mapId >> _timeTicks;
+    *this >> _unknown1 >> _MVARsize >> _mapId >> _timeTicks;
 
     this->skipBytes(4*44); // unkonwn
 
     // MVAR AND SVAR SECTION
-    std::cout << "MVARS: " << std::dec << _MVARNumber << std::endl;
-    for (unsigned int i = 0; i != _MVARNumber; ++i)
+    std::cout << "MVARS: " << std::dec << _MVARsize << std::endl;
+    for (unsigned int i = 0; i != _MVARsize; ++i)
     {
         unsigned int value;
         *this >> value;
         std::cout << "MVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
     }
 
-    std::cout << "SVARS: " << std::dec << _SVARNumber << std::endl;
-    for (unsigned int i = 0; i != _SVARNumber; ++i)
+    std::cout << "SVARS: " << std::dec << _SVARsize << std::endl;
+    for (unsigned int i = 0; i != _SVARsize; ++i)
     {
         unsigned int value;
         *this >> value;
-        std::cout << "SVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
+        // just skip for now... maybe will be used in future
+        //std::cout << "SVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
     }
 
 
@@ -398,6 +401,16 @@ unsigned int MapFileType::defaultOrientation()
 int MapFileType::scriptId()
 {
     return _scriptId;
+}
+
+unsigned int MapFileType::MVARsize()
+{
+    return _MVARsize;
+}
+
+std::string MapFileType::name()
+{
+    return _name;
 }
 
 }
