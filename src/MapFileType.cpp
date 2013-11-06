@@ -328,7 +328,7 @@ MapObject * MapFileType::_readObject()
                 case ProFileType::TYPE_SCENERY_LADDER_BOTTOM:
                     this->skipBytes(4*2);
                     break;
-                case ProFileType::TYPE_SCENERY_STAIR:
+                case ProFileType::TYPE_SCENERY_STAIRS:
                     this->skipBytes(4*2);
                     break;
                 case ProFileType::TYPE_SCENERY_ELEVATOR:
