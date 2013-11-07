@@ -61,7 +61,7 @@ void MapFileType::_initialize()
 
 
     *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
-          >> _SVARsize >> _scriptId >> _elevationsFlag;
+          >> _LVARsize >> _scriptId >> _elevationsFlag;
 
 
     unsigned int elevations = 0;
@@ -82,8 +82,8 @@ void MapFileType::_initialize()
         std::cout << "MVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
     }
 
-    std::cout << "SVARS: " << std::dec << _SVARsize << std::endl;
-    for (unsigned int i = 0; i != _SVARsize; ++i)
+    std::cout << "SVARS: " << std::dec << _LVARsize << std::endl;
+    for (unsigned int i = 0; i != _LVARsize; ++i)
     {
         unsigned int value;
         *this >> value;
@@ -406,6 +406,11 @@ int MapFileType::scriptId()
 unsigned int MapFileType::MVARsize()
 {
     return _MVARsize;
+}
+
+unsigned int MapFileType::LVARsize()
+{
+    return _LVARsize;
 }
 
 std::string MapFileType::name()

@@ -50,8 +50,8 @@ protected:
     unsigned int _defaultPosition;
     unsigned int _defaultElevation;
     unsigned int _defaultOrientaion;
-    unsigned int _SVARsize;
     unsigned int _MVARsize;
+    unsigned int _LVARsize;
     unsigned int _elevationsFlag;
     unsigned int _mapId;
     unsigned int _timeTicks;
@@ -78,6 +78,7 @@ public:
     int scriptId();
 
     unsigned int MVARsize();
+    unsigned int LVARsize();
     std::string name();
 };
 
