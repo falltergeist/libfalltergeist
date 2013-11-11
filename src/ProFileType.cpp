@@ -46,17 +46,17 @@ void ProFileType::_initialize()
     DatFileItem::setPosition(0);
 
     *this >> _PID >> _messageId >> _FID;
+    *this >> _lightDistance >> _lightIntencity >> _flags;
 
     switch (typeId())
     {
         case TYPE_TILE:
+        case TYPE_MISC:
             break;
         default:
-            *this >> _lightDistance >> _lightIntencity;
+            *this >> _flagsExt;
             break;
     }
-
-    *this >> _flags >> _flagsExt;
 
     switch (typeId())
     {
@@ -64,13 +64,7 @@ void ProFileType::_initialize()
         case TYPE_CRITTER:
         case TYPE_SCENERY:
         case TYPE_WALL:
-            int SID;
-            *this >> SID;
-            if (SID != -1)
-            {
-                _scriptTypeId = (SID & 0x0F000000) >> 24;
-                _scriptId = SID & 0x0000FFFF;
-            }
+            *this >> _SID;
             break;
         case TYPE_TILE:
         case TYPE_MISC:
@@ -86,39 +80,50 @@ void ProFileType::_initialize()
             *this >> _containerSize;
             *this >> _weight ;
             *this >> _basePrice;
-
             *this >> _inventoryFID;
-
             *this >> _soundId;
 
             switch (subtypeId())
             {
                 case TYPE_ITEM_ARMOR:
-                    // armorClass 4
-                    // damageResistNormal 4
-                    // damageResistLaser 4
-                    // damageResistFire 4
-                    // damageResistPlasma 4
-                    // damageResistElectrical 4
-                    // damageResistEmp 4
-                    // damageResistExplosion 4
-                    // damageThresholdNormal 4
-                    // damageThresholdLaser 4
-                    // damageThresholdFire 4
-                    // damageThresholdPlasma 4
-                    // damageThresholdElectrical 4
-                    // damageThresholdEmp 4
-                    // damageThresholdExplosion 4
-                    // perk 4
-                    // male FID
-                    // female FID
+                {
+                    this->skipBytes(4); // Armor class
+                    this->skipBytes(4*8); // Damage resist
+                    this->skipBytes(4*8); // Damage threshold
+                    this->skipBytes(4); // Perk
+                    this->skipBytes(4); // Male FID
+                    this->skipBytes(4); // Female FID
                     break;
+                }
                 case TYPE_ITEM_CONTAINER:
-                    // max size 4
-                    // containerFlags 4
+                {
+                    this->skipBytes(4); // max size
+                    this->skipBytes(4); // containter flags
                     break;
+                }
                 case TYPE_ITEM_DRUG:
+                {
+                    this->skipBytes(4); // Stat0
+                    this->skipBytes(4); // Stat1
+                    this->skipBytes(4); // Stat2
+                    this->skipBytes(4); // Stat0 ammount
+                    this->skipBytes(4); // Stat1 ammount
+                    this->skipBytes(4); // Stat2 ammount
+                    // first delayed effest
+                    this->skipBytes(4); // delay in game minutes
+                    this->skipBytes(4); // Stat0 ammount
+                    this->skipBytes(4); // Stat1 ammount
+                    this->skipBytes(4); // Stat2 ammount
+                    // second delayed effest
+                    this->skipBytes(4); // delay in game minutes
+                    this->skipBytes(4); // Stat0 ammount
+                    this->skipBytes(4); // Stat1 ammount
+                    this->skipBytes(4); // Stat2 ammount
+                    this->skipBytes(4); // addiction chance
+                    this->skipBytes(4); // addiction perk
+                    this->skipBytes(4); // addiction delay
                     break;
+                }
                 case TYPE_ITEM_WEAPON:
                     break;
                 case TYPE_ITEM_AMMO:
@@ -202,6 +207,37 @@ void ProFileType::_initialize()
             *this >> _subtypeId;
             *this >> _materialId;
             *this >> _soundId;
+            switch(subtypeId())
+            {
+                case TYPE_SCENERY_DOOR:
+                {
+                    this->skipBytes(4); // walk thru flag
+                    this->skipBytes(4); // unknown
+                    break;
+                }
+                case TYPE_SCENERY_STAIRS:
+                {
+                    this->skipBytes(4); // DestTile && DestElevation
+                    this->skipBytes(4); // DestElevation
+                    break;
+                }
+                case TYPE_SCENERY_ELEVATOR:
+                {
+                    this->skipBytes(4); // Elevator type
+                    this->skipBytes(4); // Elevator level
+                    break;
+                }
+                case TYPE_SCENERY_LADDER_BOTTOM:
+                case TYPE_SCENERY_LADDER_TOP:
+                {
+                    this->skipBytes(4); // DestTile && DestElevation
+                    break;
+                }
+                case TYPE_SCENERY_GENERIC:
+                {
+                    this->skipBytes(4); // unknown
+                }
+            }
 
             break;
         }
@@ -212,7 +248,6 @@ void ProFileType::_initialize()
         }
         case TYPE_TILE:
         {
-            this->skipBytes(4); //unknown
             *this >> _materialId;
             break;
         }
@@ -262,7 +297,8 @@ unsigned int ProFileType::flagsExt()
 int ProFileType::scriptId()
 {
     _initialize();
-    return _scriptId;
+    if (_SID == -1) return -1;
+    return _SID & 0x0000FFFF;
 }
 
 }

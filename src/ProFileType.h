@@ -52,8 +52,7 @@ protected:
     unsigned int _flags;
     unsigned int _flagsExt;
 
-    int _scriptTypeId = -1;
-    int _scriptId = -1;
+    int _SID;
 
     unsigned int _materialId;
     unsigned int _containerSize;
