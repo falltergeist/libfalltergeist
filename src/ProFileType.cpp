@@ -146,14 +146,70 @@ void ProFileType::_initialize()
         }
         case TYPE_CRITTER:
         {
-            unsigned int FID;
-            *this >> FID;
-            _headFrmTypeId = (FID & 0xFF000000) >> 24;
-            _headFrmId = FID & 0x0000FFFF;
+            *this >> _critterHeadFID;
 
-            // more ...
+            this->skipBytes(4); // ai packet number
+            this->skipBytes(4); // team number
+            this->skipBytes(4); // flags
+
+            int uint32;
+            for (unsigned int i = 0; i != 7; ++i)
+            {
+                *this >> uint32;
+                _critterStats.at(i) = uint32;
+            }
+            this->skipBytes(4); // Health points
+            this->skipBytes(4); // Action points
+            this->skipBytes(4); // Armor class
+            this->skipBytes(4); // Unused
+            this->skipBytes(4); // Melee damage
+            this->skipBytes(4); // Carry weight
+            this->skipBytes(4); // Sequence
+            this->skipBytes(4); // Healing rate
+            this->skipBytes(4); // Critical chance
+            this->skipBytes(4); // Better criticals
+
+            this->skipBytes(4*8); // Damage threshold
+            this->skipBytes(4*8); // Damage resistance
+
+            this->skipBytes(4); // age
+            this->skipBytes(4); // sex
+
+            for (unsigned int i = 0; i != 7; ++i)
+            {
+                *this >> uint32;
+                _critterStatsBonus.at(i) = uint32;
+            }
+
+            this->skipBytes(4); // Bonus Health points
+            this->skipBytes(4); // Bonus Action points
+            this->skipBytes(4); // Bonus Armor class
+            this->skipBytes(4); // Bonus Unused
+            this->skipBytes(4); // Bonus Melee damage
+            this->skipBytes(4); // Bonus Carry weight
+            this->skipBytes(4); // Bonus Sequence
+            this->skipBytes(4); // Bonus Healing rate
+            this->skipBytes(4); // Bonus Critical chance
+            this->skipBytes(4); // Bonus Better criticals
+
+            this->skipBytes(4*8); // Bonus Damage threshold
+            this->skipBytes(4*8); // Bonus Damage resistance
+
+            this->skipBytes(4); // Bonus age
+            this->skipBytes(4); // Bonus sex
+
+            for (unsigned int i = 0; i != 18; ++i)
+            {
+                *this >> uint32;
+                _critterSkills.at(i) = uint32;
+            }
 
             break;
+
+            this->skipBytes(4); // body type
+            this->skipBytes(4); // experience for kill
+            this->skipBytes(4); // kill type
+            this->skipBytes(4); // damage type
         }
         case TYPE_SCENERY:
         {

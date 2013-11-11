@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_PROFILETYPE_H
 
 // C++ standard includes
+#include <vector>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
@@ -43,8 +44,10 @@ protected:
              int _frmOffset;
     unsigned int _frmId;
 
-    unsigned int _headFrmTypeId;
-    unsigned int _headFrmId;
+    unsigned int _critterHeadFID;
+    std::vector<int> _critterStats = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     unsigned int _lightDistance;
     unsigned int _lightIntencity;
