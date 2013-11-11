@@ -113,7 +113,7 @@ DatFile* DatFile::skipBytes(unsigned int numberOfBytes)
 DatFile* DatFile::readBytes(char * destination, unsigned int numberOfBytes)
 {
     unsigned int position = this->position();
-    _stream->readsome(destination, numberOfBytes);
+    _stream->read(destination, numberOfBytes);
     setPosition(position + numberOfBytes);
     return this;
 }

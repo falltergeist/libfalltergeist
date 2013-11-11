@@ -57,7 +57,7 @@ void DatFileItem::_initialize()
         _stream->seekg(0, std::ios::beg);
 
         _buffer = new char[_size];
-        _stream->readsome(_buffer, _size);
+        _stream->read(_buffer, _size);
         _stream->close();
         setg(_buffer, _buffer, _buffer + _size);
         return;
