@@ -45,20 +45,9 @@ void ProFileType::_initialize()
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
 
-    unsigned int PID;
-    unsigned int FID;
+    *this >> _PID >> _messageId >> _FID;
 
-    *this >> PID >> _messageId >> FID;
-
-    _objectTypeId = (PID & 0x0F000000) >> 24;
-    _objectId = PID & 0x00000FFF;
-
-    _frmTypeId = (FID & 0x0F000000) >> 24;
-    _frmOffset = (FID & 0x00FF0000) >> 16;
-    _frmId = FID & 0x0000FFFF;
-
-
-    switch (_objectTypeId)
+    switch (typeId())
     {
         case TYPE_TILE:
             break;
@@ -69,7 +58,7 @@ void ProFileType::_initialize()
 
     *this >> _flags >> _flagsExt;
 
-    switch (_objectTypeId)
+    switch (typeId())
     {
         case TYPE_ITEM:
         case TYPE_CRITTER:
@@ -88,24 +77,21 @@ void ProFileType::_initialize()
             break;
     }    
 
-    switch (_objectTypeId)
+    switch (typeId())
     {
         case TYPE_ITEM:
         {
-            *this >> _objectSubtypeId;
+            *this >> _subtypeId;
             *this >> _materialId;
             *this >> _containerSize;
             *this >> _weight ;
             *this >> _basePrice;
 
-            unsigned int FID;
-            *this >> FID;
-            _inventoryFrmTypeId = (FID & 0xFF000000) >> 24;
-            _inventoryFrmId = FID & 0x00FFFF;
+            *this >> _inventoryFID;
 
             *this >> _soundId;
 
-            switch (_objectSubtypeId)
+            switch (subtypeId())
             {
                 case TYPE_ITEM_ARMOR:
                     // armorClass 4
@@ -213,7 +199,7 @@ void ProFileType::_initialize()
         }
         case TYPE_SCENERY:
         {
-            *this >> _objectSubtypeId;
+            *this >> _subtypeId;
             *this >> _materialId;
             *this >> _soundId;
 
@@ -239,22 +225,26 @@ void ProFileType::_initialize()
 
 }
 
-unsigned int ProFileType::objectTypeId()
+int ProFileType::PID()
 {
-    _initialize();
-    return _objectTypeId;
+    return _PID;
 }
 
-unsigned int ProFileType::objectSubtypeId()
+int ProFileType::FID()
 {
-    _initialize();
-    return _objectSubtypeId;
+    return _FID;
 }
 
-int ProFileType::frmOffset()
+int ProFileType::typeId()
 {
     _initialize();
-    return _frmOffset;
+    return (_PID & 0x0F000000) >> 24;
+}
+
+int ProFileType::subtypeId()
+{
+    _initialize();
+    return _subtypeId;
 }
 
 unsigned int ProFileType::messageId()

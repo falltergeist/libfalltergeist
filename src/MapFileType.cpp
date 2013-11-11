@@ -286,7 +286,7 @@ MapObject * MapFileType::_readObject()
     switch (object->objectTypeId())
     {
         case ProFileType::TYPE_ITEM:
-            object->setObjectSubtypeId(callback()(PID)->objectSubtypeId());
+            object->setObjectSubtypeId(callback()(PID)->subtypeId());
             switch(object->objectSubtypeId())
             {
                 case ProFileType::TYPE_ITEM_AMMO:
@@ -321,7 +321,7 @@ MapObject * MapFileType::_readObject()
             object->setObjectID3((FID & 0xF0000000) >> 28);
             break;
         case ProFileType::TYPE_SCENERY:
-            object->setObjectSubtypeId(callback()(PID)->objectSubtypeId());
+            object->setObjectSubtypeId(callback()(PID)->subtypeId());
             switch(object->objectSubtypeId())
             {
                 case ProFileType::TYPE_SCENERY_LADDER_TOP:

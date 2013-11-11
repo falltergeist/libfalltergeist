@@ -34,17 +34,14 @@ namespace libfalltergeist
 class ProFileType : public DatFileItem
 {
 protected:
-    unsigned int _objectTypeId;
-    unsigned int _objectSubtypeId;
-    unsigned int _objectId;
+    int _PID;
+    int _subtypeId;
 
-    unsigned int _messageId;
+    int _messageId;
 
-    unsigned int _frmTypeId;
-             int _frmOffset;
-    unsigned int _frmId;
+    int _FID;
 
-    unsigned int _critterHeadFID;
+    int _critterHeadFID;
     std::vector<int> _critterStats = {0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -63,8 +60,7 @@ protected:
     unsigned int _weight;
     unsigned int _basePrice;
 
-    unsigned int _inventoryFrmTypeId;
-    unsigned int _inventoryFrmId;
+    unsigned int _inventoryFID;
 
     unsigned char _soundId;
 
@@ -78,11 +74,13 @@ public:
     ProFileType(std::ifstream* stream);
     ~ProFileType();
 
-    unsigned int objectTypeId();
-    unsigned int objectSubtypeId();
+    int PID();
+    int FID();
+
+    int typeId();
+    int subtypeId();
     int scriptId();
     unsigned int messageId();
-    int frmOffset();
     unsigned int flagsExt();
 
 };
