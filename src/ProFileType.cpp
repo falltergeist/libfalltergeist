@@ -301,4 +301,19 @@ int ProFileType::scriptId()
     return _SID & 0x0000FFFF;
 }
 
+std::vector<int>* ProFileType::critterStats()
+{
+    return &_critterStats;
+}
+
+std::vector<int>* ProFileType::critterStatsBonus()
+{
+    return &_critterStatsBonus;
+}
+
+std::vector<int>* ProFileType::critterSkills()
+{
+    return &_critterSkills;
+}
+
 }

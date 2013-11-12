@@ -82,6 +82,11 @@ public:
     unsigned int messageId();
     unsigned int flagsExt();
 
+    std::vector<int>* critterStats();
+    std::vector<int>* critterStatsBonus();
+    std::vector<int>* critterSkills();
+
+
 };
 }
 
