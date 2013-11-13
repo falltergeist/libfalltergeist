@@ -51,16 +51,18 @@ void LstFileType::_initialize()
     for(unsigned int i = 0; i != this->size(); ++i)
     {
         *this >> ch;
-        if (ch != 0x0D && ch != 0x0A)
+        if (ch == 0x0D) // \r
         {
-            line += ch;
+            // do nothing
+        }        
+        else if (ch == 0x0A) // \n
+        {
+            _addString(line);
+            line.clear();            
         }
         else
         {
-            _addString(line);
-            line.clear();
-            ++i;
-            *this >> ch;
+            line += ch;
         }
     }
     if (line.size() != 0)
