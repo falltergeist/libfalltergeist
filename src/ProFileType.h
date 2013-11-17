@@ -41,7 +41,16 @@ protected:
 
     int _FID;
 
-    int _critterHeadFID;
+    int _critterHeadFID = -1;
+    int _critterHitPointsMax = 0;
+    int _critterActionPoints = 0;
+    int _critterArmorClass = 0;
+    int _critterMeleeDamage = 0;
+    int _critterCarryWeight = 0;
+    int _critterSequence = 0;
+    int _critterHealingRate = 0;
+    int _critterCriticalChance = 0;
+
     std::vector<int> _critterStats = {0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -82,6 +91,14 @@ public:
     unsigned int messageId();
     unsigned int flagsExt();
 
+    int critterHitPointsMax();
+    int critterActionPoints();
+    int critterArmorClass();
+    int critterMeleeDamage();
+    int critterCarryWeight();
+    int critterSequence();
+    int critterHealingRate();
+    int critterCriticalChance();
     std::vector<int>* critterStats();
     std::vector<int>* critterStatsBonus();
     std::vector<int>* critterSkills();

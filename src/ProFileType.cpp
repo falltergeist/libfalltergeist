@@ -149,15 +149,15 @@ void ProFileType::_initialize()
                 *this >> uint32;
                 _critterStats.at(i) = uint32;
             }
-            this->skipBytes(4); // Health points
-            this->skipBytes(4); // Action points
-            this->skipBytes(4); // Armor class
+            *this >> _critterHitPointsMax
+                  >> _critterActionPoints
+                  >> _critterArmorClass;
             this->skipBytes(4); // Unused
-            this->skipBytes(4); // Melee damage
-            this->skipBytes(4); // Carry weight
-            this->skipBytes(4); // Sequence
-            this->skipBytes(4); // Healing rate
-            this->skipBytes(4); // Critical chance
+            *this >> _critterMeleeDamage
+                  >> _critterCarryWeight
+                  >> _critterSequence
+                  >> _critterHealingRate
+                  >> _critterCriticalChance;
             this->skipBytes(4); // Better criticals
 
             this->skipBytes(4*8); // Damage threshold
@@ -314,6 +314,46 @@ std::vector<int>* ProFileType::critterStatsBonus()
 std::vector<int>* ProFileType::critterSkills()
 {
     return &_critterSkills;
+}
+
+int ProFileType::critterHitPointsMax()
+{
+    return _critterHitPointsMax;
+}
+
+int ProFileType::critterActionPoints()
+{
+    return _critterActionPoints;
+}
+
+int ProFileType::critterArmorClass()
+{
+    return _critterArmorClass;
+}
+
+int ProFileType::critterMeleeDamage()
+{
+    return _critterMeleeDamage;
+}
+
+int ProFileType::critterCarryWeight()
+{
+    return _critterCarryWeight;
+}
+
+int ProFileType::critterSequence()
+{
+    return _critterSequence;
+}
+
+int ProFileType::critterCriticalChance()
+{
+    return _critterCriticalChance;
+}
+
+int ProFileType::critterHealingRate()
+{
+    return _critterHealingRate;
 }
 
 }
