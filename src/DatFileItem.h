@@ -34,7 +34,7 @@ class DatFileEntry;
 
 class DatFileItem: public std::streambuf
 {
-protected:
+protected:    
     std::string _filename;
     DatFileEntry* _datFileEntry = 0;
     std::ifstream* _stream = 0;
@@ -42,11 +42,14 @@ protected:
 
     char* _buffer = 0;
     int _size;
+    int _endianness = ENDIANNESS_BIG;
 
     bool _initialized = false;
     virtual void _initialize();
 
 public:
+    enum Endianness {ENDIANNESS_BIG = 0, ENDIANNESS_LITTLE};
+
     DatFileItem(std::ifstream* stream);
     DatFileItem(DatFileEntry* datFileEntry);
     ~DatFileItem();
@@ -61,6 +64,9 @@ public:
     DatFileItem* setPosition(unsigned int position);
     unsigned int position();
     unsigned int size();
+
+    int endianness();
+    void setEndianness(int value);
 
     DatFileItem& operator>>(unsigned int &value);
     DatFileItem& operator>>(int &value);

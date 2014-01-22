@@ -50,6 +50,7 @@ set(SOURCES libfalltergeist.cpp
             src/MapScript.cpp
             src/MsgFileType.cpp
             src/MsgMessage.cpp
+            src/MveFileType.cpp
             src/PalFileType.cpp
             src/PalColor.cpp
             src/ProFileType.cpp
@@ -78,6 +79,7 @@ set(HEADERS libfalltergeist.h
             src/MapScript.h
             src/MsgFileType.h
             src/MsgMessage.h
+            src/MveFileType.h
             src/PalFileType.h
             src/PalColor.h
             src/ProFileType.h

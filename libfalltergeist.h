@@ -39,6 +39,7 @@
 #include "src/MapObject.h"
 #include "src/MsgFileType.h"
 #include "src/MsgMessage.h"
+#include "src/MveFileType.h"
 #include "src/PalFileType.h"
 #include "src/PalColor.h"
 #include "src/ProFileType.h"

@@ -34,6 +34,7 @@
 #include "../src/IntFileType.h"
 #include "../src/MapFileType.h"
 #include "../src/MsgFileType.h"
+#include "../src/MveFileType.h"
 #include "../src/LstFileType.h"
 #include "../src/PalFileType.h"
 #include "../src/ProFileType.h"
@@ -165,6 +166,7 @@ std::vector<DatFileItem *> * DatFile::items()
             else if (extension == "lst") item = new LstFileType(entry);
             else if (extension == "map") item = new MapFileType(entry);
             else if (extension == "msg") item = new MsgFileType(entry);
+            else if (extension == "mve") item = new MveFileType(entry);
             else if (extension == "pal") item = new PalFileType(entry);
             else if (extension == "pro") item = new ProFileType(entry);
             else if (extension == "rix") item = new RixFileType(entry);

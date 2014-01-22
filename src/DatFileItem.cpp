@@ -175,7 +175,7 @@ DatFileItem& DatFileItem::operator>>(unsigned int &value)
     _initialize();
     char * buff = reinterpret_cast<char *>(&value);
     sgetn(buff, sizeof(value));
-    std::reverse(buff, buff + sizeof(value));
+    if (endianness() == ENDIANNESS_BIG) std::reverse(buff, buff + sizeof(value));
     return *this;
 }
 
@@ -189,7 +189,7 @@ DatFileItem& DatFileItem::operator>>(unsigned short &value)
     _initialize();
     char * buff = reinterpret_cast<char *>(&value);
     sgetn(buff, sizeof(value));
-    std::reverse(buff, buff + sizeof(value));
+    if (endianness() == ENDIANNESS_BIG) std::reverse(buff, buff + sizeof(value));
     return *this;
 }
 
@@ -208,6 +208,16 @@ DatFileItem& DatFileItem::operator>>(unsigned char &value)
 DatFileItem& DatFileItem::operator>>(char &value)
 {
     return *this >> (unsigned char&) value;
+}
+
+int DatFileItem::endianness()
+{
+    return _endianness;
+}
+
+void DatFileItem::setEndianness(int value)
+{
+    _endianness = value;
 }
 
 }
