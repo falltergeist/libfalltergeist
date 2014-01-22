@@ -26,6 +26,7 @@
 #include "../src/DatFileEntry.h"
 #include "../src/Exception.h"
 #include "../src/AafFileType.h"
+#include "../src/AcmFileType.h"
 #include "../src/BioFileType.h"
 #include "../src/FonFileType.h"
 #include "../src/FrmFileType.h"
@@ -157,6 +158,7 @@ std::vector<DatFileItem *> * DatFile::items()
 
             DatFileItem * item;
                  if (extension == "aaf") item = new AafFileType(entry);
+            else if (extension == "acm") item = new AcmFileType(entry);
             else if (extension == "bio") item = new BioFileType(entry);
             else if (extension == "fon") item = new FonFileType(entry);
             else if (extension == "frm") item = new FrmFileType(entry);

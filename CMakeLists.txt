@@ -30,6 +30,7 @@ include_directories(${ZLIB_INCLUDE_DIRS})
 set(SOURCES libfalltergeist.cpp
             src/AafFileType.cpp
             src/AafGlyph.cpp
+            src/AcmFileType.cpp
             src/BioFileType.cpp
             src/DatFile.cpp
             src/DatFileEntry.cpp
@@ -59,6 +60,7 @@ set(SOURCES libfalltergeist.cpp
 set(HEADERS libfalltergeist.h
             src/AafFileType.h
             src/AafGlyph.h
+            src/AcmFileType.h
             src/BioFileType.h
             src/DatFile.h
             src/DatFileEntry.h

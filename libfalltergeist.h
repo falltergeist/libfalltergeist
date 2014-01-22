@@ -24,6 +24,7 @@
 #include "src/DatFileItem.h"
 #include "src/AafFileType.h"
 #include "src/AafGlyph.h"
+#include "src/AcmFileType.h"
 #include "src/BioFileType.h"
 #include "src/FonFileType.h"
 #include "src/FonGlyph.h"
