@@ -33,24 +33,19 @@ namespace libfalltergeist
 class RixFileType : public DatFileItem
 {
 protected:
-    std::string _signature = "????";
-    unsigned short _width,
-                   _height,
-                   _unknown1;
-    std::vector<unsigned int> _palette;
-    std::vector<unsigned char> _data;
-    virtual void _initialize();
+    unsigned short _width;
+    unsigned short _height;
     unsigned int* _rgba = 0;
+    virtual void _initialize();
+
 public:
     RixFileType(DatFileEntry* datFileEntry);
     RixFileType(std::ifstream* stream);
     virtual ~RixFileType();
+
     unsigned short width();
-    void setWidth(unsigned short value);
     unsigned short height();
-    void setHeight(unsigned short value);
-    std::vector<unsigned int>* palette();
-    std::vector<unsigned char>* data();
+
     unsigned int* rgba();
 };
 
