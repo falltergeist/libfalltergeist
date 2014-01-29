@@ -88,8 +88,7 @@ PalColor::operator int()
 PalColor::operator unsigned int()
 {
     unsigned char k = 4;
-    unsigned int color = ((red() * k) << 16) | ((green() * k) << 8) | (blue() * k);
-    return (alpha() << 24) | color;
+    return ((red() * k) << 24) | ((green() * k) << 16) | ((blue() * k) << 8) | alpha();
 }
 
 }
