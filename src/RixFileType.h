@@ -40,6 +40,7 @@ protected:
     std::vector<unsigned int> _palette;
     std::vector<unsigned char> _data;
     virtual void _initialize();
+    unsigned int* _rgba = 0;
 public:
     RixFileType(DatFileEntry* datFileEntry);
     RixFileType(std::ifstream* stream);
@@ -50,6 +51,7 @@ public:
     void setHeight(unsigned short value);
     std::vector<unsigned int>* palette();
     std::vector<unsigned char>* data();
+    unsigned int* rgba();
 };
 
 }

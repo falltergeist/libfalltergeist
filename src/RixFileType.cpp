@@ -40,6 +40,7 @@ RixFileType::RixFileType(std::ifstream* stream) : DatFileItem(stream)
 
 RixFileType::~RixFileType()
 {
+    delete [] _rgba;
 }
 
 void RixFileType::_initialize()
@@ -62,7 +63,7 @@ void RixFileType::_initialize()
     {
         unsigned char r, g, b;
         *this >> r >> g >> b;
-        unsigned int color = 0xFF000000 | ((r*k) << 16) | ((g*k) << 8) | b*k;  // ARGB
+        unsigned int color = ((r*k) << 24) | ((g*k) << 16) | ((b*k) << 8) | 0x000000FF;  // RGBA
         _palette.push_back(color);
     }
     
@@ -106,6 +107,20 @@ unsigned short RixFileType::height()
 void RixFileType::setHeight(unsigned short value)
 {
     _height = value;
+}
+
+unsigned int* RixFileType::rgba()
+{
+    if (_rgba) return _rgba;
+    _initialize();
+    _rgba = new unsigned int[_width*_height];
+
+    // Data
+    for (int i = 0; i != _width*_height; ++i)
+    {
+        _rgba[i] = _palette.at(_data.at(i));
+    }
+    return _rgba;
 }
 
 }
