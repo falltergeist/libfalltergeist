@@ -39,8 +39,6 @@ set(SOURCES libfalltergeist.cpp
             src/FonFileType.cpp
             src/FonGlyph.cpp
             src/FrmFileType.cpp
-            src/FrmDirection.cpp
-            src/FrmFrame.cpp
             src/GamFileType.cpp
             src/GcdFileType.cpp
             src/IntFileType.cpp
@@ -69,8 +67,6 @@ set(HEADERS libfalltergeist.h
             src/FonFileType.h
             src/FonGlyph.h
             src/FrmFileType.h
-            src/FrmDirection.h
-            src/FrmFrame.h
             src/GamFileType.h
             src/GcdFileType.h
             src/IntFileType.h

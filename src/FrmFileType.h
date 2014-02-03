@@ -25,17 +25,27 @@
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
+#include "../src/PalFileType.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-class FrmDirection;
 
 class FrmFileType : public DatFileItem
 {
 protected:
-    std::vector<FrmDirection*> _directions;
+    unsigned int* _rgba = 0;
+    unsigned int _directions = 0;
+    signed short _shiftX[6];
+    signed short _shiftY[6];
+    unsigned int _dataOffset[6];
+    std::vector<unsigned int> _width[6];
+    std::vector<unsigned int> _height[6];
+    std::vector<signed short> _offsetX[6];
+    std::vector<signed short> _offsetY[6];
+    std::vector<unsigned int> _positionX[6]; // frame image position in rgba image
+    std::vector<unsigned int> _positionY[6];
     unsigned int _version;
     unsigned short _framesPerSecond,
                    _framesPerDirection,
@@ -48,19 +58,27 @@ public:
     FrmFileType(std::ifstream* stream);
     ~FrmFileType();
 
-    void setVersion(unsigned int version);
     unsigned int version();
 
-    void setFramesPerSecond(unsigned short fps);
     unsigned short framesPerSecond();
 
-    void setFramesPerDirection(unsigned short fpd);
     unsigned short framesPerDirection();
 
-    void setActionFrame(unsigned short number);
     unsigned short actionFrame();
 
-    std::vector<FrmDirection*> * directions();
+    unsigned int directions();
+
+    unsigned int width();
+    unsigned int width(unsigned int direction, unsigned int frame);
+
+    unsigned int height();
+    unsigned int height(unsigned int direction);
+    unsigned int height(unsigned int direction, unsigned int frame);
+
+    unsigned int offsetX(unsigned int direction, unsigned int frame);
+    unsigned int offsetY(unsigned int direction, unsigned int frame);
+
+    unsigned int* rgba(PalFileType* palFile);
 
 };
 

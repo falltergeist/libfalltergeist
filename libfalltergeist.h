@@ -29,8 +29,6 @@
 #include "src/FonFileType.h"
 #include "src/FonGlyph.h"
 #include "src/FrmFileType.h"
-#include "src/FrmDirection.h"
-#include "src/FrmFrame.h"
 #include "src/GamFileType.h"
 #include "src/GcdFileType.h"
 #include "src/IntFileType.h"

@@ -18,11 +18,10 @@
  */
 
 // C++ standard includes
+#include <algorithm>
 
 // libfalltergeist includes
 #include "../src/FrmFileType.h"
-#include "../src/FrmFrame.h"
-#include "../src/FrmDirection.h"
 
 // Third party includes
 
@@ -39,6 +38,7 @@ FrmFileType::FrmFileType(std::ifstream * stream) : DatFileItem(stream)
 
 FrmFileType::~FrmFileType()
 {
+    delete [] _rgba;
 }
 
 void FrmFileType::_initialize()
@@ -49,77 +49,41 @@ void FrmFileType::_initialize()
 
     *this >> _version >> _framesPerSecond >> _actionFrame >> _framesPerDirection;
 
-    // X shift
-    unsigned short shift;
-    FrmDirection * direction;
-
+    for (unsigned int i = 0; i != 6; ++i) *this >> _shiftX[i];
+    for (unsigned int i = 0; i != 6; ++i) *this >> _shiftY[i];
     for (unsigned int i = 0; i != 6; ++i)
     {
-        direction = new FrmDirection();
-        *this >> shift;
-        direction->setShiftX(shift);
-        _directions.push_back(direction);
-    }
-
-    // Y shift
-    for (unsigned int i = 0; i != 6; ++i)
-    {
-        *this >> shift;
-        _directions.at(i)->setShiftY(shift);
-    }
-
-    // Data offset
-    for (unsigned int i = 0; i != 6; ++i)
-    {
-        unsigned int offset;
-        *this >> offset;
-        _directions.at(i)->setDataOffset(offset);
+        *this >> _dataOffset[i];
+        if (i > 0 && _dataOffset[i-1] == _dataOffset[i]) continue;
+        _directions++;
     }
 
     // for each direction
-    for (unsigned int i = 0; i!= 6; ++i)
+    for (unsigned int i = 0; i!= _directions; ++i)
     {
         // jump to frames data at frames area
-        DatFileItem::setPosition(_directions.at(i)->dataOffset() + 62);
+        DatFileItem::setPosition(_dataOffset[i] + 62);
 
         // read all frames
         for (unsigned int j = 0; j != _framesPerDirection; ++j)
         {
-            FrmFrame * frame = new FrmFrame();
-
             unsigned short width, height;
+            short offsetX, offsetY;
 
             *this >> width >> height;
+            _width[i].push_back(width);
+            _height[i].push_back(height);
 
-            // Frame width
-            frame->setWidth(width);
+            // Number of pixels for this frame
+            // We don't need this, because we already have width*height
+            this->skipBytes(4);
 
-            // Frame height
-            frame->setHeight(height);
-
-            //Number of pixels for this frame
-            unsigned int dataSize;
-            *this >> dataSize;
-
-            short offsetX, offsetY;
             *this >> offsetX >> offsetY;
+            _offsetX[i].push_back(offsetX);
+            _offsetY[i].push_back(offsetY);
 
-            // X offset
-            frame->setOffsetX(offsetX);
-
-            // Y offset
-            frame->setOffsetY(offsetY);
-
-
-            for (unsigned int n = 0; n != dataSize; ++n)
-            {
-                // Pixel color index
-                unsigned char color;
-                *this >> color;
-                frame->colorIndexes()->push_back(color);
-            }
-            // Appending frame to direction
-            _directions.at(i)->frames()->push_back(frame);
+            // will be used later
+            this->skipBytes(width*height);
         }
     }
 }
@@ -130,20 +94,10 @@ unsigned int FrmFileType::version()
     return _version;
 }
 
-void FrmFileType::setVersion(unsigned int version)
-{
-    _version = version;
-}
-
 unsigned short FrmFileType::framesPerSecond()
 {
     _initialize();
     return _framesPerSecond;
-}
-
-void FrmFileType::setFramesPerSecond(unsigned short fps)
-{
-    _framesPerSecond = fps;
 }
 
 unsigned short FrmFileType::framesPerDirection()
@@ -152,26 +106,83 @@ unsigned short FrmFileType::framesPerDirection()
     return _framesPerDirection;
 }
 
-void FrmFileType::setFramesPerDirection(unsigned short fpd)
-{
-    _framesPerDirection = fpd;
-}
-
 unsigned short FrmFileType::actionFrame()
 {
     _initialize();
     return _actionFrame;
 }
 
-void FrmFileType::setActionFrame(unsigned short number)
-{
-    _actionFrame = number;
-}
-
-std::vector<FrmDirection*>* FrmFileType::directions()
+unsigned int FrmFileType::directions()
 {
     _initialize();
-    return &_directions;
+    return _directions;
 }
+
+unsigned int FrmFileType::width()
+{
+    _initialize();
+
+    std::vector<unsigned int> width;
+
+    for (unsigned int i = 0; i != _directions; ++i)
+    {
+        width.push_back(*std::max_element(_width[i].begin(), _width[i].end()));
+    };
+    return *std::max_element(width.begin(), width.end());
+}
+
+unsigned int FrmFileType::height()
+{
+    _initialize();
+
+    std::vector<unsigned int> width;
+
+    for (unsigned int i = 0; i != _directions; ++i)
+    {
+        width.push_back(*std::max_element(_width[i].begin(), _width[i].end()));
+    };
+    return *std::max_element(width.begin(), width.end());
+}
+
+unsigned int FrmFileType::width(unsigned int direction, unsigned int frame)
+{
+    return _width[direction].at(frame);
+}
+
+unsigned int FrmFileType::height(unsigned int direction)
+{
+    _initialize();
+    return *std::max_element(_width[direction].begin(), _width[direction].end());
+}
+
+unsigned int FrmFileType::height(unsigned int direction, unsigned int frame)
+{
+    return _height[direction].at(frame);
+}
+
+unsigned int* FrmFileType::rgba(PalFileType* palFile)
+{
+    if (_rgba) return _rgba;
+    _initialize();
+    _rgba = new unsigned int[width()*height()]();
+
+
+    unsigned int positionY = 0;
+    for (unsigned int d = 0; d != _directions; ++d)
+    {
+        unsigned int positionX = 0;
+        for (unsigned int f = 0; f != _framesPerDirection; ++f)
+        {
+            // read frame data and add to _rgba
+
+            positionX += width(d, f);
+        }
+        positionY += height(d);
+    }
+
+
+    return _rgba;
+}
+
 
 }
