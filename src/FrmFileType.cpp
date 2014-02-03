@@ -22,6 +22,8 @@
 
 // libfalltergeist includes
 #include "../src/FrmFileType.h"
+#include "../src/PalFileType.h"
+#include "../src/PalColor.h"
 
 // Third party includes
 
@@ -135,13 +137,13 @@ unsigned int FrmFileType::height()
 {
     _initialize();
 
-    std::vector<unsigned int> width;
+    std::vector<unsigned int> height;
 
     for (unsigned int i = 0; i != _directions; ++i)
     {
-        width.push_back(*std::max_element(_width[i].begin(), _width[i].end()));
+        height.push_back(*std::max_element(_height[i].begin(), _height[i].end()));
     };
-    return *std::max_element(width.begin(), width.end());
+    return *std::max_element(height.begin(), height.end());
 }
 
 unsigned int FrmFileType::width(unsigned int direction, unsigned int frame)
@@ -152,7 +154,7 @@ unsigned int FrmFileType::width(unsigned int direction, unsigned int frame)
 unsigned int FrmFileType::height(unsigned int direction)
 {
     _initialize();
-    return *std::max_element(_width[direction].begin(), _width[direction].end());
+    return *std::max_element(_height[direction].begin(), _height[direction].end());
 }
 
 unsigned int FrmFileType::height(unsigned int direction, unsigned int frame)
@@ -164,23 +166,33 @@ unsigned int* FrmFileType::rgba(PalFileType* palFile)
 {
     if (_rgba) return _rgba;
     _initialize();
-    _rgba = new unsigned int[width()*height()]();
+    unsigned int w = width();
+    unsigned int h = height();
+    _rgba = new unsigned int[w*h]();
 
 
     unsigned int positionY = 0;
     for (unsigned int d = 0; d != _directions; ++d)
     {
         unsigned int positionX = 0;
+        DatFileItem::setPosition(_dataOffset[d] + 62);
         for (unsigned int f = 0; f != _framesPerDirection; ++f)
         {
+            this->skipBytes(4*3);
             // read frame data and add to _rgba
-
+            for (unsigned int y = 0; y != height(d, f); ++y)
+            {
+                for (unsigned int x = 0; x != width(d, f); ++x)
+                {
+                    unsigned char index;
+                    *this >> index;
+                    _rgba[((y + positionY)*w) + x + positionX] = *palFile->color(index);
+                }
+            }
             positionX += width(d, f);
         }
         positionY += height(d);
     }
-
-
     return _rgba;
 }
 

@@ -25,12 +25,12 @@
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
-#include "../src/PalFileType.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
+class PalFileType;
 
 class FrmFileType : public DatFileItem
 {
