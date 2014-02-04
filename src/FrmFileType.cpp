@@ -125,26 +125,28 @@ unsigned int FrmFileType::width()
 {
     _initialize();
 
-    unsigned int width = 0;
+    std::vector<unsigned int> width;
 
-    for (unsigned int f = 0; f != _framesPerDirection; ++f)
+    for (unsigned int d = 0; d != _directions; ++d)
     {
-        width += _width[0].at(f);
+        width.push_back(this->width(d));
     };
-    return width;
+    unsigned int maxWidth = *std::max_element(width.begin(), width.end());
+    return maxWidth*framesPerDirection();
 }
 
 unsigned int FrmFileType::height()
 {
     _initialize();
 
-    unsigned int height = 0;
+    std::vector<unsigned int> height;
 
-    for (unsigned int i = 0; i != _directions; ++i)
+    for (unsigned int d = 0; d != _directions; ++d)
     {
-        height += this->height(i);
+        height.push_back(this->height(d));
     };
-    return height;
+    unsigned int maxHeight = *std::max_element(height.begin(), height.end());
+    return maxHeight*_directions;
 }
 
 unsigned int FrmFileType::width(unsigned int direction, unsigned int frame)
@@ -157,6 +159,13 @@ unsigned int FrmFileType::height(unsigned int direction)
     _initialize();
     return *std::max_element(_height[direction].begin(), _height[direction].end());
 }
+
+unsigned int FrmFileType::width(unsigned int direction)
+{
+    _initialize();
+    return *std::max_element(_width[direction].begin(), _width[direction].end());
+}
+
 
 unsigned int FrmFileType::height(unsigned int direction, unsigned int frame)
 {
@@ -187,10 +196,10 @@ unsigned int* FrmFileType::rgba(PalFileType* palFile)
                 {
                     unsigned char index;
                     *this >> index;
-                    _rgba[((y + positionY)*w) + x + positionX] = *palFile->color(index);
+                    _rgba[((y + positionY + height(d) - height(d, f))*w) + x + positionX + width(d) - width(d, f)] = *palFile->color(index);
                 }
             }
-            positionX += width(d, f);
+            positionX += width(d);
         }
         positionY += height(d);
     }

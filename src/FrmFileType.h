@@ -69,6 +69,7 @@ public:
     unsigned int directions();
 
     unsigned int width();
+    unsigned int width(unsigned int direction);
     unsigned int width(unsigned int direction, unsigned int frame);
 
     unsigned int height();
