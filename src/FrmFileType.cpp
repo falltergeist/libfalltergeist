@@ -19,6 +19,7 @@
 
 // C++ standard includes
 #include <algorithm>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/FrmFileType.h"
@@ -124,26 +125,26 @@ unsigned int FrmFileType::width()
 {
     _initialize();
 
-    std::vector<unsigned int> width;
+    unsigned int width = 0;
 
-    for (unsigned int i = 0; i != _directions; ++i)
+    for (unsigned int f = 0; f != _framesPerDirection; ++f)
     {
-        width.push_back(*std::max_element(_width[i].begin(), _width[i].end()));
+        width += _width[0].at(f);
     };
-    return *std::max_element(width.begin(), width.end());
+    return width;
 }
 
 unsigned int FrmFileType::height()
 {
     _initialize();
 
-    std::vector<unsigned int> height;
+    unsigned int height = 0;
 
     for (unsigned int i = 0; i != _directions; ++i)
     {
-        height.push_back(*std::max_element(_height[i].begin(), _height[i].end()));
+        height += this->height(i);
     };
-    return *std::max_element(height.begin(), height.end());
+    return height;
 }
 
 unsigned int FrmFileType::width(unsigned int direction, unsigned int frame)
