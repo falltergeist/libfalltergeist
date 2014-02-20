@@ -18,6 +18,7 @@
  */
 
 // C++ standard inludes
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/AafFileType.h"
@@ -38,11 +39,7 @@ AafFileType::AafFileType(std::ifstream* stream): DatFileItem(stream)
 
 AafFileType::~AafFileType()
 {
-    while(!_glyphs.empty())
-    {
-        delete _glyphs.back();
-        _glyphs.pop_back();
-    }
+    delete [] _rgba;
 }
 
 void AafFileType::_initialize()
@@ -53,27 +50,75 @@ void AafFileType::_initialize()
 
     *this >> _signature >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
 
-    // glyphs descriptions
-    std::vector<unsigned int> dataOffsets(256);
+    // glyphs info
     for (auto i = 0; i != 256; ++i)
     {
         unsigned short width, height;
-        *this >> width >> height >> dataOffsets.at(i);
-        _glyphs.push_back(new AafGlyph(width, height));
+        unsigned int offset;
+        *this >> width >> height >> offset;
+        if (width > _maximumWidth) _maximumWidth = width;
+        AafGlyph* glyph = new AafGlyph(width, height);
+        glyph->setDataOffset(offset);
+        _glyphs.push_back(glyph);
     }
 
     // glyphs data
     for (auto i = 0; i != 256; ++i)
     {
-        setPosition(0x080C + dataOffsets.at(i));
-        auto glyph = _glyphs.at(i);
-        for (auto j = 0; j != glyph->width()*glyph->height(); ++j)
+        //setPosition(0x080C + _glyphs.at(i)->dataOffset());
+        //auto glyph = _glyphs.at(i);
+        //for (auto j = 0; j != glyph->width()*glyph->height(); ++j)
+        //{
+            //unsigned char byte;
+            //*this >> byte;
+            //glyph->data()->push_back(byte);
+        //}
+    }
+}
+
+unsigned int* AafFileType::rgba()
+{
+    if (_rgba) return _rgba;
+    _initialize();
+    _rgba = new unsigned int[_maximumWidth * _maximumHeight * 256]();
+
+    for (unsigned int i = 0; i != 256; ++i)
+    {
+        unsigned int glyphY = (i/16) * _maximumHeight;
+
+        // Прижимаем глиф к низу
+        glyphY += _maximumHeight - _glyphs.at(i)->height();
+
+        unsigned int glyphX = (i%16) * _maximumWidth;
+        std::cout << glyphX << " : " << glyphY << std::endl;
+
+        setPosition(0x080C + _glyphs.at(i)->dataOffset());
+
+        std::cout << _glyphs.at(i)->height() << std::endl;
+
+        for (unsigned int y = 0; y != _glyphs.at(i)->height(); ++y)
         {
-            unsigned char byte;
-            *this >> byte;
-            glyph->data()->push_back(byte);
+            for (unsigned int x = 0; x != _glyphs.at(i)->width(); ++x)
+            {
+                unsigned char byte;
+                *this >> byte;
+
+                std::cout << byte << std::endl;
+
+                if (byte != 0)
+                {
+                    _rgba[(glyphY + y)*_maximumWidth*16  + glyphX + x] = 0x00FF00FF;
+                }
+
+
+            }
         }
     }
+
+
+
+
+    return _rgba;
 }
 
 std::vector<AafGlyph*>* AafFileType::glyphs()
@@ -88,22 +133,16 @@ unsigned short AafFileType::horizontalGap()
     return _horizontalGap;
 }
 
-AafFileType* AafFileType::setHorizontalGap(unsigned short gap)
-{
-    _horizontalGap = gap;
-    return this;
-}
-
 unsigned short AafFileType::maximumHeight()
 {
     _initialize();
     return _maximumHeight;
 }
 
-AafFileType* AafFileType::setMaximumHeight(unsigned short height)
+unsigned short AafFileType::maximumWidth()
 {
-    _maximumHeight = height;
-    return this;
+    _initialize();
+    return _maximumWidth;
 }
 
 unsigned short AafFileType::spaceWidth()
@@ -112,22 +151,10 @@ unsigned short AafFileType::spaceWidth()
     return _spaceWidth;
 }
 
-AafFileType* AafFileType::setSpaceWidth(unsigned short width)
-{
-    _spaceWidth = width;
-    return this;
-}
-
 unsigned short AafFileType::verticalGap()
 {
     _initialize();
     return _verticalGap;
-}
-
-AafFileType* AafFileType::setVerticalGap(unsigned short gap)
-{
-    _verticalGap = gap;
-    return this;
 }
 
 }

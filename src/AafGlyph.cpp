@@ -62,5 +62,14 @@ std::vector<unsigned char>* AafGlyph::data()
     return &_data;
 }
 
+unsigned int AafGlyph::dataOffset()
+{
+    return _dataOffset;
+}
+
+void AafGlyph::setDataOffset(unsigned int value)
+{
+    _dataOffset = value;
+}
 
 }

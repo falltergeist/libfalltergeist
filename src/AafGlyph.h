@@ -33,8 +33,10 @@ namespace libfalltergeist
 class AafGlyph
 {
 protected:
-    unsigned short _width;
-    unsigned short _height;
+    unsigned short _width = 0;
+    unsigned short _height = 0;
+    unsigned int _dataOffset = 0;
+
     std::vector<unsigned char> _data;
 public:
     AafGlyph(unsigned short width, unsigned short height);
@@ -47,6 +49,9 @@ public:
 
     AafGlyph* setHeight(unsigned short height);
     unsigned short height();
+
+    unsigned int dataOffset();
+    void setDataOffset(unsigned int value);
 };
 
 }
