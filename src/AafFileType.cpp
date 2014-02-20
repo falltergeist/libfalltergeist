@@ -19,6 +19,7 @@
 
 // C++ standard inludes
 #include <iostream>
+#include <cmath>
 
 // libfalltergeist includes
 #include "../src/AafFileType.h"
@@ -94,7 +95,8 @@ unsigned int* AafFileType::rgba()
 
         setPosition(0x080C + _glyphs.at(i)->dataOffset());
 
-        std::cout << _glyphs.at(i)->height() << std::endl;
+
+        unsigned int maxByte = 0;
 
         for (unsigned int y = 0; y != _glyphs.at(i)->height(); ++y)
         {
@@ -103,16 +105,18 @@ unsigned int* AafFileType::rgba()
                 unsigned char byte;
                 *this >> byte;
 
-                std::cout << byte << std::endl;
-
                 if (byte != 0)
                 {
-                    _rgba[(glyphY + y)*_maximumWidth*16  + glyphX + x] = 0x00FF00FF;
+                    if (byte > maxByte) maxByte = byte;
+                    unsigned char alpha = std::pow(2, byte + 1) - 1;
+
+                    _rgba[(glyphY + y)*_maximumWidth*16  + glyphX + x] = (0xFFFF0000 | alpha);
                 }
 
 
             }
         }
+        std::cout << (int) maxByte << std::endl;
     }
 
 
