@@ -18,7 +18,6 @@
  */
 
 // C++ standard inludes
-#include <iostream>
 #include <cmath>
 
 // libfalltergeist includes
@@ -58,22 +57,9 @@ void AafFileType::_initialize()
         unsigned int offset;
         *this >> width >> height >> offset;
         if (width > _maximumWidth) _maximumWidth = width;
-        AafGlyph* glyph = new AafGlyph(width, height);
-        glyph->setDataOffset(offset);
-        _glyphs.push_back(glyph);
-    }
 
-    // glyphs data
-    for (auto i = 0; i != 256; ++i)
-    {
-        //setPosition(0x080C + _glyphs.at(i)->dataOffset());
-        //auto glyph = _glyphs.at(i);
-        //for (auto j = 0; j != glyph->width()*glyph->height(); ++j)
-        //{
-            //unsigned char byte;
-            //*this >> byte;
-            //glyph->data()->push_back(byte);
-        //}
+        _glyphs.push_back(new AafGlyph(width, height));
+        _glyphs.back()->setDataOffset(offset);
     }
 }
 
@@ -86,17 +72,12 @@ unsigned int* AafFileType::rgba()
     for (unsigned int i = 0; i != 256; ++i)
     {
         unsigned int glyphY = (i/16) * _maximumHeight;
+        unsigned int glyphX = (i%16) * _maximumWidth;
 
-        // Прижимаем глиф к низу
+        // Move glyph to bottom
         glyphY += _maximumHeight - _glyphs.at(i)->height();
 
-        unsigned int glyphX = (i%16) * _maximumWidth;
-        std::cout << glyphX << " : " << glyphY << std::endl;
-
         setPosition(0x080C + _glyphs.at(i)->dataOffset());
-
-
-        unsigned int maxByte = 0;
 
         for (unsigned int y = 0; y != _glyphs.at(i)->height(); ++y)
         {
@@ -107,21 +88,12 @@ unsigned int* AafFileType::rgba()
 
                 if (byte != 0)
                 {
-                    if (byte > maxByte) maxByte = byte;
                     unsigned char alpha = std::pow(2, byte + 1) - 1;
-
-                    _rgba[(glyphY + y)*_maximumWidth*16  + glyphX + x] = (0xFFFF0000 | alpha);
+                    _rgba[(glyphY + y)*_maximumWidth*16  + glyphX + x] = 0xFFFFFF00 | alpha;
                 }
-
-
             }
         }
-        std::cout << (int) maxByte << std::endl;
     }
-
-
-
-
     return _rgba;
 }
 
