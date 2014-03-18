@@ -3,4 +3,4 @@ libfalltergeist
 
 C++ library which allows to work with Fallout(tm) game data files
 
-IRC chanel: #falltergeist on [freenode.net](webchat.freenode.net)
+IRC chanel: #falltergeist on [freenode.net](http://webchat.freenode.net/?channels=falltergeist)
