@@ -76,8 +76,11 @@ public:
     unsigned int height(unsigned int direction);
     unsigned int height(unsigned int direction, unsigned int frame);
 
-    unsigned int offsetX(unsigned int direction, unsigned int frame);
-    unsigned int offsetY(unsigned int direction, unsigned int frame);
+    int offsetX(unsigned int direction = 0, unsigned int frame = 0);
+    int offsetY(unsigned int direction = 0, unsigned int frame = 0);
+
+    int shiftX(unsigned int direction);
+    int shiftY(unsigned int direction);
 
     unsigned int* rgba(PalFileType* palFile);
 

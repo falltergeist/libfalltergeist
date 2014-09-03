@@ -206,5 +206,24 @@ unsigned int* FrmFileType::rgba(PalFileType* palFile)
     return _rgba;
 }
 
+int FrmFileType::offsetX(unsigned int direction, unsigned int frame)
+{
+    return _offsetX[direction].at(frame);
+}
+
+int FrmFileType::offsetY(unsigned int direction, unsigned int frame)
+{
+    return _offsetY[direction].at(frame);
+}
+
+int FrmFileType::shiftX(unsigned int direction)
+{
+    return _shiftX[direction];
+}
+
+int FrmFileType::shiftY(unsigned int direction)
+{
+    return _shiftY[direction];
+}
 
 }
