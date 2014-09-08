@@ -191,7 +191,7 @@ unsigned int* FrmFileType::rgba(PalFileType* palFile)
                 {
                     unsigned char index;
                     *this >> index;
-                    _rgba[((y + positionY + height(d) - height(d, f))*w) + x + positionX + width(d) - width(d, f)] = *palFile->color(index);
+                    _rgba[((y + positionY)*w) + x + positionX] = *palFile->color(index);
                 }
             }
             positionX += width(d);
