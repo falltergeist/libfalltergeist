@@ -124,29 +124,24 @@ unsigned int FrmFileType::directions()
 unsigned int FrmFileType::width()
 {
     _initialize();
-
-    std::vector<unsigned int> width;
-
+    std::vector<int> widths;
     for (unsigned int d = 0; d != _directions; ++d)
     {
-        width.push_back(this->width(d));
-    };
-    unsigned int maxWidth = *std::max_element(width.begin(), width.end());
-    return maxWidth*framesPerDirection();
+        widths.push_back(this->width(d) * framesPerDirection());
+    }
+    return *std::max_element(widths.begin(), widths.end());
 }
 
 unsigned int FrmFileType::height()
 {
     _initialize();
-
-    std::vector<unsigned int> height;
+    unsigned int height = 0;
 
     for (unsigned int d = 0; d != _directions; ++d)
     {
-        height.push_back(this->height(d));
+        height += this->height(d);
     };
-    unsigned int maxHeight = *std::max_element(height.begin(), height.end());
-    return maxHeight*_directions;
+    return height;
 }
 
 unsigned int FrmFileType::width(unsigned int direction, unsigned int frame)
