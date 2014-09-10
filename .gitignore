@@ -1,5 +1,7 @@
 CMakeFiles/*
+CMakeLists.txt.user
 CMakeCache.txt
 Makefile
 *.so
+*.cbp
 cmake_install.cmake
