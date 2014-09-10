@@ -35,7 +35,7 @@ class MveFileType : public DatFileItem
 protected:
     virtual void _initialize();
 public:
-    MveFileType(DatFileEntry* datFileEntry);
+    MveFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     MveFileType(std::ifstream* stream);
     ~MveFileType();
     void test();

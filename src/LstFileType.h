@@ -39,7 +39,7 @@ protected:
     virtual void _initialize();
     void _addString(std::string line);
 public:
-    LstFileType(DatFileEntry* datFileEntry);
+    LstFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     LstFileType(std::ifstream* stream);
     ~LstFileType();
 

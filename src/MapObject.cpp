@@ -30,17 +30,15 @@ namespace libfalltergeist
 MapObject::MapObject()
 {
     _objectSubtypeId = 0;
-    _children = new std::vector<MapObject *>;
 }
 
 MapObject::~MapObject()
 {
-    delete _children;
 }
 
-std::vector<MapObject *> * MapObject::children()
+std::vector<std::shared_ptr<MapObject>>* MapObject::children()
 {
-    return _children;
+    return &_children;
 }
 
 unsigned int MapObject::unknown1()

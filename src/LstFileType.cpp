@@ -28,7 +28,7 @@
 namespace libfalltergeist
 {
 
-LstFileType::LstFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+LstFileType::LstFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

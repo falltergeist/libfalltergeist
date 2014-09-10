@@ -42,7 +42,7 @@ protected:
     std::map<unsigned int, std::string> _strings;
     virtual void _initialize();
 public:
-    IntFileType(DatFileEntry * datFileEntry);
+    IntFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     IntFileType(std::ifstream * stream);
     virtual ~IntFileType();
 

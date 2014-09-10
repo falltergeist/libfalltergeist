@@ -54,7 +54,7 @@ protected:
 public:
     enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_BACKGROUND, TYPE_INTERFACE, TYPE_INVENTORY };
 
-    FrmFileType(DatFileEntry* datFileEntry);
+    FrmFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     FrmFileType(std::ifstream* stream);
     ~FrmFileType();
 
@@ -82,7 +82,7 @@ public:
     int shiftX(unsigned int direction);
     int shiftY(unsigned int direction);
 
-    unsigned int* rgba(PalFileType* palFile);
+    unsigned int* rgba(std::shared_ptr<PalFileType> palFile);
 
 };
 

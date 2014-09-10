@@ -37,7 +37,7 @@ protected:
     std::string _text;
     void _initialize();
 public:
-    BioFileType(DatFileEntry* datFileEntry);
+    BioFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     BioFileType(std::ifstream* stream);
     ~BioFileType();
 

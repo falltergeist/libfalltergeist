@@ -28,7 +28,7 @@
 namespace libfalltergeist
 {
 
-MveFileType::MveFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+MveFileType::MveFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

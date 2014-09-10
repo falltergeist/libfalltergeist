@@ -34,7 +34,7 @@
 namespace libfalltergeist
 {
 
-MapFileType::MapFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
+MapFileType::MapFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 
@@ -95,7 +95,7 @@ void MapFileType::_initialize()
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
     {
-        _elevations.push_back(new MapElevation);
+        _elevations.push_back(std::shared_ptr<MapElevation>(new MapElevation));
 
         for (unsigned int i = 0; i < 10000; i++)
         {
@@ -122,7 +122,7 @@ void MapFileType::_initialize()
                     int PID;
                     *this >> PID;
 
-                    auto script = new MapScript(PID);
+                    auto script = std::shared_ptr<MapScript>(new MapScript(PID));
                     this->skipBytes(4); // unknown1
 
                     switch ((PID & 0xFF000000) >> 24)
@@ -159,10 +159,6 @@ void MapFileType::_initialize()
                         std::cout << "Map script: 0x" << std::hex << script->PID() << std::endl;
                         _scripts.push_back(script);
                     }
-                    else
-                    {
-                        delete script;
-                    }
 
                 }
                 if ((j % 16) == 15)
@@ -191,7 +187,7 @@ void MapFileType::_initialize()
         *this >> objectsOnElevation;
         for (unsigned int j = 0; j != objectsOnElevation; ++j)
         {
-            MapObject * object = _readObject();
+            auto object = _readObject();
             _elevations.at(i)->objects()->push_back(object);
 
             if (object->inventorySize() > 0)
@@ -199,7 +195,7 @@ void MapFileType::_initialize()
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
                     this->skipBytes(4);  // items count ?
-                    MapObject * subobject = _readObject();
+                    auto subobject = _readObject();
                     object->children()->push_back(subobject);
                 }
             }
@@ -207,9 +203,9 @@ void MapFileType::_initialize()
     }
 }
 
-MapObject * MapFileType::_readObject()
+std::shared_ptr<MapObject> MapFileType::_readObject()
 {
-    MapObject * object = new MapObject();
+    auto object = std::shared_ptr<MapObject>(new MapObject());
 
     unsigned int uint32;
     int int32;
@@ -363,7 +359,7 @@ MapObject * MapFileType::_readObject()
     return object;
 }
 
-std::vector<MapElevation*>* MapFileType::elevations()
+std::vector<std::shared_ptr<MapElevation>>* MapFileType::elevations()
 {
     _initialize();
     return &_elevations;

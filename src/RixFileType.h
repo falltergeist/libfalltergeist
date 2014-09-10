@@ -39,7 +39,7 @@ protected:
     virtual void _initialize();
 
 public:
-    RixFileType(DatFileEntry* datFileEntry);
+    RixFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     RixFileType(std::ifstream* stream);
     virtual ~RixFileType();
 

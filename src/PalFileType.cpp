@@ -28,7 +28,7 @@
 namespace libfalltergeist
 {
 
-PalFileType::PalFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+PalFileType::PalFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

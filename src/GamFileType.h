@@ -42,7 +42,7 @@ protected:
     bool _MVARmode = false;
     void _parseLine(std::string line);
 public:
-    GamFileType(DatFileEntry* datFileEntry);
+    GamFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     GamFileType(std::ifstream* stream);
     virtual ~GamFileType();
     std::map<std::string, int>* GVARS();

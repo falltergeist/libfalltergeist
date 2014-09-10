@@ -28,7 +28,7 @@
 namespace libfalltergeist
 {
 
-AcmFileType::AcmFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+AcmFileType::AcmFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

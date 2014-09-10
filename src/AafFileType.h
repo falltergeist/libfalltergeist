@@ -23,6 +23,7 @@
 // C++ standard includes
 #include <vector>
 #include <fstream>
+#include <memory>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
@@ -36,7 +37,7 @@ class AafGlyph;
 class AafFileType : public DatFileItem
 {
 protected:
-    std::vector<AafGlyph*> _glyphs;
+    std::vector<std::shared_ptr<AafGlyph>> _glyphs;
     unsigned int _signature;
     unsigned short _maximumHeight = 0;
     unsigned short _maximumWidth = 0;
@@ -46,13 +47,13 @@ protected:
     virtual void _initialize();
     unsigned int* _rgba = 0;
 public:
-    AafFileType(DatFileEntry* datFileEntry);
+    AafFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     AafFileType(std::ifstream* stream);
     ~AafFileType();
 
     unsigned* rgba();
 
-    std::vector<AafGlyph*>* glyphs();
+    std::vector<std::shared_ptr<AafGlyph>>* glyphs();
 
     unsigned short maximumHeight();
     unsigned short maximumWidth();

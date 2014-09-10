@@ -35,7 +35,7 @@ class FonFileType : public DatFileItem
 protected:
     virtual void _initialize();
 public:
-    FonFileType(DatFileEntry* datFileEntry);
+    FonFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     FonFileType(std::ifstream* stream);
     virtual ~FonFileType();
 };

@@ -30,7 +30,7 @@
 namespace libfalltergeist
 {
 
-GamFileType::GamFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+GamFileType::GamFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

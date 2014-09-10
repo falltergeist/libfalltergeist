@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <vector>
+#include <memory>
 
 // libfalltergeist includes
 
@@ -36,9 +37,9 @@ class MapElevation
 protected:
     std::vector<unsigned short> _floorTiles;
     std::vector<unsigned short> _roofTiles;
-    std::vector<MapObject*> _objects;
+    std::vector<std::shared_ptr<MapObject>> _objects;
 public:
-    std::vector<MapObject*> * objects();
+    std::vector<std::shared_ptr<MapObject>>* objects();
     std::vector<unsigned short>* floorTiles();
     std::vector<unsigned short>* roofTiles();
     MapElevation();

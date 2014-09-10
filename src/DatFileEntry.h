@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <string>
+#include <memory>
 
 // libfalltergeist includes
 
@@ -34,14 +35,14 @@ class DatFile;
 class DatFileEntry
 {
 protected:
-    DatFile* _datFile;
+    std::shared_ptr<DatFile> _datFile;
     std::string _filename;
     unsigned int _packedSize;
     unsigned int _unpackedSize;
     unsigned int _dataOffset;
     bool _compressed;
 public:
-    DatFileEntry(DatFile* datFile);
+    DatFileEntry(std::shared_ptr<DatFile> datFile);
     ~DatFileEntry();
 
     std::string filename();
@@ -59,7 +60,7 @@ public:
     bool compressed();
     void setCompressed(bool value);
 
-    DatFile* datFile();
+    std::shared_ptr<DatFile> datFile();
 
 };
 

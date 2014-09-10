@@ -58,7 +58,6 @@ DatFile::DatFile(std::string filename)
 
 DatFile::~DatFile()
 {
-    delete _items;
     delete _stream;
 }
 
@@ -120,13 +119,12 @@ DatFile* DatFile::readBytes(char * destination, unsigned int numberOfBytes)
     return this;
 }
 
-std::vector<DatFileItem *> * DatFile::items()
+std::vector<std::shared_ptr<DatFileItem>>* DatFile::items()
 {
-    // if items are not fetched yet
-    if (_items == 0)
-    {
+    // if items are fetched already
+    if (_items.size()) return &_items;
+
         unsigned int oldPos = position();
-        _items = new std::vector<DatFileItem *>;
 
         unsigned int datFileSize;
         unsigned int filesTreeSize;
@@ -150,52 +148,50 @@ std::vector<DatFileItem *> * DatFile::items()
         //reading files data one by one
         for (unsigned int i = 0; i != filesTotalNumber; ++i)
         {
-            DatFileEntry * entry = new DatFileEntry(this);
+            auto entry = std::shared_ptr<DatFileEntry>(new DatFileEntry(std::shared_ptr<DatFile>(this)));
 
             *this >> *entry;
 
             std::string extension = entry->filename().substr(entry->filename().length() - 3, 3);
 
-            DatFileItem * item;
-                 if (extension == "aaf") item = new AafFileType(entry);
-            else if (extension == "acm") item = new AcmFileType(entry);
-            else if (extension == "bio") item = new BioFileType(entry);
-            else if (extension == "fon") item = new FonFileType(entry);
-            else if (extension == "frm") item = new FrmFileType(entry);
-            else if (extension == "gam") item = new GamFileType(entry);
-            else if (extension == "gcd") item = new GcdFileType(entry);
-            else if (extension == "int") item = new IntFileType(entry);
-            else if (extension == "lst") item = new LstFileType(entry);
-            else if (extension == "map") item = new MapFileType(entry);
-            else if (extension == "msg") item = new MsgFileType(entry);
-            else if (extension == "mve") item = new MveFileType(entry);
-            else if (extension == "pal") item = new PalFileType(entry);
-            else if (extension == "pro") item = new ProFileType(entry);
-            else if (extension == "rix") item = new RixFileType(entry);
-            else item = new DatFileItem(entry);
+            std::shared_ptr<DatFileItem> item;
+                 if (extension == "aaf") item = std::shared_ptr<AafFileType>(new AafFileType(entry));
+            else if (extension == "acm") item = std::shared_ptr<AcmFileType>(new AcmFileType(entry));
+            else if (extension == "bio") item = std::shared_ptr<BioFileType>(new BioFileType(entry));
+            else if (extension == "fon") item = std::shared_ptr<FonFileType>(new FonFileType(entry));
+            else if (extension == "frm") item = std::shared_ptr<FrmFileType>(new FrmFileType(entry));
+            else if (extension == "gam") item = std::shared_ptr<GamFileType>(new GamFileType(entry));
+            else if (extension == "gcd") item = std::shared_ptr<GcdFileType>(new GcdFileType(entry));
+            else if (extension == "int") item = std::shared_ptr<IntFileType>(new IntFileType(entry));
+            else if (extension == "lst") item = std::shared_ptr<LstFileType>(new LstFileType(entry));
+            else if (extension == "map") item = std::shared_ptr<MapFileType>(new MapFileType(entry));
+            else if (extension == "msg") item = std::shared_ptr<MsgFileType>(new MsgFileType(entry));
+            else if (extension == "mve") item = std::shared_ptr<MveFileType>(new MveFileType(entry));
+            else if (extension == "pal") item = std::shared_ptr<PalFileType>(new PalFileType(entry));
+            else if (extension == "pro") item = std::shared_ptr<ProFileType>(new ProFileType(entry));
+            else if (extension == "rix") item = std::shared_ptr<RixFileType>(new RixFileType(entry));
+            else item = std::shared_ptr<DatFileItem>(new DatFileItem(entry));
 
-            _items->push_back(item);
+            _items.push_back(item);
         }
         setPosition(oldPos);
-    }
-    return _items;
+
+    return &_items;
 }
 
-DatFileItem * DatFile::item(const std::string filename)
+std::shared_ptr<DatFileItem> DatFile::item(const std::string filename)
 {
     std::string name(filename);
     // Replace slashes and transform to lower case
     std::replace(name.begin(),name.end(),'\\','/');
     std::transform(name.begin(),name.end(),name.begin(), ::tolower);
-    std::vector<DatFileItem *>::iterator it;
 
 
-    for (it = this->items()->begin(); it != this->items()->end(); ++it)
+    for (auto item : *items())
     {
-        //std::cout << (*it)->filename() << std::endl;
-        if (name.compare((*it)->filename()) == 0)
+        if (name.compare(item->filename()) == 0)
         {
-            return *it;
+            return item;
         }
     }
     return 0;

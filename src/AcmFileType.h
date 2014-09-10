@@ -33,7 +33,7 @@ class AcmFileType : public DatFileItem
 protected:
     virtual void _initialize();
 public:
-    AcmFileType(DatFileEntry* datFileEntry);
+    AcmFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     AcmFileType(std::ifstream* stream);
     ~AcmFileType();
     void test();

@@ -31,7 +31,7 @@
 namespace libfalltergeist
 {
 
-FrmFileType::FrmFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
+FrmFileType::FrmFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 
@@ -167,7 +167,7 @@ unsigned int FrmFileType::height(unsigned int direction, unsigned int frame)
     return _height[direction].at(frame);
 }
 
-unsigned int* FrmFileType::rgba(PalFileType* palFile)
+unsigned int* FrmFileType::rgba(std::shared_ptr<PalFileType> palFile)
 {
     if (_rgba) return _rgba;
     _initialize();

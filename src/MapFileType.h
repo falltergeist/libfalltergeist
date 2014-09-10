@@ -36,15 +36,15 @@ class ProFileType;
 class MapObject;
 class MapScript;
 
-typedef ProFileType* (*ProFileTypeLoaderCallback)(unsigned int);
+typedef std::shared_ptr<ProFileType> (*ProFileTypeLoaderCallback)(unsigned int);
 
 class MapFileType : public DatFileItem
 {
 protected:
     ProFileTypeLoaderCallback _proFileTypeLoaderCallback = 0;
 
-    std::vector<MapElevation*> _elevations;
-    std::vector<MapScript*> _scripts;
+    std::vector<std::shared_ptr<MapElevation>> _elevations;
+    std::vector<std::shared_ptr<MapScript>> _scripts;
     unsigned int _version;
     std::string _name;
     unsigned int _defaultPosition;
@@ -59,19 +59,19 @@ protected:
 
     int _scriptId = -1;
 
-    MapObject* _readObject();
+    std::shared_ptr<MapObject> _readObject();
     virtual void _initialize();
 
 
 public:
-    MapFileType(DatFileEntry* datFileEntry);
+    MapFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     MapFileType(std::ifstream* stream);
     ~MapFileType();
 
     MapFileType* setCallback(ProFileTypeLoaderCallback callback);
     ProFileTypeLoaderCallback callback();
 
-    std::vector<MapElevation*>* elevations();
+    std::vector<std::shared_ptr<MapElevation>>* elevations();
     unsigned int defaultPosition();
     unsigned int defaultElevation();
     unsigned int defaultOrientation();

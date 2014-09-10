@@ -31,7 +31,7 @@
 namespace libfalltergeist
 {
 
-MsgFileType::MsgFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+MsgFileType::MsgFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

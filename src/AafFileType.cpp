@@ -29,7 +29,7 @@
 namespace libfalltergeist
 {
 
-AafFileType::AafFileType(DatFileEntry* datFileEntry): DatFileItem(datFileEntry)
+AafFileType::AafFileType(std::shared_ptr<DatFileEntry> datFileEntry): DatFileItem(datFileEntry)
 {
 }
 
@@ -58,7 +58,7 @@ void AafFileType::_initialize()
         *this >> width >> height >> offset;
         if (width > _maximumWidth) _maximumWidth = width;
 
-        _glyphs.push_back(new AafGlyph(width, height));
+        _glyphs.push_back(std::shared_ptr<AafGlyph>(new AafGlyph(width, height)));
         _glyphs.back()->setDataOffset(offset);
     }
 }
@@ -97,7 +97,7 @@ unsigned int* AafFileType::rgba()
     return _rgba;
 }
 
-std::vector<AafGlyph*>* AafFileType::glyphs()
+std::vector<std::shared_ptr<AafGlyph>>* AafFileType::glyphs()
 {
     _initialize();
     return &_glyphs;

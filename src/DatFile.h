@@ -24,6 +24,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <memory>
 
 // libfalltergeist includes
 
@@ -37,7 +38,7 @@ class DatFileEntry;
 class DatFile
 {
 protected:
-    std::vector<DatFileItem *> * _items = 0;
+    std::vector<std::shared_ptr<DatFileItem>> _items;
     std::ifstream * _stream = 0;
     std::string _filename;
     bool _initialized = false;
@@ -50,8 +51,8 @@ public:
     std::string filename();
     DatFile* setFilename(std::string filename);
 
-    std::vector<DatFileItem*>* items();
-    DatFileItem* item(std::string filename);
+    std::vector<std::shared_ptr<DatFileItem>>* items();
+    std::shared_ptr<DatFileItem> item(std::string filename);
 
     DatFile* readBytes(char* destination, unsigned int numberOfBytes);
     DatFile* skipBytes(unsigned int numberOfBytes);

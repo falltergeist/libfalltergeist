@@ -27,7 +27,7 @@
 namespace libfalltergeist
 {
 
-ProFileType::ProFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+ProFileType::ProFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

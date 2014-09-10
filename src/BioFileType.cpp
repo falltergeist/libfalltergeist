@@ -27,7 +27,7 @@
 namespace libfalltergeist
 {
 
-BioFileType::BioFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+BioFileType::BioFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

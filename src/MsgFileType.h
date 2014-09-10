@@ -38,7 +38,7 @@ protected:
     std::vector<MsgMessage*> _messages;
     virtual void _initialize();
 public:
-    MsgFileType(DatFileEntry* datFileEntry);
+    MsgFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     MsgFileType(std::ifstream* stream);
     ~MsgFileType();
 

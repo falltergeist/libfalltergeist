@@ -36,7 +36,7 @@ MapElevation::~MapElevation()
 {
 }
 
-std::vector<MapObject*>* MapElevation::objects()
+std::vector<std::shared_ptr<MapObject>>* MapElevation::objects()
 {
     return &_objects;
 }

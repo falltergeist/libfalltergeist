@@ -28,7 +28,7 @@
 namespace libfalltergeist
 {
 
-GcdFileType::GcdFileType(DatFileEntry * datFileEntry) : DatFileItem(datFileEntry)
+GcdFileType::GcdFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

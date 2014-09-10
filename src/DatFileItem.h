@@ -23,6 +23,7 @@
 // C++ standard includes
 #include <string>
 #include <fstream>
+#include <memory>
 
 // libfalltergeist includes
 
@@ -36,7 +37,7 @@ class DatFileItem: public std::streambuf
 {
 protected:    
     std::string _filename;
-    DatFileEntry* _datFileEntry = 0;
+    std::shared_ptr<DatFileEntry> _datFileEntry;
     std::ifstream* _stream = 0;
 
 
@@ -51,7 +52,7 @@ public:
     enum Endianness {ENDIANNESS_BIG = 0, ENDIANNESS_LITTLE};
 
     DatFileItem(std::ifstream* stream);
-    DatFileItem(DatFileEntry* datFileEntry);
+    DatFileItem(std::shared_ptr<DatFileEntry> datFileEntry);
     ~DatFileItem();
 
     virtual std::streambuf::int_type underflow();

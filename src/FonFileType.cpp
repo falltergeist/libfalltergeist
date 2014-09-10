@@ -27,7 +27,7 @@
 namespace libfalltergeist
 {
 
-FonFileType::FonFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+FonFileType::FonFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

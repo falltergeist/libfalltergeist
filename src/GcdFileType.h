@@ -149,7 +149,7 @@ public:
            DAMAGE_EXPLOSIVE
     };
     
-    GcdFileType(DatFileEntry* datFileEntry);
+    GcdFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     GcdFileType(std::ifstream* stream);
     ~GcdFileType();
 

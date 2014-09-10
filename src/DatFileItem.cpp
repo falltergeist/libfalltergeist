@@ -39,7 +39,7 @@ DatFileItem::DatFileItem(std::ifstream * stream)
 }
 
 
-DatFileItem::DatFileItem(DatFileEntry * datFileEntry)
+DatFileItem::DatFileItem(std::shared_ptr<DatFileEntry> datFileEntry)
 {
     _datFileEntry = datFileEntry;
     setFilename(datFileEntry->filename());
@@ -69,7 +69,7 @@ void DatFileItem::_initialize()
         _buffer = new char[_datFileEntry->unpackedSize()];
         _size = _datFileEntry->unpackedSize();
 
-        DatFile * datFile = _datFileEntry->datFile();
+        auto datFile = _datFileEntry->datFile();
         unsigned int oldPos = datFile->position();
         datFile->setPosition(_datFileEntry->dataOffset());
 

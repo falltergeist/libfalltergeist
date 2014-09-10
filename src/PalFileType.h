@@ -38,7 +38,7 @@ protected:
     std::vector<PalColor*> _colors;
     virtual void _initialize();
 public:
-    PalFileType(DatFileEntry* datFileEntry);
+    PalFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     PalFileType(std::ifstream* stream);
     ~PalFileType();
 

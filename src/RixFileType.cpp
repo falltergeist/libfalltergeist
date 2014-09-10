@@ -27,7 +27,7 @@
 namespace libfalltergeist
 {
 
-RixFileType::RixFileType(DatFileEntry* datFileEntry) : DatFileItem(datFileEntry)
+RixFileType::RixFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }
 

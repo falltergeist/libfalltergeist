@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <vector>
+#include <memory>
 
 // libfalltergeist includes
 
@@ -61,7 +62,7 @@ protected:
     int _mapScriptId = -1,
         _scriptId = -1,
         _hexPosition = -1;
-    std::vector<MapObject *> * _children;
+    std::vector<std::shared_ptr<MapObject>> _children;
 public:
     MapObject();
     ~MapObject();
@@ -125,7 +126,7 @@ public:
     unsigned int unknown13();
     void setUnknown13(unsigned int value);
 
-    std::vector<MapObject *> * children();
+    std::vector<std::shared_ptr<MapObject>>* children();
 };
 
 }
