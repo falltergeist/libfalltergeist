@@ -35,16 +35,16 @@ class MsgMessage;
 class MsgFileType : public DatFileItem
 {
 protected:
-    std::vector<MsgMessage*> _messages;
+    std::vector<std::shared_ptr<MsgMessage>> _messages;
     virtual void _initialize();
 public:
     MsgFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     MsgFileType(std::ifstream* stream);
     ~MsgFileType();
 
-    std::vector<MsgMessage*>* messages();
+    std::vector<std::shared_ptr<MsgMessage>>* messages();
 
-    MsgMessage* message(unsigned int number);
+    std::shared_ptr<MsgMessage> message(unsigned int number);
 
 };
 

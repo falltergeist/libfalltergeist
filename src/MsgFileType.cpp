@@ -41,11 +41,6 @@ MsgFileType::MsgFileType(std::ifstream* stream) : DatFileItem(stream)
 
 MsgFileType::~MsgFileType()
 {
-    while(!_messages.empty())
-    {
-        delete _messages.back();
-        _messages.pop_back();
-    }
 }
 
 void MsgFileType::_initialize()
@@ -102,7 +97,7 @@ void MsgFileType::_initialize()
                 if (chr != '}') text += chr;
             }
 
-            MsgMessage* message = new MsgMessage();
+            auto message = std::shared_ptr<MsgMessage>(new MsgMessage());
             message->setNumber(std::stoi(number));
             message->setSound(sound);
             message->setText(text);
@@ -111,21 +106,20 @@ void MsgFileType::_initialize()
     }
 }
 
-std::vector<MsgMessage*>* MsgFileType::messages()
+std::vector<std::shared_ptr<MsgMessage>>* MsgFileType::messages()
 {
     _initialize();
     return &_messages;
 }
 
-MsgMessage* MsgFileType::message(unsigned int number)
+std::shared_ptr<MsgMessage> MsgFileType::message(unsigned int number)
 {
     _initialize();
-    std::vector<MsgMessage*>::iterator it;
-    for (it = _messages.begin(); it != _messages.end(); ++it)
+    for (auto message : _messages)
     {
-        if ((*it)->number() == number)
+        if (message->number() == number)
         {
-            return *it;
+            return message;
         }
     }
     throw Exception("MsgFileType::message() - number is out of range: " + std::to_string(number));

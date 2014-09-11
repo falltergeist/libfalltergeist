@@ -29,7 +29,7 @@
 namespace libfalltergeist
 {
 
-DatFileEntry::DatFileEntry(std::shared_ptr<DatFile> datFile)
+DatFileEntry::DatFileEntry(DatFile* datFile)
 {
     _datFile = datFile;
 }
@@ -90,7 +90,7 @@ void DatFileEntry::setCompressed(bool value)
     _compressed = value;
 }
 
-std::shared_ptr<DatFile> DatFileEntry::datFile()
+DatFile* DatFileEntry::datFile()
 {
     return _datFile;
 }

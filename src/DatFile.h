@@ -39,7 +39,7 @@ class DatFile
 {
 protected:
     std::vector<std::shared_ptr<DatFileItem>> _items;
-    std::ifstream * _stream = 0;
+    std::shared_ptr<std::ifstream> _stream;
     std::string _filename;
     bool _initialized = false;
     void _initialize();

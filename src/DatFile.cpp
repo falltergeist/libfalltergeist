@@ -58,7 +58,6 @@ DatFile::DatFile(std::string filename)
 
 DatFile::~DatFile()
 {
-    delete _stream;
 }
 
 std::string DatFile::filename()
@@ -77,7 +76,7 @@ void DatFile::_initialize()
     if (_initialized) return;
     _initialized = true;
 
-    _stream = new std::ifstream();
+    _stream = std::shared_ptr<std::ifstream>(new std::ifstream());
     _stream->open(filename(), std::ios_base::binary);
     if (!_stream->is_open())
     {
@@ -148,7 +147,7 @@ std::vector<std::shared_ptr<DatFileItem>>* DatFile::items()
         //reading files data one by one
         for (unsigned int i = 0; i != filesTotalNumber; ++i)
         {
-            auto entry = std::shared_ptr<DatFileEntry>(new DatFileEntry(std::shared_ptr<DatFile>(this)));
+            auto entry = std::shared_ptr<DatFileEntry>(new DatFileEntry(this));
 
             *this >> *entry;
 
