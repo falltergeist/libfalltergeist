@@ -92,6 +92,7 @@ public:
     int subtypeId();
     int scriptId();
     unsigned int messageId();
+    unsigned int flags();
     unsigned int flagsExt();
 
     int critterHitPointsMax();

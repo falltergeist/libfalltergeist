@@ -310,6 +310,11 @@ unsigned int ProFileType::messageId()
     return _messageId;
 }
 
+unsigned int ProFileType::flags()
+{
+    return _flags;
+}
+
 unsigned int ProFileType::flagsExt()
 {
     _initialize();
