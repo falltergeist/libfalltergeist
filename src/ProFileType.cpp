@@ -88,8 +88,19 @@ void ProFileType::_initialize()
                 case TYPE_ITEM_ARMOR:
                 {
                     this->skipBytes(4); // Armor class
-                    this->skipBytes(4*8); // Damage resist
-                    this->skipBytes(4*8); // Damage threshold
+                    int uint32;
+                    // Damage resist
+                    for (unsigned int i = 0; i != 7; ++i)
+                    {
+                        *this >> uint32;
+                        _damageResist.at(i) = uint32;
+                    }
+                    // Damage threshold
+                    for (unsigned int i = 0; i != 7; ++i)
+                    {
+                        *this >> uint32;
+                        _damageThreshold.at(i) = uint32;
+                    }
                     this->skipBytes(4); // Perk
                     this->skipBytes(4); // Male FID
                     this->skipBytes(4); // Female FID
@@ -139,6 +150,7 @@ void ProFileType::_initialize()
         {
             *this >> _critterHeadFID;
 
+
             this->skipBytes(4); // ai packet number
             this->skipBytes(4); // team number
             this->skipBytes(4); // flags
@@ -160,8 +172,18 @@ void ProFileType::_initialize()
                   >> _critterCriticalChance;
             this->skipBytes(4); // Better criticals
 
-            this->skipBytes(4*8); // Damage threshold
-            this->skipBytes(4*8); // Damage resistance
+            // Damage threshold
+            for (unsigned int i = 0; i != 7; ++i)
+            {
+                *this >> uint32;
+                _damageThreshold.at(i) = uint32;
+            }
+            // Damage resist
+            for (unsigned int i = 0; i != 9; ++i)
+            {
+                *this >> uint32;
+                _damageResist.at(i) = uint32;
+            }
 
             this->skipBytes(4); // age
             this->skipBytes(4); // sex
@@ -314,6 +336,16 @@ std::vector<int>* ProFileType::critterStatsBonus()
 std::vector<int>* ProFileType::critterSkills()
 {
     return &_critterSkills;
+}
+
+std::vector<int>* ProFileType::damageResist()
+{
+    return &_damageResist;
+}
+
+std::vector<int>* ProFileType::damageThreshold()
+{
+    return &_damageThreshold;
 }
 
 int ProFileType::critterHitPointsMax()

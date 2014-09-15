@@ -54,6 +54,8 @@ protected:
     std::vector<int> _critterStats = {0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     unsigned int _lightDistance;
     unsigned int _lightIntencity;
@@ -77,6 +79,7 @@ public:
     enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_MISC };
     enum { TYPE_ITEM_ARMOR = 0, TYPE_ITEM_CONTAINER, TYPE_ITEM_DRUG, TYPE_ITEM_WEAPON, TYPE_ITEM_AMMO, TYPE_ITEM_MISC, TYPE_ITEM_KEY };
     enum { TYPE_SCENERY_DOOR = 0, TYPE_SCENERY_STAIRS, TYPE_SCENERY_ELEVATOR, TYPE_SCENERY_LADDER_BOTTOM, TYPE_SCENERY_LADDER_TOP, TYPE_SCENERY_GENERIC };
+    enum { DAMAGE_NORMAL = 0, DAMAGE_LASER, DAMAGE_FIRE, DAMAGE_PLASMA, DAMAGE_ELECTRICAL, DAMAGE_EMP, DAMAGE_EXPLOSION, DAMAGE_RADIATION, DAMAGE_POISON };
 
     ProFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     ProFileType(std::ifstream* stream);
@@ -102,6 +105,8 @@ public:
     std::vector<int>* critterStats();
     std::vector<int>* critterStatsBonus();
     std::vector<int>* critterSkills();
+    std::vector<int>* damageResist();
+    std::vector<int>* damageThreshold();
 
 
 };
