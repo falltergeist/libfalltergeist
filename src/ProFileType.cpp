@@ -166,7 +166,7 @@ void ProFileType::_initialize()
                   >> _critterArmorClass;
             this->skipBytes(4); // Unused
             *this >> _critterMeleeDamage
-                  >> _critterCarryWeight
+                  >> _critterCarryWeightMax
                   >> _critterSequence
                   >> _critterHealingRate
                   >> _critterCriticalChance;
@@ -373,9 +373,9 @@ int ProFileType::critterMeleeDamage()
     return _critterMeleeDamage;
 }
 
-int ProFileType::critterCarryWeight()
+unsigned int ProFileType::critterCarryWeightMax()
 {
-    return _critterCarryWeight;
+    return _critterCarryWeightMax;
 }
 
 int ProFileType::critterSequence()
@@ -391,6 +391,16 @@ int ProFileType::critterCriticalChance()
 int ProFileType::critterHealingRate()
 {
     return _critterHealingRate;
+}
+
+unsigned int ProFileType::weight()
+{
+    return _weight;
+}
+
+void ProFileType::setWeight(unsigned int value)
+{
+    _weight = value;
 }
 
 }

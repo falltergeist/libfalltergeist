@@ -46,7 +46,7 @@ protected:
     int _critterActionPoints = 0;
     int _critterArmorClass = 0;
     int _critterMeleeDamage = 0;
-    int _critterCarryWeight = 0;
+    unsigned int _critterCarryWeightMax = 0;
     int _critterSequence = 0;
     int _critterHealingRate = 0;
     int _critterCriticalChance = 0;
@@ -67,7 +67,7 @@ protected:
 
     unsigned int _materialId;
     unsigned int _containerSize;
-    unsigned int _weight;
+    unsigned int _weight = 0;
     unsigned int _basePrice;
 
     unsigned int _inventoryFID;
@@ -95,11 +95,14 @@ public:
     unsigned int flags();
     unsigned int flagsExt();
 
+    unsigned int weight();
+    void setWeight(unsigned int value);
+
     int critterHitPointsMax();
     int critterActionPoints();
     int critterArmorClass();
     int critterMeleeDamage();
-    int critterCarryWeight();
+    unsigned int critterCarryWeightMax();
     int critterSequence();
     int critterHealingRate();
     int critterCriticalChance();
