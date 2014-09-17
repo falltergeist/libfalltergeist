@@ -101,9 +101,9 @@ void ProFileType::_initialize()
                         *this >> uint32;
                         _damageThreshold.at(i) = uint32;
                     }
-                    this->skipBytes(4); // Perk
-                    this->skipBytes(4); // Male FID
-                    this->skipBytes(4); // Female FID
+                    *this >> _armorPerk; // Perk
+                    *this >> _armorMaleFID; // Male FID
+                    *this >> _armorFemaleFID; // Female FID
                     break;
                 }
                 case TYPE_ITEM_CONTAINER:
@@ -401,6 +401,21 @@ unsigned int ProFileType::weight()
 void ProFileType::setWeight(unsigned int value)
 {
     _weight = value;
+}
+
+int ProFileType::armorPerk()
+{
+    return _armorPerk;
+}
+
+unsigned int ProFileType::armorFemaleFID()
+{
+    return _armorFemaleFID;
+}
+
+unsigned int ProFileType::armorMaleFID()
+{
+    return _armorMaleFID;
 }
 
 }

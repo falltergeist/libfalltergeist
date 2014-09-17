@@ -57,6 +57,10 @@ protected:
     std::vector<int> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+    int _armorPerk = -1;
+    unsigned int _armorMaleFID = 0;
+    unsigned int _armorFemaleFID = 0;
+
     unsigned int _lightDistance;
     unsigned int _lightIntencity;
 
@@ -106,12 +110,16 @@ public:
     int critterSequence();
     int critterHealingRate();
     int critterCriticalChance();
+
     std::vector<int>* critterStats();
     std::vector<int>* critterStatsBonus();
     std::vector<int>* critterSkills();
     std::vector<int>* damageResist();
     std::vector<int>* damageThreshold();
 
+    int armorPerk();
+    unsigned int armorMaleFID();
+    unsigned int armorFemaleFID();
 
 };
 }
