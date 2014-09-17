@@ -120,6 +120,8 @@ public:
 
     int perk();
 
+    unsigned int inventoryFID();
+
     int critterHitPointsMax();
     int critterActionPoints();
     int critterArmorClass();

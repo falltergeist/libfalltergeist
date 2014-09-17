@@ -500,4 +500,9 @@ unsigned int ProFileType::weaponAmmoCapacity()
     return _weaponAmmoCapacity;
 }
 
+unsigned int ProFileType::inventoryFID()
+{
+    return _inventoryFID;
+}
+
 }
