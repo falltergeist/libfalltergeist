@@ -76,7 +76,7 @@ void GamFileType::_initialize()
 void GamFileType::_parseLine(std::string line)
 {
     // отрезаем всё что после комментариев
-    if(line.find("//") >= 0)
+    if(line.find("//") != std::string::npos)
     {
         line = line.substr(0, line.find("//"));
     }
