@@ -57,9 +57,25 @@ protected:
     std::vector<int> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     std::vector<int> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    int _armorPerk = -1;
+    int _perk = -1;
     unsigned int _armorMaleFID = 0;
     unsigned int _armorFemaleFID = 0;
+
+    unsigned int _weaponAnimationCode = 0;
+    unsigned int _weaponDamageMin = 0;
+    unsigned int _weaponDamageMax = 0;
+    unsigned int _weaponDamageType = 0;
+    unsigned int _weaponRangePrimary = 0;
+    unsigned int _weaponRangeSecondary = 0;
+    unsigned int _weaponMinimumStrenght = 0;
+    unsigned int _weaponActionCostPrimary = 0;
+    unsigned int _weaponActionCostSecondary = 0;
+    unsigned int _weaponBurstRounds = 0;
+    unsigned int _weaponAmmoType = 0;
+    unsigned int _weaponAmmoPID = 0;
+    unsigned int _weaponAmmoCapacity = 0;
+
+
 
     unsigned int _lightDistance;
     unsigned int _lightIntencity;
@@ -102,6 +118,8 @@ public:
     unsigned int weight();
     void setWeight(unsigned int value);
 
+    int perk();
+
     int critterHitPointsMax();
     int critterActionPoints();
     int critterArmorClass();
@@ -117,9 +135,23 @@ public:
     std::vector<int>* damageResist();
     std::vector<int>* damageThreshold();
 
-    int armorPerk();
     unsigned int armorMaleFID();
     unsigned int armorFemaleFID();
+
+    unsigned int weaponAnimationCode();
+    unsigned int weaponDamageMin();
+    unsigned int weaponDamageMax();
+    unsigned int weaponDamageType();
+    unsigned int weaponRangePrimary();
+    unsigned int weaponRangeSecondary();
+    unsigned int weaponMinimumStrenght();
+    unsigned int weaponActionCostPrimary();
+    unsigned int weaponActionCostSecondary();
+    unsigned int weaponBurstRounds();
+    unsigned int weaponAmmoType();
+    unsigned int weaponAmmoPID();
+    unsigned int weaponAmmoCapacity();
+
 
 };
 }

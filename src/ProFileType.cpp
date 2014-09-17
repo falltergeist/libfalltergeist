@@ -101,7 +101,7 @@ void ProFileType::_initialize()
                         *this >> uint32;
                         _damageThreshold.at(i) = uint32;
                     }
-                    *this >> _armorPerk; // Perk
+                    *this >> _perk; // Perk
                     *this >> _armorMaleFID; // Male FID
                     *this >> _armorFemaleFID; // Female FID
                     break;
@@ -136,6 +136,23 @@ void ProFileType::_initialize()
                     break;
                 }
                 case TYPE_ITEM_WEAPON:
+                    *this >> _weaponAnimationCode;
+                    *this >> _weaponDamageMin;
+                    *this >> _weaponDamageMax;
+                    *this >> _weaponDamageType;
+                    *this >> _weaponRangePrimary;
+                    *this >> _weaponRangeSecondary;
+                    this->skipBytes(4); // Proj PID ??
+                    *this >> _weaponMinimumStrenght;
+                    *this >> _weaponActionCostPrimary;
+                    *this >> _weaponActionCostSecondary;
+                    this->skipBytes(4); // Crit Fail ??
+                    *this >> _perk;
+                    *this >> _weaponBurstRounds;
+                    *this >> _weaponAmmoType;
+                    *this >> _weaponAmmoPID;
+                    *this >> _weaponAmmoCapacity;
+                    *this >> _soundId;
                     break;
                 case TYPE_ITEM_AMMO:
                     break;
@@ -403,9 +420,9 @@ void ProFileType::setWeight(unsigned int value)
     _weight = value;
 }
 
-int ProFileType::armorPerk()
+int ProFileType::perk()
 {
-    return _armorPerk;
+    return _perk;
 }
 
 unsigned int ProFileType::armorFemaleFID()
@@ -416,6 +433,71 @@ unsigned int ProFileType::armorFemaleFID()
 unsigned int ProFileType::armorMaleFID()
 {
     return _armorMaleFID;
+}
+
+unsigned int ProFileType::weaponAnimationCode()
+{
+    return _weaponAnimationCode;
+}
+
+unsigned int ProFileType::weaponDamageMin()
+{
+    return _weaponDamageMin;
+}
+
+unsigned int ProFileType::weaponDamageMax()
+{
+    return _weaponDamageMax;
+}
+
+unsigned int ProFileType::weaponDamageType()
+{
+    return _weaponDamageType;
+}
+
+unsigned int ProFileType::weaponRangePrimary()
+{
+    return _weaponRangePrimary;
+}
+
+unsigned int ProFileType::weaponRangeSecondary()
+{
+    return _weaponRangeSecondary;
+}
+
+unsigned int ProFileType::weaponMinimumStrenght()
+{
+    return _weaponMinimumStrenght;
+}
+
+unsigned int ProFileType::weaponActionCostPrimary()
+{
+    return _weaponActionCostPrimary;
+}
+
+unsigned int ProFileType::weaponActionCostSecondary()
+{
+    return _weaponActionCostSecondary;
+}
+
+unsigned int ProFileType::weaponBurstRounds()
+{
+    return _weaponBurstRounds;
+}
+
+unsigned int ProFileType::weaponAmmoType()
+{
+    return _weaponAmmoType;
+}
+
+unsigned int ProFileType::weaponAmmoPID()
+{
+    return _weaponAmmoPID;
+}
+
+unsigned int ProFileType::weaponAmmoCapacity()
+{
+    return _weaponAmmoCapacity;
 }
 
 }
