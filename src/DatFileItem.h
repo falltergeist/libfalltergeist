@@ -66,6 +66,8 @@ public:
     unsigned int position();
     unsigned int size();
 
+    unsigned int bytesRemains();
+
     int endianness();
     void setEndianness(int value);
 

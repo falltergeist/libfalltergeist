@@ -220,4 +220,9 @@ void DatFileItem::setEndianness(int value)
     _endianness = value;
 }
 
+unsigned int DatFileItem::bytesRemains()
+{
+    return size() - position();
+}
+
 }

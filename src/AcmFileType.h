@@ -24,19 +24,40 @@
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
+#include "unpacker.h"
+#include "decoder.h"
 
 namespace libfalltergeist
 {
 
 class AcmFileType : public DatFileItem
 {
+private:
+    int samples_left; // count of unread samples
+    int levels, subblocks;
+    int block_size;
+    int* block, * values;
+    int samples_ready;
+    std::shared_ptr<CValueUnpacker> unpacker; // ACM-stream unpacker
+    std::shared_ptr<CSubbandDecoder> decoder; // IP's subband decoder
+    int _samples; // total count of sound samples
+    int _channels;
+    int _bitrate;
+    int make_new_samples();
+
 protected:
     virtual void _initialize();
 public:
     AcmFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     AcmFileType(std::ifstream* stream);
     ~AcmFileType();
-    void test();
+    void init();
+
+    int samples() const;
+    int channels() const;
+    int bitrate() const;
+
+    int read_samples(short* buffer, int count);
 };
 
 }
