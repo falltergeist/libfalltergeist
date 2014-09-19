@@ -60,6 +60,7 @@ protected:
     int _perk = -1;
     unsigned int _armorMaleFID = 0;
     unsigned int _armorFemaleFID = 0;
+    unsigned int _armorClass = 0;
 
     unsigned int _weaponAnimationCode = 0;
     unsigned int _weaponDamageMin = 0;
@@ -139,6 +140,7 @@ public:
 
     unsigned int armorMaleFID();
     unsigned int armorFemaleFID();
+    unsigned int armorClass();
 
     unsigned int weaponAnimationCode();
     unsigned int weaponDamageMin();

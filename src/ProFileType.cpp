@@ -87,7 +87,7 @@ void ProFileType::_initialize()
             {
                 case TYPE_ITEM_ARMOR:
                 {
-                    this->skipBytes(4); // Armor class
+                    *this >> _armorClass; // Armor class
                     int uint32;
                     // Damage resist
                     for (unsigned int i = 0; i != 7; ++i)
@@ -433,6 +433,11 @@ unsigned int ProFileType::armorFemaleFID()
 unsigned int ProFileType::armorMaleFID()
 {
     return _armorMaleFID;
+}
+
+unsigned int ProFileType::armorClass()
+{
+    return _armorClass;
 }
 
 unsigned int ProFileType::weaponAnimationCode()
