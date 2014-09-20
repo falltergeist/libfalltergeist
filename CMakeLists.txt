@@ -31,8 +31,8 @@ set(SOURCES libfalltergeist.cpp
             src/AafFileType.cpp
             src/AafGlyph.cpp
             src/AcmFileType.cpp
-            src/decoder.cpp
-            src/unpacker.cpp
+            src/AcmFileType/Decoder.cpp
+            src/AcmFileType/Unpacker.cpp
             src/BioFileType.cpp
             src/DatFile.cpp
             src/DatFileEntry.cpp
@@ -61,9 +61,9 @@ set(HEADERS libfalltergeist.h
             src/AafFileType.h
             src/AafGlyph.h
             src/AcmFileType.h
-            src/decoder.h
-            src/unpacker.h
-            src/general.h
+            src/AcmFileType/Decoder.h
+            src/AcmFileType/General.h
+            src/AcmFileType/Unpacker.h
             src/BioFileType.h
             src/DatFile.h
             src/DatFileEntry.h
