@@ -153,4 +153,8 @@ int AcmFileType::bitrate() const
     return _bitrate;
 }
 
+int AcmFileType::samplesLeft() const
+{
+    return _samplesLeft;
+}
 }

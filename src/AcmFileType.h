@@ -34,6 +34,7 @@ class CSubbandDecoder;
 
 class AcmFileType : public DatFileItem
 {
+
 private:
     int _samplesLeft; // count of unread samples
     int _levels, _subblocks;
@@ -60,6 +61,8 @@ public:
     int bitrate() const;
 
     int readSamples(short* buffer, int count);
+
+    int samplesLeft() const;
 };
 
 }
