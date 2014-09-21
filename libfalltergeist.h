@@ -33,6 +33,7 @@
 #include "src/GcdFileType.h"
 #include "src/IntFileType.h"
 #include "src/LstFileType.h"
+#include "src/LipFileType.h"
 #include "src/MapFileType.h"
 #include "src/MapElevation.h"
 #include "src/MapObject.h"
