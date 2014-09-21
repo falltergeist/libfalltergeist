@@ -36,6 +36,7 @@
 #include "../src/MapFileType.h"
 #include "../src/MsgFileType.h"
 #include "../src/MveFileType.h"
+#include "../src/LipFileType.h"
 #include "../src/LstFileType.h"
 #include "../src/PalFileType.h"
 #include "../src/ProFileType.h"
@@ -162,6 +163,7 @@ std::vector<std::shared_ptr<DatFileItem>>* DatFile::items()
             else if (extension == "gam") item = std::shared_ptr<GamFileType>(new GamFileType(entry));
             else if (extension == "gcd") item = std::shared_ptr<GcdFileType>(new GcdFileType(entry));
             else if (extension == "int") item = std::shared_ptr<IntFileType>(new IntFileType(entry));
+            else if (extension == "lip") item = std::shared_ptr<LipFileType>(new LipFileType(entry));
             else if (extension == "lst") item = std::shared_ptr<LstFileType>(new LstFileType(entry));
             else if (extension == "map") item = std::shared_ptr<MapFileType>(new MapFileType(entry));
             else if (extension == "msg") item = std::shared_ptr<MsgFileType>(new MsgFileType(entry));
