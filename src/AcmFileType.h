@@ -23,20 +23,46 @@
 // C++ standard includes
 
 // libfalltergeist includes
+
 #include "../src/DatFileItem.h"
 
 namespace libfalltergeist
 {
 
+class CValueUnpacker;
+class CSubbandDecoder;
+
 class AcmFileType : public DatFileItem
 {
+
+private:
+    int _samplesLeft; // count of unread samples
+    int _levels, _subblocks;
+    int _blockSize;
+    int*_block, *_values;
+    int _samplesReady;
+    std::shared_ptr<CValueUnpacker> _unpacker; // ACM-stream unpacker
+    std::shared_ptr<CSubbandDecoder> _decoder; // IP's subband decoder
+    int _samples; // total count of sound samples
+    int _channels;
+    int _bitrate;
+    int _makeNewSamples();
+
 protected:
     virtual void _initialize();
 public:
     AcmFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     AcmFileType(std::ifstream* stream);
     ~AcmFileType();
-    void test();
+    void init();
+
+    int samples() const;
+    int channels() const;
+    int bitrate() const;
+
+    int readSamples(short* buffer, int count);
+
+    int samplesLeft() const;
 };
 
 }
