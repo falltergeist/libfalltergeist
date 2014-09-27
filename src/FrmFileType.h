@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <vector>
+#include <map>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
@@ -32,10 +33,12 @@ namespace libfalltergeist
 {
 class PalFileType;
 
+
 class FrmFileType : public DatFileItem
 {
 protected:
     unsigned int* _rgba = 0;
+    std::map<unsigned int, uint8_t*> _animatedMasks;
     unsigned int _directions = 0;
     signed short _shiftX[6];
     signed short _shiftY[6];
@@ -51,8 +54,18 @@ protected:
                    _framesPerDirection,
                    _actionFrame;
     virtual void _initialize();
+    bool _animatedPalette;
 public:
     enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_BACKGROUND, TYPE_INTERFACE, TYPE_INVENTORY };
+
+    enum {
+        MASK_SLIME = 0,
+        MASK_FIRE_SLOW = 2,
+        MASK_FIRE_FAST = 4,
+        MASK_MONITOR = 8,
+        MASK_REDDOT = 16,
+        MASK_SHORE = 32
+    };
 
     FrmFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     FrmFileType(std::ifstream* stream);
@@ -83,7 +96,8 @@ public:
     int shiftY(unsigned int direction);
 
     unsigned int* rgba(std::shared_ptr<PalFileType> palFile);
-
+    bool animatedPalette();
+    std::map<unsigned int, uint8_t*>*  animatedMasks();
 };
 
 }

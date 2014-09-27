@@ -221,4 +221,78 @@ int FrmFileType::shiftY(unsigned int direction)
     return _shiftY[direction];
 }
 
+bool FrmFileType::animatedPalette()
+{
+    if (_animatedMasks.empty()) animatedMasks();
+    return _animatedPalette;
+}
+
+std::map<unsigned int, uint8_t*>* FrmFileType::animatedMasks()
+{
+    if (!_animatedMasks.empty()) return &_animatedMasks;
+    _initialize();
+
+    unsigned int w = width();
+    unsigned int h = height();
+
+
+    unsigned int positionY = 0;
+    for (unsigned int d = 0; d != _directions; ++d)
+    {
+        unsigned int positionX = 0;
+        DatFileItem::setPosition(_dataOffset[d] + 62);
+        for (unsigned int f = 0; f != _framesPerDirection; ++f)
+        {
+            this->skipBytes(4*3);
+            // read frame data and add to _rgba
+            for (unsigned int y = 0; y != height(d, f); ++y)
+            {
+                for (unsigned int x = 0; x != width(d, f); ++x)
+                {
+                    unsigned char index;
+                    *this >> index;
+                    if (index >=229 && index <= 232)
+                    {
+                        if (!_animatedMasks[MASK_SLIME])  _animatedMasks[MASK_SLIME] = new uint8_t [w*h]();
+                        _animatedMasks[MASK_SLIME][((y + positionY)*w) + x + positionX] = index;
+                    }
+                    else if (index >=233 && index <= 237)
+                    {
+                        if (!_animatedMasks[MASK_MONITOR])  _animatedMasks[MASK_MONITOR] = new uint8_t [w*h]();
+                        _animatedMasks[MASK_MONITOR][((y + positionY)*w) + x + positionX] = index;
+
+                    }
+                    else if (index >=238 && index <= 242)
+                    {
+                        if (!_animatedMasks[MASK_FIRE_SLOW])  _animatedMasks[MASK_FIRE_SLOW] = new uint8_t [w*h]();
+                        _animatedMasks[MASK_FIRE_SLOW][((y + positionY)*w) + x + positionX] = index;
+                    }
+                    else if (index >=243 && index <= 247)
+                    {
+                        if (!_animatedMasks[MASK_FIRE_FAST])  _animatedMasks[MASK_FIRE_FAST] = new uint8_t [w*h]();
+                        _animatedMasks[MASK_FIRE_FAST][((y + positionY)*w) + x + positionX] = index;
+                    }
+                    else if (index >=248 && index <= 253)
+                    {
+                        if (!_animatedMasks[MASK_SHORE])  _animatedMasks[MASK_SHORE] = new uint8_t [w*h]();
+                        _animatedMasks[MASK_SHORE][((y + positionY)*w) + x + positionX] = index;
+                    }
+                    else if (index == 254)
+                    {
+                        if (!_animatedMasks[MASK_REDDOT])  _animatedMasks[MASK_REDDOT] = new uint8_t [w*h]();
+                        _animatedMasks[MASK_REDDOT][((y + positionY)*w) + x + positionX] = index;
+                    }
+                    if (index >= 229 && index <= 254)
+                    {
+                        _animatedPalette = true;
+                    }
+                }
+            }
+            positionX += width(d);
+        }
+        positionY += height(d);
+    }
+    return &_animatedMasks;
+}
+
 }
