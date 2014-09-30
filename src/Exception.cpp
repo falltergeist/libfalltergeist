@@ -27,15 +27,21 @@
 namespace libfalltergeist
 {
 
-Exception::Exception(std::string message)
+Exception::Exception(const char* message) : _message(message)
 {
-    _message = message;
 }
 
-std::string Exception::message()
+Exception::Exception(const std::string& message) : _message(message)
 {
-    return _message;
 }
 
+Exception::~Exception() throw()
+{
+}
+
+const char* Exception::what() const throw()
+{
+    return _message.c_str();
+}
 
 }

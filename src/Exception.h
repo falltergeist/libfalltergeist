@@ -21,7 +21,7 @@
 #define LIBFALLTERGEIST_EXCEPTION_H
 
 // C++ standard includes
-#include <string>
+#include <stdexcept>
 
 // libfalltergeist includes
 
@@ -30,11 +30,13 @@
 namespace libfalltergeist
 {
 
-class Exception
+class Exception : public std::exception
 {
 public:
-    Exception(std::string message);
-    std::string message();
+    explicit Exception(const char* message);
+    explicit Exception(const std::string& message);
+    virtual ~Exception() throw();
+    virtual const char* what() const throw();
 protected:
     std::string _message;
 };
