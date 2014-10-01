@@ -97,6 +97,11 @@ void MsgFileType::_initialize()
                 if (chr != '}') text += chr;
             }
 
+            while (text.find("\n") != std::string::npos)
+            {
+                text.replace(text.find("\n"), 1, "");
+            }
+
             auto message = std::shared_ptr<MsgMessage>(new MsgMessage());
             message->setNumber(std::stoi(number));
             message->setSound(sound);
