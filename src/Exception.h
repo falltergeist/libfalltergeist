@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <stdexcept>
+#include <string>
 
 // libfalltergeist includes
 
