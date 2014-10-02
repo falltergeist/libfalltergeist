@@ -19,7 +19,6 @@
 
 // C++ standard includes
 #include <algorithm>
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/LipFileType.h"

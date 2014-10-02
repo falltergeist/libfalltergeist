@@ -18,7 +18,6 @@
  */
 
 // C++ standard includes
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/MveFileType.h"
@@ -62,7 +61,7 @@ void MveFileType::test()
         unsigned short chunkSize;
         unsigned short chunkType;
         *this >> chunkSize >> chunkType;
-        std::cout << "chunk - type: " << chunkType << " size: " << chunkSize << std::endl;
+        //std::cout << "chunk - type: " << chunkType << " size: " << chunkSize << std::endl;
 
         // chunk data
         for (unsigned int i = 0; i < chunkSize;)
@@ -72,7 +71,7 @@ void MveFileType::test()
             unsigned char opcodeType;
             unsigned char opcodeVersion;
             *this >> opcodeSize >> opcodeType >> opcodeVersion;
-            std::cout << " opcode - type: " << (int) opcodeType << " size: " << opcodeSize << " version: " << (int) opcodeVersion << std::endl;
+            //std::cout << " opcode - type: " << (int) opcodeType << " size: " << opcodeSize << " version: " << (int) opcodeVersion << std::endl;
 
             // opcode data
             switch(opcodeType)
@@ -86,7 +85,7 @@ void MveFileType::test()
                     if (opcodeVersion == 1) this->skipBytes(2);
                     if (opcodeVersion == 2) this->skipBytes(4);
 
-                    std::cout << "  Init Video Buffer: " << width << "x" << height << std::endl;
+                    //std::cout << "  Init Video Buffer: " << width << "x" << height << std::endl;
 
                     break;
                 }
@@ -96,7 +95,7 @@ void MveFileType::test()
                     unsigned short height;
                     unsigned short flags;
                     *this >> width >> height >> flags;
-                    std::cout << "  Init Video Mode: " << width << "x" << height << " - " << flags << std::endl;
+                    //std::cout << "  Init Video Mode: " << width << "x" << height << " - " << flags << std::endl;
                     break;
                 }
                 case 0x0C: // Set palette
@@ -105,7 +104,7 @@ void MveFileType::test()
                     unsigned short count;
                     *this >> start >> count;
 
-                    std::cout << "  Set Palette: " << start << " - " << count << std::endl;
+                    //std::cout << "  Set Palette: " << start << " - " << count << std::endl;
 
                     // data
                     this->skipBytes(count * 3);

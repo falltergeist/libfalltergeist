@@ -18,7 +18,6 @@
  */
 
 // C++ standard includes
-#include <iostream>
 #include <algorithm>
 
 // libfalltergeist includes
@@ -74,15 +73,15 @@ void MapFileType::_initialize()
     this->skipBytes(4*44); // unkonwn
 
     // MVAR AND SVAR SECTION
-    std::cout << "MVARS: " << std::dec << _MVARsize << std::endl;
+    //std::cout << "MVARS: " << std::dec << _MVARsize << std::endl;
     for (unsigned int i = 0; i != _MVARsize; ++i)
     {
         unsigned int value;
         *this >> value;
-        std::cout << "MVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
+        //std::cout << "MVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
     }
 
-    std::cout << "SVARS: " << std::dec << _LVARsize << std::endl;
+    //std::cout << "SVARS: " << std::dec << _LVARsize << std::endl;
     for (unsigned int i = 0; i != _LVARsize; ++i)
     {
         unsigned int value;
@@ -156,7 +155,7 @@ void MapFileType::_initialize()
 
                     if (j < count)
                     {
-                        std::cout << "Map script: 0x" << std::hex << script->PID() << std::endl;
+                        //std::cout << "Map script: 0x" << std::hex << script->PID() << std::endl;
                         _scripts.push_back(script);
                     }
 
@@ -254,7 +253,7 @@ std::shared_ptr<MapObject> MapFileType::_readObject()
         {
             if ((*it)->PID() == int32)
             {
-                std::cout << "Map script: " <<  std::dec << (*it)->scriptId() << std::endl;
+                //std::cout << "Map script: " <<  std::dec << (*it)->scriptId() << std::endl;
                 object->setMapScriptId((*it)->scriptId());
             }
         }
@@ -263,12 +262,12 @@ std::shared_ptr<MapObject> MapFileType::_readObject()
     *this >> int32;
     if (int32 != -1)
     {
-        std::cout << "SID: " << std::dec <<  int32 << std::endl;
+        //std::cout << "SID: " << std::dec <<  int32 << std::endl;
         object->setScriptId(int32);
     }
     if (PID == 0x01000003)
     {
-        std::cout << "!!! " << int32 << std::endl;
+        //std::cout << "!!! " << int32 << std::endl;
     }
     *this >> uint32;
     object->setInventorySize( uint32 );

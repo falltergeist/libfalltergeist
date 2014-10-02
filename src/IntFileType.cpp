@@ -18,7 +18,6 @@
  */
 
 // C++ standard includes
-#include <iostream>
 
 // libfalltergeist includes
 #include "../src/IntFileType.h"
@@ -54,7 +53,7 @@ void IntFileType::_initialize()
     *this >> tableSize;
 
     // @todo Delete this line
-    std::cout << std::hex << this->position() << " Functions table size: " << std::dec << tableSize << std::endl;
+    //std::cout << std::hex << this->position() << " Functions table size: " << std::dec << tableSize << std::endl;
 
     std::map<unsigned int, unsigned int> functions;
     for (unsigned int i = 0; i != tableSize; ++i)
@@ -68,13 +67,13 @@ void IntFileType::_initialize()
         functions.insert(std::make_pair(nameOffset, entryPoint));
         _functionsOffsets.push_back(entryPoint); // to find function entry point by number
         // @todo Delete this line
-        std::cout << "Function: nameOffset - 0x"<< std::hex << nameOffset << " entryPoint - " << entryPoint << std::endl;
+        //std::cout << "Function: nameOffset - 0x"<< std::hex << nameOffset << " entryPoint - " << entryPoint << std::endl;
     }
 
     // IDENTIFICATORS TABLE
     *this >> tableSize;
     // @todo Delete this line
-    std::cout << std::hex << this->position() <<  "Identificators table size: " << std::dec << tableSize << std::endl;
+    //std::cout << std::hex << this->position() <<  "Identificators table size: " << std::dec << tableSize << std::endl;
 
     unsigned int j = 0;
     while (j < tableSize)
@@ -92,7 +91,7 @@ void IntFileType::_initialize()
         }
         _identificators.insert(std::make_pair(nameOffset, name)); // names of functions and variables
         // @todo Delete this line
-        std::cout << "Identificator: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
+        //std::cout << "Identificator: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
     }
 
     this->skipBytes(4); // signature 0xFFFFFFFF
@@ -110,7 +109,7 @@ void IntFileType::_initialize()
     if (tableSize != 0xFFFFFFFF)
     {
         // @todo Delete this line
-        std::cout << std::hex << this->position() <<  "Strings table size: " << std::dec << tableSize << std::endl;
+        //std::cout << std::hex << this->position() <<  "Strings table size: " << std::dec << tableSize << std::endl;
         unsigned int j = 0;
         while (j < tableSize)
         {
@@ -129,7 +128,7 @@ void IntFileType::_initialize()
             _strings.insert(std::make_pair(nameOffset, name));
 
             // @todo Delete this line
-            std::cout << "String: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
+            //std::cout << "String: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
         }
     }
 }
