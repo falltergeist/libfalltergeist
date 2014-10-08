@@ -18,14 +18,24 @@
  */
 
 // C++ standard includes
+#include <cstring>
 
 // libfalltergeist includes
 #include "../src/MveFileType.h"
+#include "../src/Exception.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
+
+MveChunk::~MveChunk()
+{
+    for (auto it: opcodes)
+    {
+        delete [] it->data;
+    }
+}
 
 MveFileType::MveFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
@@ -44,89 +54,47 @@ void MveFileType::_initialize()
     if (_initialized) return;
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
+    setEndianness(ENDIANNESS_LITTLE);
+    // header
+    const char  MVE_HEADER[]  = "Interplay MVE File\x1A";
+    const int16_t MVE_HDRCONST1 = 0x001A;
+    const int16_t MVE_HDRCONST2 = 0x0100;
+    const int16_t MVE_HDRCONST3 = 0x1133;
+    int16_t check1, check2, check3;
+ 
+    char head[20];
+    readBytes((char*)head,20);
+
+    if (strncmp(head,MVE_HEADER,20)!=0)
+    {
+        throw Exception("Invalid MVE file.!");
+    }
+    *this >> check1 >> check2 >> check3;
+    if  (!(check1 == MVE_HDRCONST1 && check2 == MVE_HDRCONST2 && check3 == MVE_HDRCONST3))
+    {
+        throw Exception("Invalid MVE file.");
+    }
 }
 
-void MveFileType::test()
+std::shared_ptr<MveChunk> MveFileType::getNextChunk()
 {
     _initialize();
-
-    setEndianness(ENDIANNESS_LITTLE);
-
-    // header
-    this->skipBytes(26);
-
-    while (this->position() < this->size())
+    if (this->position() < this->size())
     {
-        // chunk header
-        unsigned short chunkSize;
-        unsigned short chunkType;
-        *this >> chunkSize >> chunkType;
-        //std::cout << "chunk - type: " << chunkType << " size: " << chunkSize << std::endl;
-
-        // chunk data
-        for (unsigned int i = 0; i < chunkSize;)
+        auto chunk = std::shared_ptr<MveChunk>(new MveChunk());
+        *this >> chunk->length >> chunk->type;
+        for (unsigned int i = 0; i < chunk->length;)
         {
-            // opcode header
-            unsigned short opcodeSize;
-            unsigned char opcodeType;
-            unsigned char opcodeVersion;
-            *this >> opcodeSize >> opcodeType >> opcodeVersion;
-            //std::cout << " opcode - type: " << (int) opcodeType << " size: " << opcodeSize << " version: " << (int) opcodeVersion << std::endl;
-
-            // opcode data
-            switch(opcodeType)
-            {
-                case 0x05: // Initialize Video Buffer
-                {
-                    unsigned short width;
-                    unsigned short height;
-                    *this >> width >> height;
-
-                    if (opcodeVersion == 1) this->skipBytes(2);
-                    if (opcodeVersion == 2) this->skipBytes(4);
-
-                    //std::cout << "  Init Video Buffer: " << width << "x" << height << std::endl;
-
-                    break;
-                }
-                case 0x0A: // Initialize Video Mode
-                {
-                    unsigned short width;
-                    unsigned short height;
-                    unsigned short flags;
-                    *this >> width >> height >> flags;
-                    //std::cout << "  Init Video Mode: " << width << "x" << height << " - " << flags << std::endl;
-                    break;
-                }
-                case 0x0C: // Set palette
-                {
-                    unsigned short start;
-                    unsigned short count;
-                    *this >> start >> count;
-
-                    //std::cout << "  Set Palette: " << start << " - " << count << std::endl;
-
-                    // data
-                    this->skipBytes(count * 3);
-                    break;
-                }
-                default:
-                {
-                    this->skipBytes(opcodeSize);
-                }
-            }
-
-
-
-
-
-
-
-            i += opcodeSize + 4;
+            auto opcode = std::shared_ptr<MveOpcode>(new MveOpcode());
+            *this >> opcode->length >> opcode->type >> opcode->version;
+            opcode->data = new uint8_t [opcode->length];
+            this->readBytes((char*)opcode->data, opcode->length);
+            chunk->opcodes.push_back(opcode);
+            i+=opcode->length+4;
         }
-
-
+        return chunk;
     }
+    return nullptr;
 }
 
 }
