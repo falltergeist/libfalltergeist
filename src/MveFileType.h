@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_MVEFILETYPE_H
 
 // C++ standard includes
+#include <vector>
 
 // libfalltergeist includes
 #include "../src/DatFileItem.h"
@@ -30,6 +31,21 @@
 namespace libfalltergeist
 {
 
+struct MveOpcode
+{
+    uint16_t length;
+    uint8_t type;
+    uint8_t version;
+    uint8_t* data;
+};
+
+struct MveChunk
+{
+    uint16_t length;
+    uint16_t type;
+    std::vector<std::shared_ptr<MveOpcode>> opcodes;
+};
+
 class MveFileType : public DatFileItem
 {
 protected:
@@ -38,7 +54,7 @@ public:
     MveFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     MveFileType(std::ifstream* stream);
     ~MveFileType();
-    void test();
+    std::shared_ptr<MveChunk> getNextChunk();
 };
 
 }
