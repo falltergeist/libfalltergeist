@@ -29,6 +29,14 @@
 namespace libfalltergeist
 {
 
+MveChunk::~MveChunk()
+{
+    for (auto it: opcodes)
+    {
+        delete [] it->data;
+    }
+}
+
 MveFileType::MveFileType(std::shared_ptr<DatFileEntry> datFileEntry) : DatFileItem(datFileEntry)
 {
 }

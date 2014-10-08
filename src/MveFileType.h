@@ -39,8 +39,11 @@ struct MveOpcode
     uint8_t* data;
 };
 
-struct MveChunk
+class MveChunk
 {
+  public:
+    MveChunk() {}
+    ~MveChunk();
     uint16_t length;
     uint16_t type;
     std::vector<std::shared_ptr<MveOpcode>> opcodes;
