@@ -44,6 +44,7 @@
 #include "src/PalColor.h"
 #include "src/ProFileType.h"
 #include "src/RixFileType.h"
+#include "src/SveFileType.h"
 #include "src/Exception.h"
 
 namespace libfalltergeist
