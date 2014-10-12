@@ -41,6 +41,7 @@
 #include "../src/PalFileType.h"
 #include "../src/ProFileType.h"
 #include "../src/RixFileType.h"
+#include "../src/SveFileType.h"
 
 // Third party includes
 
@@ -171,6 +172,7 @@ std::vector<std::shared_ptr<DatFileItem>>* DatFile::items()
             else if (extension == "pal") item = std::shared_ptr<PalFileType>(new PalFileType(entry));
             else if (extension == "pro") item = std::shared_ptr<ProFileType>(new ProFileType(entry));
             else if (extension == "rix") item = std::shared_ptr<RixFileType>(new RixFileType(entry));
+            else if (extension == "sve") item = std::shared_ptr<SveFileType>(new SveFileType(entry));
             else item = std::shared_ptr<DatFileItem>(new DatFileItem(entry));
 
             _items.push_back(item);
