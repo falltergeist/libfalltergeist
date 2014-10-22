@@ -55,6 +55,7 @@ public:
     AcmFileType(std::ifstream* stream);
     ~AcmFileType();
     void init();
+    void rewind();
 
     int samples() const;
     int channels() const;
