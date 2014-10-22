@@ -104,6 +104,51 @@ void AcmFileType::init()
     _initialize();
 }
 
+void AcmFileType::rewind()
+{
+    DatFileItem::setPosition(0);
+    _samplesReady=0;
+
+    AcmHeader hdr;
+    *this >> hdr.signature;
+    *this >> hdr.samples;
+    *this >> hdr.channels;
+    *this >> hdr.rate;
+
+    int16_t tmpword;
+    readBytes((char *) &tmpword, 2);
+    _subblocks = (int) (tmpword>>4);
+    _levels = (int) (tmpword&15);
+
+    if (hdr.signature != IP_ACM_SIG)
+    {
+        throw Exception("Not an ACM file - invalid signature");
+    }
+
+    _samplesLeft = ( _samples = hdr.samples );
+    _channels = hdr.channels;
+    _bitrate = hdr.rate;
+    _blockSize = ( 1 << _levels) * _subblocks;
+
+    if (_block != nullptr)
+    {
+        free(_block);
+        _block = nullptr;
+    }
+    _block = (int *) malloc(sizeof(int)* _blockSize);
+
+    _unpacker = std::shared_ptr<CValueUnpacker>(new CValueUnpacker(_levels, _subblocks, this));
+    if (!_unpacker || !_unpacker->init())
+    {
+        throw Exception("Cannot create or init unpacker");
+    }
+    _decoder = std::shared_ptr<CSubbandDecoder>(new CSubbandDecoder(_levels));
+    if (!_decoder || !_decoder->init())
+    {
+        throw Exception("Cannot create or init decoder");
+    }
+}
+
 
 int AcmFileType::_makeNewSamples()
 {
