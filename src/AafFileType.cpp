@@ -88,7 +88,33 @@ unsigned int* AafFileType::rgba()
 
                 if (byte != 0)
                 {
-                    unsigned char alpha = std::pow(2, byte + 1) - 1;
+                    unsigned char alpha = 0;
+                    switch (byte)
+                    {
+                        case 7:
+                            alpha = 255;
+                            break;
+                        case 6:
+                            alpha = 219;
+                            break;
+                        case 5:
+                            alpha = 169;
+                            break;
+                        case 4:
+                            alpha = 145;
+                            break;
+                        case 3:
+                            alpha = 116;
+                            break;
+                        case 2:
+                            alpha = 66;
+                            break;
+                        case 1:
+                        default:
+                            alpha = 30;
+                            break;
+                    }
+
                     _rgba[(glyphY + y)*_maximumWidth*16  + glyphX + x] = 0xFFFFFF00 | alpha;
                 }
             }
