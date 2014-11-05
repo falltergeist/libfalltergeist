@@ -92,7 +92,10 @@ set(HEADERS libfalltergeist.h
             src/RixFileType.h
             src/SveFileType.h)
 
+if(NOT MSVC)
 add_definitions (-std=c++11 -Wall)
+endif()
+
 set(CMAKE_BUILD_TYPE Debug)
 
 add_library( falltergeist SHARED ${SOURCES})
