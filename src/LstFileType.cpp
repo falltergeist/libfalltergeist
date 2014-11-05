@@ -19,6 +19,8 @@
 
 // C++ standard includes
 #include <algorithm>
+#include <cctype>
+#include <functional>
 
 // libfalltergeist includes
 #include "../src/LstFileType.h"

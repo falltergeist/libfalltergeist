@@ -18,8 +18,10 @@
  */
 
 // C++ standard includes
-#include <vector>
 #include <algorithm>
+#include <cctype>
+#include <functional>
+#include <vector>
 
 // libfalltergeist includes
 #include "../src/GamFileType.h"
