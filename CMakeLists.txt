@@ -23,9 +23,11 @@ project( libfalltergeist )
 
 find_package(ZLIB REQUIRED)
 if(NOT ZLIB_FOUND)
-	  message(FATAL_ERROR "Zlib library not found")
+    message(FATAL_ERROR "Zlib library not found")
 endif(NOT ZLIB_FOUND)
 include_directories(${ZLIB_INCLUDE_DIRS})
+
+option(LIBFALLTERGEIST_STANDALONE "Check if you want to use libfalltergeist as a separate library" ON) 
 
 set(SOURCES libfalltergeist.cpp
             src/AafFileType.cpp
@@ -92,8 +94,20 @@ set(HEADERS libfalltergeist.h
             src/RixFileType.h
             src/SveFileType.h)
 
-add_definitions (-std=c++11 -Wall)
+if(NOT MSVC)
+    add_definitions (-std=c++11 -Wall)
+endif()
+
 set(CMAKE_BUILD_TYPE Debug)
 
-add_library( falltergeist SHARED ${SOURCES})
+add_library(falltergeist SHARED ${SOURCES})
 target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
+
+if(LIBFALLTERGEIST_STANDALONE)
+    install(TARGETS falltergeist
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib)
+
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist FILES_MATCHING PATTERN "*.h")
+endif()
