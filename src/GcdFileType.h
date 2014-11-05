@@ -44,17 +44,17 @@ protected:
                  _unknown6,
                  _unknown7;
     // primary stats
-    std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _stats = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0};
     // bonuses to primary stats
-    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};    
+    std::vector<unsigned int> _statsBonus = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0};
     // skills
-    std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _skills = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     // damage
-    std::vector<unsigned int> _damage = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<unsigned int> _damageBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _damage = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _damageBonus = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0};
     // resistance
-    std::vector<unsigned int> _resistance = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _resistance = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _resistanceBonus = std::vector<unsigned int>{0, 0, 0, 0, 0, 0, 0};
     
     // secondary stats
     unsigned int _hitPoints,

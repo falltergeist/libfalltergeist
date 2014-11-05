@@ -51,11 +51,11 @@ protected:
     int _critterHealingRate = 0;
     int _critterCriticalChance = 0;
 
-    std::vector<int> _critterStats = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _critterStats = std::vector<int>{0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _critterStatsBonus = std::vector<int>{0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _critterSkills = std::vector<int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _damageResist = std::vector<int>{0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<int> _damageThreshold = std::vector<int>{0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     int _perk = -1;
     unsigned int _armorMaleFID = 0;
