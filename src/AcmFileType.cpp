@@ -63,6 +63,7 @@ void AcmFileType::_initialize()
 
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
+    _samplesReady=0;
 
     AcmHeader hdr;
     *this >> hdr.signature;
@@ -136,6 +137,7 @@ void AcmFileType::rewind()
         _block = nullptr;
     }
     _block = (int *) malloc(sizeof(int)* _blockSize);
+
 
     _unpacker = std::shared_ptr<CValueUnpacker>(new CValueUnpacker(_levels, _subblocks, this));
     if (!_unpacker || !_unpacker->init())
