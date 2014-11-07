@@ -1,5 +1,11 @@
+os:
+  - linux
+  - osx
+
 language: cpp
+
 script: cmake . && make
+
 compiler:
   - clang
   - gcc
