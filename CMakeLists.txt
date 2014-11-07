@@ -27,6 +27,8 @@ if(NOT ZLIB_FOUND)
 endif(NOT ZLIB_FOUND)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
+option(LIBFALLTERGEIST_EMBEDDED "Use libfalltergeist as embedded lib in other CMake project" OFF)
+
 set(SOURCES libfalltergeist.cpp
             src/AafFileType.cpp
             src/AafGlyph.cpp
@@ -97,3 +99,12 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_library( falltergeist SHARED ${SOURCES})
 target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
+
+if(NOT LIBFALLTERGEIST_EMBEDDED)
+    install(TARGETS falltergeist
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib)
+
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist FILES_MATCHING PATTERN "*.h")
+endif()
