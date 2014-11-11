@@ -156,7 +156,7 @@ std::vector<std::shared_ptr<DatFileItem>>* DatFile::items()
             std::string extension = entry->filename().substr(entry->filename().length() - 3, 3);
 
             std::shared_ptr<DatFileItem> item;
-                 if (extension == "aaf") item = std::shared_ptr<AafFileType>(new AafFileType(entry));
+            if      (extension == "aaf") item = std::shared_ptr<AafFileType>(new AafFileType(entry));
             else if (extension == "acm") item = std::shared_ptr<AcmFileType>(new AcmFileType(entry));
             else if (extension == "bio") item = std::shared_ptr<BioFileType>(new BioFileType(entry));
             else if (extension == "fon") item = std::shared_ptr<FonFileType>(new FonFileType(entry));

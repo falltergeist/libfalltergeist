@@ -36,13 +36,13 @@ class GcdFileType : public DatFileItem
 {
 protected:
     // unknown
-    unsigned int _unknown1,
-                 _unknown2,
-                 _unknown3,
-                 _unknown4,
-                 _unknown5,
-                 _unknown6,
-                 _unknown7;
+    unsigned int _unknown1;
+    unsigned int _unknown2;
+    unsigned int _unknown3;
+    unsigned int _unknown4;
+    unsigned int _unknown5;
+    unsigned int _unknown6;
+    unsigned int _unknown7;
     // primary stats
     std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
     // bonuses to primary stats
@@ -57,96 +57,111 @@ protected:
     std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
 
     // secondary stats
-    unsigned int _hitPoints,
-                 _actionPoints,
-                 _armorClass;
+    unsigned int _hitPoints;
+    unsigned int _actionPoints;
+    unsigned int _armorClass;
     //unsigned int unknown;
-    unsigned int _meleeDamage,
-                 _carryWeight,
-                 _sequence,
-                 _healingRate,
-                 _criticalChance,
-                 _criticalHitModifier,
-                 _radiationResistance,
-                 _poisonResistance,
-                 _age,
-                 _gender;
+    unsigned int _meleeDamage;
+    unsigned int  _carryWeight;
+    unsigned int _sequence;
+    unsigned int _healingRate;
+    unsigned int _criticalChance;
+    unsigned int _criticalHitModifier;
+    unsigned int _radiationResistance;
+    unsigned int _poisonResistance;
+    unsigned int _age;
+    unsigned int _gender;
     // bonuses to secondaty stats
-    unsigned int _hitPointsBonus,
-                 _actionPointsBonus,
-                 _armorClassBonus;
+    unsigned int _hitPointsBonus;
+    unsigned int _actionPointsBonus;
+    unsigned int _armorClassBonus;
     //unsigned int unknownBonus;
-    unsigned int _meleeDamageBonus,
-                 _carryWeightBonus,
-                 _sequenceBonus,
-                 _healingRateBonus,
-                 _criticalChanceBonus,
-                 _criticalHitModifierBonus,
-                 _radiationResistanceBonus,
-                 _poisonResistanceBonus,
-                 _ageBonus,
-                 _genderBonus;
+    unsigned int _meleeDamageBonus;
+    unsigned int _carryWeightBonus;
+    unsigned int _sequenceBonus;
+    unsigned int _healingRateBonus;
+    unsigned int _criticalChanceBonus;
+    unsigned int _criticalHitModifierBonus;
+    unsigned int _radiationResistanceBonus;
+    unsigned int _poisonResistanceBonus;
+    unsigned int _ageBonus;
+    unsigned int _genderBonus;
 
     std::string _name;
 
-    int _firstTaggedSkill,
-        _secondTaggedSkill,
-        _thirdTaggedSkill,
-        _fourthTaggedSkill,
-        _firstTrait,
-        _secondTrait;
+    int _firstTaggedSkill;
+    int _secondTaggedSkill;
+    int _thirdTaggedSkill;
+    int _fourthTaggedSkill;
+    int _firstTrait;
+    int _secondTrait;
 
     unsigned int _characterPoints;
 
     virtual void _initialize();
 public:
-    enum {STATS_STRENGTH = 0, STATS_PERCEPTION, STATS_ENDURANCE, STATS_CHARISMA, STATS_INTELLIGENCE, STATS_AGILITY, STATS_LUCK };
-    enum { SKILLS_1 = 0, // Small Guns
-           SKILLS_2, // Big Guns
-           SKILLS_3, // Energy Weapons
-           SKILLS_4, // Unarmed
-           SKILLS_5, // Melee Weapons
-           SKILLS_6, // Throwing
-           SKILLS_7, // First Aid
-           SKILLS_8, // Doctor
-           SKILLS_9, // Sneak
-           SKILLS_10, // Lockpick
-           SKILLS_11, // Steal
-           SKILLS_12, // Traps
-           SKILLS_13, // Science
-           SKILLS_14, // Repair
-           SKILLS_15, // Speech
-           SKILLS_16, // Barter
-           SKILLS_17, // Gambling
-           SKILLS_18  // Outdoorsman
+    enum
+    {
+        STATS_STRENGTH = 0,
+        STATS_PERCEPTION,
+        STATS_ENDURANCE,
+        STATS_CHARISMA,
+        STATS_INTELLIGENCE,
+        STATS_AGILITY,
+        STATS_LUCK
     };
-    enum { SKILLS_SMALL_GUNS = 0,
-           SKILLS_BIG_GUNS,
-           SKILLS_ENERGY_WEAPONS,
-           SKILLS_UNARMED,
-           SKILLS_MELEE_WEAPONS,
-           SKILLS_THROWING,
-           SKILLS_FIRST_AID,
-           SKILLS_DOCTOR,
-           SKILLS_SNEAK,
-           SKILLS_LOCKPICK,
-           SKILLS_STEAL,
-           SKILLS_TRAPS,
-           SKILLS_SCIENCE,
-           SKILLS_REPAIR,
-           SKILLS_SPEECH,
-           SKILLS_BARTER,
-           SKILLS_GAMBLING,
-           SKILLS_OUTDOORSMAN
+    enum
+    {
+        SKILLS_1 = 0, // Small Guns
+        SKILLS_2, // Big Guns
+        SKILLS_3, // Energy Weapons
+        SKILLS_4, // Unarmed
+        SKILLS_5, // Melee Weapons
+        SKILLS_6, // Throwing
+        SKILLS_7, // First Aid
+        SKILLS_8, // Doctor
+        SKILLS_9, // Sneak
+        SKILLS_10, // Lockpick
+        SKILLS_11, // Steal
+        SKILLS_12, // Traps
+        SKILLS_13, // Science
+        SKILLS_14, // Repair
+        SKILLS_15, // Speech
+        SKILLS_16, // Barter
+        SKILLS_17, // Gambling
+        SKILLS_18  // Outdoorsman
+    };
+    enum
+    {
+        SKILLS_SMALL_GUNS = 0,
+        SKILLS_BIG_GUNS,
+        SKILLS_ENERGY_WEAPONS,
+        SKILLS_UNARMED,
+        SKILLS_MELEE_WEAPONS,
+        SKILLS_THROWING,
+        SKILLS_FIRST_AID,
+        SKILLS_DOCTOR,
+        SKILLS_SNEAK,
+        SKILLS_LOCKPICK,
+        SKILLS_STEAL,
+        SKILLS_TRAPS,
+        SKILLS_SCIENCE,
+        SKILLS_REPAIR,
+        SKILLS_SPEECH,
+        SKILLS_BARTER,
+        SKILLS_GAMBLING,
+        SKILLS_OUTDOORSMAN
     };
 
-    enum { DAMAGE_NORMAL = 0,
-           DAMAGE_LASER,
-           DAMAGE_FIRE,
-           DAMAGE_PLASMA,
-           DAMAGE_ELECTRICAL,
-           DAMAGE_EMP,
-           DAMAGE_EXPLOSIVE
+    enum
+    {
+        DAMAGE_NORMAL = 0,
+        DAMAGE_LASER,
+        DAMAGE_FIRE,
+        DAMAGE_PLASMA,
+        DAMAGE_ELECTRICAL,
+        DAMAGE_EMP,
+        DAMAGE_EXPLOSIVE
     };
 
     GcdFileType(std::shared_ptr<DatFileEntry> datFileEntry);

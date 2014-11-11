@@ -92,8 +92,8 @@ void GcdFileType::_initialize()
     // unknown 3
     *this >> _unknown3;
 
-    *this >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
-          >> _criticalChanceBonus >> _criticalHitModifierBonus;
+    *this   >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
+            >> _criticalChanceBonus >> _criticalHitModifierBonus;
     for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
     {
         *this >> uint32;
@@ -122,13 +122,13 @@ void GcdFileType::_initialize()
     setName(name);
     delete [] name;
 
-    *this >> _firstTaggedSkill
-          >> _secondTaggedSkill
-          >> _thirdTaggedSkill
-          >> _fourthTaggedSkill
-          >> _firstTrait
-          >> _secondTrait
-          >> _characterPoints;
+    *this   >> _firstTaggedSkill
+            >> _secondTaggedSkill
+            >> _thirdTaggedSkill
+            >> _fourthTaggedSkill
+            >> _firstTrait
+            >> _secondTrait
+            >> _characterPoints;
 }
 
 unsigned int GcdFileType::stat(unsigned int number)
@@ -587,7 +587,7 @@ int GcdFileType::secondTrait()
 
 void GcdFileType::setCharacterPoints(unsigned int characterPoints)
 {
-     _characterPoints = characterPoints;
+    _characterPoints = characterPoints;
 }
 
 unsigned int GcdFileType::characterPoints()

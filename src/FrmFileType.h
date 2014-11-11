@@ -50,9 +50,9 @@ protected:
     std::vector<unsigned int> _positionX[6]; // frame image position in rgba image
     std::vector<unsigned int> _positionY[6];
     unsigned int _version;
-    unsigned short _framesPerSecond,
-                   _framesPerDirection,
-                   _actionFrame;
+    unsigned short _framesPerSecond;
+    unsigned short _framesPerDirection;
+    unsigned short _actionFrame;
     virtual void _initialize();
     bool _animatedPalette;
 public:

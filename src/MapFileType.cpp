@@ -58,10 +58,7 @@ void MapFileType::_initialize()
     this->readBytes(&_name[0], 16);
     std::transform(_name.begin(),_name.end(),_name.begin(), ::tolower);
 
-
-    *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion
-          >> _LVARsize >> _scriptId >> _elevationsFlag;
-
+    *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion >> _LVARsize >> _scriptId >> _elevationsFlag;
 
     unsigned int elevations = 0;
     if ((_elevationsFlag & 2) == 0) elevations++;
@@ -73,23 +70,18 @@ void MapFileType::_initialize()
     this->skipBytes(4*44); // unkonwn
 
     // MVAR AND SVAR SECTION
-    //std::cout << "MVARS: " << std::dec << _MVARsize << std::endl;
     for (unsigned int i = 0; i != _MVARsize; ++i)
     {
         unsigned int value;
         *this >> value;
-        //std::cout << "MVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
     }
 
-    //std::cout << "SVARS: " << std::dec << _LVARsize << std::endl;
     for (unsigned int i = 0; i != _LVARsize; ++i)
     {
         unsigned int value;
         *this >> value;
         // just skip for now... maybe will be used in future
-        //std::cout << "SVAR" << std::dec << i << " 0x" << std::hex << value << std::endl;
     }
-
 
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
@@ -168,11 +160,11 @@ void MapFileType::_initialize()
 
                     this->skipBytes(4);
                 }
-             }
-             if (check != count)
-             {
-                 throw Exception("MapFileType::open() - rror reading scripts: check is incorrect");
-             }
+            }
+            if (check != count)
+            {
+                throw Exception("MapFileType::open() - rror reading scripts: check is incorrect");
+            }
         }
     }
 

@@ -178,15 +178,15 @@ void ProFileType::_initialize()
                 *this >> uint32;
                 _critterStats.at(i) = uint32;
             }
-            *this >> _critterHitPointsMax
-                  >> _critterActionPoints
-                  >> _critterArmorClass;
+            *this   >> _critterHitPointsMax
+                    >> _critterActionPoints
+                    >> _critterArmorClass;
             this->skipBytes(4); // Unused
-            *this >> _critterMeleeDamage
-                  >> _critterCarryWeightMax
-                  >> _critterSequence
-                  >> _critterHealingRate
-                  >> _critterCriticalChance;
+            *this   >> _critterMeleeDamage
+                    >> _critterCarryWeightMax
+                    >> _critterSequence
+                    >> _critterHealingRate
+                    >> _critterCriticalChance;
             this->skipBytes(4); // Better criticals
 
             // Damage threshold

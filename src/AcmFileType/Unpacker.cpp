@@ -529,12 +529,16 @@ int CValueUnpacker::t3_7bits(int pass, int /*ind*/)
 }
 
 CValueUnpacker::CValueUnpacker(int levCnt, int sbCount, libfalltergeist::DatFileItem *stream)
-        : _levels(levCnt), _subblocks(sbCount), _nextBits(0),
-          _availBits(0), _bufferBitOffset(UNPACKER_BUFFER_SIZE),
-          _sbSize(1 << _levels),
-          _ampBuffer(nullptr),
-          _buffMiddle(nullptr), _blockPtr(nullptr)
 {
+    _levels = levCnt;
+    _subblocks = sbCount;
+    _nextBits = 0;
+    _availBits = 0;
+    _bufferBitOffset = UNPACKER_BUFFER_SIZE;
+    _sbSize = 1 << _levels;
+    _ampBuffer = nullptr;
+    _buffMiddle = nullptr;
+    _blockPtr = nullptr;
     this->stream = stream;
 }
 

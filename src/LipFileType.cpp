@@ -49,7 +49,7 @@ void LipFileType::_initialize()
     *this >> _version;
     if (_version != 2)
     {
-      throw Exception("Invalid LIP file.");
+        throw Exception("Invalid LIP file.");
     }
     *this >> _unknown1 >> _unknown2 >> _unknown3;
     *this >> _acm_size >> _phonems_count;

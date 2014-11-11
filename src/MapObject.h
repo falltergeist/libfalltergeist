@@ -34,34 +34,34 @@ namespace libfalltergeist
 class MapObject
 {
 protected:
-    unsigned int _unknown1,
-                 _unknown2,
-                 _unknown3,
-                 _unknown4,
-                 _unknown5,
-                 _frameNumber,
-                 _orientation,
-                 _frmTypeId,
-                 _frmId,
-                 _unknown6,
-                 _elevation,
-                 _objectTypeId = 0,
-                 _objectId = 0,
-                 _objectSubtypeId = 0,
-                 _objectID1 = 0,
-                 _objectID2 = 0,
-                 _objectID3 = 0,
-                 _unknown7,
-                 _unknown8,
-                 _unknown9,
-                 _unknown10,
-                 _inventorySize,
-                 _unknown11,
-                 _unknown12,
-                 _unknown13;
-    int _mapScriptId = -1,
-        _scriptId = -1,
-        _hexPosition = -1;
+    unsigned int _unknown1;
+    unsigned int _unknown2;
+    unsigned int _unknown3;
+    unsigned int _unknown4;
+    unsigned int _unknown5;
+    unsigned int _frameNumber;
+    unsigned int _orientation;
+    unsigned int _frmTypeId;
+    unsigned int _frmId;
+    unsigned int _unknown6;
+    unsigned int _elevation;
+    unsigned int _objectTypeId = 0;
+    unsigned int _objectId = 0;
+    unsigned int _objectSubtypeId = 0;
+    unsigned int _objectID1 = 0;
+    unsigned int _objectID2 = 0;
+    unsigned int _objectID3 = 0;
+    unsigned int _unknown7;
+    unsigned int _unknown8;
+    unsigned int _unknown9;
+    unsigned int _unknown10;
+    unsigned int _inventorySize;
+    unsigned int _unknown11;
+    unsigned int _unknown12;
+    unsigned int _unknown13;
+    int _mapScriptId = -1;
+    int _scriptId = -1;
+    int _hexPosition = -1;
     std::vector<std::shared_ptr<MapObject>> _children;
 public:
     MapObject();

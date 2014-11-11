@@ -41,7 +41,7 @@ struct MveOpcode
 
 class MveChunk
 {
-  public:
+public:
     MveChunk() {}
     ~MveChunk();
     uint16_t length;
