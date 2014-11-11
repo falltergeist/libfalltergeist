@@ -47,7 +47,7 @@ void GcdFileType::_initialize()
     DatFileItem::setPosition(0);
 
     unsigned int uint32;
-    
+
     // unknown 1
     *this >> _unknown1;
 
@@ -57,7 +57,7 @@ void GcdFileType::_initialize()
         *this >> uint32;
         setStat(i, uint32);
     }
-    
+
     // secondary stats
     *this >> _hitPoints >> _actionPoints >> _armorClass;
 
@@ -65,7 +65,7 @@ void GcdFileType::_initialize()
     *this >> _unknown2;
 
     *this >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier;
-    
+
     for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
     {
         *this >> uint32;
@@ -76,7 +76,7 @@ void GcdFileType::_initialize()
         *this >> uint32;
         setResistance(i, uint32);
     }
-    
+
     *this >> _radiationResistance >> _poisonResistance >> _age >> _gender;
 
     // bonuses to primary stats
@@ -180,7 +180,7 @@ unsigned int GcdFileType::damage(unsigned int type)
 void GcdFileType::setDamage(unsigned int type, unsigned int value)
 {
     if (type > 6) throw Exception("GcdFileType::setDamage() - type out of range: " + std::to_string(type));
-    _damage.at(type) = value;    
+    _damage.at(type) = value;
 }
 
 unsigned int GcdFileType::damageBonus(unsigned int type)
@@ -193,7 +193,7 @@ unsigned int GcdFileType::damageBonus(unsigned int type)
 void GcdFileType::setDamageBonus(unsigned int type, unsigned int value)
 {
     if (type > 6) throw Exception("GcdFileType::setDamageBonus() - type out of range: " + std::to_string(type));
-    _damageBonus.at(type) = value;    
+    _damageBonus.at(type) = value;
 }
 
 unsigned int GcdFileType::resistance(unsigned int type)

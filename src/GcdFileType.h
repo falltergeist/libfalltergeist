@@ -46,7 +46,7 @@ protected:
     // primary stats
     std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
     // bonuses to primary stats
-    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};    
+    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
     // skills
     std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     // damage
@@ -55,7 +55,7 @@ protected:
     // resistance
     std::vector<unsigned int> _resistance = {0, 0, 0, 0, 0, 0, 0};
     std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
-    
+
     // secondary stats
     unsigned int _hitPoints,
                  _actionPoints,
@@ -139,7 +139,7 @@ public:
            SKILLS_GAMBLING,
            SKILLS_OUTDOORSMAN
     };
-    
+
     enum { DAMAGE_NORMAL = 0,
            DAMAGE_LASER,
            DAMAGE_FIRE,
@@ -148,32 +148,32 @@ public:
            DAMAGE_EMP,
            DAMAGE_EXPLOSIVE
     };
-    
+
     GcdFileType(std::shared_ptr<DatFileEntry> datFileEntry);
     GcdFileType(std::ifstream* stream);
     ~GcdFileType();
 
     void setStat(unsigned int number, unsigned int value);
     unsigned int stat(unsigned int number);
-    
+
     void setStatBonus(unsigned int number, unsigned int value);
     unsigned int statBonus(unsigned int number);
 
     void setSkill(unsigned int number, unsigned int value);
     unsigned int skill(unsigned int number);
-    
+
     void setDamage(unsigned int type, unsigned int value);
     unsigned int damage(unsigned int type);
-    
+
     void setDamageBonus(unsigned int type, unsigned int value);
     unsigned int damageBonus(unsigned int type);
-    
+
     void setResistance(unsigned int type, unsigned int value);
     unsigned int resistance(unsigned int type);
-    
+
     void setResistanceBonus(unsigned int type, unsigned int value);
     unsigned int resistanceBonus(unsigned int type);
-    
+
     // secondary stats
     void setHitPoints(unsigned int hitPoints);
     unsigned int hitPoints();

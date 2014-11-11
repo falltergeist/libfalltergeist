@@ -69,7 +69,7 @@ void ProFileType::_initialize()
         case TYPE_TILE:
         case TYPE_MISC:
             break;
-    }    
+    }
 
     switch (typeId())
     {

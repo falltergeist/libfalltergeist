@@ -35,7 +35,7 @@ class DatFileEntry;
 
 class DatFileItem: public std::streambuf
 {
-protected:    
+protected:
     std::string _filename;
     std::shared_ptr<DatFileEntry> _datFileEntry;
     std::ifstream* _stream = 0;

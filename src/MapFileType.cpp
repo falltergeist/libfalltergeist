@@ -107,7 +107,7 @@ void MapFileType::_initialize()
     // SCRIPTS SECTION
     for (unsigned int i = 0; i < 5; i++)
     {
-        unsigned int count;        
+        unsigned int count;
         *this >> count;
         if (count > 0)
         {

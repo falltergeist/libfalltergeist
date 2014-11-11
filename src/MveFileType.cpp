@@ -61,7 +61,7 @@ void MveFileType::_initialize()
     const int16_t MVE_HDRCONST2 = 0x0100;
     const int16_t MVE_HDRCONST3 = 0x1133;
     int16_t check1, check2, check3;
- 
+
     char head[20];
     readBytes((char*)head,20);
 

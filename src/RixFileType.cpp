@@ -45,10 +45,10 @@ void RixFileType::_initialize()
     if (_initialized) return;
     DatFileItem::_initialize();
     DatFileItem::setPosition(0);
-    
+
     // Signature
     this->skipBytes(4);
-    
+
     this->setEndianness(RixFileType::ENDIANNESS_LITTLE);
     *this >> _width >> _height;
     this->setEndianness(RixFileType::ENDIANNESS_BIG);
@@ -66,7 +66,7 @@ void RixFileType::_initialize()
         unsigned int color = r << 26 | g << 18 | b << 10 | 0x000000FF;  // RGBA
         palette[i] = color;
     }
-    
+
     _rgba = new unsigned int[_width*_height];
     // Data
     for (int i = 0; i != _width*_height; ++i)

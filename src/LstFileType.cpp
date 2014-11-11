@@ -54,11 +54,11 @@ void LstFileType::_initialize()
         if (ch == 0x0D) // \r
         {
             // do nothing
-        }        
+        }
         else if (ch == 0x0A) // \n
         {
             _addString(line);
-            line.clear();            
+            line.clear();
         }
         else
         {

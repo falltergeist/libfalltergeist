@@ -29,7 +29,7 @@
 
 namespace libfalltergeist
 {
-    
+
 class RixFileType : public DatFileItem
 {
 protected:
