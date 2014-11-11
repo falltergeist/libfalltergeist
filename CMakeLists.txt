@@ -23,7 +23,7 @@ project( libfalltergeist )
 
 find_package(ZLIB REQUIRED)
 if(NOT ZLIB_FOUND)
-	  message(FATAL_ERROR "Zlib library not found")
+      message(FATAL_ERROR "Zlib library not found")
 endif(NOT ZLIB_FOUND)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
@@ -106,5 +106,6 @@ if(NOT LIBFALLTERGEIST_EMBEDDED)
             LIBRARY DESTINATION lib
             ARCHIVE DESTINATION lib)
 
-    install(DIRECTORY ${CMAKE_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist FILES_MATCHING PATTERN "*.h")
+    install(FILES ${CMAKE_SOURCE_DIR}/libfalltergeist.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist/)
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist/src/ FILES_MATCHING PATTERN "*.h")
 endif()
