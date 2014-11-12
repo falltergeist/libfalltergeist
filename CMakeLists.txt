@@ -23,76 +23,76 @@ project( libfalltergeist )
 
 find_package(ZLIB REQUIRED)
 if(NOT ZLIB_FOUND)
-	  message(FATAL_ERROR "Zlib library not found")
+    message(FATAL_ERROR "Zlib library not found")
 endif(NOT ZLIB_FOUND)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
 option(LIBFALLTERGEIST_EMBEDDED "Use libfalltergeist as embedded lib in other CMake project" OFF)
 
 set(SOURCES libfalltergeist.cpp
-            src/AafFileType.cpp
-            src/AafGlyph.cpp
-            src/AcmFileType.cpp
-            src/AcmFileType/Decoder.cpp
-            src/AcmFileType/Unpacker.cpp
-            src/BioFileType.cpp
-            src/DatFile.cpp
-            src/DatFileEntry.cpp
-            src/DatFileItem.cpp
-            src/Exception.cpp
-            src/FonFileType.cpp
-            src/FonGlyph.cpp
-            src/FrmFileType.cpp
-            src/GamFileType.cpp
-            src/GcdFileType.cpp
-            src/IntFileType.cpp
-            src/LipFileType.cpp
-            src/LstFileType.cpp
-            src/MapElevation.cpp
-            src/MapObject.cpp
-            src/MapFileType.cpp
-            src/MapScript.cpp
-            src/MsgFileType.cpp
-            src/MsgMessage.cpp
-            src/MveFileType.cpp
-            src/PalFileType.cpp
-            src/PalColor.cpp
-            src/ProFileType.cpp
-            src/RixFileType.cpp
-            src/SveFileType.cpp)
+    src/AafFileType.cpp
+    src/AafGlyph.cpp
+    src/AcmFileType.cpp
+    src/AcmFileType/Decoder.cpp
+    src/AcmFileType/Unpacker.cpp
+    src/BioFileType.cpp
+    src/DatFile.cpp
+    src/DatFileEntry.cpp
+    src/DatFileItem.cpp
+    src/Exception.cpp
+    src/FonFileType.cpp
+    src/FonGlyph.cpp
+    src/FrmFileType.cpp
+    src/GamFileType.cpp
+    src/GcdFileType.cpp
+    src/IntFileType.cpp
+    src/LipFileType.cpp
+    src/LstFileType.cpp
+    src/MapElevation.cpp
+    src/MapObject.cpp
+    src/MapFileType.cpp
+    src/MapScript.cpp
+    src/MsgFileType.cpp
+    src/MsgMessage.cpp
+    src/MveFileType.cpp
+    src/PalFileType.cpp
+    src/PalColor.cpp
+    src/ProFileType.cpp
+    src/RixFileType.cpp
+    src/SveFileType.cpp)
 
 set(HEADERS libfalltergeist.h
-            src/AafFileType.h
-            src/AafGlyph.h
-            src/AcmFileType.h
-            src/AcmFileType/Decoder.h
-            src/AcmFileType/General.h
-            src/AcmFileType/Unpacker.h
-            src/BioFileType.h
-            src/DatFile.h
-            src/DatFileEntry.h
-            src/DatFileItem.h
-            src/Exception.h
-            src/FonFileType.h
-            src/FonGlyph.h
-            src/FrmFileType.h
-            src/GamFileType.h
-            src/GcdFileType.h
-            src/IntFileType.h
-            src/LipFileType.h
-            src/LstFileType.h
-            src/MapElevation.h
-            src/MapObject.h
-            src/MapFileType.h
-            src/MapScript.h
-            src/MsgFileType.h
-            src/MsgMessage.h
-            src/MveFileType.h
-            src/PalFileType.h
-            src/PalColor.h
-            src/ProFileType.h
-            src/RixFileType.h
-            src/SveFileType.h)
+    src/AafFileType.h
+    src/AafGlyph.h
+    src/AcmFileType.h
+    src/AcmFileType/Decoder.h
+    src/AcmFileType/General.h
+    src/AcmFileType/Unpacker.h
+    src/BioFileType.h
+    src/DatFile.h
+    src/DatFileEntry.h
+    src/DatFileItem.h
+    src/Exception.h
+    src/FonFileType.h
+    src/FonGlyph.h
+    src/FrmFileType.h
+    src/GamFileType.h
+    src/GcdFileType.h
+    src/IntFileType.h
+    src/LipFileType.h
+    src/LstFileType.h
+    src/MapElevation.h
+    src/MapObject.h
+    src/MapFileType.h
+    src/MapScript.h
+    src/MsgFileType.h
+    src/MsgMessage.h
+    src/MveFileType.h
+    src/PalFileType.h
+    src/PalColor.h
+    src/ProFileType.h
+    src/RixFileType.h
+    src/SveFileType.h)
 
 add_definitions (-std=c++11 -Wall)
 set(CMAKE_BUILD_TYPE Debug)
@@ -102,9 +102,9 @@ target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
 
 if(NOT LIBFALLTERGEIST_EMBEDDED)
     install(TARGETS falltergeist
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
-            ARCHIVE DESTINATION lib)
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
 
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist FILES_MATCHING PATTERN "*.h")
 endif()
