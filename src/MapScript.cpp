@@ -27,9 +27,8 @@
 namespace libfalltergeist
 {
 
-MapScript::MapScript(int PID)
+MapScript::MapScript()
 {
-    _PID = PID;
 }
 
 MapScript::~MapScript()
@@ -39,6 +38,11 @@ MapScript::~MapScript()
 int MapScript::PID()
 {
     return _PID;
+}
+
+void MapScript::setPID(int PID)
+{
+    _PID = PID;
 }
 
 int MapScript::scriptId()

@@ -45,6 +45,8 @@ protected:
 
     std::vector<std::shared_ptr<MapElevation>> _elevations;
     std::vector<std::shared_ptr<MapScript>> _scripts;
+    std::vector<int> _MVARS;
+    std::vector<int> _LVARS;
     unsigned int _version;
     std::string _name;
     unsigned int _defaultPosition;
@@ -52,10 +54,10 @@ protected:
     unsigned int _defaultOrientaion;
     unsigned int _MVARsize;
     unsigned int _LVARsize;
-    unsigned int _elevationsFlag;
+    unsigned int _elevationFlags;
     unsigned int _mapId;
-    unsigned int _timeTicks;
-    unsigned int _unknown1;
+    unsigned int _timeSinceEpoch;
+    int _unknown1;
 
     int _scriptId = -1;
 
@@ -71,15 +73,25 @@ public:
     MapFileType* setCallback(ProFileTypeLoaderCallback callback);
     ProFileTypeLoaderCallback callback();
 
+    unsigned int version();
+
     std::vector<std::shared_ptr<MapElevation>>* elevations();
+    std::vector<std::shared_ptr<MapScript>>* scripts();
     unsigned int defaultPosition();
     unsigned int defaultElevation();
     unsigned int defaultOrientation();
     int scriptId();
 
-    unsigned int MVARsize();
-    unsigned int LVARsize();
     std::string name();
+
+    unsigned int elevationFlags();
+    int unknown1();
+    unsigned int mapId();
+    unsigned int timeSinceEpoch();
+
+    std::vector<int>* LVARS();
+    std::vector<int>* MVARS();
+
 };
 
 

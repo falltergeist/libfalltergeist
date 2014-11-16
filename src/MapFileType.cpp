@@ -54,33 +54,35 @@ void MapFileType::_initialize()
 
     *this >> _version;
 
-    _name.resize(16);
-    this->readBytes(&_name[0], 16);
+    char name[16];
+    this->readBytes(name, 16);
+    _name = name;
     std::transform(_name.begin(),_name.end(),_name.begin(), ::tolower);
 
-    *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion >> _LVARsize >> _scriptId >> _elevationsFlag;
+    *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion >> _LVARsize >> _scriptId >> _elevationFlags;
 
     unsigned int elevations = 0;
-    if ((_elevationsFlag & 2) == 0) elevations++;
-    if ((_elevationsFlag & 4) == 0) elevations++;
-    if ((_elevationsFlag & 8) == 0) elevations++;
+    if ((_elevationFlags & 2) == 0) elevations++;
+    if ((_elevationFlags & 4) == 0) elevations++;
+    if ((_elevationFlags & 8) == 0) elevations++;
 
-    *this >> _unknown1 >> _MVARsize >> _mapId >> _timeTicks;
+    *this >> _unknown1 >> _MVARsize >> _mapId >> _timeSinceEpoch;
 
     this->skipBytes(4*44); // unkonwn
 
     // MVAR AND SVAR SECTION
     for (unsigned int i = 0; i != _MVARsize; ++i)
     {
-        unsigned int value;
+        int value;
         *this >> value;
+        _MVARS.push_back(value);
     }
 
     for (unsigned int i = 0; i != _LVARsize; ++i)
     {
-        unsigned int value;
+        int value;
         *this >> value;
-        // just skip for now... maybe will be used in future
+        _LVARS.push_back(value);
     }
 
     // TILES SECTION
@@ -113,7 +115,10 @@ void MapFileType::_initialize()
                     int PID;
                     *this >> PID;
 
-                    auto script = std::shared_ptr<MapScript>(new MapScript(PID));
+
+
+                    auto script = std::shared_ptr<MapScript>(new MapScript());
+                    script->setPID(PID);
                     this->skipBytes(4); // unknown1
 
                     switch ((PID & 0xFF000000) >> 24)
@@ -367,6 +372,12 @@ ProFileTypeLoaderCallback MapFileType::callback()
     return _proFileTypeLoaderCallback;
 }
 
+unsigned int MapFileType::version()
+{
+    _initialize();
+    return _version;
+}
+
 unsigned int MapFileType::defaultPosition()
 {
     _initialize();
@@ -390,19 +401,44 @@ int MapFileType::scriptId()
     return _scriptId;
 }
 
-unsigned int MapFileType::MVARsize()
-{
-    return _MVARsize;
-}
-
-unsigned int MapFileType::LVARsize()
-{
-    return _LVARsize;
-}
-
 std::string MapFileType::name()
 {
     return _name;
+}
+
+unsigned int MapFileType::elevationFlags()
+{
+    return _elevationFlags;
+}
+
+int MapFileType::unknown1()
+{
+    return _unknown1;
+}
+
+unsigned int MapFileType::mapId()
+{
+    return _mapId;
+}
+
+unsigned int MapFileType::timeSinceEpoch()
+{
+    return _timeSinceEpoch;
+}
+
+std::vector<int>* MapFileType::LVARS()
+{
+    return &_LVARS;
+}
+
+std::vector<int>* MapFileType::MVARS()
+{
+    return &_MVARS;
+}
+
+std::vector<std::shared_ptr<MapScript>>* MapFileType::scripts()
+{
+    return &_scripts;
 }
 
 }

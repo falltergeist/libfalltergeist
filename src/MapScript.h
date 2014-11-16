@@ -51,10 +51,11 @@ protected:
         _unknown16;
     int _scriptId;
 public:
-    MapScript(int PID);
+    MapScript();
     ~MapScript();
 
     int PID();
+    void setPID(int PID);
     int scriptId();
     void setScriptId(int value);
 };
