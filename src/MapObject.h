@@ -59,6 +59,11 @@ protected:
     unsigned int _unknown11;
     unsigned int _unknown12;
     unsigned int _unknown13;
+    int _exitPosition;
+    int _exitOrientation;
+    int _exitElevation;
+    int _exitMap;
+
     int _mapScriptId = -1;
     int _scriptId = -1;
     int _hexPosition = -1;
@@ -125,6 +130,14 @@ public:
     void setUnknown12(unsigned int value);
     unsigned int unknown13();
     void setUnknown13(unsigned int value);
+    int exitMap();
+    void setExitMap(int value);
+    int exitPosition();
+    void setExitPosition(int value);
+    int exitElevation();
+    void setExitElevation(int value);
+    int exitOrientation();
+    void setExitOrientation(int value);
 
     std::vector<std::shared_ptr<MapObject>>* children();
 };

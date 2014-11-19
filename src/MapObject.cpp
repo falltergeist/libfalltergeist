@@ -331,4 +331,44 @@ void MapObject::setUnknown13(unsigned int value)
     _unknown13 = value;
 }
 
+int MapObject::exitMap()
+{
+    return _exitMap;
+}
+
+void MapObject::setExitMap(int value)
+{
+    _exitMap = value;
+}
+
+int MapObject::exitPosition()
+{
+    return _exitPosition;
+}
+
+void MapObject::setExitPosition(int value)
+{
+    _exitPosition = value;
+}
+
+int MapObject::exitElevation()
+{
+    return _exitElevation;
+}
+
+void MapObject::setExitElevation(int value)
+{
+    _exitElevation = value;
+}
+
+int MapObject::exitOrientation()
+{
+    return _exitOrientation;
+}
+
+void MapObject::setExitOrientation(int value)
+{
+    _exitOrientation = value;
+}
+
 }

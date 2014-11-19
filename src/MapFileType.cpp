@@ -19,6 +19,7 @@
 
 // C++ standard includes
 #include <algorithm>
+#include <iostream>
 
 // libfalltergeist includes
 #include "../src/MapFileType.h"
@@ -342,7 +343,25 @@ std::shared_ptr<MapObject> MapFileType::_readObject()
         case ProFileType::TYPE_MISC:
             switch(object->objectId())
             {
-                case 0xC:
+                case 12:
+                    break;
+                // Exit Grids
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                    *this >> int32;
+                    object->setExitMap(int32);
+                    *this >> int32;
+                    object->setExitPosition(int32);
+                    *this >> int32;
+                    object->setExitElevation(int32);
+                    *this >> int32;
+                    object->setExitOrientation(int32);
                     break;
                 default:
                     this->skipBytes(4*4);
