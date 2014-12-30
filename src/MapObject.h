@@ -34,6 +34,7 @@ namespace libfalltergeist
 class MapObject
 {
 protected:
+    unsigned int _ammount = 0;
     unsigned int _unknown1;
     unsigned int _unknown2;
     unsigned int _unknown3;
@@ -72,6 +73,8 @@ public:
     MapObject();
     ~MapObject();
 
+    unsigned int ammount();
+    void setAmmount(unsigned int value);
     unsigned int unknown1();
     void setUnknown1(unsigned int value);
     int hexPosition();

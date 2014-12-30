@@ -371,4 +371,14 @@ void MapObject::setExitOrientation(int value)
     _exitOrientation = value;
 }
 
+unsigned int MapObject::ammount()
+{
+    return _ammount;
+}
+
+void MapObject::setAmmount(unsigned int value)
+{
+    _ammount = value;
+}
+
 }

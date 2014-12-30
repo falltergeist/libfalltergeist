@@ -191,8 +191,11 @@ void MapFileType::_initialize()
             {
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
-                    this->skipBytes(4);  // items count ?
+                    unsigned int ammount;
+                    *this >> ammount;
+
                     auto subobject = _readObject();
+                    subobject->setAmmount(ammount);
                     object->children()->push_back(subobject);
                 }
             }
