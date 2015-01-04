@@ -21,15 +21,34 @@ cmake_minimum_required( VERSION 2.8 )
 
 project( libfalltergeist )
 
+set(libfalltergeist_MAJOR_VERSION "0")
+set(libfalltergeist_MINOR_VERSION "2")
+set(libfalltergeist_PATCH_VERSION "7")
+
+set(libfalltergeist_VERSION_STRING "${libfalltergeist_MAJOR_VERSION}.${libfalltergeist_MINOR_VERSION}.${libfalltergeist_PATCH_VERSION}")
+
+# On Windows debug library should have 'd' postfix.
+# On Mac OS X '_debug' postfix
+if(WIN32)
+  set(CMAKE_DEBUG_POSTFIX "d")
+elseif(APPLE)
+  set(CMAKE_DEBUG_POSTFIX "_debug")
+endif(WIN32)
+
+# BUILD_SHARED_LIBS is cmake variable. Need to change default value.
+option(BUILD_SHARED_LIBS "Build shared library" ON)
+
+#add extra search paths for libraries and includes
+set(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)" )
+set(BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE STRING "Directory where binary will install")
+set(LIB_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING "Directory where library will install")
+set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The directory the headers are installed in")
+
 find_package(ZLIB REQUIRED)
-if(NOT ZLIB_FOUND)
-    message(FATAL_ERROR "Zlib library not found")
-endif(NOT ZLIB_FOUND)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
-option(LIBFALLTERGEIST_EMBEDDED "Use libfalltergeist as embedded lib in other CMake project" OFF)
-
-set(SOURCES libfalltergeist.cpp
+set(SOURCES
+    src/libfalltergeist.cpp
     src/AafFileType.cpp
     src/AafGlyph.cpp
     src/AcmFileType.cpp
@@ -61,7 +80,8 @@ set(SOURCES libfalltergeist.cpp
     src/RixFileType.cpp
     src/SveFileType.cpp)
 
-set(HEADERS libfalltergeist.h
+set(HEADERS
+    src/libfalltergeist.h
     src/AafFileType.h
     src/AafGlyph.h
     src/AcmFileType.h
@@ -95,17 +115,26 @@ set(HEADERS libfalltergeist.h
     src/SveFileType.h)
 
 add_definitions (-std=c++11 -Wall)
-set(CMAKE_BUILD_TYPE Debug)
 
-add_library( falltergeist SHARED ${SOURCES})
+add_library( falltergeist ${SOURCES})
 target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
+
+if(NOT ANDROID)
+  set_target_properties(falltergeist PROPERTIES
+                        VERSION ${libfalltergeist_MAJOR_VERSION}.${libfalltergeist_MINOR_VERSION}.${libfalltergeist_PATCH_VERSION}
+                        SOVERSION ${libfalltergeist_MAJOR_VERSION})
+endif()
+
+set_target_properties(falltergeist PROPERTIES
+                      PUBLIC_HEADER "${HEADERS}")
 
 if(NOT LIBFALLTERGEIST_EMBEDDED)
     install(TARGETS falltergeist
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
-
-    install(FILES ${CMAKE_SOURCE_DIR}/libfalltergeist.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist/)
-    install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/falltergeist/src/ FILES_MATCHING PATTERN "*.h")
+        LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+        RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+        ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
+        PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/falltergeist")
+else()
+  # Build libfalltergeist as static lib only when is used as bundled
+  set(BUILD_SHARED_LIBS OFF)
 endif()
