@@ -164,4 +164,9 @@ std::map<unsigned int, std::string>* IntFileType::strings()
     return &_strings;
 }
 
+std::map<unsigned int, std::string>* IntFileType::functions()
+{
+    return &_functions;
+}
+
 }

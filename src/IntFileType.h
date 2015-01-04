@@ -51,6 +51,7 @@ public:
 
     std::map<unsigned int, std::string>* identificators();
     std::map<unsigned int, std::string>* strings();
+    std::map<unsigned int, std::string>* functions();
 };
 
 }
