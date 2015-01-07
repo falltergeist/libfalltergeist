@@ -56,7 +56,7 @@ protected:
     virtual void _initialize();
     bool _animatedPalette;
 public:
-    enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_BACKGROUND, TYPE_INTERFACE, TYPE_INVENTORY };
+    enum { TYPE_ITEM = 0, TYPE_CRITTER, TYPE_SCENERY, TYPE_WALL, TYPE_TILE, TYPE_MISC, TYPE_INTERFACE, TYPE_INVENTORY };
 
     enum {
         MASK_SLIME = 0,
