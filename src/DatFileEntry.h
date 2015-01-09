@@ -45,22 +45,22 @@ public:
     DatFileEntry(DatFile* datFile);
     ~DatFileEntry();
 
-    std::string filename();
+    std::string filename() const;
     void setFilename(std::string value);
 
-    unsigned int packedSize();
+    unsigned int packedSize() const;
     void setPackedSize(unsigned int value);
 
-    unsigned int unpackedSize();
+    unsigned int unpackedSize() const;
     void setUnpackedSize(unsigned int value);
 
-    unsigned int dataOffset();
+    unsigned int dataOffset() const;
     void setDataOffset(unsigned int value);
 
-    bool compressed();
+    bool compressed() const;
     void setCompressed(bool value);
 
-    DatFile* datFile();
+    DatFile* datFile() const;
 
 };
 
