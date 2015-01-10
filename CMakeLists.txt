@@ -47,6 +47,10 @@ set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The direct
 find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
+# Check that current CMakeLists.txt is invoked from another one
+# If true don't install the library and build as static
+get_directory_property(LIBFALLTERGEIST_EMBEDDED PARENT_DIRECTORY)
+
 set(SOURCES
     src/libfalltergeist.cpp
     src/AafFileType.cpp
