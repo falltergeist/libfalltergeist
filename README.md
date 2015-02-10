@@ -1,4 +1,4 @@
-libfalltergeist [![build status](https://secure.travis-ci.org/alexeevdv/libfalltergeist.png)](http://travis-ci.org/alexeevdv/libfalltergeist)
+libfalltergeist [![build status](https://secure.travis-ci.org/falltergeist/libfalltergeist.png)](http://travis-ci.org/falltergeist/libfalltergeist)
 ===============
 
 C++ library which allows to work with Fallout(tm) game data files
