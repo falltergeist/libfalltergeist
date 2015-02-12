@@ -61,7 +61,7 @@ void FrmFileType::_initialize()
     }
 
     // for each direction
-    for (unsigned int i = 0; i!= _directions; ++i)
+    for (unsigned int i = 0; i != _directions; ++i)
     {
         // jump to frames data at frames area
         DatFileItem::setPosition(_dataOffset[i] + 62);
@@ -202,21 +202,25 @@ unsigned int* FrmFileType::rgba(std::shared_ptr<PalFileType> palFile)
 
 int FrmFileType::offsetX(unsigned int direction, unsigned int frame)
 {
+    if (direction >= _directions) direction = 0;
     return _offsetX[direction].at(frame);
 }
 
 int FrmFileType::offsetY(unsigned int direction, unsigned int frame)
 {
+    if (direction >= _directions) direction = 0;
     return _offsetY[direction].at(frame);
 }
 
 int FrmFileType::shiftX(unsigned int direction)
 {
+    if (direction >= _directions) direction = 0;
     return _shiftX[direction];
 }
 
 int FrmFileType::shiftY(unsigned int direction)
 {
+    if (direction >= _directions) direction = 0;
     return _shiftY[direction];
 }
 
