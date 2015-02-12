@@ -3,6 +3,7 @@ CMakeLists.txt.user
 CMakeCache.txt
 Makefile
 *.so
+*.so.*
 *.cbp
 cmake_install.cmake
 .idea/
