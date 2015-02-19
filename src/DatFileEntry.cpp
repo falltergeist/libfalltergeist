@@ -38,7 +38,7 @@ DatFileEntry::~DatFileEntry()
 {
 }
 
-std::string DatFileEntry::filename()
+std::string DatFileEntry::filename() const
 {
     return _filename;
 }
@@ -50,7 +50,7 @@ void DatFileEntry::setFilename(std::string value)
     _filename = value;
 }
 
-unsigned int DatFileEntry::packedSize()
+unsigned int DatFileEntry::packedSize() const
 {
     return _packedSize;
 }
@@ -60,7 +60,7 @@ void DatFileEntry::setPackedSize(unsigned int value)
     _packedSize = value;
 }
 
-unsigned int DatFileEntry::unpackedSize()
+unsigned int DatFileEntry::unpackedSize() const
 {
     return _unpackedSize;
 }
@@ -70,7 +70,7 @@ void DatFileEntry::setUnpackedSize(unsigned int value)
     _unpackedSize = value;
 }
 
-unsigned int DatFileEntry::dataOffset()
+unsigned int DatFileEntry::dataOffset() const
 {
     return _dataOffset;
 }
@@ -80,7 +80,7 @@ void DatFileEntry::setDataOffset(unsigned int value)
     _dataOffset = value;
 }
 
-bool DatFileEntry::compressed()
+bool DatFileEntry::compressed() const
 {
     return _compressed;
 }
@@ -90,7 +90,7 @@ void DatFileEntry::setCompressed(bool value)
     _compressed = value;
 }
 
-DatFile* DatFileEntry::datFile()
+DatFile* DatFileEntry::datFile() const
 {
     return _datFile;
 }
