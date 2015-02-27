@@ -89,7 +89,7 @@ void IntFileType::_initialize()
             *this >> ch;
             if (ch != 0) name.push_back(ch);
         }
-        _identificators.insert(std::make_pair(nameOffset, name)); // names of functions and variables
+        _identifiers.insert(std::make_pair(nameOffset, name)); // names of functions and variables
         // @todo Delete this line
         //std::cout << "Identificator: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
     }
@@ -98,7 +98,7 @@ void IntFileType::_initialize()
 
     for (auto it = functions.begin(); it != functions.end(); ++it)
     {
-        _functions.insert(std::make_pair( it->second, _identificators.at(it->first))); // to access functions by name
+        _functions.insert(std::make_pair( it->second, _identifiers.at(it->first))); // to access functions by name
     }
 
 
@@ -154,9 +154,9 @@ unsigned int IntFileType::function(unsigned int index)
     }
 }
 
-std::map<unsigned int, std::string>* IntFileType::identificators()
+std::map<unsigned int, std::string>* IntFileType::identifiers()
 {
-    return &_identificators;
+    return &_identifiers;
 }
 
 std::map<unsigned int, std::string>* IntFileType::strings()

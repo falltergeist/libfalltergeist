@@ -38,7 +38,7 @@ class IntFileType : public DatFileItem
 protected:
     std::map<unsigned int, std::string> _functions;
     std::vector<unsigned int> _functionsOffsets;
-    std::map<unsigned int, std::string> _identificators;
+    std::map<unsigned int, std::string> _identifiers;
     std::map<unsigned int, std::string> _strings;
     virtual void _initialize();
 public:
@@ -49,7 +49,7 @@ public:
     unsigned int function(std::string name);
     unsigned int function(unsigned int index);
 
-    std::map<unsigned int, std::string>* identificators();
+    std::map<unsigned int, std::string>* identifiers();
     std::map<unsigned int, std::string>* strings();
     std::map<unsigned int, std::string>* functions();
 };
