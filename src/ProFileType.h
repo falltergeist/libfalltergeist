@@ -155,6 +155,7 @@ public:
     unsigned int weaponAmmoType();
     unsigned int weaponAmmoPID();
     unsigned int weaponAmmoCapacity();
+    unsigned char soundId() const;
 
 
 };

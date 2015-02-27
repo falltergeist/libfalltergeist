@@ -505,6 +505,11 @@ unsigned int ProFileType::weaponAmmoCapacity()
     return _weaponAmmoCapacity;
 }
 
+unsigned char ProFileType::soundId() const
+{
+    return _soundId;
+}
+
 unsigned int ProFileType::inventoryFID()
 {
     return _inventoryFID;
