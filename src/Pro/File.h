@@ -130,7 +130,7 @@ protected:
     unsigned int _flags;
     unsigned int _flagsExt;
 
-    int _SID;
+    int _SID = -1;
 
     unsigned int _materialId;
     unsigned int _containerSize;
