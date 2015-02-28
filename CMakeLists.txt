@@ -22,8 +22,8 @@ cmake_minimum_required( VERSION 2.8 )
 project( libfalltergeist )
 
 set(libfalltergeist_MAJOR_VERSION "0")
-set(libfalltergeist_MINOR_VERSION "2")
-set(libfalltergeist_PATCH_VERSION "7")
+set(libfalltergeist_MINOR_VERSION "3")
+set(libfalltergeist_PATCH_VERSION "0")
 
 set(libfalltergeist_VERSION_STRING "${libfalltergeist_MAJOR_VERSION}.${libfalltergeist_MINOR_VERSION}.${libfalltergeist_PATCH_VERSION}")
 
@@ -47,76 +47,12 @@ set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The direct
 find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
-set(SOURCES
-    src/libfalltergeist.cpp
-    src/AafFileType.cpp
-    src/AafGlyph.cpp
-    src/AcmFileType.cpp
-    src/AcmFileType/Decoder.cpp
-    src/AcmFileType/Unpacker.cpp
-    src/BioFileType.cpp
-    src/DatFile.cpp
-    src/DatFileEntry.cpp
-    src/DatFileItem.cpp
-    src/Exception.cpp
-    src/FonFileType.cpp
-    src/FonGlyph.cpp
-    src/FrmFileType.cpp
-    src/GamFileType.cpp
-    src/GcdFileType.cpp
-    src/IntFileType.cpp
-    src/LipFileType.cpp
-    src/LstFileType.cpp
-    src/MapElevation.cpp
-    src/MapObject.cpp
-    src/MapFileType.cpp
-    src/MapScript.cpp
-    src/MsgFileType.cpp
-    src/MsgMessage.cpp
-    src/MveFileType.cpp
-    src/PalFileType.cpp
-    src/PalColor.cpp
-    src/ProFileType.cpp
-    src/RixFileType.cpp
-    src/SveFileType.cpp)
-
-set(HEADERS
-    src/libfalltergeist.h
-    src/AafFileType.h
-    src/AafGlyph.h
-    src/AcmFileType.h
-    src/AcmFileType/Decoder.h
-    src/AcmFileType/General.h
-    src/AcmFileType/Unpacker.h
-    src/BioFileType.h
-    src/DatFile.h
-    src/DatFileEntry.h
-    src/DatFileItem.h
-    src/Exception.h
-    src/FonFileType.h
-    src/FonGlyph.h
-    src/FrmFileType.h
-    src/GamFileType.h
-    src/GcdFileType.h
-    src/IntFileType.h
-    src/LipFileType.h
-    src/LstFileType.h
-    src/MapElevation.h
-    src/MapObject.h
-    src/MapFileType.h
-    src/MapScript.h
-    src/MsgFileType.h
-    src/MsgMessage.h
-    src/MveFileType.h
-    src/PalFileType.h
-    src/PalColor.h
-    src/ProFileType.h
-    src/RixFileType.h
-    src/SveFileType.h)
-
 add_definitions (-std=c++11 -Wall)
 
-add_library( falltergeist ${SOURCES})
+FILE(GLOB_RECURSE SOURCES  src/*.cpp)
+FILE(GLOB_RECURSE HEADERS  src/*.h)
+
+add_library(falltergeist ${SOURCES} ${HEADERS})
 target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
 
 if(NOT ANDROID)
