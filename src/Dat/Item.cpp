@@ -226,5 +226,43 @@ unsigned int Item::bytesRemains()
     return size() - position();
 }
 
+uint32_t Item::uint32()
+{
+    uint32_t value;
+    *this >> value;
+    return value;
+}
+
+int32_t Item::int32()
+{
+    return uint32();
+}
+
+uint16_t Item::uint16()
+{
+    uint16_t value;
+    *this >> value;
+    return value;
+}
+
+int16_t Item::int16()
+{
+    return uint16();
+}
+
+uint8_t Item::uint8()
+{
+    uint8_t value;
+    *this >> value;
+    return value;
+}
+
+int8_t Item::int8()
+{
+    return uint8();
+}
+
+
+
 }
 }

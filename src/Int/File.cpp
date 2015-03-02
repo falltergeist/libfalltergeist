@@ -21,6 +21,7 @@
 
 // libfalltergeist includes
 #include "../Int/File.h"
+#include "../Int/Procedure.h"
 #include "../Exception.h"
 
 // Third party includes
@@ -40,6 +41,10 @@ File::File(std::ifstream* stream) : Dat::Item(stream)
 
 File::~File()
 {
+    for (auto procedure : _procedures)
+    {
+        delete procedure;
+    }
 }
 
 void File::_initialize()
@@ -48,111 +53,73 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-
-    // FUNCTIONS TABLE
+    // Initialization code goes here
     setPosition(42);
-    unsigned int tableSize;
-    *this >> tableSize;
 
-    // @todo Delete this line
-    //std::cout << std::hex << this->position() << " Functions table size: " << std::dec << tableSize << std::endl;
+    // Procedures table
+    uint32_t proceduresCount = uint32();
 
-    std::map<unsigned int, unsigned int> functions;
-    for (unsigned int i = 0; i != tableSize; ++i)
+    std::vector<uint32_t> procedureNameOffsets;
+
+    for (unsigned i = 0; i != proceduresCount; ++i)
     {
-        unsigned int nameOffset;
-        unsigned int entryPoint;
-        *this >> nameOffset;
-        skipBytes(12);
-        *this >> entryPoint;
-        skipBytes(4);
-        functions.insert(std::make_pair(nameOffset, entryPoint));
-        _functionsOffsets.push_back(entryPoint); // to find function entry point by number
-        // @todo Delete this line
-        //std::cout << "Function: nameOffset - 0x"<< std::hex << nameOffset << " entryPoint - " << entryPoint << std::endl;
+        auto procedure = new Procedure();
+
+        procedureNameOffsets.push_back(uint32());
+        procedure->setFlags(uint32());
+        procedure->setDelay(uint32());
+        procedure->setConditionOffset(uint32());
+        procedure->setBodyOffset(uint32());
+        procedure->setArgumentsCounter(uint32());
+
+        _procedures.push_back(procedure);
     }
 
-    // IDENTIFICATORS TABLE
-    *this >> tableSize;
-    // @todo Delete this line
-    //std::cout << std::hex << this->position() <<  "Identificators table size: " << std::dec << tableSize << std::endl;
-
-    unsigned int j = 0;
+    // Identificators table
+    uint32_t tableSize = uint32();
+    unsigned j = 0;
     while (j < tableSize)
     {
-        unsigned short length;
-        std::string name;
-        *this >> length;
+        uint16_t nameLength = uint16();
         j += 2;
-        unsigned int nameOffset = j + 4;
-        for (unsigned int i = 0; i != length; ++i, ++j)
+
+        uint32_t nameOffset = j + 4;
+        std::string name;
+        for (unsigned i = 0; i != nameLength; ++i, ++j)
         {
-            unsigned char ch;
-            *this >> ch;
+            uint8_t ch = uint8();
             if (ch != 0) name.push_back(ch);
         }
+
         _identifiers.insert(std::make_pair(nameOffset, name)); // names of functions and variables
-        // @todo Delete this line
-        //std::cout << "Identificator: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
     }
 
     this->skipBytes(4); // signature 0xFFFFFFFF
 
-    for (auto it = functions.begin(); it != functions.end(); ++it)
+    for (unsigned i = 0; i != procedureNameOffsets.size(); ++i)
     {
-        _functions.insert(std::make_pair( it->second, _identifiers.at(it->first))); // to access functions by name
+        _procedures.at(i)->setName(_identifiers.at(procedureNameOffsets.at(i)));
     }
-
 
     // STRINGS TABLE
+    uint32_t stringsTable = uint32();
 
-    *this >> tableSize;
-
-    if (tableSize != 0xFFFFFFFF)
+    if (stringsTable != 0xFFFFFFFF)
     {
-        // @todo Delete this line
-        //std::cout << std::hex << this->position() <<  "Strings table size: " << std::dec << tableSize << std::endl;
-        unsigned int j = 0;
-        while (j < tableSize)
+        uint32_t j = 0;
+        while (j < stringsTable)
         {
-            unsigned short length;
-            std::string name;
-            *this >> length;
+            uint16_t length = uint16();
             j += 2;
-            unsigned int nameOffset = j + 4;
-            for (unsigned int i = 0; i != length; ++i, ++j)
+            uint32_t nameOffset = j + 4;
+            std::string name;
+            for (unsigned i = 0; i != length; ++i, ++j)
             {
-                unsigned char ch;
-                *this >> ch;
+                uint8_t ch = uint8();
                 if (ch != 0) name.push_back(ch);
             }
-
             _strings.insert(std::make_pair(nameOffset, name));
-
-            // @todo Delete this line
-            //std::cout << "String: 0x"<< std::hex << nameOffset << " - " << name << std::endl;
         }
-    }
-}
-
-unsigned int File::function(std::string name)
-{
-    for (auto it = _functions.begin(); it != _functions.end(); ++it)
-    {
-        if (it->second == name) return it->first;
-    }
-    throw Exception("File::function(string) - function not found: " + name);
-}
-
-unsigned int File::function(unsigned int index)
-{
-    try
-    {
-        return _functionsOffsets.at(index);
-    }
-    catch (...)
-    {
-        throw Exception("File::function(int) - function not found: " + std::to_string(index));
     }
 }
 
@@ -166,10 +133,23 @@ std::map<unsigned int, std::string>* File::strings()
     return &_strings;
 }
 
-std::map<unsigned int, std::string>* File::functions()
+std::vector<Procedure*>* File::procedures()
 {
-    return &_functions;
+    return &_procedures;
 }
+
+Procedure* File::procedure(std::string name)
+{
+    for (auto procedure : _procedures)
+    {
+        if (procedure->name() == name)
+        {
+            return procedure;
+        }
+    }
+    return 0;
+}
+
 
 }
 }
