@@ -62,7 +62,7 @@ protected:
     unsigned short _framesPerDirection;
     unsigned short _actionFrame;
     virtual void _initialize();
-    bool _animatedPalette;
+    bool _animatedPalette = false;
 public:
 
     enum {
