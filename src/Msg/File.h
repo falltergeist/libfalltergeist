@@ -37,17 +37,17 @@ class Message;
 
 class File : public Dat::Item
 {
-protected:
-    std::vector<std::shared_ptr<Message>> _messages;
-    virtual void _initialize();
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
-    std::vector<std::shared_ptr<Message>>* messages();
+    std::vector<Message*>* messages();
+    Message* message(unsigned int number);
 
-    std::shared_ptr<Message> message(unsigned int number);
+protected:
+    std::vector<Message*> _messages;
+    virtual void _initialize();
 
 };
 

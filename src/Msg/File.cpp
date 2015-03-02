@@ -35,14 +35,20 @@ namespace Msg
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
 {
+    for (auto message : _messages)
+    {
+        delete message;
+    }
 }
 
 void File::_initialize()
@@ -51,60 +57,61 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-    unsigned int i = 0;
-    unsigned char chr = 0;
-    while (chr != '{' && i < this->size())
+    /*
+     * Because of bug in CMBATAI2.MSG in messages #1382 and #32020 we need to explode each line with '{' symbol
+     * Any extra '}' symbols must be trimed from exploded parts
+     */
+
+    while (this->position() < this->size())
     {
-        *this >> chr;
-        i++;
+        uint8_t chr = uint8();
         if (chr == '{')
         {
             std::string number;
             std::string sound;
             std::string text;
-
+            chr = 0;
             // number
-            while (chr != '}')
+            while (chr != '{')
             {
-                *this >> chr;
-                i++;
-                if (chr != '}') number += chr;
+                chr = uint8();
+                if (chr != '{' && chr != '}')
+                {
+                    number += chr;
+                }
             }
 
             // sound
+            chr = 0;
             while (chr != '{')
             {
-                *this >> chr;
-                i++;
+                chr = uint8();
+                if (chr != '{' && chr != '}')
+                {
+                    sound += chr;
+                }
             }
 
-            while (chr != '}')
-            {
-                *this >> chr;
-                i++;
-                if (chr != '}') sound += chr;
-            }
-
+            chr = 0;
             // text
-            while (chr != '{')
+            while (chr != '}' && chr != '{' && this->position() < this->size())
             {
-                *this >> chr;
-                i++;
+                chr = uint8();
+                if (chr != '{' && chr != '}')
+                {
+                    text += chr;
+                }
             }
 
-            while (chr != '}')
-            {
-                *this >> chr;
-                i++;
-                if (chr != '}') text += chr;
-            }
+            // "put back" last character
+            this->setPosition(this->position() - 1);
 
             while (text.find("\n") != std::string::npos)
             {
                 text.replace(text.find("\n"), 1, "");
             }
 
-            auto message = std::shared_ptr<Message>(new Message());
+            auto message = new Message();
             message->setNumber(std::stoi(number));
             message->setSound(sound);
             message->setText(text);
@@ -113,15 +120,13 @@ void File::_initialize()
     }
 }
 
-std::vector<std::shared_ptr<Message>>* File::messages()
+std::vector<Message*>* File::messages()
 {
-    _initialize();
     return &_messages;
 }
 
-std::shared_ptr<Message> File::message(unsigned int number)
+Message* File::message(unsigned int number)
 {
-    _initialize();
     for (auto message : _messages)
     {
         if (message->number() == number)
