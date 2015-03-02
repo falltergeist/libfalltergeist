@@ -34,26 +34,28 @@ namespace libfalltergeist
 {
 namespace Int
 {
+class Procedure;
 
 class File : public Dat::Item
 {
-protected:
-    std::map<unsigned int, std::string> _functions;
-    std::vector<unsigned int> _functionsOffsets;
-    std::map<unsigned int, std::string> _identifiers;
-    std::map<unsigned int, std::string> _strings;
-    virtual void _initialize();
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream * stream);
     virtual ~File();
 
-    unsigned int function(std::string name);
-    unsigned int function(unsigned int index);
+    std::vector<Procedure*>* procedures();
+    Procedure* procedure(std::string name);
 
     std::map<unsigned int, std::string>* identifiers();
     std::map<unsigned int, std::string>* strings();
-    std::map<unsigned int, std::string>* functions();
+protected:
+    std::vector<Procedure*> _procedures;
+
+    std::map<unsigned int, std::string> _functions;
+    std::vector<unsigned int> _functionsOffsets;
+    std::map<unsigned int, std::string> _identifiers;
+    std::map<unsigned int, std::string> _strings;
+    virtual void _initialize();
 };
 
 }

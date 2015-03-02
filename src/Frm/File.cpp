@@ -168,31 +168,6 @@ uint16_t File::height()
     return height;
 }
 
-uint16_t File::width(unsigned int direction, unsigned int frame)
-{
-    _initialize();
-    return _directions.at(direction)->frames()->at(frame)->width();
-}
-
-uint16_t File::height(unsigned int direction)
-{
-    _initialize();
-    return _directions.at(direction)->height();
-}
-
-uint16_t File::width(unsigned int direction)
-{
-    _initialize();
-    return _directions.at(direction)->width();
-}
-
-
-uint16_t File::height(unsigned int direction, unsigned int frame)
-{
-    _initialize();
-    return _directions.at(direction)->frames()->at(frame)->height();
-}
-
 unsigned int* File::rgba(std::shared_ptr<Pal::File> palFile)
 {
     if (_rgba) return _rgba;
@@ -231,18 +206,6 @@ int File::offsetY(unsigned int direction, unsigned int frame)
 {
     if (direction >= _directions.size()) direction = 0;
     return _directions.at(direction)->frames()->at(frame)->offsetY();
-}
-
-int File::shiftX(unsigned int direction)
-{
-    if (direction >= _directions.size()) direction = 0;
-    return _directions.at(direction)->shiftX();
-}
-
-int File::shiftY(unsigned int direction)
-{
-    if (direction >= _directions.size()) direction = 0;
-    return _directions.at(direction)->shiftY();
 }
 
 bool File::animatedPalette()
