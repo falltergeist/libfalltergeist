@@ -79,127 +79,121 @@ enum DamageType
 
 class File : public Dat::Item
 {
-protected:
-    int _PID;
-    int _subtypeId;
-
-    int _messageId;
-
-    int _FID;
-
-    int _critterHeadFID = -1;
-    int _critterHitPointsMax = 0;
-    int _critterActionPoints = 0;
-    int _critterArmorClass = 0;
-    int _critterMeleeDamage = 0;
-    unsigned int _critterCarryWeightMax = 0;
-    int _critterSequence = 0;
-    int _critterHealingRate = 0;
-    int _critterCriticalChance = 0;
-
-    std::vector<int> _critterStats = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<int> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    int _perk = -1;
-    unsigned int _armorMaleFID = 0;
-    unsigned int _armorFemaleFID = 0;
-    unsigned int _armorClass = 0;
-
-    unsigned int _weaponAnimationCode = 0;
-    unsigned int _weaponDamageMin = 0;
-    unsigned int _weaponDamageMax = 0;
-    unsigned int _weaponDamageType = 0;
-    unsigned int _weaponRangePrimary = 0;
-    unsigned int _weaponRangeSecondary = 0;
-    unsigned int _weaponMinimumStrenght = 0;
-    unsigned int _weaponActionCostPrimary = 0;
-    unsigned int _weaponActionCostSecondary = 0;
-    unsigned int _weaponBurstRounds = 0;
-    unsigned int _weaponAmmoType = 0;
-    unsigned int _weaponAmmoPID = 0;
-    unsigned int _weaponAmmoCapacity = 0;
-
-
-
-    unsigned int _lightDistance;
-    unsigned int _lightIntencity;
-
-    unsigned int _flags;
-    unsigned int _flagsExt;
-
-    int _SID = -1;
-
-    unsigned int _materialId;
-    unsigned int _containerSize;
-    unsigned int _weight = 0;
-    unsigned int _basePrice;
-
-    unsigned int _inventoryFID;
-
-    unsigned char _soundId;
-
-    virtual void _initialize();
 public:
 
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
-    int PID();
-    int FID();
+    int32_t PID() const;
+    int32_t FID() const;
 
-    int typeId();
-    int subtypeId();
-    int scriptId();
-    unsigned int messageId();
-    unsigned int flags();
-    unsigned int flagsExt();
+    uint32_t typeId() const;
+    uint32_t subtypeId() const;
+    int32_t scriptId() const;
+    uint32_t messageId() const;
+    uint32_t flags() const;
+    uint32_t flagsExt() const;
+    uint32_t weight() const;
 
-    unsigned int weight();
-    void setWeight(unsigned int value);
+    int32_t perk() const;
 
-    int perk();
+    int32_t inventoryFID() const;
 
-    unsigned int inventoryFID();
+    uint32_t critterHitPointsMax() const;
+    uint32_t critterActionPoints() const;
+    uint32_t critterArmorClass() const;
+    uint32_t critterMeleeDamage() const;
+    uint32_t critterCarryWeightMax() const;
+    uint32_t critterSequence() const;
+    uint32_t critterHealingRate() const;
+    uint32_t critterCriticalChance() const;
 
-    int critterHitPointsMax();
-    int critterActionPoints();
-    int critterArmorClass();
-    int critterMeleeDamage();
-    unsigned int critterCarryWeightMax();
-    int critterSequence();
-    int critterHealingRate();
-    int critterCriticalChance();
+    std::vector<uint32_t>* critterStats();
+    std::vector<uint32_t>* critterStatsBonus();
+    std::vector<uint32_t>* critterSkills();
+    std::vector<uint32_t>* damageResist();
+    std::vector<uint32_t>* damageThreshold();
 
-    std::vector<int>* critterStats();
-    std::vector<int>* critterStatsBonus();
-    std::vector<int>* critterSkills();
-    std::vector<int>* damageResist();
-    std::vector<int>* damageThreshold();
+    int32_t armorMaleFID() const;
+    int32_t armorFemaleFID() const;
+    uint32_t armorClass() const;
 
-    unsigned int armorMaleFID();
-    unsigned int armorFemaleFID();
-    unsigned int armorClass();
+    uint32_t weaponAnimationCode() const;
+    uint32_t weaponDamageMin() const;
+    uint32_t weaponDamageMax() const;
+    uint32_t weaponDamageType() const;
+    uint32_t weaponRangePrimary() const;
+    uint32_t weaponRangeSecondary() const;
+    uint32_t weaponMinimumStrenght() const;
+    uint32_t weaponActionCostPrimary() const;
+    uint32_t weaponActionCostSecondary() const;
+    uint32_t weaponBurstRounds() const;
+    uint32_t weaponAmmoType() const;
+    uint32_t weaponAmmoPID() const;
+    uint32_t weaponAmmoCapacity() const;
+    uint8_t soundId() const;
 
-    unsigned int weaponAnimationCode();
-    unsigned int weaponDamageMin();
-    unsigned int weaponDamageMax();
-    unsigned int weaponDamageType();
-    unsigned int weaponRangePrimary();
-    unsigned int weaponRangeSecondary();
-    unsigned int weaponMinimumStrenght();
-    unsigned int weaponActionCostPrimary();
-    unsigned int weaponActionCostSecondary();
-    unsigned int weaponBurstRounds();
-    unsigned int weaponAmmoType();
-    unsigned int weaponAmmoPID();
-    unsigned int weaponAmmoCapacity();
-    unsigned char soundId() const;
+protected:
+    int32_t _PID = -1;
+    uint32_t _subtypeId;
+    uint32_t _messageId;
 
+    int32_t _FID = -1;
 
+    int32_t _critterHeadFID = -1;
+    uint32_t _critterHitPointsMax = 0;
+    uint32_t _critterActionPoints = 0;
+    uint32_t _critterArmorClass = 0;
+    uint32_t _critterMeleeDamage = 0;
+    uint32_t _critterCarryWeightMax = 0;
+    uint32_t _critterSequence = 0;
+    uint32_t _critterHealingRate = 0;
+    uint32_t _critterCriticalChance = 0;
+
+    std::vector<uint32_t> _critterStats = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    int32_t _perk = -1;
+    uint32_t _armorMaleFID = 0;
+    uint32_t _armorFemaleFID = 0;
+    uint32_t _armorClass = 0;
+
+    uint32_t _weaponAnimationCode = 0;
+    uint32_t _weaponDamageMin = 0;
+    uint32_t _weaponDamageMax = 0;
+    uint32_t _weaponDamageType = 0;
+    uint32_t _weaponRangePrimary = 0;
+    uint32_t _weaponRangeSecondary = 0;
+    uint32_t _weaponMinimumStrenght = 0;
+    uint32_t _weaponActionCostPrimary = 0;
+    uint32_t _weaponActionCostSecondary = 0;
+    uint32_t _weaponBurstRounds = 0;
+    uint32_t _weaponAmmoType = 0;
+    uint32_t _weaponAmmoPID = 0;
+    uint32_t _weaponAmmoCapacity = 0;
+
+    uint32_t _lightDistance;
+    uint32_t _lightIntencity;
+
+    uint32_t _flags;
+    uint32_t _flagsExt;
+
+    int32_t _SID = -1;
+
+    uint32_t _materialId;
+    uint32_t _containerSize;
+    uint32_t _weight = 0;
+    uint32_t _basePrice;
+
+    int32_t _inventoryFID = -1;
+
+    uint8_t _soundId;
+
+    virtual void _initialize();
 };
 
 }

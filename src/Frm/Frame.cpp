@@ -34,7 +34,7 @@ Frame::Frame(uint16_t width, uint16_t height)
     _width = width;
     _height = height;
 
-    for (unsigned i = 0; i != _width * _height; ++i)
+    for (unsigned i = 0; i != (unsigned)_width*_height; ++i)
     {
         _indexes.push_back(0);
     }

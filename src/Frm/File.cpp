@@ -63,12 +63,16 @@ void File::_initialize()
     uint16_t shiftY[6];
     uint32_t dataOffset[6];
 
-    for (unsigned int i = 0; i != 6; ++i) *this >> shiftX[i];
-    for (unsigned int i = 0; i != 6; ++i) *this >> shiftY[i];
+    for (unsigned int i = 0; i != 6; ++i) shiftX[i] = uint16();
+    for (unsigned int i = 0; i != 6; ++i) shiftY[i] = uint16();
     for (unsigned int i = 0; i != 6; ++i)
     {
-        *this >> dataOffset[i];
-        if (i > 0 && dataOffset[i-1] == dataOffset[i]) continue;
+        dataOffset[i] = uint32();
+        if (i > 0 && dataOffset[i-1] == dataOffset[i])
+        {
+            continue;
+        }
+
         auto direction = new Direction();
         direction->setDataOffset(dataOffset[i]);
         direction->setShiftX(shiftX[i]);
@@ -85,29 +89,21 @@ void File::_initialize()
         // read all frames
         for (unsigned i = 0; i != _framesPerDirection; ++i)
         {            
-            unsigned short width, height;
-            short offsetX, offsetY;
-
-            *this >> width >> height;
+            auto frame = new Frame(uint16(), uint16());
 
             // Number of pixels for this frame
             // We don't need this, because we already have width*height
-            this->skipBytes(4);
+            uint32();
 
-            *this >> offsetX >> offsetY;
-
-            auto frame = new Frame(width, height);
-            frame->setOffsetX(offsetX);
-            frame->setOffsetY(offsetY);
+            frame->setOffsetX(int16());
+            frame->setOffsetY(int16());
 
             // Pixels data
             for (unsigned y = 0; y != frame->height(); ++y)
             {
                 for (unsigned x = 0; x != frame->width(); ++x)
                 {
-                    uint8_t index;
-                    *this >> index;
-                    frame->setIndex(x, y, index);
+                    frame->setIndex(x, y, uint8());
                 }
             }
             direction->frames()->push_back(frame);
@@ -176,15 +172,15 @@ unsigned int* File::rgba(std::shared_ptr<Pal::File> palFile)
 
     uint16_t w = width();
 
-    unsigned int positionY = 0;
+    unsigned positionY = 0;
     for (auto direction : _directions)
     {
-        unsigned int positionX = 0;
+        unsigned positionX = 0;
         for (auto frame : *direction->frames())
         {
-            for (unsigned int y = 0; y != frame->height(); ++y)
+            for (unsigned y = 0; y != frame->height(); ++y)
             {
-                for (unsigned int x = 0; x != frame->width(); ++x)
+                for (unsigned x = 0; x != frame->width(); ++x)
                 {
                     _rgba[((y + positionY)*w) + x + positionX] = *palFile->color(frame->index(x, y));
                 }
