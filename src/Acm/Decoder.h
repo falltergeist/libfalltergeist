@@ -38,13 +38,6 @@ namespace Acm
 
 class SubbandDecoder
 {
-private:
-    int _levels, _blockSize;
-    int *_memoryBuffer;
-
-    void _sub4d3fcc(short *memory, int *buffer, int sbSize, int blocks);
-
-    void _sub4d420c(int *memory, int *buffer, int sbSize, int blocks);
 
 public:
     SubbandDecoder(int lev_cnt);
@@ -54,6 +47,15 @@ public:
     int init();
 
     void decodeData(int *buffer, int blocks);
+
+private:
+    int _levels, _blockSize;
+    int *_memoryBuffer;
+
+    void _sub4d3fcc(short *memory, int *buffer, int sbSize, int blocks);
+
+    void _sub4d420c(int *memory, int *buffer, int sbSize, int blocks);
+
 };
 
 }

@@ -31,14 +31,17 @@ namespace Map
 
 Object::Object()
 {
-    _objectSubtypeId = 0;
 }
 
 Object::~Object()
 {
+    for (auto child : _children)
+    {
+        delete child;
+    }
 }
 
-std::vector<std::shared_ptr<Object>>* Object::children()
+std::vector<Object*>* Object::children()
 {
     return &_children;
 }

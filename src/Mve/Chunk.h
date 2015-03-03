@@ -36,12 +36,24 @@ namespace Mve
 
 class Chunk
 {
+
 public:
     Chunk();
     ~Chunk();
-    uint16_t length;
-    uint16_t type;
-    std::vector<std::shared_ptr<Opcode>> opcodes;
+
+    uint16_t length() const;
+    void setLength(uint16_t value);
+
+    uint16_t type() const;
+    void setType(uint16_t value);
+
+    std::vector<Opcode*>* opcodes();
+
+protected:
+    uint16_t _length;
+    uint16_t _type;
+    std::vector<Opcode*> _opcodes;
+
 };
 
 }

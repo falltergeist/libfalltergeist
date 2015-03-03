@@ -34,10 +34,12 @@ namespace Mve
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
@@ -73,19 +75,19 @@ void File::_initialize()
 
 std::shared_ptr<Chunk> File::getNextChunk()
 {
-    _initialize();
     if (this->position() < this->size())
     {
         auto chunk = std::shared_ptr<Chunk>(new Chunk());
-        *this >> chunk->length >> chunk->type;
-        for (unsigned int i = 0; i < chunk->length;)
+        chunk->setLength(uint16());
+        chunk->setType(uint16());
+        for (unsigned i = 0; i < chunk->length();)
         {
-            auto opcode = std::shared_ptr<Opcode>(new Opcode());
-            *this >> opcode->length >> opcode->type >> opcode->version;
-            opcode->data = new uint8_t [opcode->length];
-            this->readBytes((char*)opcode->data, opcode->length);
-            chunk->opcodes.push_back(opcode);
-            i+=opcode->length+4;
+            auto opcode = new Opcode(uint16());
+            opcode->setType(uint8());
+            opcode->setVersion(uint8());
+            this->readBytes((char*)opcode->data(), opcode->length());
+            chunk->opcodes()->push_back(opcode);
+            i += opcode->length() + 4;
         }
         return chunk;
     }

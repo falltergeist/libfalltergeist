@@ -40,8 +40,24 @@ class Glyph;
 
 class File : public Dat::Item
 {
+
+public:
+    File(std::shared_ptr<Dat::Entry> datFileEntry);
+    File(std::ifstream* stream);
+    ~File();
+
+    uint32_t* rgba();
+
+    std::vector<Glyph*>* glyphs();
+
+    uint16_t maximumHeight() const;
+    uint16_t maximumWidth() const;
+    uint16_t horizontalGap() const;
+    uint16_t verticalGap() const;
+    uint16_t spaceWidth() const;
+
 protected:
-    std::vector<std::shared_ptr<Glyph>> _glyphs;
+    std::vector<Glyph*> _glyphs;
     uint32_t _signature;
     uint16_t _maximumHeight = 0;
     uint16_t _maximumWidth = 0;
@@ -50,20 +66,7 @@ protected:
     uint16_t _verticalGap = 0;
     uint32_t* _rgba = 0;
     virtual void _initialize();
-public:
-    File(std::shared_ptr<Dat::Entry> datFileEntry);
-    File(std::ifstream* stream);
-    ~File();
 
-    uint32_t* rgba();
-
-    std::vector<std::shared_ptr<Glyph>>* glyphs();
-
-    uint16_t maximumHeight();
-    uint16_t maximumWidth();
-    uint16_t horizontalGap();
-    uint16_t verticalGap();
-    uint16_t spaceWidth();
 };
 
 }

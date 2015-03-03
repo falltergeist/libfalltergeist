@@ -36,8 +36,7 @@ namespace Lip
 
 class File : public Dat::Item
 {
-protected:
-    virtual void _initialize();
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
@@ -48,7 +47,9 @@ public:
     uint32_t mcount();
     uint32_t acmSize();
     std::vector<uint32_t>* timestamps();
-private:
+
+protected:
+    virtual void _initialize();
     uint32_t _version;
     uint32_t _unknown1;
     uint32_t _unknown2;

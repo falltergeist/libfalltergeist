@@ -33,14 +33,20 @@ namespace Aaf
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry): Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream): Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
 {
+    for (auto glyph : _glyphs)
+    {
+        delete glyph;
+    }
     delete [] _rgba;
 }
 
@@ -50,17 +56,25 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-    *this >> _signature >> _maximumHeight >> _horizontalGap >> _spaceWidth >> _verticalGap;
+    _signature     = uint32(); // should be "AAFF"
+    _maximumHeight = uint16();
+    _horizontalGap = uint16();
+    _spaceWidth    = uint16();
+    _verticalGap   = uint16();
 
-    // glyphs info
+    // Glyphs info
     for (unsigned i = 0; i != 256; ++i)
     {
-        uint16_t width, height;
-        uint32_t offset;
-        *this >> width >> height >> offset;
-        if (width > _maximumWidth) _maximumWidth = width;
+        uint16_t width  = uint16();
+        uint16_t height = uint16();
+        uint32_t offset = uint32();
 
-        _glyphs.push_back(std::shared_ptr<Glyph>(new Glyph(width, height)));
+        if (width > _maximumWidth)
+        {
+            _maximumWidth = width;
+        }
+
+        _glyphs.push_back(new Glyph(width, height));
         _glyphs.back()->setDataOffset(offset);
     }
 }
@@ -68,7 +82,6 @@ void File::_initialize()
 uint32_t* File::rgba()
 {
     if (_rgba) return _rgba;
-    _initialize();
     _rgba = new uint32_t[_maximumWidth * _maximumHeight * 256]();
 
     for (unsigned i = 0; i != 256; ++i)
@@ -81,13 +94,11 @@ uint32_t* File::rgba()
 
         setPosition(0x080C + _glyphs.at(i)->dataOffset());
 
-        for (uint32_t y = 0; y != _glyphs.at(i)->height(); ++y)
+        for (uint16_t y = 0; y != _glyphs.at(i)->height(); ++y)
         {
-            for (uint32_t x = 0; x != _glyphs.at(i)->width(); ++x)
+            for (uint16_t x = 0; x != _glyphs.at(i)->width(); ++x)
             {
-                uint8_t byte;
-                *this >> byte;
-
+                uint8_t byte = uint8();
                 if (byte != 0)
                 {
                     uint8_t alpha = 0;
@@ -125,39 +136,33 @@ uint32_t* File::rgba()
     return _rgba;
 }
 
-std::vector<std::shared_ptr<Glyph>>* File::glyphs()
+std::vector<Glyph*>* File::glyphs()
 {
-    _initialize();
     return &_glyphs;
 }
 
-uint16_t File::horizontalGap()
+uint16_t File::horizontalGap() const
 {
-    _initialize();
     return _horizontalGap;
 }
 
-uint16_t File::maximumHeight()
+uint16_t File::maximumHeight() const
 {
-    _initialize();
     return _maximumHeight;
 }
 
-uint16_t File::maximumWidth()
+uint16_t File::maximumWidth() const
 {
-    _initialize();
     return _maximumWidth;
 }
 
-uint16_t File::spaceWidth()
+uint16_t File::spaceWidth() const
 {
-    _initialize();
     return _spaceWidth;
 }
 
-uint16_t File::verticalGap()
+uint16_t File::verticalGap() const
 {
-    _initialize();
     return _verticalGap;
 }
 

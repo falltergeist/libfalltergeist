@@ -38,14 +38,25 @@ namespace Map
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream * stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
 {
+    for (auto elevation : _elevations)
+    {
+        delete elevation;
+    }
+
+    for (auto script : _scripts)
+    {
+        delete script;
+    }
 }
 
 void File::_initialize()
@@ -55,118 +66,116 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-    *this >> _version;
+    _version = uint32();
 
     char name[16];
     this->readBytes(name, 16);
     _name = name;
     std::transform(_name.begin(),_name.end(),_name.begin(), ::tolower);
 
-    *this >> _defaultPosition >> _defaultElevation >> _defaultOrientaion >> _LVARsize >> _scriptId >> _elevationFlags;
+    _defaultPosition   = uint32();
+    _defaultElevation  = uint32();
+    _defaultOrientaion = uint32();
+    _LVARsize          = uint32();
+    _scriptId          = int32();
+    _elevationFlags    = uint32();
 
-    unsigned int elevations = 0;
+    unsigned elevations = 0;
     if ((_elevationFlags & 2) == 0) elevations++;
     if ((_elevationFlags & 4) == 0) elevations++;
     if ((_elevationFlags & 8) == 0) elevations++;
 
-    *this >> _unknown1 >> _MVARsize >> _mapId >> _timeSinceEpoch;
+    _unknown1       = int32();
+    _MVARsize       = uint32();
+    _mapId          = uint32();
+    _timeSinceEpoch = uint32();
 
     this->skipBytes(4*44); // unkonwn
 
     // MVAR AND SVAR SECTION
     for (unsigned int i = 0; i != _MVARsize; ++i)
     {
-        int value;
-        *this >> value;
-        _MVARS.push_back(value);
+        _MVARS.push_back(int32());
     }
 
     for (unsigned int i = 0; i != _LVARsize; ++i)
     {
-        int value;
-        *this >> value;
-        _LVARS.push_back(value);
+        _LVARS.push_back(int32());
     }
 
     // TILES SECTION
     for (unsigned int i = 0; i < elevations; i++)
     {
-        _elevations.push_back(std::shared_ptr<Elevation>(new Elevation));
+        _elevations.push_back(new Elevation);
 
-        for (unsigned int i = 0; i < 10000; i++)
+        for (unsigned i = 0; i < 10000; i++)
         {
-            unsigned short roof, floor;
-            *this >> roof >> floor;
-            _elevations.back()->roofTiles()->push_back(roof);
-            _elevations.back()->floorTiles()->push_back(floor);
+            _elevations.back()->roofTiles()->push_back(uint16());
+            _elevations.back()->floorTiles()->push_back(uint16());
         }
     }
+
     // SCRIPTS SECTION
-    for (unsigned int i = 0; i < 5; i++)
+    for (unsigned i = 0; i < 5; i++)
     {
-        unsigned int count;
-        *this >> count;
+        uint32_t count = uint32();
         if (count > 0)
         {
-            short loop = count;
-            if (count%16 > 0 ) loop += 16 - count%16;
-
-            unsigned int check = 0;
-            for (unsigned short j = 0; j < loop; j++)
+            uint32_t loop = count;
+            if (count%16 > 0 )
             {
+                loop += 16 - count%16;
+            }
+
+            uint32_t check = 0;
+            for (unsigned j = 0; j < loop; j++)
+            {
+
+                auto script = new Script();
+                script->setPID(int32());
+
+                uint32(); // unknown1
+
+                switch ((script->PID() & 0xFF000000) >> 24)
                 {
-                    int PID;
-                    *this >> PID;
-
-
-
-                    auto script = std::shared_ptr<Script>(new Script());
-                    script->setPID(PID);
-                    this->skipBytes(4); // unknown1
-
-                    switch ((PID & 0xFF000000) >> 24)
-                    {
-                        case 1:
-                            this->skipBytes(4); //unknown 2
-                            this->skipBytes(4); //unknown 3
-                            break;
-                        case 2:
-                            this->skipBytes(4); //unknown 2
-                            break;
-                        default:
-                            break;
-                    }
-                    this->skipBytes(4); //unknown 4
-                    int scriptId;
-                    *this >> scriptId;
-                    script->setScriptId(scriptId);
-                    this->skipBytes(4); //unknown 5
-                    this->skipBytes(4); //unknown 6
-                    this->skipBytes(4); //unknown 7
-                    this->skipBytes(4); //unknown 8
-                    this->skipBytes(4); //unknown 9
-                    this->skipBytes(4); //unknown 10
-                    this->skipBytes(4); //unknown 11
-                    this->skipBytes(4); //unknown 12
-                    this->skipBytes(4); //unknown 13
-                    this->skipBytes(4); //unknown 14
-                    this->skipBytes(4); //unknown 15
-                    this->skipBytes(4); //unknown 16
-
-                    if (j < count)
-                    {
-                        //std::cout << "Map script: 0x" << std::hex << script->PID() << std::endl;
-                        _scripts.push_back(script);
-                    }
-
+                    case 1:
+                        uint32(); //unknown 2
+                        uint32(); //unknown 3
+                        break;
+                    case 2:
+                        uint32(); //unknown 2
+                        break;
+                    default:
+                        break;
                 }
+                uint32(); //unknown 4
+                script->setScriptId(int32());
+                uint32(); //unknown 5
+                uint32(); //unknown 6
+                uint32(); //unknown 7
+                uint32(); //unknown 8
+                uint32(); //unknown 9
+                uint32(); //unknown 10
+                uint32(); //unknown 11
+                uint32(); //unknown 12
+                uint32(); //unknown 13
+                uint32(); //unknown 14
+                uint32(); //unknown 15
+                uint32(); //unknown 16
+
+                if (j < count)
+                {
+                    _scripts.push_back(script);
+                }
+                else
+                {
+                    delete script;
+                }
+
                 if ((j % 16) == 15)
                 {
-                    unsigned int v;
-                    *this >> v;
-                    check += v;
-
-                    this->skipBytes(4);
+                    check += uint32();
+                    uint32();
                 }
             }
             if (check != count)
@@ -177,14 +186,11 @@ void File::_initialize()
     }
 
     //OBJECTS SECTION
-    int objectsTotal;
-    *this >> objectsTotal;
-
-    for (unsigned int i = 0; i != elevations; ++i)
+    uint32(); // objects total
+    for (unsigned i = 0; i != elevations; ++i)
     {
-        unsigned int objectsOnElevation;
-        *this >> objectsOnElevation;
-        for (unsigned int j = 0; j != objectsOnElevation; ++j)
+        unsigned objectsOnElevation = uint32();
+        for (unsigned j = 0; j != objectsOnElevation; ++j)
         {
             auto object = _readObject();
             _elevations.at(i)->objects()->push_back(object);
@@ -193,9 +199,7 @@ void File::_initialize()
             {
                 for (unsigned int i = 0; i != object->inventorySize(); ++i)
                 {
-                    unsigned int ammount;
-                    *this >> ammount;
-
+                    uint32_t ammount = uint32();
                     auto subobject = _readObject();
                     subobject->setAmmount(ammount);
                     object->children()->push_back(subobject);
@@ -205,81 +209,53 @@ void File::_initialize()
     }
 }
 
-std::shared_ptr<Object> File::_readObject()
+Object* File::_readObject()
 {
-    auto object = std::shared_ptr<Object>(new Object());
+    auto object =new Object();
 
-    unsigned int uint32;
-    int int32;
+    object->setUnknown1(uint32());
+    object->setHexPosition(int32());
+    object->setUnknown2(uint32());
+    object->setUnknown3(uint32());
+    object->setUnknown4(uint32());
+    object->setUnknown5(uint32());
+    object->setFrameNumber(uint32());
+    object->setOrientation(uint32());
+    uint32_t FID = uint32();
+    object->setFrmTypeId(FID >> 24);
+    object->setFrmId(0x00FFFFFF & FID);
+    object->setUnknown6(uint32());
+    object->setElevation(uint32());
+    uint32_t PID = uint32();
+    object->setObjectTypeId(PID >> 24);
+    object->setObjectId(0x00FFFFFF & PID);
+    object->setUnknown7(uint32());
+    object->setUnknown8(uint32());
+    object->setUnknown9(uint32());
+    object->setUnknown10(uint32());
 
-    *this >> uint32;
-    object->setUnknown1( uint32 );
-    *this >> int32;
-    object->setHexPosition( int32 );
-    *this >> uint32;
-    object->setUnknown2( uint32 );
-    *this >> uint32;
-    object->setUnknown3( uint32 );
-    *this >> uint32;
-    object->setUnknown4( uint32 );
-    *this >> uint32;
-    object->setUnknown5( uint32 );
-    *this >> uint32;
-    object->setFrameNumber( uint32 );
-    *this >> uint32;
-    object->setOrientation( uint32 );
-    unsigned int FID;
-    *this >> FID;
-    object->setFrmTypeId( FID >> 24 );
-    object->setFrmId( 0x00FFFFFF & FID );
-    *this >> uint32;
-    object->setUnknown6( uint32 );
-    *this >> uint32;
-    object->setElevation( uint32 );
-    unsigned int PID;
-    *this >> PID;
-
-    object->setObjectTypeId( PID >> 24 );
-    object->setObjectId( 0x00FFFFFF & PID);
-    *this >> uint32;
-    object->setUnknown7( uint32 );
-    *this >> uint32;
-    object->setUnknown8( uint32 );
-    *this >> uint32;
-    object->setUnknown9( uint32 );
-    *this >> uint32;
-    object->setUnknown10( uint32 );
-    *this >> int32;
-    if (int32 != -1)
+    int32_t SID = int32();
+    if (SID != -1)
     {
         for (auto it = _scripts.begin(); it != _scripts.end(); ++it)
         {
-            if ((*it)->PID() == int32)
+            if ((*it)->PID() == SID)
             {
-                //std::cout << "Map script: " <<  std::dec << (*it)->scriptId() << std::endl;
                 object->setMapScriptId((*it)->scriptId());
             }
         }
     }
 
-    *this >> int32;
-    if (int32 != -1)
+    SID = int32();
+    if (SID != -1)
     {
-        //std::cout << "SID: " << std::dec <<  int32 << std::endl;
-        object->setScriptId(int32);
+        object->setScriptId(SID);
     }
-    if (PID == 0x01000003)
-    {
-        //std::cout << "!!! " << int32 << std::endl;
-    }
-    *this >> uint32;
-    object->setInventorySize( uint32 );
-    *this >> uint32;
-    object->setUnknown11( uint32 );
-    *this >> uint32;
-    object->setUnknown12( uint32 );
-    *this >> uint32;
-    object->setUnknown13( uint32 );
+
+    object->setInventorySize(uint32());
+    object->setUnknown11(uint32());
+    object->setUnknown12(uint32());
+    object->setUnknown13(uint32());
 
     switch (object->objectTypeId())
     {
@@ -288,16 +264,17 @@ std::shared_ptr<Object> File::_readObject()
             switch(object->objectSubtypeId())
             {
                 case Pro::TYPE_ITEM_AMMO:
-                    this->skipBytes(4);
+                    uint32();
                     break;
                 case Pro::TYPE_ITEM_KEY:
-                    this->skipBytes(4);
+                    uint32();
                     break;
                 case Pro::TYPE_ITEM_MISC:
-                    this->skipBytes(4);
+                    uint32();
                     break;
                 case Pro::TYPE_ITEM_WEAPON:
-                    this->skipBytes(4*2);
+                    uint32();
+                    uint32();
                     break;
                 case Pro::TYPE_ITEM_ARMOR:
                     break;
@@ -310,8 +287,16 @@ std::shared_ptr<Object> File::_readObject()
             }
             break;
         case Pro::TYPE_CRITTER:
-            this->skipBytes(10*4);
-
+            uint32();
+            uint32();
+            uint32();
+            uint32();
+            uint32();
+            uint32();
+            uint32();
+            uint32();
+            uint32();
+            uint32();
             object->setFrmId(FID & 0x00000FFF);
             object->setObjectID1((FID & 0x0000F000) >> 12);
             object->setObjectID2((FID & 0x00FF0000) >> 16);
@@ -324,16 +309,20 @@ std::shared_ptr<Object> File::_readObject()
             {
                 case Pro::TYPE_SCENERY_LADDER_TOP:
                 case Pro::TYPE_SCENERY_LADDER_BOTTOM:
-                    this->skipBytes(4*2);
+                    uint32();
+                    uint32();
                     break;
                 case Pro::TYPE_SCENERY_STAIRS:
-                    this->skipBytes(4*2);
+                    uint32();
+                    uint32();
                     break;
                 case Pro::TYPE_SCENERY_ELEVATOR:
-                    this->skipBytes(4*2);
+                    uint32();
+                    uint32();
                     break;
                 case Pro::TYPE_SCENERY_DOOR:
-                    this->skipBytes(4*1);
+                    uint32();
+                    uint32();
                     break;
                 case Pro::TYPE_SCENERY_GENERIC:
                     break;
@@ -359,17 +348,16 @@ std::shared_ptr<Object> File::_readObject()
                 case 21:
                 case 22:
                 case 23:
-                    *this >> int32;
-                    object->setExitMap(int32);
-                    *this >> int32;
-                    object->setExitPosition(int32);
-                    *this >> int32;
-                    object->setExitElevation(int32);
-                    *this >> int32;
-                    object->setExitOrientation(int32);
+                    object->setExitMap(int32());
+                    object->setExitPosition(int32());
+                    object->setExitElevation(int32());
+                    object->setExitOrientation(int32());
                     break;
                 default:
-                    this->skipBytes(4*4);
+                    uint32();
+                    uint32();
+                    uint32();
+                    uint32();
                     break;
             }
             break;
@@ -379,9 +367,8 @@ std::shared_ptr<Object> File::_readObject()
     return object;
 }
 
-std::vector<std::shared_ptr<Elevation>>* File::elevations()
+std::vector<Elevation*>* File::elevations()
 {
-    _initialize();
     return &_elevations;
 }
 
@@ -391,61 +378,57 @@ File* File::setCallback(ProFileTypeLoaderCallback callback)
     return this;
 }
 
-ProFileTypeLoaderCallback File::callback()
+ProFileTypeLoaderCallback File::callback() const
 {
     return _proFileTypeLoaderCallback;
 }
 
-unsigned int File::version()
+unsigned int File::version() const
 {
-    _initialize();
     return _version;
 }
 
-unsigned int File::defaultPosition()
+unsigned int File::defaultPosition() const
 {
-    _initialize();
     return _defaultPosition;
 }
 
-unsigned int File::defaultElevation()
+unsigned int File::defaultElevation() const
 {
-    _initialize();
     return _defaultElevation;
 }
 
-unsigned int File::defaultOrientation()
+unsigned int File::defaultOrientation() const
 {
-    _initialize();
     return _defaultOrientaion;
 }
 
-int File::scriptId()
+int File::scriptId() const
 {
     return _scriptId;
 }
 
-std::string File::name()
+std::string File::name() const
 {
     return _name;
 }
 
-unsigned int File::elevationFlags()
+unsigned int File::elevationFlags() const
 {
     return _elevationFlags;
 }
 
-int File::unknown1()
+int File::unknown1() const
 {
     return _unknown1;
 }
 
-unsigned int File::mapId()
+unsigned int File::mapId() const
 {
     return _mapId;
 }
 
-unsigned int File::timeSinceEpoch()
+unsigned int File::timeSinceEpoch() const
 {
     return _timeSinceEpoch;
 }
@@ -460,7 +443,7 @@ std::vector<int>* File::MVARS()
     return &_MVARS;
 }
 
-std::vector<std::shared_ptr<Script>>* File::scripts()
+std::vector<Script*>* File::scripts()
 {
     return &_scripts;
 }

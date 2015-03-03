@@ -31,10 +31,12 @@ namespace Fon
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()

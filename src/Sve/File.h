@@ -37,16 +37,18 @@ namespace Sve
 
 class File : public Dat::Item
 {
-protected:
-    virtual void _initialize();
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
     std::pair<int,std::string> getSubLine(int frame);
-private:
+
+protected:
+    virtual void _initialize();
     std::map<int,std::string> _subs;
     void _addString(std::string line);
+
 };
 
 }

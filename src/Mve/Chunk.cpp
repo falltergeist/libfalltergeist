@@ -35,10 +35,35 @@ Chunk::Chunk()
 
 Chunk::~Chunk()
 {
-    for (auto it: opcodes)
+    for (auto opcode : _opcodes)
     {
-        delete [] it->data;
+        delete opcode;
     }
+}
+
+uint16_t Chunk::length() const
+{
+    return _length;
+}
+
+void Chunk::setLength(uint16_t value)
+{
+    _length = value;
+}
+
+uint16_t Chunk::type() const
+{
+    return _type;
+}
+
+void Chunk::setType(uint16_t value)
+{
+    _type = value;
+}
+
+std::vector<Opcode*>* Chunk::opcodes()
+{
+    return &_opcodes;
 }
 
 }

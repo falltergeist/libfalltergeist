@@ -31,10 +31,12 @@ namespace Rix
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
@@ -49,51 +51,45 @@ void File::_initialize()
     Dat::Item::setPosition(0);
 
     // Signature
-    this->skipBytes(4);
+    uint32();
 
     this->setEndianness(Dat::ENDIANNESS_LITTLE);
-    *this >> _width >> _height;
+    _width = uint16();
+    _height = uint16();
     this->setEndianness(Dat::ENDIANNESS_BIG);
 
     // Unknown 1
-    this->skipBytes(2);
+    uint16();
 
-    unsigned int palette[256];
+    uint32_t palette[256];
 
     // Palette
-    for (int i = 0; i != 256; ++i)
+    for (unsigned i = 0; i != 256; ++i)
     {
-        unsigned char r, g, b;
-        *this >> r >> g >> b;
-        unsigned int color = r << 26 | g << 18 | b << 10 | 0x000000FF;  // RGBA
-        palette[i] = color;
+        palette[i] = ((uint8() << 26) | (uint8() << 18) | (uint8() << 10) | 0x000000FF);  // RGBA
     }
 
-    _rgba = new unsigned int[_width*_height];
+    _rgba = new uint32_t[_width*_height];
+
     // Data
-    for (int i = 0; i != _width*_height; ++i)
+    for (unsigned i = 0; i != (unsigned)_width*_height; ++i)
     {
-        unsigned char ch;
-        *this >> ch;
-        _rgba[i] = palette[ch];
+        _rgba[i] = palette[uint8()];
     }
 }
 
-unsigned short File::width()
+uint16_t File::width() const
 {
-    _initialize();
     return _width;
 }
 
-unsigned short File::height()
+uint16_t File::height() const
 {
-    _initialize();
     return _height;
 }
 
-unsigned int* File::rgba()
+uint32_t* File::rgba() const
 {
-    _initialize();
     return _rgba;
 }
 

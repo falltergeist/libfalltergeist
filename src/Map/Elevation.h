@@ -36,16 +36,19 @@ class Object;
 
 class Elevation
 {
-protected:
-    std::vector<unsigned short> _floorTiles;
-    std::vector<unsigned short> _roofTiles;
-    std::vector<std::shared_ptr<Object>> _objects;
+
 public:
-    std::vector<std::shared_ptr<Object>>* objects();
-    std::vector<unsigned short>* floorTiles();
-    std::vector<unsigned short>* roofTiles();
     Elevation();
     ~Elevation();
+    std::vector<Object*>* objects();
+    std::vector<uint16_t>* floorTiles();
+    std::vector<uint16_t>* roofTiles();
+
+protected:
+    std::vector<uint16_t> _floorTiles;
+    std::vector<uint16_t> _roofTiles;
+    std::vector<Object*> _objects;
+
 };
 
 }

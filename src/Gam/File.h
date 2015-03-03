@@ -36,13 +36,7 @@ namespace Gam
 
 class File : public Dat::Item
 {
-protected:
-    std::map<std::string, int> _GVARS;
-    std::map<std::string, int> _MVARS;
-    virtual void _initialize();
-    bool _GVARmode = false;
-    bool _MVARmode = false;
-    void _parseLine(std::string line);
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
@@ -53,6 +47,15 @@ public:
     int GVAR(unsigned int number);
     int MVAR(std::string name);
     int MVAR(unsigned int number);
+
+protected:
+    std::map<std::string, int> _GVARS;
+    std::map<std::string, int> _MVARS;
+    virtual void _initialize();
+    bool _GVARmode = false;
+    bool _MVARmode = false;
+    void _parseLine(std::string line);
+
 };
 
 }

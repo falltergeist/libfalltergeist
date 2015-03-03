@@ -30,8 +30,10 @@
 
 namespace libfalltergeist
 {
+namespace Acm
+{
 
-struct AcmHeader
+struct Header
 {
     uint32_t signature;
     uint32_t samples;
@@ -41,6 +43,7 @@ struct AcmHeader
     uint16_t subblocks : 12;
 };
 
+}
 }
 
 #endif // LIBFALLTERGEIST_ACM_GENERAL_H

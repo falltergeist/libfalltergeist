@@ -53,16 +53,7 @@ enum FrmType
 
 class File : public Dat::Item
 {
-protected:
-    uint32_t* _rgba = 0;
-    std::map<unsigned int, uint8_t*> _animatedMasks;
-    std::vector<Direction*> _directions;
-    unsigned int _version;
-    unsigned short _framesPerSecond;
-    unsigned short _framesPerDirection;
-    unsigned short _actionFrame;
-    virtual void _initialize();
-    bool _animatedPalette = false;
+
 public:
 
     enum {
@@ -78,33 +69,42 @@ public:
     File(std::ifstream* stream);
     ~File();
 
-    unsigned int version();
-
-    unsigned short framesPerSecond();
-
-    unsigned short framesPerDirection();
-
-    unsigned short actionFrame();
+    uint32_t version() const;
+    uint16_t framesPerSecond() const;
+    uint16_t framesPerDirection() const;
+    uint16_t actionFrame() const;
 
     std::vector<Direction*>* directions();
 
-    uint16_t width();
-    uint16_t width(unsigned int direction);
-    uint16_t width(unsigned int direction, unsigned int frame);
+    uint16_t width() const;
+    uint16_t width(unsigned int direction) const;
+    uint16_t width(unsigned int direction, unsigned int frame) const;
 
-    uint16_t height();
-    uint16_t height(unsigned int direction);
-    uint16_t height(unsigned int direction, unsigned int frame);
+    uint16_t height() const;
+    uint16_t height(unsigned int direction) const;
+    uint16_t height(unsigned int direction, unsigned int frame) const;
 
-    int offsetX(unsigned int direction = 0, unsigned int frame = 0);
-    int offsetY(unsigned int direction = 0, unsigned int frame = 0);
+    uint16_t offsetX(unsigned int direction = 0, unsigned int frame = 0) const;
+    uint16_t offsetY(unsigned int direction = 0, unsigned int frame = 0) const;
 
-    int shiftX(unsigned int direction);
-    int shiftY(unsigned int direction);
+    uint16_t shiftX(unsigned int direction) const;
+    uint16_t shiftY(unsigned int direction) const;
 
-    unsigned int* rgba(std::shared_ptr<Pal::File> palFile);
+    uint32_t* rgba(std::shared_ptr<Pal::File> palFile);
     bool animatedPalette();
     std::map<unsigned int, uint8_t*>*  animatedMasks();
+
+protected:
+    uint32_t* _rgba = 0;
+    std::map<unsigned int, uint8_t*> _animatedMasks;
+    std::vector<Direction*> _directions;
+    unsigned int _version;
+    unsigned short _framesPerSecond;
+    unsigned short _framesPerDirection;
+    unsigned short _actionFrame;
+    virtual void _initialize();
+    bool _animatedPalette = false;
+
 };
 
 }

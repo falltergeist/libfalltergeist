@@ -57,7 +57,10 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-    *this >> _version >> _framesPerSecond >> _actionFrame >> _framesPerDirection;
+    _version = uint32();
+    _framesPerSecond = uint16();
+    _actionFrame = uint16();
+    _framesPerDirection = uint16();
 
     uint16_t shiftX[6];
     uint16_t shiftY[6];
@@ -111,39 +114,33 @@ void File::_initialize()
     }
 }
 
-unsigned int File::version()
+uint32_t File::version() const
 {
-    _initialize();
     return _version;
 }
 
-unsigned short File::framesPerSecond()
+uint16_t File::framesPerSecond() const
 {
-    _initialize();
     return _framesPerSecond;
 }
 
-unsigned short File::framesPerDirection()
+uint16_t File::framesPerDirection() const
 {
-    _initialize();
     return _framesPerDirection;
 }
 
-unsigned short File::actionFrame()
+uint16_t File::actionFrame() const
 {
-    _initialize();
     return _actionFrame;
 }
 
 std::vector<Direction*>* File::directions()
 {
-    _initialize();
     return &_directions;
 }
 
-uint16_t File::width()
+uint16_t File::width() const
 {
-    _initialize();
     std::vector<uint16_t> widths;
     for (auto direction : _directions)
     {
@@ -152,9 +149,8 @@ uint16_t File::width()
     return *std::max_element(widths.begin(), widths.end());
 }
 
-uint16_t File::height()
+uint16_t File::height() const
 {
-    _initialize();
     uint16_t height = 0;
 
     for (auto direction : _directions)
@@ -164,7 +160,7 @@ uint16_t File::height()
     return height;
 }
 
-unsigned int* File::rgba(std::shared_ptr<Pal::File> palFile)
+uint32_t* File::rgba(std::shared_ptr<Pal::File> palFile)
 {
     if (_rgba) return _rgba;
     _initialize();
@@ -192,13 +188,13 @@ unsigned int* File::rgba(std::shared_ptr<Pal::File> palFile)
     return _rgba;
 }
 
-int File::offsetX(unsigned int direction, unsigned int frame)
+uint16_t File::offsetX(unsigned int direction, unsigned int frame) const
 {
     if (direction >= _directions.size()) direction = 0;
     return _directions.at(direction)->frames()->at(frame)->offsetX();
 }
 
-int File::offsetY(unsigned int direction, unsigned int frame)
+uint16_t File::offsetY(unsigned int direction, unsigned int frame) const
 {
     if (direction >= _directions.size()) direction = 0;
     return _directions.at(direction)->frames()->at(frame)->offsetY();

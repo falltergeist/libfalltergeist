@@ -36,16 +36,19 @@ namespace Lst
 
 class File : public Dat::Item
 {
-protected:
-    std::vector<std::string> _strings;
-    virtual void _initialize();
-    void _addString(std::string line);
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
     std::vector<std::string>* strings();
+
+protected:
+    std::vector<std::string> _strings;
+    virtual void _initialize();
+    void _addString(std::string line);
+
 };
 
 }

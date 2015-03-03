@@ -37,22 +37,22 @@ Script::~Script()
 {
 }
 
-int Script::PID()
+int32_t Script::PID() const
 {
     return _PID;
 }
 
-void Script::setPID(int PID)
+void Script::setPID(int32_t PID)
 {
     _PID = PID;
 }
 
-int Script::scriptId()
+int32_t Script::scriptId() const
 {
     return _scriptId;
 }
 
-void Script::setScriptId(int value)
+void Script::setScriptId(int32_t value)
 {
     _scriptId = value;
 }

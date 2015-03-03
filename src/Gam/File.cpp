@@ -50,7 +50,6 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-
     unsigned int i = 0;
     unsigned char ch;
     std::string line;

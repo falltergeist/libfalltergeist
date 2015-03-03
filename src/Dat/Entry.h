@@ -37,13 +37,7 @@ class File;
 
 class Entry
 {
-protected:
-    File* _datFile;
-    std::string _filename;
-    uint32_t _packedSize;
-    uint32_t _unpackedSize;
-    uint32_t _dataOffset;
-    bool _compressed;
+
 public:
     Entry(File* datFile);
     ~Entry();
@@ -64,6 +58,15 @@ public:
     void setCompressed(bool value);
 
     File* datFile();
+
+protected:
+    File* _datFile;
+    std::string _filename;
+    uint32_t _packedSize;
+    uint32_t _unpackedSize;
+    uint32_t _dataOffset;
+    bool _compressed;
+
 
 };
 

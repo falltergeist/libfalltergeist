@@ -36,19 +36,23 @@ Elevation::Elevation()
 
 Elevation::~Elevation()
 {
+    for(auto object : _objects)
+    {
+        delete object;
+    }
 }
 
-std::vector<std::shared_ptr<Object>>* Elevation::objects()
+std::vector<Object*>* Elevation::objects()
 {
     return &_objects;
 }
 
-std::vector<unsigned short>* Elevation::floorTiles()
+std::vector<uint16_t>* Elevation::floorTiles()
 {
     return &_floorTiles;
 }
 
-std::vector<unsigned short>* Elevation::roofTiles()
+std::vector<uint16_t>* Elevation::roofTiles()
 {
     return &_roofTiles;
 }

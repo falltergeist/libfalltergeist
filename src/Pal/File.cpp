@@ -32,14 +32,20 @@ namespace Pal
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
 {
+    for (auto color : _colors)
+    {
+        delete color;
+    }
 }
 
 void File::_initialize()
@@ -50,23 +56,19 @@ void File::_initialize()
 
     _colors.push_back(new Color(0, 0, 0, 0)); // zero color (transparent)
 
-    for (unsigned int i = 1; i != 256; ++i)
+    for (unsigned i = 1; i != 256; ++i)
     {
-        unsigned char r, g, b;
-        *this >> r >> g >> b;
-        _colors.push_back(new Color(r, g, b));
+        _colors.push_back(new Color(uint8(), uint8(), uint8()));
     }
 }
 
 std::vector<Color*>* File::colors()
 {
-    _initialize();
     return &_colors;
 }
 
-Color* File::color(unsigned char index)
+Color* File::color(unsigned index) const
 {
-    _initialize();
     return _colors.at(index);
 }
 

@@ -29,7 +29,7 @@ namespace libfalltergeist
 namespace Pal
 {
 
-Color::Color(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)
+Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
     _red = red;
     _green = green;
@@ -39,57 +39,56 @@ Color::Color(unsigned char red, unsigned char green, unsigned char blue, unsigne
 
 Color::~Color()
 {
-
 }
 
-void Color::setRed(unsigned char red)
+void Color::setRed(uint8_t red)
 {
     _red = red;
 }
 
-unsigned char Color::red()
+uint8_t Color::red() const
 {
     return _red;
 }
 
-void Color::setGreen(unsigned char green)
+void Color::setGreen(uint8_t green)
 {
     _green = green;
 }
 
-unsigned char Color::green()
+uint8_t Color::green() const
 {
     return _green;
 }
 
-void Color::setBlue(unsigned char blue)
+void Color::setBlue(uint8_t blue)
 {
     _blue = blue;
 }
 
-unsigned char Color::blue()
+uint8_t Color::blue() const
 {
     return _blue;
 }
 
-void Color::setAlpha(unsigned char alpha)
+void Color::setAlpha(uint8_t alpha)
 {
     _alpha = alpha;
 }
 
-unsigned char Color::alpha()
+uint8_t Color::alpha() const
 {
     return _alpha;
 }
 
-Color::operator int()
+Color::operator int() const
 {
     return (int) (unsigned int) *this;
 }
 
-Color::operator unsigned int()
+Color::operator unsigned int() const
 {
-    unsigned char k = 4;
+    uint8_t k = 4;
     return ((red() * k) << 24) | ((green() * k) << 16) | ((blue() * k) << 8) | alpha();
 }
 

@@ -32,10 +32,12 @@ namespace Bio
 
 File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
@@ -50,15 +52,12 @@ void File::_initialize()
 
     for (unsigned i = 0; i != this->size(); ++i)
     {
-        uint8_t ch;
-        *this >> ch;
-        _text += ch;
+        _text += uint8();
     }
 }
 
 std::string File::text()
 {
-    _initialize();
     return _text;
 }
 

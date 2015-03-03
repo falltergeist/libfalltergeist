@@ -41,34 +41,10 @@ class Elevation;
 class Object;
 class Script;
 
-typedef std::shared_ptr<Pro::File> (*ProFileTypeLoaderCallback)(unsigned int);
+typedef std::shared_ptr<Pro::File> (*ProFileTypeLoaderCallback)(uint32_t);
 
 class File : public Dat::Item
 {
-protected:
-    ProFileTypeLoaderCallback _proFileTypeLoaderCallback = 0;
-
-    std::vector<std::shared_ptr<Elevation>> _elevations;
-    std::vector<std::shared_ptr<Script>> _scripts;
-    std::vector<int> _MVARS;
-    std::vector<int> _LVARS;
-    unsigned int _version;
-    std::string _name;
-    unsigned int _defaultPosition;
-    unsigned int _defaultElevation;
-    unsigned int _defaultOrientaion;
-    unsigned int _MVARsize;
-    unsigned int _LVARsize;
-    unsigned int _elevationFlags;
-    unsigned int _mapId;
-    unsigned int _timeSinceEpoch;
-    int _unknown1;
-
-    int _scriptId = -1;
-
-    std::shared_ptr<Object> _readObject();
-    virtual void _initialize();
-
 
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
@@ -76,26 +52,52 @@ public:
     ~File();
 
     File* setCallback(ProFileTypeLoaderCallback callback);
-    ProFileTypeLoaderCallback callback();
+    ProFileTypeLoaderCallback callback() const;
 
-    unsigned int version();
+    std::vector<Elevation*>* elevations();
+    std::vector<Script*>* scripts();
+    std::vector<int32_t>* LVARS();
+    std::vector<int32_t>* MVARS();
 
-    std::vector<std::shared_ptr<Elevation>>* elevations();
-    std::vector<std::shared_ptr<Script>>* scripts();
-    unsigned int defaultPosition();
-    unsigned int defaultElevation();
-    unsigned int defaultOrientation();
-    int scriptId();
+    uint32_t defaultPosition() const;
+    uint32_t defaultElevation() const;
+    uint32_t defaultOrientation() const;
+    uint32_t elevationFlags() const;
+    uint32_t mapId() const;
+    uint32_t version() const;
+    uint32_t timeSinceEpoch() const;
 
-    std::string name();
+    int32_t scriptId() const;
+    int32_t unknown1() const;
 
-    unsigned int elevationFlags();
-    int unknown1();
-    unsigned int mapId();
-    unsigned int timeSinceEpoch();
+    std::string name() const;
 
-    std::vector<int>* LVARS();
-    std::vector<int>* MVARS();
+protected:
+    ProFileTypeLoaderCallback _proFileTypeLoaderCallback = 0;
+
+    std::vector<Elevation*> _elevations;
+    std::vector<Script*> _scripts;
+    std::vector<int32_t> _MVARS;
+    std::vector<int32_t> _LVARS;
+
+    uint32_t _version = 0;
+    uint32_t _defaultPosition = 0;
+    uint32_t _defaultElevation = 0;
+    uint32_t _defaultOrientaion = 0;
+    uint32_t _MVARsize = 0;
+    uint32_t _LVARsize = 0;
+    uint32_t _elevationFlags = 0;
+    uint32_t _mapId = 0;
+    uint32_t _timeSinceEpoch = 0;
+
+    int32_t _unknown1 = 1;
+    int32_t _scriptId = -1;
+
+    std::string _name;
+
+    Object* _readObject();
+    virtual void _initialize();
+
 
 };
 

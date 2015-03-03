@@ -40,7 +40,32 @@ namespace Acm
 
 class ValueUnpacker
 {
-private:
+
+public:
+
+    ValueUnpacker(int levCnt, int sbCount, Dat::Item *stream);
+    virtual ~ValueUnpacker();
+
+    // These functions are used to fill the buffer with the amplitude values
+    int return0(int pass, int ind);
+    int zeroFill(int pass, int ind);
+    int linearFill(int pass, int ind);
+    int k1_3bits(int pass, int ind);
+    int k1_2bits(int pass, int ind);
+    int t1_5bits(int pass, int ind);
+    int k2_4bits(int pass, int ind);
+    int k2_3bits(int pass, int ind);
+    int t2_7bits(int pass, int ind);
+    int k3_5bits(int pass, int ind);
+    int k3_4bits(int pass, int ind);
+    int k4_5bits(int pass, int ind);
+    int k4_4bits(int pass, int ind);
+    int t3_7bits(int pass, int ind);
+
+    int init();
+    int getOneBlock(int *block);
+
+protected:
     // Parameters of ACM stream
     int _levels, _subblocks;
     Dat::Item *stream;
@@ -57,44 +82,7 @@ private:
     // Reading routines
     void _prepareBits(int bits); // request bits
     int _getBits(int bits); // request and return next bits
-public:
-    // These functions are used to fill the buffer with the amplitude values
-    int return0(int pass, int ind);
 
-    int zeroFill(int pass, int ind);
-
-    int linearFill(int pass, int ind);
-
-    int k1_3bits(int pass, int ind);
-
-    int k1_2bits(int pass, int ind);
-
-    int t1_5bits(int pass, int ind);
-
-    int k2_4bits(int pass, int ind);
-
-    int k2_3bits(int pass, int ind);
-
-    int t2_7bits(int pass, int ind);
-
-    int k3_5bits(int pass, int ind);
-
-    int k3_4bits(int pass, int ind);
-
-    int k4_5bits(int pass, int ind);
-
-    int k4_4bits(int pass, int ind);
-
-    int t3_7bits(int pass, int ind);
-
-
-    ValueUnpacker(int levCnt, int sbCount, Dat::Item *stream);
-
-    virtual ~ValueUnpacker();
-
-    int init();
-
-    int getOneBlock(int *block);
 };
 
 typedef int (ValueUnpacker::*FillerProc)(int pass, int ind);

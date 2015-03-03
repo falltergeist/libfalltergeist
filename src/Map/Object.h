@@ -35,6 +35,112 @@ namespace Map
 
 class Object
 {
+
+public:
+    Object();
+    ~Object();
+
+    unsigned int ammount();
+    void setAmmount(unsigned int value);
+
+    unsigned int unknown1();
+    void setUnknown1(unsigned int value);
+
+    int hexPosition();
+    void setHexPosition(int value);
+
+    unsigned int unknown2();
+    void setUnknown2(unsigned int value);
+
+    unsigned int unknown3();
+    void setUnknown3(unsigned int value);
+
+    unsigned int unknown4();
+    void setUnknown4(unsigned int value);
+
+    unsigned int unknown5();
+    void setUnknown5(unsigned int value);
+
+    unsigned int frameNumber();
+    void setFrameNumber(unsigned int value);
+
+    unsigned int orientation();
+    void setOrientation(unsigned int value);
+
+    unsigned int FID();
+    unsigned int frmTypeId();
+    void setFrmTypeId(unsigned int value);
+    unsigned int frmId();
+    void setFrmId(unsigned int value);
+
+    unsigned int unknown6();
+    void setUnknown6(unsigned int value);
+
+    unsigned int elevation();
+    void setElevation(unsigned int value);
+
+    unsigned int PID();
+    unsigned int objectTypeId();
+
+    void setObjectTypeId(unsigned int value);
+    unsigned int objectId();
+
+    void setObjectId(unsigned int value);
+    unsigned int objectSubtypeId();
+    void setObjectSubtypeId(unsigned int value);
+
+    unsigned int objectID1();
+    void setObjectID1(unsigned int value);
+
+    unsigned int objectID2();
+    void setObjectID2(unsigned int value);
+
+    unsigned int objectID3();
+    void setObjectID3(unsigned int value);
+
+    unsigned int unknown7();
+    void setUnknown7(unsigned int value);
+
+    unsigned int unknown8();
+    void setUnknown8(unsigned int value);
+
+    unsigned int unknown9();
+    void setUnknown9(unsigned int value);
+
+    unsigned int unknown10();
+    void setUnknown10(unsigned int value);
+
+    int scriptId();
+    void setScriptId(int value);
+    int mapScriptId();
+    void setMapScriptId(int value);
+
+    unsigned int inventorySize();
+    void setInventorySize(unsigned int value);
+
+    unsigned int unknown11();
+    void setUnknown11(unsigned int value);
+
+    unsigned int unknown12();
+    void setUnknown12(unsigned int value);
+
+    unsigned int unknown13();
+    void setUnknown13(unsigned int value);
+
+    int exitMap();
+    void setExitMap(int value);
+
+    int exitPosition();
+    void setExitPosition(int value);
+
+    int exitElevation();
+    void setExitElevation(int value);
+
+    int exitOrientation();
+    void setExitOrientation(int value);
+
+    std::vector<Object*>* children();
+
 protected:
     unsigned int _ammount = 0;
     unsigned int _unknown1;
@@ -70,81 +176,8 @@ protected:
     int _mapScriptId = -1;
     int _scriptId = -1;
     int _hexPosition = -1;
-    std::vector<std::shared_ptr<Object>> _children;
-public:
-    Object();
-    ~Object();
+    std::vector<Object*> _children;
 
-    unsigned int ammount();
-    void setAmmount(unsigned int value);
-    unsigned int unknown1();
-    void setUnknown1(unsigned int value);
-    int hexPosition();
-    void setHexPosition(int value);
-    unsigned int unknown2();
-    void setUnknown2(unsigned int value);
-    unsigned int unknown3();
-    void setUnknown3(unsigned int value);
-    unsigned int unknown4();
-    void setUnknown4(unsigned int value);
-    unsigned int unknown5();
-    void setUnknown5(unsigned int value);
-    unsigned int frameNumber();
-    void setFrameNumber(unsigned int value);
-    unsigned int orientation();
-    void setOrientation(unsigned int value);
-    unsigned int FID();
-    unsigned int frmTypeId();
-    void setFrmTypeId(unsigned int value);
-    unsigned int frmId();
-    void setFrmId(unsigned int value);
-    unsigned int unknown6();
-    void setUnknown6(unsigned int value);
-    unsigned int elevation();
-    void setElevation(unsigned int value);
-    unsigned int PID();
-    unsigned int objectTypeId();
-    void setObjectTypeId(unsigned int value);
-    unsigned int objectId();
-    void setObjectId(unsigned int value);
-    unsigned int objectSubtypeId();
-    void setObjectSubtypeId(unsigned int value);
-    unsigned int objectID1();
-    void setObjectID1(unsigned int value);
-    unsigned int objectID2();
-    void setObjectID2(unsigned int value);
-    unsigned int objectID3();
-    void setObjectID3(unsigned int value);
-    unsigned int unknown7();
-    void setUnknown7(unsigned int value);
-    unsigned int unknown8();
-    void setUnknown8(unsigned int value);
-    unsigned int unknown9();
-    void setUnknown9(unsigned int value);
-    unsigned int unknown10();
-    void setUnknown10(unsigned int value);
-    int scriptId();
-    void setScriptId(int value);
-    int mapScriptId();
-    void setMapScriptId(int value);
-    unsigned int inventorySize();
-    void setInventorySize(unsigned int value);
-    unsigned int unknown11();
-    void setUnknown11(unsigned int value);
-    unsigned int unknown12();
-    void setUnknown12(unsigned int value);
-    unsigned int unknown13();
-    void setUnknown13(unsigned int value);
-    int exitMap();
-    void setExitMap(int value);
-    int exitPosition();
-    void setExitPosition(int value);
-    int exitElevation();
-    void setExitElevation(int value);
-    int exitOrientation();
-    void setExitOrientation(int value);
-
-    std::vector<std::shared_ptr<Object>>* children();
 };
 
 }

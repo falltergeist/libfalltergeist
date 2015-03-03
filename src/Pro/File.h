@@ -79,27 +79,42 @@ enum DamageType
 
 class File : public Dat::Item
 {
-public:
 
+public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
+    uint8_t soundId() const;
+
     int32_t PID() const;
     int32_t FID() const;
+    int32_t scriptId() const;
+    int32_t perk() const;
+    int32_t inventoryFID() const;
+    int32_t armorMaleFID() const;
+    int32_t armorFemaleFID() const;
 
+    uint32_t weaponAnimationCode() const;
+    uint32_t weaponDamageMin() const;
+    uint32_t weaponDamageMax() const;
+    uint32_t weaponDamageType() const;
+    uint32_t weaponRangePrimary() const;
+    uint32_t weaponRangeSecondary() const;
+    uint32_t weaponMinimumStrenght() const;
+    uint32_t weaponActionCostPrimary() const;
+    uint32_t weaponActionCostSecondary() const;
+    uint32_t weaponBurstRounds() const;
+    uint32_t weaponAmmoType() const;
+    uint32_t weaponAmmoPID() const;
+    uint32_t weaponAmmoCapacity() const;
+    uint32_t armorClass() const;
     uint32_t typeId() const;
     uint32_t subtypeId() const;
-    int32_t scriptId() const;
     uint32_t messageId() const;
     uint32_t flags() const;
     uint32_t flagsExt() const;
     uint32_t weight() const;
-
-    int32_t perk() const;
-
-    int32_t inventoryFID() const;
-
     uint32_t critterHitPointsMax() const;
     uint32_t critterActionPoints() const;
     uint32_t critterArmorClass() const;
@@ -115,53 +130,19 @@ public:
     std::vector<uint32_t>* damageResist();
     std::vector<uint32_t>* damageThreshold();
 
-    int32_t armorMaleFID() const;
-    int32_t armorFemaleFID() const;
-    uint32_t armorClass() const;
-
-    uint32_t weaponAnimationCode() const;
-    uint32_t weaponDamageMin() const;
-    uint32_t weaponDamageMax() const;
-    uint32_t weaponDamageType() const;
-    uint32_t weaponRangePrimary() const;
-    uint32_t weaponRangeSecondary() const;
-    uint32_t weaponMinimumStrenght() const;
-    uint32_t weaponActionCostPrimary() const;
-    uint32_t weaponActionCostSecondary() const;
-    uint32_t weaponBurstRounds() const;
-    uint32_t weaponAmmoType() const;
-    uint32_t weaponAmmoPID() const;
-    uint32_t weaponAmmoCapacity() const;
-    uint8_t soundId() const;
-
 protected:
+    uint8_t _soundId = 0;
+
     int32_t _PID = -1;
-    uint32_t _subtypeId;
-    uint32_t _messageId;
-
     int32_t _FID = -1;
-
     int32_t _critterHeadFID = -1;
-    uint32_t _critterHitPointsMax = 0;
-    uint32_t _critterActionPoints = 0;
-    uint32_t _critterArmorClass = 0;
-    uint32_t _critterMeleeDamage = 0;
-    uint32_t _critterCarryWeightMax = 0;
-    uint32_t _critterSequence = 0;
-    uint32_t _critterHealingRate = 0;
-    uint32_t _critterCriticalChance = 0;
-
-    std::vector<uint32_t> _critterStats = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<uint32_t> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<uint32_t> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<uint32_t> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<uint32_t> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-
     int32_t _perk = -1;
+    int32_t _SID = -1;
+    int32_t _inventoryFID = -1;
+
     uint32_t _armorMaleFID = 0;
     uint32_t _armorFemaleFID = 0;
     uint32_t _armorClass = 0;
-
     uint32_t _weaponAnimationCode = 0;
     uint32_t _weaponDamageMin = 0;
     uint32_t _weaponDamageMax = 0;
@@ -175,23 +156,30 @@ protected:
     uint32_t _weaponAmmoType = 0;
     uint32_t _weaponAmmoPID = 0;
     uint32_t _weaponAmmoCapacity = 0;
-
-    uint32_t _lightDistance;
-    uint32_t _lightIntencity;
-
-    uint32_t _flags;
-    uint32_t _flagsExt;
-
-    int32_t _SID = -1;
-
-    uint32_t _materialId;
-    uint32_t _containerSize;
+    uint32_t _subtypeId = 0;
+    uint32_t _messageId = 0;
+    uint32_t _critterHitPointsMax = 0;
+    uint32_t _critterActionPoints = 0;
+    uint32_t _critterArmorClass = 0;
+    uint32_t _critterMeleeDamage = 0;
+    uint32_t _critterCarryWeightMax = 0;
+    uint32_t _critterSequence = 0;
+    uint32_t _critterHealingRate = 0;
+    uint32_t _critterCriticalChance = 0;
+    uint32_t _lightDistance = 0;
+    uint32_t _lightIntencity = 0;
+    uint32_t _flags = 0;
+    uint32_t _flagsExt = 0;
+    uint32_t _materialId = 0;
+    uint32_t _containerSize = 0;
     uint32_t _weight = 0;
-    uint32_t _basePrice;
+    uint32_t _basePrice = 0;
 
-    int32_t _inventoryFID = -1;
-
-    uint8_t _soundId;
+    std::vector<uint32_t> _critterStats = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _critterStatsBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _critterSkills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _damageResist = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _damageThreshold = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     virtual void _initialize();
 };

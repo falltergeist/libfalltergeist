@@ -65,7 +65,7 @@ void File::_initialize()
     Dat::Item::setPosition(0);
     _samplesReady=0;
 
-    AcmHeader hdr;
+    Header hdr;
     *this >> hdr.signature;
     *this >> hdr.samples;
     *this >> hdr.channels;
@@ -110,7 +110,7 @@ void File::rewind()
     Dat::Item::setPosition(0);
     _samplesReady=0;
 
-    AcmHeader hdr;
+    Header hdr;
     *this >> hdr.signature;
     *this >> hdr.samples;
     *this >> hdr.channels;

@@ -53,9 +53,4 @@
 #include "Rix/File.h"
 #include "Sve/File.h"
 
-namespace libfalltergeist
-{
-
-}
-
 #endif // LIBFALLTERGEIST_H

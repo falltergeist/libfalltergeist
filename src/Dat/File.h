@@ -41,12 +41,7 @@ class Entry;
 
 class File
 {
-protected:
-    std::vector<std::shared_ptr<Item>> _items;
-    std::shared_ptr<std::ifstream> _stream;
-    std::string _filename;
-    bool _initialized = false;
-    void _initialize();
+
 public:
     File();
     File(std::string pathToFile);
@@ -71,6 +66,14 @@ public:
     File& operator>>(int8_t &value);
     File& operator>>(uint8_t &value);
     File& operator>>(Entry &entry);
+
+protected:
+    std::vector<std::shared_ptr<Item>> _items;
+    std::shared_ptr<std::ifstream> _stream;
+    std::string _filename;
+    bool _initialized = false;
+    void _initialize();
+
 };
 
 }

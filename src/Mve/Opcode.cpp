@@ -17,34 +17,60 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_FON_FILE_H
-#define LIBFALLTERGEIST_FON_FILE_H
-
 // C++ standard includes
 
 // libfalltergeist includes
-#include "../Dat/Item.h"
+#include "../Mve/Opcode.h"
 
 // Third party includes
 
 namespace libfalltergeist
 {
-namespace Fon
+namespace Mve
 {
 
-class File : public Dat::Item
+Opcode::Opcode(uint16_t length)
 {
+    _length = length;
+    _data = new uint8_t[_length];
+}
 
-public:
-    File(std::shared_ptr<Dat::Entry> datFileEntry);
-    File(std::ifstream* stream);
-    virtual ~File();
+Opcode::~Opcode()
+{
+    delete [] _data;
+}
 
-protected:
-    virtual void _initialize();
+uint16_t Opcode::length() const
+{
+    return _length;
+}
 
-};
+uint8_t Opcode::type() const
+{
+    return _type;
+}
+
+void Opcode::setType(uint8_t value)
+{
+    _type = value;
+}
+
+uint8_t Opcode::version() const
+{
+    return _version;
+}
+
+void Opcode::setVersion(uint8_t value)
+{
+    _version = value;
+}
+
+uint8_t* Opcode::data() const
+{
+    return _data;
+}
+
+
 
 }
 }
-#endif // LIBFALLTERGEIST_FON_FILE_H

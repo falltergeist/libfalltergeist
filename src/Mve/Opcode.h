@@ -27,12 +27,36 @@
 
 // Third party includes
 
-struct Opcode
+namespace libfalltergeist
 {
-    uint16_t length;
-    uint8_t type;
-    uint8_t version;
-    uint8_t* data;
+namespace Mve
+{
+
+class Opcode
+{
+
+public:
+    Opcode(uint16_t length);
+    ~Opcode();
+
+    uint16_t length() const;
+
+    uint8_t type() const;
+    void setType(uint8_t value);
+
+    uint8_t version() const;
+    void setVersion(uint8_t value);
+
+    uint8_t* data() const;
+
+protected:
+    uint16_t _length = 0;
+    uint8_t _type = 0;
+    uint8_t _version = 0;
+    uint8_t* _data = nullptr;
+
 };
 
+}
+}
 #endif // LIBFALLTERGEIST_MVE_OPCODE_H

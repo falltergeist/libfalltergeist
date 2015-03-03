@@ -40,18 +40,6 @@ enum Endianness {ENDIANNESS_BIG = 0, ENDIANNESS_LITTLE};
 
 class Item: public std::streambuf
 {
-protected:
-    std::string _filename;
-    std::shared_ptr<Entry> _datFileEntry;
-    std::ifstream* _stream = 0;
-
-
-    uint8_t* _buffer = nullptr;
-    int32_t _size;
-    Endianness _endianness = ENDIANNESS_BIG;
-
-    bool _initialized = false;
-    virtual void _initialize();
 
 public:
 
@@ -88,6 +76,18 @@ public:
     Item& operator>>(int16_t &value);
     Item& operator>>(uint8_t &value);
     Item& operator>>(int8_t &value);
+
+protected:
+    std::string _filename;
+    std::shared_ptr<Entry> _datFileEntry;
+    std::ifstream* _stream = 0;
+
+    uint8_t* _buffer = nullptr;
+    int32_t _size;
+    Endianness _endianness = ENDIANNESS_BIG;
+
+    bool _initialized = false;
+    virtual void _initialize();
 
 };
 

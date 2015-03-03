@@ -33,13 +33,16 @@ namespace libfalltergeist
 
 class Exception : public std::exception
 {
+
 public:
     explicit Exception(const char* message);
     explicit Exception(const std::string& message);
     virtual ~Exception() throw();
     virtual const char* what() const throw();
+
 protected:
     std::string _message;
+
 };
 
 }

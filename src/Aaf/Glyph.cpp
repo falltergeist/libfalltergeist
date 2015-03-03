@@ -37,26 +37,24 @@ Glyph::~Glyph()
 {
 }
 
-uint16_t Glyph::height()
+uint16_t Glyph::height() const
 {
     return _height;
 }
 
-Glyph* Glyph::setHeight(uint16_t height)
+void Glyph::setHeight(uint16_t height)
 {
     _height = height;
-    return this;
 }
 
-uint16_t Glyph::width()
+uint16_t Glyph::width() const
 {
     return _width;
 }
 
-Glyph* Glyph::setWidth(uint16_t width)
+void Glyph::setWidth(uint16_t width)
 {
     _width = width;
-    return this;
 }
 
 std::vector<unsigned char>* Glyph::data()
@@ -64,7 +62,7 @@ std::vector<unsigned char>* Glyph::data()
     return &_data;
 }
 
-uint32_t Glyph::dataOffset()
+uint32_t Glyph::dataOffset() const
 {
     return _dataOffset;
 }

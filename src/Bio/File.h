@@ -35,15 +35,18 @@ namespace Bio
 
 class File : public Dat::Item
 {
-protected:
-    std::string _text;
-    void _initialize();
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
     std::string text();
+
+protected:
+    std::string _text;
+    void _initialize();
+
 };
 
 }

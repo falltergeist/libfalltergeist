@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_MAP_SCRIPT_H
 
 // C++ standard includes
+#include <cstdint>
 
 // libfalltergeist includes
 
@@ -33,33 +34,37 @@ namespace Map
 
 class Script
 {
-protected:
-    int _PID;
-    int _unknown1,
-        _unknown2,
-        _unknown3,
-        _unknown4,
-        _unknown5,
-        _unknown6,
-        _unknown7,
-        _unknown8,
-        _unknown9,
-        _unknown10,
-        _unknown11,
-        _unknown12,
-        _unknown13,
-        _unknown14,
-        _unknown15,
-        _unknown16;
-    int _scriptId;
+
 public:
     Script();
     ~Script();
 
-    int PID();
-    void setPID(int PID);
-    int scriptId();
-    void setScriptId(int value);
+    int32_t PID() const;
+    void setPID(int32_t PID);
+
+    int32_t scriptId() const;
+    void setScriptId(int32_t value);
+
+protected:
+    int32_t _PID = 0;
+    int32_t _scriptId = -1;
+    int32_t _unknown1 = 0;
+    int32_t _unknown2 = 0;
+    int32_t _unknown3 = 0;
+    int32_t _unknown4 = 0;
+    int32_t _unknown5 = 0;
+    int32_t _unknown6 = 0;
+    int32_t _unknown7 = 0;
+    int32_t _unknown8 = 0;
+    int32_t _unknown9 = 0;
+    int32_t _unknown10 = 0;
+    int32_t _unknown11 = 0;
+    int32_t _unknown12 = 0;
+    int32_t _unknown13 = 0;
+    int32_t _unknown14 = 0;
+    int32_t _unknown15 = 0;
+    int32_t _unknown16 = 0;
+
 };
 
 }

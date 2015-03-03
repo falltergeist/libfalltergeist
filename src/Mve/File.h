@@ -36,13 +36,16 @@ class Chunk;
 
 class File : public Dat::Item
 {
-protected:
-    virtual void _initialize();
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     ~File();
     std::shared_ptr<Chunk> getNextChunk();
+
+protected:
+    virtual void _initialize();
+
 };
 
 }

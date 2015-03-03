@@ -34,10 +34,7 @@ namespace Msg
 
 class Message
 {
-protected:
-    unsigned int _number = 0;
-    std::string _sound;
-    std::string _text;
+
 public:
     Message();
     ~Message();
@@ -52,7 +49,13 @@ public:
     std::string text();
     std::string* textPointer();
 
-    operator std::string ();
+    operator std::string();
+
+protected:
+    unsigned int _number = 0;
+    std::string _sound;
+    std::string _text;
+
 };
 
 }

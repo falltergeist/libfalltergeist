@@ -36,71 +36,7 @@ namespace Gcd
 
 class File : public Dat::Item
 {
-protected:
-    // unknown
-    unsigned int _unknown1;
-    unsigned int _unknown2;
-    unsigned int _unknown3;
-    unsigned int _unknown4;
-    unsigned int _unknown5;
-    unsigned int _unknown6;
-    unsigned int _unknown7;
-    // primary stats
-    std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
-    // bonuses to primary stats
-    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
-    // skills
-    std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    // damage
-    std::vector<unsigned int> _damage = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<unsigned int> _damageBonus = {0, 0, 0, 0, 0, 0, 0};
-    // resistance
-    std::vector<unsigned int> _resistance = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
 
-    // secondary stats
-    unsigned int _hitPoints;
-    unsigned int _actionPoints;
-    unsigned int _armorClass;
-    //unsigned int unknown;
-    unsigned int _meleeDamage;
-    unsigned int  _carryWeight;
-    unsigned int _sequence;
-    unsigned int _healingRate;
-    unsigned int _criticalChance;
-    unsigned int _criticalHitModifier;
-    unsigned int _radiationResistance;
-    unsigned int _poisonResistance;
-    unsigned int _age;
-    unsigned int _gender;
-    // bonuses to secondaty stats
-    unsigned int _hitPointsBonus;
-    unsigned int _actionPointsBonus;
-    unsigned int _armorClassBonus;
-    //unsigned int unknownBonus;
-    unsigned int _meleeDamageBonus;
-    unsigned int _carryWeightBonus;
-    unsigned int _sequenceBonus;
-    unsigned int _healingRateBonus;
-    unsigned int _criticalChanceBonus;
-    unsigned int _criticalHitModifierBonus;
-    unsigned int _radiationResistanceBonus;
-    unsigned int _poisonResistanceBonus;
-    unsigned int _ageBonus;
-    unsigned int _genderBonus;
-
-    std::string _name;
-
-    int _firstTaggedSkill;
-    int _secondTaggedSkill;
-    int _thirdTaggedSkill;
-    int _fourthTaggedSkill;
-    int _firstTrait;
-    int _secondTrait;
-
-    unsigned int _characterPoints;
-
-    virtual void _initialize();
 public:
     enum
     {
@@ -297,6 +233,73 @@ public:
 
     void setCharacterPoints(unsigned int characterPoints);
     unsigned int characterPoints();
+
+protected:
+    // unknown
+    unsigned int _unknown1;
+    unsigned int _unknown2;
+    unsigned int _unknown3;
+    unsigned int _unknown4;
+    unsigned int _unknown5;
+    unsigned int _unknown6;
+    unsigned int _unknown7;
+    // primary stats
+    std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
+    // bonuses to primary stats
+    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
+    // skills
+    std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    // damage
+    std::vector<unsigned int> _damage = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _damageBonus = {0, 0, 0, 0, 0, 0, 0};
+    // resistance
+    std::vector<unsigned int> _resistance = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
+
+    // secondary stats
+    unsigned int _hitPoints;
+    unsigned int _actionPoints;
+    unsigned int _armorClass;
+    //unsigned int unknown;
+    unsigned int _meleeDamage;
+    unsigned int  _carryWeight;
+    unsigned int _sequence;
+    unsigned int _healingRate;
+    unsigned int _criticalChance;
+    unsigned int _criticalHitModifier;
+    unsigned int _radiationResistance;
+    unsigned int _poisonResistance;
+    unsigned int _age;
+    unsigned int _gender;
+    // bonuses to secondaty stats
+    unsigned int _hitPointsBonus;
+    unsigned int _actionPointsBonus;
+    unsigned int _armorClassBonus;
+    //unsigned int unknownBonus;
+    unsigned int _meleeDamageBonus;
+    unsigned int _carryWeightBonus;
+    unsigned int _sequenceBonus;
+    unsigned int _healingRateBonus;
+    unsigned int _criticalChanceBonus;
+    unsigned int _criticalHitModifierBonus;
+    unsigned int _radiationResistanceBonus;
+    unsigned int _poisonResistanceBonus;
+    unsigned int _ageBonus;
+    unsigned int _genderBonus;
+
+    std::string _name;
+
+    int _firstTaggedSkill;
+    int _secondTaggedSkill;
+    int _thirdTaggedSkill;
+    int _fourthTaggedSkill;
+    int _firstTrait;
+    int _secondTrait;
+
+    unsigned int _characterPoints;
+
+    virtual void _initialize();
+
 };
 
 }

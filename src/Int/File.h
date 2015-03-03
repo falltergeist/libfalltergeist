@@ -38,6 +38,7 @@ class Procedure;
 
 class File : public Dat::Item
 {
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream * stream);
@@ -48,6 +49,7 @@ public:
 
     std::map<unsigned int, std::string>* identifiers();
     std::map<unsigned int, std::string>* strings();
+
 protected:
     std::vector<Procedure*> _procedures;
 
@@ -56,6 +58,7 @@ protected:
     std::map<unsigned int, std::string> _identifiers;
     std::map<unsigned int, std::string> _strings;
     virtual void _initialize();
+
 };
 
 }

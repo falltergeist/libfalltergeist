@@ -33,9 +33,11 @@ namespace Fon
 
 class Glyph
 {
+
 public:
     Glyph();
     ~Glyph();
+
 };
 
 }

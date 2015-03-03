@@ -35,7 +35,8 @@ namespace Frm
 class Frame;
 
 class Direction      
-{    
+{
+
 public:
     Direction();
     ~Direction();
@@ -59,6 +60,7 @@ protected:
     int16_t _shiftY = 0;
     uint32_t _dataOffset = 0;
     std::vector<Frame*> _frames;
+
 };
 
 }

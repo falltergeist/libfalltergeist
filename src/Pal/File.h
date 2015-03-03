@@ -37,9 +37,7 @@ class Color;
 
 class File : public Dat::Item
 {
-protected:
-    std::vector<Color*> _colors;
-    virtual void _initialize();
+
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
@@ -47,7 +45,11 @@ public:
 
     std::vector<Color*>* colors();
 
-    Color* color(unsigned char index);
+    Color* color(unsigned index) const;
+
+protected:
+    std::vector<Color*> _colors;
+    virtual void _initialize();
 
 };
 

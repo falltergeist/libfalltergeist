@@ -37,22 +37,6 @@ class SubbandDecoder;
 class File : public Dat::Item
 {
 
-private:
-    int _samplesLeft; // count of unread samples
-    int _levels, _subblocks;
-    int _blockSize;
-    int* _block = nullptr;
-    int* _values = nullptr;
-    int _samplesReady;
-    std::shared_ptr<ValueUnpacker> _unpacker; // ACM-stream unpacker
-    std::shared_ptr<SubbandDecoder> _decoder; // IP's subband decoder
-    int _samples; // total count of sound samples
-    int _channels;
-    int _bitrate;
-    int _makeNewSamples();
-
-protected:
-    virtual void _initialize();
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
@@ -67,6 +51,22 @@ public:
     int readSamples(short* buffer, int count);
 
     int samplesLeft() const;
+
+protected:
+    virtual void _initialize();
+    int _samplesLeft; // count of unread samples
+    int _levels, _subblocks;
+    int _blockSize;
+    int* _block = nullptr;
+    int* _values = nullptr;
+    int _samplesReady;
+    std::shared_ptr<ValueUnpacker> _unpacker; // ACM-stream unpacker
+    std::shared_ptr<SubbandDecoder> _decoder; // IP's subband decoder
+    int _samples; // total count of sound samples
+    int _channels;
+    int _bitrate;
+    int _makeNewSamples();
+
 };
 
 }

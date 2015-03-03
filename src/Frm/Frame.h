@@ -35,6 +35,7 @@ namespace Frm
 
 class Frame
 {
+
 public:
     Frame(uint16_t width, uint16_t height);
     Frame(const Frame& other);
@@ -60,6 +61,7 @@ protected:
     int16_t _offsetX = 0;
     int16_t _offsetY = 0;
     std::vector<uint8_t> _indexes;
+
 };
 
 }

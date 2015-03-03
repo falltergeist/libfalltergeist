@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_PAL_COLOR_H
 
 // C++ standard includes
+#include <cstdint>
 
 // libfalltergeist includes
 
@@ -33,29 +34,32 @@ namespace Pal
 
 class Color
 {
-protected:
-    unsigned char _red;
-    unsigned char _green;
-    unsigned char _blue;
-    unsigned char _alpha;
+
 public:
-    Color(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255);
+    Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
     ~Color();
 
-    operator int();
-    operator unsigned int();
+    operator int() const;
+    operator unsigned int() const;
 
-    void setRed(unsigned char red);
-    unsigned char red();
+    void setRed(uint8_t red);
+    uint8_t red() const;
 
-    void setGreen(unsigned char green);
-    unsigned char green();
+    void setGreen(uint8_t green);
+    uint8_t green() const;
 
-    void setBlue(unsigned char blue);
-    unsigned char blue();
+    void setBlue(uint8_t blue);
+    uint8_t blue() const;
 
-    void setAlpha(unsigned char alpha);
-    unsigned char alpha();
+    void setAlpha(uint8_t alpha);
+    uint8_t alpha() const;
+
+protected:
+    uint8_t _red;
+    uint8_t _green;
+    uint8_t _blue;
+    uint8_t _alpha;
+
 
 };
 

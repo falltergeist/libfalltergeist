@@ -34,21 +34,23 @@ namespace Rix
 
 class File : public Dat::Item
 {
-protected:
-    unsigned short _width;
-    unsigned short _height;
-    unsigned int* _rgba = 0;
-    virtual void _initialize();
 
 public:
     File(std::shared_ptr<Dat::Entry> datFileEntry);
     File(std::ifstream* stream);
     virtual ~File();
 
-    unsigned short width();
-    unsigned short height();
+    uint16_t width() const;
+    uint16_t height() const;
 
-    unsigned int* rgba();
+    uint32_t* rgba() const;
+
+protected:
+    uint16_t _width = 0;
+    uint16_t _height = 0;
+    uint32_t* _rgba = nullptr;
+    virtual void _initialize();
+
 };
 
 }
