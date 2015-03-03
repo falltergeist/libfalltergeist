@@ -38,12 +38,14 @@ namespace libfalltergeist
 namespace Acm
 {
 
-File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
+File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream* stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
@@ -58,11 +60,10 @@ File::~File()
 void File::_initialize()
 {
     if (_initialized) return;
-    this->setEndianness(Dat::ENDIANNESS_LITTLE);
-
-
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
+
+    this->setEndianness(Dat::ENDIANNESS_LITTLE);
     _samplesReady=0;
 
     Header hdr;

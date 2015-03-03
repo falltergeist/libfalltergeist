@@ -23,6 +23,7 @@
 // C++ standard includes
 #include <cstdint>
 #include <fstream>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -50,8 +51,7 @@ public:
     std::string filename();
     File* setFilename(std::string filename);
 
-    std::vector<std::shared_ptr<Item>>* items();
-    std::shared_ptr<Item> item(std::string filename);
+    Item* item(std::string filename);
 
     File* readBytes(char* destination, unsigned int numberOfBytes);
     File* skipBytes(unsigned int numberOfBytes);
@@ -68,8 +68,9 @@ public:
     File& operator>>(Entry &entry);
 
 protected:
-    std::vector<std::shared_ptr<Item>> _items;
-    std::shared_ptr<std::ifstream> _stream;
+    std::map<std::string, Item*> _items;
+    std::vector<Entry*> _entries;
+    std::ifstream* _stream = nullptr;
     std::string _filename;
     bool _initialized = false;
     void _initialize();

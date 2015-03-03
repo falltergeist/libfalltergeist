@@ -40,7 +40,7 @@ Item::Item(std::ifstream * stream)
 }
 
 
-Item::Item(std::shared_ptr<Entry> datFileEntry)
+Item::Item(Entry* datFileEntry)
 {
     _datFileEntry = datFileEntry;
     setFilename(datFileEntry->filename());

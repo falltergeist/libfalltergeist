@@ -36,14 +36,12 @@ namespace libfalltergeist
 namespace Map
 {
 
-File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
+File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
 {
-    _initialize();
 }
 
 File::File(std::ifstream * stream) : Dat::Item(stream)
 {
-    _initialize();
 }
 
 File::~File()
@@ -322,7 +320,6 @@ Object* File::_readObject()
                     break;
                 case Pro::TYPE_SCENERY_DOOR:
                     uint32();
-                    uint32();
                     break;
                 case Pro::TYPE_SCENERY_GENERIC:
                     break;
@@ -373,8 +370,9 @@ std::vector<Elevation*>* File::elevations()
 }
 
 File* File::setCallback(ProFileTypeLoaderCallback callback)
-{
+{    
     _proFileTypeLoaderCallback = callback;
+    _initialize();
     return this;
 }
 

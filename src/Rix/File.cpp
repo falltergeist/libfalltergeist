@@ -29,7 +29,7 @@ namespace libfalltergeist
 namespace Rix
 {
 
-File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
+File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
 {
     _initialize();
 }
@@ -66,7 +66,10 @@ void File::_initialize()
     // Palette
     for (unsigned i = 0; i != 256; ++i)
     {
-        palette[i] = ((uint8() << 26) | (uint8() << 18) | (uint8() << 10) | 0x000000FF);  // RGBA
+        uint8_t r = uint8();
+        uint8_t g = uint8();
+        uint8_t b = uint8();
+        palette[i] = (r << 26 | g << 18 | b << 10 | 0x000000FF);  // RGBA
     }
 
     _rgba = new uint32_t[_width*_height];

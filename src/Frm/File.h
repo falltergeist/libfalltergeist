@@ -55,7 +55,6 @@ class File : public Dat::Item
 {
 
 public:
-
     enum {
         MASK_SLIME = 0,
         MASK_FIRE_SLOW = 2,
@@ -65,7 +64,7 @@ public:
         MASK_SHORE = 32
     };
 
-    File(std::shared_ptr<Dat::Entry> datFileEntry);
+    File(Dat::Entry* datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
@@ -90,9 +89,9 @@ public:
     uint16_t shiftX(unsigned int direction) const;
     uint16_t shiftY(unsigned int direction) const;
 
-    uint32_t* rgba(std::shared_ptr<Pal::File> palFile);
+    uint32_t* rgba(Pal::File* palFile);
     bool animatedPalette();
-    std::map<unsigned int, uint8_t*>*  animatedMasks();
+    std::map<unsigned int, uint8_t*>* animatedMasks();
 
 protected:
     uint32_t* _rgba = 0;

@@ -34,12 +34,14 @@ namespace libfalltergeist
 namespace Frm
 {
 
-File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
+File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
 {
+    _initialize();
 }
 
 File::File(std::ifstream * stream) : Dat::Item(stream)
 {
+    _initialize();
 }
 
 File::~File()
@@ -65,7 +67,6 @@ void File::_initialize()
     uint16_t shiftX[6];
     uint16_t shiftY[6];
     uint32_t dataOffset[6];
-
     for (unsigned int i = 0; i != 6; ++i) shiftX[i] = uint16();
     for (unsigned int i = 0; i != 6; ++i) shiftY[i] = uint16();
     for (unsigned int i = 0; i != 6; ++i)
@@ -92,7 +93,9 @@ void File::_initialize()
         // read all frames
         for (unsigned i = 0; i != _framesPerDirection; ++i)
         {            
-            auto frame = new Frame(uint16(), uint16());
+            uint16_t width = uint16();
+            uint16_t height = uint16();
+            auto frame = new Frame(width, height);
 
             // Number of pixels for this frame
             // We don't need this, because we already have width*height
@@ -160,10 +163,9 @@ uint16_t File::height() const
     return height;
 }
 
-uint32_t* File::rgba(std::shared_ptr<Pal::File> palFile)
+uint32_t* File::rgba(Pal::File* palFile)
 {
     if (_rgba) return _rgba;
-    _initialize();
     _rgba = new uint32_t[width()*height()]();
 
     uint16_t w = width();
@@ -209,7 +211,6 @@ bool File::animatedPalette()
 std::map<unsigned int, uint8_t*>* File::animatedMasks()
 {
     if (!_animatedMasks.empty()) return &_animatedMasks;
-    _initialize();
 
     uint16_t w = width();
     uint16_t h = height();

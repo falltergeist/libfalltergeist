@@ -41,13 +41,13 @@ class Elevation;
 class Object;
 class Script;
 
-typedef std::shared_ptr<Pro::File> (*ProFileTypeLoaderCallback)(uint32_t);
+typedef Pro::File* (*ProFileTypeLoaderCallback)(uint32_t);
 
 class File : public Dat::Item
 {
 
 public:
-    File(std::shared_ptr<Dat::Entry> datFileEntry);
+    File(Dat::Entry* datFileEntry);
     File(std::ifstream* stream);
     ~File();
 

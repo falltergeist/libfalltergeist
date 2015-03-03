@@ -31,7 +31,7 @@ namespace libfalltergeist
 namespace Aaf
 {
 
-File::File(std::shared_ptr<Dat::Entry> datFileEntry): Dat::Item(datFileEntry)
+File::File(Dat::Entry* datFileEntry): Dat::Item(datFileEntry)
 {
     _initialize();
 }

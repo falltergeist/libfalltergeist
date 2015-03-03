@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
 #
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build (by default Debug)")
 
 cmake_minimum_required( VERSION 2.8 )
 
@@ -23,7 +24,7 @@ project( libfalltergeist )
 
 set(libfalltergeist_MAJOR_VERSION "0")
 set(libfalltergeist_MINOR_VERSION "3")
-set(libfalltergeist_PATCH_VERSION "0")
+set(libfalltergeist_PATCH_VERSION "1")
 
 set(libfalltergeist_VERSION_STRING "${libfalltergeist_MAJOR_VERSION}.${libfalltergeist_MINOR_VERSION}.${libfalltergeist_PATCH_VERSION}")
 

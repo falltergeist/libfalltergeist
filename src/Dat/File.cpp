@@ -52,6 +52,7 @@ namespace Dat
 
 File::File()
 {
+    _initialize();
 }
 
 File::File(std::string filename)
@@ -62,6 +63,16 @@ File::File(std::string filename)
 
 File::~File()
 {
+    for (auto item : _items)
+    {
+        delete item.second;
+    }
+
+    for (auto entry : _entries)
+    {
+        delete entry;
+    }
+    delete _stream;
 }
 
 std::string File::filename()
@@ -80,11 +91,40 @@ void File::_initialize()
     if (_initialized) return;
     _initialized = true;
 
-    _stream = std::shared_ptr<std::ifstream>(new std::ifstream());
+    _stream = new std::ifstream();
     _stream->open(filename(), std::ios_base::binary);
     if (!_stream->is_open())
     {
         throw Exception("File::_initialize() - can't open stream: " + filename());
+    }
+
+    unsigned int FileSize;
+    unsigned int filesTreeSize;
+    unsigned int filesTotalNumber;
+
+    // reading data size from dat file
+    setPosition(size() - 4);
+    *this >> FileSize;
+    if (FileSize != size())
+    {
+        throw Exception("File::items() - wrong file size");
+    }
+    // reading size of files tree
+    setPosition(size() - 8);
+    *this >> filesTreeSize;
+
+    // reading total number of items in dat file
+    setPosition(size() - filesTreeSize - 8);
+    *this >> filesTotalNumber;
+
+    //reading files data one by one
+    for (unsigned int i = 0; i != filesTotalNumber; ++i)
+    {
+        auto entry = new Entry(this);
+
+        *this >> *entry;
+
+        _entries.push_back(entry);
     }
 }
 
@@ -122,84 +162,44 @@ File* File::readBytes(char * destination, unsigned int numberOfBytes)
     return this;
 }
 
-std::vector<std::shared_ptr<Item>>* File::items()
+Item* File::item(const std::string filename)
 {
-    // if items are fetched already
-    if (_items.size()) return &_items;
-
-        unsigned int oldPos = position();
-
-        unsigned int FileSize;
-        unsigned int filesTreeSize;
-        unsigned int filesTotalNumber;
-
-        // reading data size from dat file
-        setPosition(size() - 4);
-        *this >> FileSize;
-        if (FileSize != size())
-        {
-            throw Exception("File::items() - wrong file size");
-        }
-        // reading size of files tree
-        setPosition(size() - 8);
-        *this >> filesTreeSize;
-
-        // reading total number of items in dat file
-        setPosition(size() - filesTreeSize - 8);
-        *this >> filesTotalNumber;
-
-        //reading files data one by one
-        for (unsigned int i = 0; i != filesTotalNumber; ++i)
-        {
-            auto entry = std::shared_ptr<Entry>(new Entry(this));
-
-            *this >> *entry;
-
-            std::string extension = entry->filename().substr(entry->filename().length() - 3, 3);
-
-            std::shared_ptr<Item> item;
-            if      (extension == "aaf") item = std::shared_ptr<Aaf::File>(new Aaf::File(entry));
-            else if (extension == "acm") item = std::shared_ptr<Acm::File>(new Acm::File(entry));
-            else if (extension == "bio") item = std::shared_ptr<Bio::File>(new Bio::File(entry));
-            else if (extension == "fon") item = std::shared_ptr<Fon::File>(new Fon::File(entry));
-            else if (extension == "frm") item = std::shared_ptr<Frm::File>(new Frm::File(entry));
-            else if (extension == "gam") item = std::shared_ptr<Gam::File>(new Gam::File(entry));
-            else if (extension == "gcd") item = std::shared_ptr<Gcd::File>(new Gcd::File(entry));
-            else if (extension == "int") item = std::shared_ptr<Int::File>(new Int::File(entry));
-            else if (extension == "lip") item = std::shared_ptr<Lip::File>(new Lip::File(entry));
-            else if (extension == "lst") item = std::shared_ptr<Lst::File>(new Lst::File(entry));
-            else if (extension == "map") item = std::shared_ptr<Map::File>(new Map::File(entry));
-            else if (extension == "msg") item = std::shared_ptr<Msg::File>(new Msg::File(entry));
-            else if (extension == "mve") item = std::shared_ptr<Mve::File>(new Mve::File(entry));
-            else if (extension == "pal") item = std::shared_ptr<Pal::File>(new Pal::File(entry));
-            else if (extension == "pro") item = std::shared_ptr<Pro::File>(new Pro::File(entry));
-            else if (extension == "rix") item = std::shared_ptr<Rix::File>(new Rix::File(entry));
-            else if (extension == "sve") item = std::shared_ptr<Sve::File>(new Sve::File(entry));
-            else item = std::shared_ptr<Item>(new Item(entry));
-
-            _items.push_back(item);
-        }
-        setPosition(oldPos);
-
-    return &_items;
-}
-
-std::shared_ptr<Item> File::item(const std::string filename)
-{
-    std::string name(filename);
-    // Replace slashes and transform to lower case
-    std::replace(name.begin(),name.end(),'\\','/');
-    std::transform(name.begin(),name.end(),name.begin(), ::tolower);
-
-
-    for (auto item : *items())
+    if (_items.find(filename) != _items.end())
     {
-        if (name.compare(item->filename()) == 0)
-        {
-            return item;
-        }
+        return _items.at(filename);
     }
-    return 0;
+
+    for (auto entry : _entries)
+    {
+        if (entry->filename() != filename) continue;
+
+        std::string extension = filename.substr(filename.length() - 3, 3);
+
+        Item* item = nullptr;
+        if      (extension == "aaf") item = new Aaf::File(entry);
+        else if (extension == "acm") item = new Acm::File(entry);
+        else if (extension == "bio") item = new Bio::File(entry);
+        else if (extension == "fon") item = new Fon::File(entry);
+        else if (extension == "frm") item = new Frm::File(entry);
+        else if (extension == "gam") item = new Gam::File(entry);
+        else if (extension == "gcd") item = new Gcd::File(entry);
+        else if (extension == "int") item = new Int::File(entry);
+        else if (extension == "lip") item = new Lip::File(entry);
+        else if (extension == "lst") item = new Lst::File(entry);
+        else if (extension == "map") item = new Map::File(entry);
+        else if (extension == "msg") item = new Msg::File(entry);
+        else if (extension == "mve") item = new Mve::File(entry);
+        else if (extension == "pal") item = new Pal::File(entry);
+        else if (extension == "pro") item = new Pro::File(entry);
+        else if (extension == "rix") item = new Rix::File(entry);
+        else if (extension == "sve") item = new Sve::File(entry);
+        else item = new Item(entry);
+
+        _items.insert(std::make_pair(filename, item));
+        return item;
+    }
+
+    return nullptr;
 }
 
 File& File::operator>>(int32_t &value)

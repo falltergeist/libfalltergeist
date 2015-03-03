@@ -32,7 +32,7 @@ namespace libfalltergeist
 namespace Mve
 {
 
-File::File(std::shared_ptr<Dat::Entry> datFileEntry) : Dat::Item(datFileEntry)
+File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
 {
     _initialize();
 }

@@ -81,7 +81,7 @@ class File : public Dat::Item
 {
 
 public:
-    File(std::shared_ptr<Dat::Entry> datFileEntry);
+    File(Dat::Entry* datFileEntry);
     File(std::ifstream* stream);
     ~File();
 

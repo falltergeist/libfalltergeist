@@ -102,7 +102,7 @@ public:
         DAMAGE_EXPLOSIVE
     };
 
-    File(std::shared_ptr<Dat::Entry> datFileEntry);
+    File(Dat::Entry* datFileEntry);
     File(std::ifstream* stream);
     ~File();
 

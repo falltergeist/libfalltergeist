@@ -44,7 +44,7 @@ class Item: public std::streambuf
 public:
 
     Item(std::ifstream* stream);
-    Item(std::shared_ptr<Dat::Entry> datFileEntry);
+    Item(Dat::Entry* datFileEntry);
     ~Item();
 
     virtual std::streambuf::int_type underflow();
@@ -79,8 +79,8 @@ public:
 
 protected:
     std::string _filename;
-    std::shared_ptr<Entry> _datFileEntry;
-    std::ifstream* _stream = 0;
+    Entry* _datFileEntry = nullptr;
+    std::ifstream* _stream = nullptr;
 
     uint8_t* _buffer = nullptr;
     int32_t _size;
