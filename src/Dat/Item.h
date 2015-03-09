@@ -26,6 +26,7 @@
 #include <memory>
 
 // libfalltergeist includes
+#include "../Enums.h"
 
 // Third party includes
 
@@ -35,8 +36,6 @@ namespace Dat
 {
 
 class Entry;
-
-enum Endianness {ENDIANNESS_BIG = 0, ENDIANNESS_LITTLE};
 
 class Item: public std::streambuf
 {
@@ -60,8 +59,8 @@ public:
 
     unsigned int bytesRemains();
 
-    Endianness endianness();
-    void setEndianness(Endianness value);
+    ENDIANNESS endianness();
+    void setEndianness(ENDIANNESS value);
 
     uint32_t uint32();
     int32_t int32();
@@ -84,7 +83,7 @@ protected:
 
     uint8_t* _buffer = nullptr;
     int32_t _size;
-    Endianness _endianness = ENDIANNESS_BIG;
+    ENDIANNESS _endianness = ENDIANNESS::BIG;
 
     bool _initialized = false;
     virtual void _initialize();

@@ -24,6 +24,7 @@
 
 // libfalltergeist includes
 #include "../Dat/Item.h"
+#include "../Enums.h"
 
 // Third party includes
 

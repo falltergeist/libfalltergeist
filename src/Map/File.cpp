@@ -255,36 +255,36 @@ Object* File::_readObject()
     object->setUnknown12(uint32());
     object->setUnknown13(uint32());
 
-    switch (object->objectTypeId())
+    switch ((OBJECT_TYPE)object->objectTypeId())
     {
-        case Pro::TYPE_ITEM:
+        case OBJECT_TYPE::ITEM:
             object->setObjectSubtypeId(callback()(PID)->subtypeId());
-            switch(object->objectSubtypeId())
+            switch((ITEM_TYPE)object->objectSubtypeId())
             {
-                case Pro::TYPE_ITEM_AMMO:
+                case ITEM_TYPE::AMMO:
                     uint32();
                     break;
-                case Pro::TYPE_ITEM_KEY:
+                case ITEM_TYPE::KEY:
                     uint32();
                     break;
-                case Pro::TYPE_ITEM_MISC:
+                case ITEM_TYPE::MISC:
                     uint32();
                     break;
-                case Pro::TYPE_ITEM_WEAPON:
+                case ITEM_TYPE::WEAPON:
                     uint32();
                     uint32();
                     break;
-                case Pro::TYPE_ITEM_ARMOR:
+                case ITEM_TYPE::ARMOR:
                     break;
-                case Pro::TYPE_ITEM_CONTAINER:
+                case ITEM_TYPE::CONTAINER:
                     break;
-                case Pro::TYPE_ITEM_DRUG:
+                case ITEM_TYPE::DRUG:
                     break;
                 default:
                     throw Exception("File::_readObject() - unknown item type");
             }
             break;
-        case Pro::TYPE_CRITTER:
+        case OBJECT_TYPE::CRITTER:
             uint32();
             uint32();
             uint32();
@@ -301,37 +301,37 @@ Object* File::_readObject()
             object->setFrmTypeId((FID & 0x0F000000) >> 24);
             object->setObjectID3((FID & 0xF0000000) >> 28);
             break;
-        case Pro::TYPE_SCENERY:
+        case OBJECT_TYPE::SCENERY:
             object->setObjectSubtypeId(callback()(PID)->subtypeId());
-            switch(object->objectSubtypeId())
+            switch((SCENERY_TYPE)object->objectSubtypeId())
             {
-                case Pro::TYPE_SCENERY_LADDER_TOP:
-                case Pro::TYPE_SCENERY_LADDER_BOTTOM:
+                case SCENERY_TYPE::LADDER_TOP:
+                case SCENERY_TYPE::LADDER_BOTTOM:
                     uint32();
                     uint32();
                     break;
-                case Pro::TYPE_SCENERY_STAIRS:
+                case SCENERY_TYPE::STAIRS:
                     uint32();
                     uint32();
                     break;
-                case Pro::TYPE_SCENERY_ELEVATOR:
+                case SCENERY_TYPE::ELEVATOR:
                     uint32();
                     uint32();
                     break;
-                case Pro::TYPE_SCENERY_DOOR:
+                case SCENERY_TYPE::DOOR:
                     uint32();
                     break;
-                case Pro::TYPE_SCENERY_GENERIC:
+                case SCENERY_TYPE::GENERIC:
                     break;
                 default:
                     throw Exception("File::_readObject() - unknown scenery type");
             }
             break;
-        case Pro::TYPE_WALL:
+        case OBJECT_TYPE::WALL:
             break;
-        case Pro::TYPE_TILE:
+        case OBJECT_TYPE::TILE:
             break;
-        case Pro::TYPE_MISC:
+        case OBJECT_TYPE::MISC:
             switch(object->objectId())
             {
                 case 12:

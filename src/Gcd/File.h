@@ -26,6 +26,7 @@
 
 // libfalltergeist includes
 #include "../Dat/Item.h"
+#include "../Enums.h"
 
 // Third party includes
 
@@ -38,265 +39,192 @@ class File : public Dat::Item
 {
 
 public:
-    enum
-    {
-        STATS_STRENGTH = 0,
-        STATS_PERCEPTION,
-        STATS_ENDURANCE,
-        STATS_CHARISMA,
-        STATS_INTELLIGENCE,
-        STATS_AGILITY,
-        STATS_LUCK
-    };
-    enum
-    {
-        SKILLS_1 = 0, // Small Guns
-        SKILLS_2, // Big Guns
-        SKILLS_3, // Energy Weapons
-        SKILLS_4, // Unarmed
-        SKILLS_5, // Melee Weapons
-        SKILLS_6, // Throwing
-        SKILLS_7, // First Aid
-        SKILLS_8, // Doctor
-        SKILLS_9, // Sneak
-        SKILLS_10, // Lockpick
-        SKILLS_11, // Steal
-        SKILLS_12, // Traps
-        SKILLS_13, // Science
-        SKILLS_14, // Repair
-        SKILLS_15, // Speech
-        SKILLS_16, // Barter
-        SKILLS_17, // Gambling
-        SKILLS_18  // Outdoorsman
-    };
-    enum
-    {
-        SKILLS_SMALL_GUNS = 0,
-        SKILLS_BIG_GUNS,
-        SKILLS_ENERGY_WEAPONS,
-        SKILLS_UNARMED,
-        SKILLS_MELEE_WEAPONS,
-        SKILLS_THROWING,
-        SKILLS_FIRST_AID,
-        SKILLS_DOCTOR,
-        SKILLS_SNEAK,
-        SKILLS_LOCKPICK,
-        SKILLS_STEAL,
-        SKILLS_TRAPS,
-        SKILLS_SCIENCE,
-        SKILLS_REPAIR,
-        SKILLS_SPEECH,
-        SKILLS_BARTER,
-        SKILLS_GAMBLING,
-        SKILLS_OUTDOORSMAN
-    };
-
-    enum
-    {
-        DAMAGE_NORMAL = 0,
-        DAMAGE_LASER,
-        DAMAGE_FIRE,
-        DAMAGE_PLASMA,
-        DAMAGE_ELECTRICAL,
-        DAMAGE_EMP,
-        DAMAGE_EXPLOSIVE
-    };
 
     File(Dat::Entry* datFileEntry);
     File(std::ifstream* stream);
     ~File();
 
-    void setStat(unsigned int number, unsigned int value);
-    unsigned int stat(unsigned int number);
+    void setStat(STAT number, uint32_t value);
+    uint32_t stat(STAT number) const;
 
-    void setStatBonus(unsigned int number, unsigned int value);
-    unsigned int statBonus(unsigned int number);
+    void setStatBonus(STAT number, uint32_t value);
+    uint32_t statBonus(STAT number) const;
 
-    void setSkill(unsigned int number, unsigned int value);
-    unsigned int skill(unsigned int number);
+    void setSkill(SKILL number, uint32_t value);
+    uint32_t skill(SKILL number) const;
 
-    void setDamage(unsigned int type, unsigned int value);
-    unsigned int damage(unsigned int type);
+    void setDamage(DAMAGE type, uint32_t value);
+    uint32_t damage(DAMAGE type) const;
 
-    void setDamageBonus(unsigned int type, unsigned int value);
-    unsigned int damageBonus(unsigned int type);
+    void setDamageBonus(DAMAGE type, uint32_t value);
+    uint32_t damageBonus(DAMAGE type) const;
 
-    void setResistance(unsigned int type, unsigned int value);
-    unsigned int resistance(unsigned int type);
+    void setResistance(DAMAGE type, uint32_t value);
+    uint32_t resistance(DAMAGE type) const;
 
-    void setResistanceBonus(unsigned int type, unsigned int value);
-    unsigned int resistanceBonus(unsigned int type);
+    void setResistanceBonus(DAMAGE type, uint32_t value);
+    uint32_t resistanceBonus(DAMAGE type) const;
 
-    // secondary stats
-    void setHitPoints(unsigned int hitPoints);
-    unsigned int hitPoints();
+    void setHitPoints(uint32_t hitPoints);
+    uint32_t hitPoints() const;
 
-    void setActionPoints(unsigned int actionPoints);
-    unsigned int actionPoints();
+    void setActionPoints(uint32_t actionPoints);
+    uint32_t actionPoints() const;
 
-    void setArmorClass(unsigned int armorClass);
-    unsigned int armorClass();
+    void setArmorClass(uint32_t armorClass);
+    uint32_t armorClass() const;
 
-    //unsigned int unknown;
-    void setMeleeDamage(unsigned int meleeDamage);
-    unsigned int meleeDamage();
+    void setMeleeDamage(uint32_t meleeDamage);
+    uint32_t meleeDamage() const;
 
-    void setCarryWeight(unsigned int carryWeight);
-    unsigned int carryWeight();
+    void setCarryWeight(uint32_t carryWeight);
+    uint32_t carryWeight() const;
 
-    void setSequence(unsigned int sequence);
-    unsigned int sequence();
+    void setSequence(uint32_t sequence);
+    uint32_t sequence() const;
 
-    void setHealingRate(unsigned int healingRate);
-    unsigned int healingRate();
+    void setHealingRate(uint32_t healingRate);
+    uint32_t healingRate() const;
 
-    void setCriticalChance(unsigned int criticalChance);
-    unsigned int criticalChance();
+    void setCriticalChance(uint32_t criticalChance);
+    uint32_t criticalChance() const;
 
-    void setCriticalHitModifier(unsigned int criticalHitModifier);
-    unsigned int criticalHitModifier();
+    void setCriticalHitModifier(uint32_t criticalHitModifier);
+    uint32_t criticalHitModifier() const;
 
-    void setRadiationResistance(unsigned int radiationResistance);
-    unsigned int radiationResistance();
+    void setRadiationResistance(uint32_t radiationResistance);
+    uint32_t radiationResistance() const;
 
-    void setPoisonResistance(unsigned int poisonResistance);
-    unsigned int poisonResistance();
+    void setPoisonResistance(uint32_t poisonResistance);
+    uint32_t poisonResistance() const;
 
-    void setAge(unsigned int age);
-    unsigned int age();
+    void setAge(uint32_t age);
+    uint32_t age() const;
 
-    void setGender(unsigned int gender);
-    unsigned int gender();
+    void setGender(GENDER gender);
+    GENDER gender() const;
 
     // bonuses to secondaty stats
-    void setHitPointsBonus(unsigned int hitPointsBonus);
-    unsigned int hitPointsBonus();
+    void setHitPointsBonus(uint32_t hitPointsBonus);
+    uint32_t hitPointsBonus() const;
 
-    void setActionPointsBonus(unsigned int actionPointsBonus);
-    unsigned int actionPointsBonus();
+    void setActionPointsBonus(uint32_t actionPointsBonus);
+    uint32_t actionPointsBonus() const;
 
-    void setArmorClassBonus(unsigned int armorClassBonus);
-    unsigned int armorClassBonus();
+    void setArmorClassBonus(uint32_t armorClassBonus);
+    uint32_t armorClassBonus() const;
 
-    //unsigned int unknownBonus;
+    //uint32_t unknownBonus;
 
-    void setMeleeDamageBonus(unsigned int meleeDamageBonus);
-    unsigned int meleeDamageBonus();
+    void setMeleeDamageBonus(uint32_t meleeDamageBonus);
+    uint32_t meleeDamageBonus() const;
 
-    void setCarryWeightBonus(unsigned int carryWeightBonus);
-    unsigned int carryWeightBonus();
+    void setCarryWeightBonus(uint32_t carryWeightBonus);
+    uint32_t carryWeightBonus() const;
 
-    void setSequenceBonus(unsigned int sequenceBonus);
-    unsigned int sequenceBonus();
+    void setSequenceBonus(uint32_t sequenceBonus);
+    uint32_t sequenceBonus() const;
 
-    void setHealingRateBonus(unsigned int healingRateBonus);
-    unsigned int healingRateBonus();
+    void setHealingRateBonus(uint32_t healingRateBonus);
+    uint32_t healingRateBonus() const;
 
-    void setCriticalChanceBonus(unsigned int criticalChanceBonus);
-    unsigned int criticalChanceBonus();
+    void setCriticalChanceBonus(uint32_t criticalChanceBonus);
+    uint32_t criticalChanceBonus() const;
 
-    void setCriticalHitModifierBonus(unsigned int criticalHitModifierBonus);
-    unsigned int criticalHitModifierBonus();
+    void setCriticalHitModifierBonus(uint32_t criticalHitModifierBonus);
+    uint32_t criticalHitModifierBonus() const;
 
-    void setRadiationResistanceBonus(unsigned int radiationResistanceBonus);
-    unsigned int radiationResistanceBonus();
+    void setRadiationResistanceBonus(uint32_t radiationResistanceBonus);
+    uint32_t radiationResistanceBonus() const;
 
-    void setPoisonResistanceBonus(unsigned int poisonResistanceBonus);
-    unsigned int poisonResistanceBonus();
+    void setPoisonResistanceBonus(uint32_t poisonResistanceBonus);
+    uint32_t poisonResistanceBonus() const;
 
-    void setAgeBonus(unsigned int ageBonus);
-    unsigned int ageBonus();
+    void setAgeBonus(uint32_t ageBonus);
+    uint32_t ageBonus() const;
 
-    void setGenderBonus(unsigned int genderBonus);
-    unsigned int genderBonus();
+    void setGenderBonus(uint32_t genderBonus);
+    uint32_t genderBonus() const;
 
     void setName(std::string name);
-    std::string name();
+    std::string name() const;
 
-    void setFirstTaggedSkill(int firstTaggedSkill);
-    int firstTaggedSkill();
+    void setFirstTaggedSkill(SKILL firstTaggedSkill);
+    SKILL firstTaggedSkill() const;
 
-    void setSecondTaggedSkill(int secondTaggedSkill);
-    int secondTaggedSkill();
+    void setSecondTaggedSkill(SKILL secondTaggedSkill);
+    SKILL secondTaggedSkill() const;
 
-    void setThirdTaggedSkill(int thirdTaggedSkill);
-    int thirdTaggedSkill();
+    void setThirdTaggedSkill(SKILL thirdTaggedSkill);
+    SKILL thirdTaggedSkill() const;
 
-    void setFourthTaggedSkill(int fourthTaggedSkill);
-    int fourthTaggedSkill();
+    void setFourthTaggedSkill(SKILL fourthTaggedSkill);
+    SKILL fourthTaggedSkill() const;
 
-    void setFirstTrait(int firstTrait);
-    int firstTrait();
+    void setFirstTrait(TRAIT firstTrait);
+    TRAIT firstTrait() const;
 
-    void setSecondTrait(int secondTrait);
-    int secondTrait();
+    void setSecondTrait(TRAIT secondTrait);
+    TRAIT secondTrait() const;
 
-    void setCharacterPoints(unsigned int characterPoints);
-    unsigned int characterPoints();
+    void setCharacterPoints(uint32_t characterPoints);
+    uint32_t characterPoints() const;
 
 protected:
-    // unknown
-    unsigned int _unknown1;
-    unsigned int _unknown2;
-    unsigned int _unknown3;
-    unsigned int _unknown4;
-    unsigned int _unknown5;
-    unsigned int _unknown6;
-    unsigned int _unknown7;
     // primary stats
-    std::vector<unsigned int> _stats = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _stats = {0, 0, 0, 0, 0, 0, 0};
     // bonuses to primary stats
-    std::vector<unsigned int> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _statsBonus = {0, 0, 0, 0, 0, 0, 0};
     // skills
-    std::vector<unsigned int> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _skills = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     // damage
-    std::vector<unsigned int> _damage = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<unsigned int> _damageBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _damage = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _damageBonus = {0, 0, 0, 0, 0, 0, 0};
     // resistance
-    std::vector<unsigned int> _resistance = {0, 0, 0, 0, 0, 0, 0};
-    std::vector<unsigned int> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _resistance = {0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint32_t> _resistanceBonus = {0, 0, 0, 0, 0, 0, 0};
 
     // secondary stats
-    unsigned int _hitPoints;
-    unsigned int _actionPoints;
-    unsigned int _armorClass;
-    //unsigned int unknown;
-    unsigned int _meleeDamage;
-    unsigned int  _carryWeight;
-    unsigned int _sequence;
-    unsigned int _healingRate;
-    unsigned int _criticalChance;
-    unsigned int _criticalHitModifier;
-    unsigned int _radiationResistance;
-    unsigned int _poisonResistance;
-    unsigned int _age;
-    unsigned int _gender;
+    uint32_t _hitPoints;
+    uint32_t _actionPoints;
+    uint32_t _armorClass;
+    uint32_t _meleeDamage;
+    uint32_t  _carryWeight;
+
+    uint32_t _sequence;
+    uint32_t _healingRate;
+    uint32_t _criticalChance;
+    uint32_t _criticalHitModifier;
+    uint32_t _radiationResistance;
+    uint32_t _poisonResistance;
+    uint32_t _age;
+    GENDER _gender;
     // bonuses to secondaty stats
-    unsigned int _hitPointsBonus;
-    unsigned int _actionPointsBonus;
-    unsigned int _armorClassBonus;
-    //unsigned int unknownBonus;
-    unsigned int _meleeDamageBonus;
-    unsigned int _carryWeightBonus;
-    unsigned int _sequenceBonus;
-    unsigned int _healingRateBonus;
-    unsigned int _criticalChanceBonus;
-    unsigned int _criticalHitModifierBonus;
-    unsigned int _radiationResistanceBonus;
-    unsigned int _poisonResistanceBonus;
-    unsigned int _ageBonus;
-    unsigned int _genderBonus;
+    uint32_t _hitPointsBonus;
+    uint32_t _actionPointsBonus;
+    uint32_t _armorClassBonus;
+    //uint32_t unknownBonus;
+    uint32_t _meleeDamageBonus;
+    uint32_t _carryWeightBonus;
+    uint32_t _sequenceBonus;
+    uint32_t _healingRateBonus;
+    uint32_t _criticalChanceBonus;
+    uint32_t _criticalHitModifierBonus;
+    uint32_t _radiationResistanceBonus;
+    uint32_t _poisonResistanceBonus;
+    uint32_t _ageBonus;
+    uint32_t _genderBonus;
 
     std::string _name;
 
-    int _firstTaggedSkill;
-    int _secondTaggedSkill;
-    int _thirdTaggedSkill;
-    int _fourthTaggedSkill;
-    int _firstTrait;
-    int _secondTrait;
+    SKILL _firstTaggedSkill  = SKILL::NONE;
+    SKILL _secondTaggedSkill = SKILL::NONE;
+    SKILL _thirdTaggedSkill  = SKILL::NONE;
+    SKILL _fourthTaggedSkill = SKILL::NONE;
+    TRAIT _firstTrait  = TRAIT::NONE;
+    TRAIT _secondTrait = TRAIT::NONE;
 
-    unsigned int _characterPoints;
+    uint32_t _characterPoints;
 
     virtual void _initialize();
 

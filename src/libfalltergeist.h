@@ -26,6 +26,7 @@
 #include "Bio/File.h"
 #include "Dat/File.h"
 #include "Dat/Item.h"
+#include "Enums.h"
 #include "Exception.h"
 #include "Fon/File.h"
 #include "Fon/Glyph.h"

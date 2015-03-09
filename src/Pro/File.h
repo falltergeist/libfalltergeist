@@ -33,50 +33,6 @@ namespace libfalltergeist
 namespace Pro
 {
 
-enum ObjectType
-{
-    TYPE_ITEM = 0,
-    TYPE_CRITTER,
-    TYPE_SCENERY,
-    TYPE_WALL,
-    TYPE_TILE,
-    TYPE_MISC
-};
-
-enum ItemType
-{
-    TYPE_ITEM_ARMOR = 0,
-    TYPE_ITEM_CONTAINER,
-    TYPE_ITEM_DRUG,
-    TYPE_ITEM_WEAPON,
-    TYPE_ITEM_AMMO,
-    TYPE_ITEM_MISC,
-    TYPE_ITEM_KEY
-};
-
-enum SceneryType
-{
-    TYPE_SCENERY_DOOR = 0,
-    TYPE_SCENERY_STAIRS,
-    TYPE_SCENERY_ELEVATOR,
-    TYPE_SCENERY_LADDER_BOTTOM,
-    TYPE_SCENERY_LADDER_TOP,
-    TYPE_SCENERY_GENERIC
-};
-
-enum DamageType
-{
-    DAMAGE_NORMAL = 0,
-    DAMAGE_LASER,
-    DAMAGE_FIRE,
-    DAMAGE_PLASMA,
-    DAMAGE_ELECTRICAL,
-    DAMAGE_EMP,
-    DAMAGE_EXPLOSION,
-    DAMAGE_RADIATION,
-    DAMAGE_POISON
-};
-
 class File : public Dat::Item
 {
 

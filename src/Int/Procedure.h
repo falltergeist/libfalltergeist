@@ -25,6 +25,7 @@
 #include <string>
 
 // libfalltergeist includes
+#include "../Enums.h"
 
 // Third party includes
 
@@ -32,17 +33,6 @@ namespace libfalltergeist
 {
 namespace Int
 {
-
-enum ProcedureFlag
-{
-    TIMED       = 0x01,
-    CONDITIONAL = 0x02,
-    IMPORTED    = 0x04,
-    EXPORTED    = 0x08,
-    CRITICAL    = 0x10,
-    PURE        = 0x20,
-    INLINE      = 0x40
-};
 
 class Procedure
 {
