@@ -73,8 +73,6 @@ public:
     uint16_t framesPerDirection() const;
     uint16_t actionFrame() const;
 
-    std::vector<Direction*>* directions();
-
     uint16_t width() const;
     uint16_t width(unsigned int direction) const;
     uint16_t width(unsigned int direction, unsigned int frame) const;
@@ -83,26 +81,24 @@ public:
     uint16_t height(unsigned int direction) const;
     uint16_t height(unsigned int direction, unsigned int frame) const;
 
-    uint16_t offsetX(unsigned int direction = 0, unsigned int frame = 0) const;
-    uint16_t offsetY(unsigned int direction = 0, unsigned int frame = 0) const;
-
-    uint16_t shiftX(unsigned int direction) const;
-    uint16_t shiftY(unsigned int direction) const;
+    int16_t offsetX(unsigned int direction = 0, unsigned int frame = 0) const;
+    int16_t offsetY(unsigned int direction = 0, unsigned int frame = 0) const;
 
     uint32_t* rgba(Pal::File* palFile);
     bool animatedPalette();
     std::map<unsigned int, uint8_t*>* animatedMasks();
+    std::vector<Direction*>* directions();
 
 protected:
     uint32_t* _rgba = 0;
+    uint32_t _version = 0;
+    uint16_t _framesPerSecond = 0;
+    uint16_t _framesPerDirection = 0;
+    uint16_t _actionFrame = 0;
+    bool _animatedPalette = false;
     std::map<unsigned int, uint8_t*> _animatedMasks;
     std::vector<Direction*> _directions;
-    unsigned int _version;
-    unsigned short _framesPerSecond;
-    unsigned short _framesPerDirection;
-    unsigned short _actionFrame;
     virtual void _initialize();
-    bool _animatedPalette = false;
 
 };
 

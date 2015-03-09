@@ -190,13 +190,13 @@ uint32_t* File::rgba(Pal::File* palFile)
     return _rgba;
 }
 
-uint16_t File::offsetX(unsigned int direction, unsigned int frame) const
+int16_t File::offsetX(unsigned int direction, unsigned int frame) const
 {
     if (direction >= _directions.size()) direction = 0;
     return _directions.at(direction)->frames()->at(frame)->offsetX();
 }
 
-uint16_t File::offsetY(unsigned int direction, unsigned int frame) const
+int16_t File::offsetY(unsigned int direction, unsigned int frame) const
 {
     if (direction >= _directions.size()) direction = 0;
     return _directions.at(direction)->frames()->at(frame)->offsetY();
