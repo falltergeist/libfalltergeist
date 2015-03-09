@@ -21,6 +21,7 @@
 #include <algorithm>
 
 // libfalltergeist includes
+#include "../Enums.h"
 #include "../Frm/Direction.h"
 #include "../Frm/File.h"
 #include "../Frm/Frame.h"
@@ -208,7 +209,7 @@ bool File::animatedPalette()
     return _animatedPalette;
 }
 
-std::map<unsigned int, uint8_t*>* File::animatedMasks()
+std::map<MASK, uint8_t*>* File::animatedMasks()
 {
     if (!_animatedMasks.empty()) return &_animatedMasks;
 
@@ -229,34 +230,52 @@ std::map<unsigned int, uint8_t*>* File::animatedMasks()
 
                     if (index >=229 && index <= 232)
                     {
-                        if (!_animatedMasks[MASK_SLIME])  _animatedMasks[MASK_SLIME] = new uint8_t [w*h]();
-                        _animatedMasks[MASK_SLIME][((y + positionY)*w) + x + positionX] = index;
+                        if (!_animatedMasks[MASK::SLIME])
+                        {
+                            _animatedMasks[MASK::SLIME] = new uint8_t [w*h]();
+                        }
+                        _animatedMasks[MASK::SLIME][((y + positionY)*w) + x + positionX] = index;
                     }
                     else if (index >=233 && index <= 237)
                     {
-                        if (!_animatedMasks[MASK_MONITOR])  _animatedMasks[MASK_MONITOR] = new uint8_t [w*h]();
-                        _animatedMasks[MASK_MONITOR][((y + positionY)*w) + x + positionX] = index;
+                        if (!_animatedMasks[MASK::MONITOR])
+                        {
+                            _animatedMasks[MASK::MONITOR] = new uint8_t [w*h]();
+                        }
+                        _animatedMasks[MASK::MONITOR][((y + positionY)*w) + x + positionX] = index;
 
                     }
                     else if (index >=238 && index <= 242)
                     {
-                        if (!_animatedMasks[MASK_FIRE_SLOW])  _animatedMasks[MASK_FIRE_SLOW] = new uint8_t [w*h]();
-                        _animatedMasks[MASK_FIRE_SLOW][((y + positionY)*w) + x + positionX] = index;
+                        if (!_animatedMasks[MASK::FIRE_SLOW])
+                        {
+                            _animatedMasks[MASK::FIRE_SLOW] = new uint8_t [w*h]();
+                        }
+                        _animatedMasks[MASK::FIRE_SLOW][((y + positionY)*w) + x + positionX] = index;
                     }
                     else if (index >=243 && index <= 247)
                     {
-                        if (!_animatedMasks[MASK_FIRE_FAST])  _animatedMasks[MASK_FIRE_FAST] = new uint8_t [w*h]();
-                        _animatedMasks[MASK_FIRE_FAST][((y + positionY)*w) + x + positionX] = index;
+                        if (!_animatedMasks[MASK::FIRE_FAST])
+                        {
+                            _animatedMasks[MASK::FIRE_FAST] = new uint8_t [w*h]();
+                        }
+                        _animatedMasks[MASK::FIRE_FAST][((y + positionY)*w) + x + positionX] = index;
                     }
                     else if (index >=248 && index <= 253)
                     {
-                        if (!_animatedMasks[MASK_SHORE])  _animatedMasks[MASK_SHORE] = new uint8_t [w*h]();
-                        _animatedMasks[MASK_SHORE][((y + positionY)*w) + x + positionX] = index;
+                        if (!_animatedMasks[MASK::SHORE])
+                        {
+                            _animatedMasks[MASK::SHORE] = new uint8_t [w*h]();
+                        }
+                        _animatedMasks[MASK::SHORE][((y + positionY)*w) + x + positionX] = index;
                     }
                     else if (index == 254)
                     {
-                        if (!_animatedMasks[MASK_REDDOT])  _animatedMasks[MASK_REDDOT] = new uint8_t [w*h]();
-                        _animatedMasks[MASK_REDDOT][((y + positionY)*w) + x + positionX] = index;
+                        if (!_animatedMasks[MASK::REDDOT])
+                        {
+                            _animatedMasks[MASK::REDDOT] = new uint8_t [w*h]();
+                        }
+                        _animatedMasks[MASK::REDDOT][((y + positionY)*w) + x + positionX] = index;
                     }
                     if (index >= 229 && index <= 254)
                     {

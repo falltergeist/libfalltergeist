@@ -26,6 +26,7 @@
 
 // libfalltergeist includes
 #include "../Dat/Item.h"
+#include "../Enums.h"
 
 // Third party includes
 
@@ -39,30 +40,10 @@ namespace Frm
 {
 class Direction;
 
-enum FrmType
-{
-    TYPE_ITEM = 0,
-    TYPE_CRITTER,
-    TYPE_SCENERY,
-    TYPE_WALL,
-    TYPE_TILE,
-    TYPE_MISC,
-    TYPE_INTERFACE,
-    TYPE_INVENTORY
-};
-
 class File : public Dat::Item
 {
 
 public:
-    enum {
-        MASK_SLIME = 0,
-        MASK_FIRE_SLOW = 2,
-        MASK_FIRE_FAST = 4,
-        MASK_MONITOR = 8,
-        MASK_REDDOT = 16,
-        MASK_SHORE = 32
-    };
 
     File(Dat::Entry* datFileEntry);
     File(std::ifstream* stream);
@@ -86,7 +67,7 @@ public:
 
     uint32_t* rgba(Pal::File* palFile);
     bool animatedPalette();
-    std::map<unsigned int, uint8_t*>* animatedMasks();
+    std::map<MASK, uint8_t*>* animatedMasks();
     std::vector<Direction*>* directions();
 
 protected:
@@ -96,7 +77,7 @@ protected:
     uint16_t _framesPerDirection = 0;
     uint16_t _actionFrame = 0;
     bool _animatedPalette = false;
-    std::map<unsigned int, uint8_t*> _animatedMasks;
+    std::map<MASK, uint8_t*> _animatedMasks;
     std::vector<Direction*> _directions;
     virtual void _initialize();
 

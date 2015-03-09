@@ -63,7 +63,7 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-    this->setEndianness(Dat::ENDIANNESS_LITTLE);
+    this->setEndianness(ENDIANNESS::LITTLE);
     _samplesReady=0;
 
     Header hdr;

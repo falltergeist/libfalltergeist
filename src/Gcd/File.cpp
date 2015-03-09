@@ -50,75 +50,87 @@ void File::_initialize()
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
 
-    unsigned int uint32;
-
-    // unknown 1
-    *this >> _unknown1;
+    uint32(); // unknown 1
 
     // primary stats
-    for (unsigned int i = STATS_STRENGTH; i <= STATS_LUCK; i++)
+    for (unsigned i = (unsigned)STAT::STRENGTH; i <= (unsigned)STAT::LUCK; i++)
     {
-        *this >> uint32;
-        setStat(i, uint32);
+        setStat((STAT)i, uint32());
     }
 
     // secondary stats
-    *this >> _hitPoints >> _actionPoints >> _armorClass;
+    _hitPoints = uint32();
+    _actionPoints = uint32();
+    _armorClass = uint32();
 
-    // unknown 2
-    *this >> _unknown2;
+    uint32(); // unknown 2
 
-    *this >> _meleeDamage >> _carryWeight >> _sequence >> _healingRate >> _criticalChance >> _criticalHitModifier;
+    _meleeDamage = uint32();
+    _carryWeight = uint32();
+    _sequence    = uint32();
+    _healingRate = uint32();
+    _criticalChance      = uint32();
+    _criticalHitModifier = uint32();
 
-    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    for (unsigned i = (unsigned)DAMAGE::NORMAL; i <= (unsigned)DAMAGE::EXPLOSIVE; i++)
     {
-        *this >> uint32;
-        setDamage(i, uint32);
+        setDamage((DAMAGE)i, uint32());
     }
-    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    for (unsigned i = (unsigned)DAMAGE::NORMAL; i <= (unsigned)DAMAGE::EXPLOSIVE; i++)
     {
-        *this >> uint32;
-        setResistance(i, uint32);
+        setResistance((DAMAGE)i, uint32());
     }
 
-    *this >> _radiationResistance >> _poisonResistance >> _age >> _gender;
+    _radiationResistance = uint32();
+    _poisonResistance    = uint32();
+    _age    = uint32();
+    _gender = (GENDER)uint32();
 
     // bonuses to primary stats
-    for (unsigned int i = STATS_STRENGTH; i <= STATS_LUCK; i++)
+    for (unsigned i = (unsigned)STAT::STRENGTH; i <= (unsigned)STAT::LUCK; i++)
     {
-        *this >> uint32;
-        setStatBonus(i, uint32);
+        setStatBonus((STAT)i, uint32());
     }
 
     // bonuses to secondary stats
-    *this >> _hitPointsBonus >> _actionPointsBonus >> _armorClassBonus;
+    _hitPointsBonus    = uint32();
+    _actionPointsBonus = uint32();
+    _armorClassBonus   = uint32();
 
-    // unknown 3
-    *this >> _unknown3;
+    uint32(); // unknown 3
 
-    *this   >> _meleeDamageBonus >> _carryWeightBonus >> _sequenceBonus >> _healingRateBonus
-            >> _criticalChanceBonus >> _criticalHitModifierBonus;
-    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    _meleeDamageBonus = uint32();
+    _carryWeightBonus = uint32();
+    _sequenceBonus    = uint32();
+    _healingRateBonus = uint32();
+    _criticalChanceBonus      = uint32();
+    _criticalHitModifierBonus = uint32();
+
+    for (unsigned i = (unsigned)DAMAGE::NORMAL; i <= (unsigned)DAMAGE::EXPLOSIVE; i++)
     {
-        *this >> uint32;
-        setDamageBonus(i, uint32);
+        setDamageBonus((DAMAGE)i, uint32());
     }
-    for (unsigned int i = DAMAGE_NORMAL; i <= DAMAGE_EXPLOSIVE; i++)
+    for (unsigned i = (unsigned)DAMAGE::NORMAL; i <= (unsigned)DAMAGE::EXPLOSIVE; i++)
     {
-        *this >> uint32;
-        setResistanceBonus(i, uint32);
+        setResistanceBonus((DAMAGE)i, uint32());
     }
-    *this >> _radiationResistanceBonus >> _poisonResistanceBonus >> _ageBonus >> _genderBonus;
+
+    _radiationResistanceBonus = uint32();
+    _poisonResistanceBonus    = uint32();
+    _ageBonus    = uint32();
+    _genderBonus = uint32();
 
     //skills
-    for (unsigned int i = SKILLS_1; i <= SKILLS_18; i++)
+    for (unsigned i = (unsigned)SKILL::SMALL_GUNS; i <= (unsigned)SKILL::OUTDOORSMAN; i++)
     {
-        *this >> uint32;
-        setSkill(i, uint32);
+        setSkill((SKILL)i, uint32());
     }
 
     // unknown
-    *this >> _unknown4 >> _unknown5 >> _unknown6 >> _unknown7;
+    uint32(); // unknown 4
+    uint32(); // unknown 5
+    uint32(); // unknown 6
+    uint32(); // unknown 7
 
     // name
     char * name = new char[32]();
@@ -126,389 +138,356 @@ void File::_initialize()
     setName(name);
     delete [] name;
 
-    *this   >> _firstTaggedSkill
-            >> _secondTaggedSkill
-            >> _thirdTaggedSkill
-            >> _fourthTaggedSkill
-            >> _firstTrait
-            >> _secondTrait
-            >> _characterPoints;
+    _firstTaggedSkill  = (SKILL)int32();
+    _secondTaggedSkill = (SKILL)int32();
+    _thirdTaggedSkill  = (SKILL)int32();
+    _fourthTaggedSkill = (SKILL)int32();
+    _firstTrait  = (TRAIT)int32();
+    _secondTrait = (TRAIT)int32();
+    _characterPoints = uint32();
 }
 
-unsigned int File::stat(unsigned int number)
+uint32_t File::stat(STAT number) const
 {
-    if (number > 6) throw Exception("File::stat() - number out of range: " + std::to_string(number));
-    _initialize();
-    return _stats.at(number);
+    if (number > STAT::LUCK) throw Exception("File::stat() - number out of range: " + std::to_string((unsigned)number));
+    return _stats.at((unsigned)number);
 }
 
-void File::setStat(unsigned int number, unsigned int value)
+void File::setStat(STAT number, uint32_t value)
 {
-    if (number > 6) throw Exception("File::setStat() - number out of range: " + std::to_string(number));
-    _stats.at(number) = value;
+    if (number > STAT::LUCK) throw Exception("File::setStat() - number out of range: " + std::to_string((unsigned)number));
+    _stats.at((unsigned)number) = value;
 }
 
-unsigned int File::statBonus(unsigned int number)
+uint32_t File::statBonus(STAT number) const
 {
-    if (number > 6) throw Exception("File::statBonus() - number out of range: " + std::to_string(number));
-    _initialize();
-    return _statsBonus.at(number);
+    if (number > STAT::LUCK) throw Exception("File::statBonus() - number out of range: " + std::to_string((unsigned)number));
+    return _statsBonus.at((unsigned)number);
 }
 
-void File::setStatBonus(unsigned int number, unsigned int value)
+void File::setStatBonus(STAT number, uint32_t value)
 {
-    if (number > 6) throw Exception("File::setStatBonus() - number out of range: " + std::to_string(number));
-    _statsBonus.at(number) = value;
+    if (number > STAT::LUCK) throw Exception("File::setStatBonus() - number out of range: " + std::to_string((unsigned)number));
+    _statsBonus.at((unsigned)number) = value;
 }
 
-unsigned int File::skill(unsigned int number)
+uint32_t File::skill(SKILL number) const
 {
-    if (number > 17) throw Exception("File::skill() - number out of range: " + std::to_string(number));
-    _initialize();
-    return _skills.at(number);
+    if (number > SKILL::OUTDOORSMAN) throw Exception("File::skill() - number out of range: " + std::to_string((unsigned)number));
+    return _skills.at((unsigned)number);
 }
 
-void File::setSkill(unsigned int number, unsigned int value)
+void File::setSkill(SKILL number, uint32_t value)
 {
-    if (number > 17) throw Exception("File::setSkill() - number out of range: " + std::to_string(number));
-    _skills.at(number) = value;
+    if (number > SKILL::OUTDOORSMAN) throw Exception("File::setSkill() - number out of range: " + std::to_string((unsigned)number));
+    _skills.at((unsigned)number) = value;
 }
 
-unsigned int File::damage(unsigned int type)
+uint32_t File::damage(DAMAGE type) const
 {
-    if (type > 6) throw Exception("File::damage() - type out of range: " + std::to_string(type));
-    _initialize();
-    return _damage.at(type);
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::damage() - type out of range: " + std::to_string((unsigned)type));
+    return _damage.at((unsigned)type);
 }
 
-void File::setDamage(unsigned int type, unsigned int value)
+void File::setDamage(DAMAGE type, uint32_t value)
 {
-    if (type > 6) throw Exception("File::setDamage() - type out of range: " + std::to_string(type));
-    _damage.at(type) = value;
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::setDamage() - type out of range: " + std::to_string((unsigned)type));
+    _damage.at((unsigned)type) = value;
 }
 
-unsigned int File::damageBonus(unsigned int type)
+uint32_t File::damageBonus(DAMAGE type) const
 {
-    if (type > 6) throw Exception("File::damageBonus() - type out of range: " + std::to_string(type));
-    _initialize();
-    return _damageBonus.at(type);
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::damageBonus() - type out of range: " + std::to_string((unsigned)type));
+    return _damageBonus.at((unsigned)type);
 }
 
-void File::setDamageBonus(unsigned int type, unsigned int value)
+void File::setDamageBonus(DAMAGE type, uint32_t value)
 {
-    if (type > 6) throw Exception("File::setDamageBonus() - type out of range: " + std::to_string(type));
-    _damageBonus.at(type) = value;
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::setDamageBonus() - type out of range: " + std::to_string((unsigned)type));
+    _damageBonus.at((unsigned)type) = value;
 }
 
-unsigned int File::resistance(unsigned int type)
+uint32_t File::resistance(DAMAGE type) const
 {
-    if (type > 6) throw Exception("File::resistance() - type out of range: " + std::to_string(type));
-    _initialize();
-    return _resistance.at(type);
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::resistance() - type out of range: " + std::to_string((unsigned)type));
+    return _resistance.at((unsigned)type);
 }
 
-void File::setResistance(unsigned int type, unsigned int value)
+void File::setResistance(DAMAGE type, uint32_t value)
 {
-    if (type > 6) throw Exception("File::setResistance() - type out of range: " + std::to_string(type));
-    _resistance.at(type) = value;
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::setResistance() - type out of range: " + std::to_string((unsigned)type));
+    _resistance.at((unsigned)type) = value;
 }
 
-unsigned int File::resistanceBonus(unsigned int type)
+uint32_t File::resistanceBonus(DAMAGE type) const
 {
-    if (type > 6) throw Exception("File::resistanceBonus() - type out of range: " + std::to_string(type));
-    _initialize();
-    return _resistanceBonus.at(type);
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::resistanceBonus() - type out of range: " + std::to_string((unsigned)type));
+    return _resistanceBonus.at((unsigned)type);
 }
 
-void File::setResistanceBonus(unsigned int type, unsigned int value)
+void File::setResistanceBonus(DAMAGE type, uint32_t value)
 {
-    if (type > 6) throw Exception("File::setResistanceBonus() - type out of range: " + std::to_string(type));
-    _resistanceBonus.at(type) = value;
+    if (type > DAMAGE::EXPLOSIVE) throw Exception("File::setResistanceBonus() - type out of range: " + std::to_string((unsigned)type));
+    _resistanceBonus.at((unsigned)type) = value;
 }
 
-void File::setHitPoints(unsigned int hitPoints)
+void File::setHitPoints(uint32_t hitPoints)
 {
     _hitPoints = hitPoints;
 }
 
-unsigned int File::hitPoints()
+uint32_t File::hitPoints() const
 {
-    _initialize();
     return _hitPoints;
 }
 
-void File::setActionPoints(unsigned int actionPoints)
+void File::setActionPoints(uint32_t actionPoints)
 {
     _actionPoints = actionPoints;
 }
 
-unsigned int File::actionPoints()
+uint32_t File::actionPoints() const
 {
-    _initialize();
     return _actionPoints;
 }
 
-void File::setArmorClass(unsigned int armorClass)
+void File::setArmorClass(uint32_t armorClass)
 {
     _armorClass = armorClass;
 }
 
-unsigned int File::armorClass()
+uint32_t File::armorClass() const
 {
-    _initialize();
     return _armorClass;
 }
 
-void File::setMeleeDamage(unsigned int meleeDamage)
+void File::setMeleeDamage(uint32_t meleeDamage)
 {
     _meleeDamage = meleeDamage;
 }
 
-unsigned int File::meleeDamage()
+uint32_t File::meleeDamage() const
 {
-    _initialize();
     return _meleeDamage;
 }
 
-void File::setCarryWeight(unsigned int carryWeight)
+void File::setCarryWeight(uint32_t carryWeight)
 {
     _carryWeight = carryWeight;
 }
 
-unsigned int File::carryWeight()
+uint32_t File::carryWeight() const
 {
-    _initialize();
     return _carryWeight;
 }
 
-void File::setSequence(unsigned int sequence)
+void File::setSequence(uint32_t sequence)
 {
     _sequence = sequence;
 }
 
-unsigned int File::sequence()
+uint32_t File::sequence() const
 {
-    _initialize();
     return _sequence;
 }
 
-void File::setHealingRate(unsigned int healingRate)
+void File::setHealingRate(uint32_t healingRate)
 {
     _healingRate = healingRate;
 }
 
-unsigned int File::healingRate()
+uint32_t File::healingRate() const
 {
-    _initialize();
     return _healingRate;
 }
 
-void File::setCriticalChance(unsigned int criticalChance)
+void File::setCriticalChance(uint32_t criticalChance)
 {
     _criticalChance = criticalChance;
 }
 
-unsigned int File::criticalChance()
+uint32_t File::criticalChance() const
 {
-    _initialize();
     return _criticalChance;
 }
 
-void File::setCriticalHitModifier(unsigned int criticalHitModifier)
+void File::setCriticalHitModifier(uint32_t criticalHitModifier)
 {
     _criticalHitModifier = criticalHitModifier;
 }
 
-unsigned int File::criticalHitModifier()
+uint32_t File::criticalHitModifier() const
 {
-    _initialize();
     return _criticalHitModifier;
 }
 
-void File::setRadiationResistance(unsigned int radiationResistance)
+void File::setRadiationResistance(uint32_t radiationResistance)
 {
     _radiationResistance = radiationResistance;
 }
 
-unsigned int File::radiationResistance()
+uint32_t File::radiationResistance() const
 {
-    _initialize();
     return _radiationResistance;
 }
 
-void File::setPoisonResistance(unsigned int poisonResistance)
+void File::setPoisonResistance(uint32_t poisonResistance)
 {
     _poisonResistance = poisonResistance;
 }
 
-unsigned int File::poisonResistance()
+uint32_t File::poisonResistance() const
 {
-    _initialize();
     return _poisonResistance;
 }
 
-void File::setAge(unsigned int age)
+void File::setAge(uint32_t age)
 {
     _age = age;
 }
 
-unsigned int File::age()
+uint32_t File::age() const
 {
-    _initialize();
     return _age;
 }
 
-void File::setGender(unsigned int gender)
+void File::setGender(GENDER gender)
 {
     _gender = gender;
 }
 
-unsigned int File::gender()
+GENDER File::gender() const
 {
-    _initialize();
     return _gender;
 }
 
-void File::setHitPointsBonus(unsigned int hitPointsBonus)
+void File::setHitPointsBonus(uint32_t hitPointsBonus)
 {
     _hitPointsBonus = hitPointsBonus;
 }
 
-unsigned int File::hitPointsBonus()
+uint32_t File::hitPointsBonus() const
 {
-    _initialize();
     return _hitPointsBonus;
 }
 
-void File::setActionPointsBonus(unsigned int actionPointsBonus)
+void File::setActionPointsBonus(uint32_t actionPointsBonus)
 {
     _actionPointsBonus = actionPointsBonus;
 }
 
-unsigned int File::actionPointsBonus()
+uint32_t File::actionPointsBonus() const
 {
-    _initialize();
     return _actionPointsBonus;
 }
 
-void File::setArmorClassBonus(unsigned int armorClassBonus)
+void File::setArmorClassBonus(uint32_t armorClassBonus)
 {
     _armorClassBonus = armorClassBonus;
 }
 
-unsigned int File::armorClassBonus()
+uint32_t File::armorClassBonus() const
 {
-    _initialize();
     return _armorClassBonus;
 }
 
-void File::setMeleeDamageBonus(unsigned int meleeDamageBonus)
+void File::setMeleeDamageBonus(uint32_t meleeDamageBonus)
 {
     _meleeDamageBonus = meleeDamageBonus;
 }
 
-unsigned int File::meleeDamageBonus()
+uint32_t File::meleeDamageBonus() const
 {
-    _initialize();
     return _meleeDamageBonus;
 }
 
-void File::setCarryWeightBonus(unsigned int carryWeightBonus)
+void File::setCarryWeightBonus(uint32_t carryWeightBonus)
 {
     _carryWeightBonus = carryWeightBonus;
 }
 
-unsigned int File::carryWeightBonus()
+uint32_t File::carryWeightBonus() const
 {
-    _initialize();
     return _carryWeightBonus;
 }
 
-void File::setSequenceBonus(unsigned int sequenceBonus)
+void File::setSequenceBonus(uint32_t sequenceBonus)
 {
     _sequenceBonus = sequenceBonus;
 }
 
-unsigned int File::sequenceBonus()
+uint32_t File::sequenceBonus() const
 {
-    _initialize();
     return _sequenceBonus;
 }
 
-void File::setHealingRateBonus(unsigned int healingRateBonus)
+void File::setHealingRateBonus(uint32_t healingRateBonus)
 {
     _healingRateBonus = healingRateBonus;
 }
 
-unsigned int File::healingRateBonus()
+uint32_t File::healingRateBonus() const
 {
-    _initialize();
     return _healingRateBonus;
 }
 
-void File::setCriticalChanceBonus(unsigned int criticalChanceBonus)
+void File::setCriticalChanceBonus(uint32_t criticalChanceBonus)
 {
     _criticalChanceBonus = criticalChanceBonus;
 }
 
-unsigned int File::criticalChanceBonus()
+uint32_t File::criticalChanceBonus() const
 {
-    _initialize();
     return _criticalChanceBonus;
 }
 
-void File::setCriticalHitModifierBonus(unsigned int criticalHitModifierBonus)
+void File::setCriticalHitModifierBonus(uint32_t criticalHitModifierBonus)
 {
     _criticalHitModifierBonus = criticalHitModifierBonus;
 }
 
-unsigned int File::criticalHitModifierBonus()
+uint32_t File::criticalHitModifierBonus() const
 {
-    _initialize();
     return _criticalHitModifierBonus;
 }
 
-void File::setRadiationResistanceBonus(unsigned int radiationResistanceBonus)
+void File::setRadiationResistanceBonus(uint32_t radiationResistanceBonus)
 {
     _radiationResistanceBonus = radiationResistanceBonus;
 }
 
-unsigned int File::radiationResistanceBonus()
+uint32_t File::radiationResistanceBonus() const
 {
-    _initialize();
     return _radiationResistanceBonus;
 }
 
-void File::setPoisonResistanceBonus(unsigned int poisonResistanceBonus)
+void File::setPoisonResistanceBonus(uint32_t poisonResistanceBonus)
 {
     _poisonResistanceBonus = poisonResistanceBonus;
 }
 
-unsigned int File::poisonResistanceBonus()
+uint32_t File::poisonResistanceBonus() const
 {
-    _initialize();
     return _poisonResistanceBonus;
 }
 
-void File::setAgeBonus(unsigned int ageBonus)
+void File::setAgeBonus(uint32_t ageBonus)
 {
     _ageBonus = ageBonus;
 }
 
-unsigned int File::ageBonus()
+uint32_t File::ageBonus() const
 {
-    _initialize();
     return _ageBonus;
 }
 
-void File::setGenderBonus(unsigned int genderBonus)
+void File::setGenderBonus(uint32_t genderBonus)
 {
     _genderBonus = genderBonus;
 }
 
-unsigned int File::genderBonus()
+uint32_t File::genderBonus() const
 {
-    _initialize();
     return _genderBonus;
 }
 
@@ -517,86 +496,78 @@ void File::setName(std::string name)
     _name = name;
 }
 
-std::string File::name()
+std::string File::name() const
 {
-    _initialize();
     return _name;
 }
 
-void File::setFirstTaggedSkill(int firstTaggedSkill)
+void File::setFirstTaggedSkill(SKILL firstTaggedSkill)
 {
     _firstTaggedSkill = firstTaggedSkill;
 }
 
-int File::firstTaggedSkill()
+SKILL File::firstTaggedSkill() const
 {
-    _initialize();
     return _firstTaggedSkill;
 }
 
-void File::setSecondTaggedSkill(int secondTaggedSkill)
+void File::setSecondTaggedSkill(SKILL secondTaggedSkill)
 {
     _secondTaggedSkill = secondTaggedSkill;
 }
 
-int File::secondTaggedSkill()
+SKILL File::secondTaggedSkill() const
 {
-    _initialize();
     return _secondTaggedSkill;
 }
 
-void File::setThirdTaggedSkill(int thirdTaggedSkill)
+void File::setThirdTaggedSkill(SKILL thirdTaggedSkill)
 {
     _thirdTaggedSkill = thirdTaggedSkill;
 }
 
-int File::thirdTaggedSkill()
+SKILL File::thirdTaggedSkill() const
 {
-    _initialize();
     return _thirdTaggedSkill;
 }
 
-void File::setFourthTaggedSkill(int fourthTaggedSkill)
+void File::setFourthTaggedSkill(SKILL fourthTaggedSkill)
 {
     _fourthTaggedSkill = fourthTaggedSkill;
 }
 
-int File::fourthTaggedSkill()
+SKILL File::fourthTaggedSkill() const
 {
-    _initialize();
     return _fourthTaggedSkill;
 }
 
-void File::setFirstTrait(int firstTrait)
+void File::setFirstTrait(TRAIT firstTrait)
 {
     _firstTrait = firstTrait;
 }
 
-int File::firstTrait()
+TRAIT File::firstTrait() const
 {
-    _initialize();
     return _firstTrait;
 }
 
-void File::setSecondTrait(int secondTrait)
+void File::setSecondTrait(TRAIT secondTrait)
 {
     _secondTrait = secondTrait;
 }
 
-int File::secondTrait()
+TRAIT File::secondTrait() const
 {
-    _initialize();
     return _secondTrait;
 }
 
-void File::setCharacterPoints(unsigned int characterPoints)
+void File::setCharacterPoints(uint32_t characterPoints)
 {
     _characterPoints = characterPoints;
 }
 
-unsigned int File::characterPoints()
+uint32_t File::characterPoints() const
 {
-    _initialize();
     return _characterPoints;
 }
 

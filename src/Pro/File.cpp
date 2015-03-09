@@ -56,32 +56,32 @@ void File::_initialize()
     _lightIntencity = uint32();
     _flags          = uint32();
 
-    switch (typeId())
+    switch ((OBJECT_TYPE)typeId())
     {
-        case TYPE_TILE:
-        case TYPE_MISC:
+        case OBJECT_TYPE::TILE:
+        case OBJECT_TYPE::MISC:
             break;
         default:
             _flagsExt = uint32();
             break;
     }
 
-    switch (typeId())
+    switch ((OBJECT_TYPE)typeId())
     {
-        case TYPE_ITEM:
-        case TYPE_CRITTER:
-        case TYPE_SCENERY:
-        case TYPE_WALL:
+        case OBJECT_TYPE::ITEM:
+        case OBJECT_TYPE::CRITTER:
+        case OBJECT_TYPE::SCENERY:
+        case OBJECT_TYPE::WALL:
             _SID = int32();
             break;
-        case TYPE_TILE:
-        case TYPE_MISC:
+        case OBJECT_TYPE::TILE:
+        case OBJECT_TYPE::MISC:
             break;
     }
 
-    switch (typeId())
+    switch ((OBJECT_TYPE)typeId())
     {
-        case TYPE_ITEM:
+        case OBJECT_TYPE::ITEM:
         {
             _subtypeId     = uint32();
             _materialId    = uint32();
@@ -91,9 +91,9 @@ void File::_initialize()
             _inventoryFID  = int32();
             _soundId       = uint8();
 
-            switch (subtypeId())
+            switch ((ITEM_TYPE)subtypeId())
             {
-                case TYPE_ITEM_ARMOR:
+                case ITEM_TYPE::ARMOR:
                 {
                     _armorClass = uint32();
                     // Damage resist
@@ -111,13 +111,13 @@ void File::_initialize()
                     _armorFemaleFID = int32();
                     break;
                 }
-                case TYPE_ITEM_CONTAINER:
+                case ITEM_TYPE::CONTAINER:
                 {
                     uint32(); // max size
                     uint32(); // containter flags
                     break;
                 }
-                case TYPE_ITEM_DRUG:
+                case ITEM_TYPE::DRUG:
                 {
                     uint32(); // Stat0
                     uint32(); // Stat1
@@ -140,7 +140,7 @@ void File::_initialize()
                     uint32(); // addiction delay
                     break;
                 }
-                case TYPE_ITEM_WEAPON:
+                case ITEM_TYPE::WEAPON:
                     _weaponAnimationCode  = uint32();
                     _weaponDamageMin      = uint32();
                     _weaponDamageMax      = uint32();
@@ -159,16 +159,16 @@ void File::_initialize()
                     _weaponAmmoCapacity = uint32();
                     _soundId = uint8();
                     break;
-                case TYPE_ITEM_AMMO:
+                case ITEM_TYPE::AMMO:
                     break;
-                case TYPE_ITEM_MISC:
+                case ITEM_TYPE::MISC:
                     break;
-                case TYPE_ITEM_KEY:
+                case ITEM_TYPE::KEY:
                     break;
             }
             break;
         }
-        case TYPE_CRITTER:
+        case OBJECT_TYPE::CRITTER:
         {
             _critterHeadFID = int32();
 
@@ -255,38 +255,38 @@ void File::_initialize()
             uint32(); // damage type
             break;
         }
-        case TYPE_SCENERY:
+        case OBJECT_TYPE::SCENERY:
         {
             _subtypeId  = uint32();
             _materialId = uint32();
             _soundId    = uint8();
-            switch(subtypeId())
+            switch((SCENERY_TYPE)subtypeId())
             {
-                case TYPE_SCENERY_DOOR:
+                case SCENERY_TYPE::DOOR:
                 {
                     uint32(); // walk thru flag
                     uint32(); // unknown
                     break;
                 }
-                case TYPE_SCENERY_STAIRS:
+                case SCENERY_TYPE::STAIRS:
                 {
                     uint32(); // DestTile && DestElevation
                     uint32(); // DestElevation
                     break;
                 }
-                case TYPE_SCENERY_ELEVATOR:
+                case SCENERY_TYPE::ELEVATOR:
                 {
                     uint32(); // Elevator type
                     uint32(); // Elevator level
                     break;
                 }
-                case TYPE_SCENERY_LADDER_BOTTOM:
-                case TYPE_SCENERY_LADDER_TOP:
+                case SCENERY_TYPE::LADDER_BOTTOM:
+                case SCENERY_TYPE::LADDER_TOP:
                 {
                     uint32(); // DestTile && DestElevation
                     break;
                 }
-                case TYPE_SCENERY_GENERIC:
+                case SCENERY_TYPE::GENERIC:
                 {
                     uint32(); // unknown
                 }
@@ -294,17 +294,17 @@ void File::_initialize()
 
             break;
         }
-        case TYPE_WALL:
+        case OBJECT_TYPE::WALL:
         {
             _materialId = uint32();
             break;
         }
-        case TYPE_TILE:
+        case OBJECT_TYPE::TILE:
         {
             _materialId = uint32();
             break;
         }
-        case TYPE_MISC:
+        case OBJECT_TYPE::MISC:
         {
             uint32(); // unknown
             break;

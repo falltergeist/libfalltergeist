@@ -176,7 +176,7 @@ Item& Item::operator>>(uint32_t &value)
     _initialize();
     char * buff = reinterpret_cast<char *>(&value);
     sgetn(buff, sizeof(value));
-    if (endianness() == ENDIANNESS_BIG) std::reverse(buff, buff + sizeof(value));
+    if (endianness() == ENDIANNESS::BIG) std::reverse(buff, buff + sizeof(value));
     return *this;
 }
 
@@ -190,7 +190,7 @@ Item& Item::operator>>(uint16_t &value)
     _initialize();
     char * buff = reinterpret_cast<char *>(&value);
     sgetn(buff, sizeof(value));
-    if (endianness() == ENDIANNESS_BIG) std::reverse(buff, buff + sizeof(value));
+    if (endianness() == ENDIANNESS::BIG) std::reverse(buff, buff + sizeof(value));
     return *this;
 }
 
@@ -211,12 +211,12 @@ Item& Item::operator>>(int8_t &value)
     return *this >> (uint8_t&) value;
 }
 
-Endianness Item::endianness()
+ENDIANNESS Item::endianness()
 {
     return _endianness;
 }
 
-void Item::setEndianness(Endianness value)
+void Item::setEndianness(ENDIANNESS value)
 {
     _endianness = value;
 }

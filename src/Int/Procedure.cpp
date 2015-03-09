@@ -85,37 +85,37 @@ void Procedure::setArgumentsCounter(uint32_t value)
 
 bool Procedure::isTimed()
 {
-    return flags() & ProcedureFlag::TIMED;
+    return flags() & (unsigned)PROCEDURE_FLAG::TIMED;
 }
 
 bool Procedure::isConditional()
 {
-    return flags() & ProcedureFlag::CONDITIONAL;
+    return flags() & (unsigned)PROCEDURE_FLAG::CONDITIONAL;
 }
 
 bool Procedure::isImported()
 {
-    return flags() & ProcedureFlag::IMPORTED;
+    return flags() & (unsigned)PROCEDURE_FLAG::IMPORTED;
 }
 
 bool Procedure::isExported()
 {
-    return flags() & ProcedureFlag::EXPORTED;
+    return flags() & (unsigned)PROCEDURE_FLAG::EXPORTED;
 }
 
 bool Procedure::isCritical()
 {
-    return flags() & ProcedureFlag::CRITICAL;
+    return flags() & (unsigned)PROCEDURE_FLAG::CRITICAL;
 }
 
 bool Procedure::isPure()
 {
-    return flags() & ProcedureFlag::PURE;
+    return flags() & (unsigned)PROCEDURE_FLAG::PURE;
 }
 
 bool Procedure::isInline()
 {
-    return flags() & ProcedureFlag::INLINE;
+    return flags() & (unsigned)PROCEDURE_FLAG::INLINE;
 }
 
 std::string Procedure::name() const

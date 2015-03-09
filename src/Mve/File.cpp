@@ -51,7 +51,7 @@ void File::_initialize()
     if (_initialized) return;
     Dat::Item::_initialize();
     Dat::Item::setPosition(0);
-    setEndianness(Dat::ENDIANNESS_LITTLE);
+    setEndianness(ENDIANNESS::LITTLE);
     // header
     const char  MVE_HEADER[]  = "Interplay MVE File\x1A";
     const int16_t MVE_HDRCONST1 = 0x001A;

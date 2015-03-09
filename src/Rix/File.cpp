@@ -53,10 +53,10 @@ void File::_initialize()
     // Signature
     uint32();
 
-    this->setEndianness(Dat::ENDIANNESS_LITTLE);
+    this->setEndianness(ENDIANNESS::LITTLE);
     _width = uint16();
     _height = uint16();
-    this->setEndianness(Dat::ENDIANNESS_BIG);
+    this->setEndianness(ENDIANNESS::BIG);
 
     // Unknown 1
     uint16();
