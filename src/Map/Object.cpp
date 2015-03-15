@@ -226,14 +226,14 @@ void Object::setObjectSubtypeId(unsigned int value)
     _objectSubtypeId = value;
 }
 
-unsigned int Object::unknown6()
+unsigned int Object::flags()
 {
-    return _unknown6;
+    return _flags;
 }
 
-void Object::setUnknown6(unsigned int value)
+void Object::setFlags(unsigned int value)
 {
-    _unknown6 = value;
+    _flags = value;
 }
 
 unsigned int Object::unknown7()
@@ -246,24 +246,24 @@ void Object::setUnknown7(unsigned int value)
     _unknown7 = value;
 }
 
-unsigned int Object::unknown8()
+unsigned int Object::lightRadius()
 {
-    return _unknown8;
+    return _lightRadius;
 }
 
-void Object::setUnknown8(unsigned int value)
+void Object::setLightRadius(unsigned int value)
 {
-    _unknown8 = value;
+    _lightRadius = value;
 }
 
-unsigned int Object::unknown9()
+unsigned int Object::lightIntensity()
 {
-    return _unknown9;
+    return _lightIntensity;
 }
 
-void Object::setUnknown9(unsigned int value)
+void Object::setLightIntensity(unsigned int value)
 {
-    _unknown9 = value;
+    _lightIntensity = value;
 }
 
 int Object::scriptId()

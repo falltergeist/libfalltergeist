@@ -222,14 +222,14 @@ Object* File::_readObject()
     uint32_t FID = uint32();
     object->setFrmTypeId(FID >> 24);
     object->setFrmId(0x00FFFFFF & FID);
-    object->setUnknown6(uint32());
+    object->setFlags(uint32());
     object->setElevation(uint32());
     uint32_t PID = uint32();
     object->setObjectTypeId(PID >> 24);
     object->setObjectId(0x00FFFFFF & PID);
     object->setUnknown7(uint32());
-    object->setUnknown8(uint32());
-    object->setUnknown9(uint32());
+    object->setLightRadius(uint32());
+    object->setLightIntensity(uint32());
     object->setUnknown10(uint32());
 
     int32_t SID = int32();
