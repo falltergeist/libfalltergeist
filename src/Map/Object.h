@@ -73,8 +73,8 @@ public:
     unsigned int frmId();
     void setFrmId(unsigned int value);
 
-    unsigned int unknown6();
-    void setUnknown6(unsigned int value);
+    unsigned int flags();
+    void setFlags(unsigned int value);
 
     unsigned int elevation();
     void setElevation(unsigned int value);
@@ -101,11 +101,11 @@ public:
     unsigned int unknown7();
     void setUnknown7(unsigned int value);
 
-    unsigned int unknown8();
-    void setUnknown8(unsigned int value);
+    unsigned int lightRadius();
+    void setLightRadius(unsigned int value);
 
-    unsigned int unknown9();
-    void setUnknown9(unsigned int value);
+    unsigned int lightIntensity();
+    void setLightIntensity(unsigned int value);
 
     unsigned int unknown10();
     void setUnknown10(unsigned int value);
@@ -152,7 +152,7 @@ protected:
     unsigned int _orientation;
     unsigned int _frmTypeId;
     unsigned int _frmId;
-    unsigned int _unknown6;
+    unsigned int _flags;
     unsigned int _elevation;
     unsigned int _objectTypeId = 0;
     unsigned int _objectId = 0;
@@ -161,8 +161,8 @@ protected:
     unsigned int _objectID2 = 0;
     unsigned int _objectID3 = 0;
     unsigned int _unknown7;
-    unsigned int _unknown8;
-    unsigned int _unknown9;
+    unsigned int _lightRadius;
+    unsigned int _lightIntensity;
     unsigned int _unknown10;
     unsigned int _inventorySize;
     unsigned int _unknown11;
