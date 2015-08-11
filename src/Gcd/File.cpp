@@ -138,10 +138,9 @@ void File::_initialize()
     uint32(); // unknown 7
 
     // name
-    char * name = new char[32]();
+    uint8_t name[32];
     this->readBytes(name, 32);
-    setName(name);
-    delete [] name;
+    setName((char*)name);
 
     _firstTaggedSkill  = (SKILL)int32();
     _secondTaggedSkill = (SKILL)int32();

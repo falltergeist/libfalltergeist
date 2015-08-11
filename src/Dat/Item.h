@@ -56,11 +56,11 @@ public:
     Item* setFilename(const std::string filename);
     std::string filename();
 
-    Item* readBytes(char* destination, unsigned int size);
+    Item* readBytes(uint8_t* destination, uint32_t size);
     Item* skipBytes(unsigned int numberOfBytes);
     Item* setPosition(unsigned int position);
-    unsigned int position();
-    unsigned int size();
+    uint32_t position();
+    uint32_t size();
 
     unsigned int bytesRemains();
 

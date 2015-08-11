@@ -92,7 +92,7 @@ void File::init()
 std::string File::acmName()
 {
     _initialize();
-    return std::string(_acm_name)+std::string(_unknown5);
+    return std::string((char*)_acm_name)+std::string((char*)_unknown5);
 }
 
 uint32_t File::pcount()

@@ -117,7 +117,7 @@ Item::~Item()
     delete [] _buffer;
 }
 
-unsigned int Item::size()
+uint32_t Item::size()
 {
     _initialize();
     return _size;
@@ -155,7 +155,7 @@ Item* Item::setPosition(unsigned int pos)
     return this;
 }
 
-unsigned int Item::position()
+uint32_t Item::position()
 {
     _initialize();
     return gptr() - eback();
@@ -168,10 +168,10 @@ Item* Item::skipBytes(unsigned int numberOfBytes)
     return this;
 }
 
-Item* Item::readBytes(char * destination, unsigned int size)
+Item* Item::readBytes(uint8_t* destination, uint32_t size)
 {
     _initialize();
-    sgetn(destination, size);
+    sgetn((char*)destination, size);
     return this;
 }
 

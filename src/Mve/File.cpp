@@ -65,7 +65,7 @@ void File::_initialize()
     int16_t check1, check2, check3;
 
     char head[20];
-    readBytes((char*)head,20);
+    readBytes((uint8_t*)head,20);
 
     if (strncmp(head,MVE_HEADER,20)!=0)
     {
@@ -90,7 +90,7 @@ std::shared_ptr<Chunk> File::getNextChunk()
             auto opcode = new Opcode(uint16());
             opcode->setType(uint8());
             opcode->setVersion(uint8());
-            this->readBytes((char*)opcode->data(), opcode->length());
+            this->readBytes((uint8_t*)opcode->data(), opcode->length());
             chunk->opcodes()->push_back(opcode);
             i += opcode->length() + 4;
         }

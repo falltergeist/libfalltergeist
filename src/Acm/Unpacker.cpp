@@ -109,7 +109,7 @@ inline void ValueUnpacker::_prepareBits(int bits)
                 remains = UNPACKER_BUFFER_SIZE;
             _bufferBitOffset = UNPACKER_BUFFER_SIZE - remains;
             if (_bufferBitOffset != UNPACKER_BUFFER_SIZE)
-                stream->readBytes((char *) (_bitsBuffer + _bufferBitOffset), remains);
+                stream->readBytes((uint8_t*) (_bitsBuffer + _bufferBitOffset), remains);
         }
         //our stream read returns -1 instead of 0 on failure
         //comparing with 1 will solve annoying interface changes

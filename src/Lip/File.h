@@ -63,8 +63,8 @@ protected:
     uint32_t _phonems_count;
     uint32_t _unknown4;
     uint32_t _markers_count;
-    char  _acm_name[8];
-    char  _unknown5[4];
+    uint8_t  _acm_name[8];
+    uint8_t  _unknown5[4];
     std::vector<uint8_t> _phonems;
     std::vector<uint32_t> _marker_samples;
     std::vector<uint32_t> _marker_timestamps;

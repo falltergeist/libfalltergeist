@@ -78,8 +78,8 @@ void File::_initialize()
     *this >> hdr.rate;
 
     int16_t tmpword;
-    readBytes((char *) &tmpword, 2);
-    _subblocks = (int32_t) (tmpword>>4);
+    readBytes((uint8_t*)&tmpword, 2);
+    _subblocks = (int32_t) (tmpword >> 4);
     _levels = (int32_t) (tmpword&15);
 
     if (hdr.signature != IP_ACM_SIG)
@@ -123,8 +123,8 @@ void File::rewind()
     *this >> hdr.rate;
 
     int16_t tmpword;
-    readBytes((char *) &tmpword, 2);
-    _subblocks = (int32_t) (tmpword>>4);
+    readBytes((uint8_t*)&tmpword, 2);
+    _subblocks = (int32_t) (tmpword >> 4);
     _levels = (int32_t) (tmpword&15);
 
     if (hdr.signature != IP_ACM_SIG)

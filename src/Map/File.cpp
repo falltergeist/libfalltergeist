@@ -71,9 +71,9 @@ void File::_initialize()
 
     _version = uint32();
 
-    char name[16];
+    uint8_t name[16];
     this->readBytes(name, 16);
-    _name = name;
+    _name = (char*)name;
     std::transform(_name.begin(),_name.end(),_name.begin(), ::tolower);
 
     _defaultPosition   = uint32();
