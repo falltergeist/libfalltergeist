@@ -15,10 +15,10 @@ addons:
     project:
       name: "falltergeist/libfalltergeist"
       description: "Build submitted via Travis CI"
-      notification_email: mail@alexeevdv.ru
-      build_command_prepend: "cmake ."
-      build_command:   "make"
-      branch_pattern: master
+    notification_email: mail@alexeevdv.ru
+    build_command_prepend: "cmake ."
+    build_command:   "make"
+    branch_pattern: master
 
 script: cmake . && make
 
