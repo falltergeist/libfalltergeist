@@ -79,4 +79,12 @@ if(NOT LIBFALLTERGEIST_EMBEDDED)
 else()
   # Build libfalltergeist as static lib only when is used as bundled
   set(BUILD_SHARED_LIBS OFF)
+  SET(ANDROID_SOURCES "")
+  FOREACH(VAL ${SOURCES})
+    SET(ANDROID_SOURCES "${ANDROID_SOURCES} \\\n${CMAKE_SOURCE_DIR}/lib/libfalltergeist/${VAL}")
+  ENDFOREACH(VAL ${${LISTNAME}})
+
+configure_file(${CMAKE_SOURCE_DIR}/package/android/jni/libfalltergeist/Android.mk.in package/android/jni/libfalltergeist/Android.mk)
+
 endif()
+
