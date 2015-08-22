@@ -36,9 +36,9 @@ set(libfalltergeist_VERSION_STRING "${libfalltergeist_MAJOR_VERSION}.${libfallte
 # On Windows debug library should have 'd' postfix.
 # On Mac OS X '_debug' postfix
 if(WIN32)
-  set(CMAKE_DEBUG_POSTFIX "d")
+    set(CMAKE_DEBUG_POSTFIX "d")
 elseif(APPLE)
-  set(CMAKE_DEBUG_POSTFIX "_debug")
+    set(CMAKE_DEBUG_POSTFIX "_debug")
 endif(WIN32)
 
 # BUILD_SHARED_LIBS is cmake variable. Need to change default value.
@@ -58,11 +58,15 @@ add_definitions (-std=c++11 -Wall)
 FILE(GLOB_RECURSE SOURCES  src/*.cpp)
 FILE(GLOB_RECURSE HEADERS  src/*.h)
 
+if(LIBFALLTERGEIST_EMBEDDED)
+    set(BUILD_SHARED_LIBS OFF)
+endif()
+
 add_library(falltergeist ${SOURCES} ${HEADERS})
 target_link_libraries(falltergeist ${ZLIB_LIBRARIES})
 
 if(NOT ANDROID)
-  set_target_properties(falltergeist PROPERTIES
+    set_target_properties(falltergeist PROPERTIES
                         VERSION ${libfalltergeist_MAJOR_VERSION}.${libfalltergeist_MINOR_VERSION}.${libfalltergeist_PATCH_VERSION}
                         SOVERSION ${libfalltergeist_MAJOR_VERSION})
 endif()
@@ -76,7 +80,4 @@ if(NOT LIBFALLTERGEIST_EMBEDDED)
         RUNTIME DESTINATION ${BIN_INSTALL_DIR}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
         PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/falltergeist")
-else()
-  # Build libfalltergeist as static lib only when is used as bundled
-  set(BUILD_SHARED_LIBS OFF)
 endif()
