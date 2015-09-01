@@ -2,33 +2,17 @@ os:
   - linux
   - osx
 
-language: cpp
+language:
+  - cpp
 
-env:
-  global:
-     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-     #   via the "travis encrypt" command using the project repo's public key
-     - secure: "kH/wTfhB07V8SJhdzRyqASukywINdAuts50i4AovP5K1p62Zu4fGhnf8fp/aIETCTgPmQpz1k5f2eDo4w8YvdwtAVBUMS8yaj5V0oMgPfTb5ny9sD5lXLP9GY20cb5q1zveiaaKZo7GZGe9k1PXHbtq77hWadFySXwSvm05zIIM="
-
-addons:
-  coverity_scan:
-    project:
-      name: "falltergeist/libfalltergeist"
-      description: "Build submitted via Travis CI"
-    notification_email: mail@alexeevdv.ru
-    build_command_prepend: "cmake ."
-    build_command:   "make"
-    branch_pattern: coverity_scan
-
-script: cmake . && make
+script:
+  - cmake .
+  - make
 
 compiler:
   - clang
   - gcc
 
-before_install:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+install:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then source ./travis/linux.install.sh; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ];   then source ./travis/osx.install.sh;   fi
