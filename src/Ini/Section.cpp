@@ -116,26 +116,11 @@ bool Section::propertyBool(const std::string &name, bool def) const
 Array Section::propertyArray(const std::string& name) const
 {
     PropertyMapConstIterator iter = _properties.find(name);
-    Array ret;
     if (iter != _properties.end())
     {
-        for (std::string& value : Parser::split(',', iter->second.str()))
-        {
-            std::string key = "";
-            Parser::trim(value);
-            // check for associative
-            size_t colon = value.find(':');
-            if (colon != std::string::npos)
-            {
-                key = value.substr(0, colon);
-                Parser::rtrim(key);
-                value = value.substr(colon + 1);
-                Parser::ltrim(value);
-            }
-            ret.push_back(std::make_pair(key, value));
-        }
+        return Parser::parseArray(iter->second.str());
     }
-    return ret;
+    return Array();
 }
 
 Section::iterator Section::begin()

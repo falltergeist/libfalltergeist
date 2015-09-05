@@ -47,6 +47,7 @@
 #include "../Pro/File.h"
 #include "../Rix/File.h"
 #include "../Sve/File.h"
+#include "../Txt/CityFile.h"
 
 // Third party includes
 
@@ -198,6 +199,7 @@ Item* File::item(const std::string filename)
         else if (extension == "pro") item = new Pro::File(entry);
         else if (extension == "rix") item = new Rix::File(entry);
         else if (extension == "sve") item = new Sve::File(entry);
+        else if (filename == "data/city.txt") item = new Txt::CityFile(entry);
         else item = new Item(entry);
 
         _items.insert(std::make_pair(filename, item));

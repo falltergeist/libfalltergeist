@@ -24,6 +24,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "Section.h"
 
 // Libfalltergeist includes
 
@@ -58,6 +59,8 @@ public:
     static void ltrim(std::string& value);
 
     static void toLower(std::string& value);
+
+    static Array parseArray(const std::string& value);
 
 private:
     std::istream &_stream; // stream to parse

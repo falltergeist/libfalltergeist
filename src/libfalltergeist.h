@@ -59,5 +59,6 @@
 #include "Pro/File.h"
 #include "Rix/File.h"
 #include "Sve/File.h"
+#include "Txt/CityFile.h"
 
 #endif // LIBFALLTERGEIST_H

@@ -76,6 +76,28 @@ void Parser::toLower(std::string& line)
     std::transform(line.begin(), line.end(), line.begin(), ::tolower);
 }
 
+
+Array Parser::parseArray(const std::string& str)
+{
+    Array ret;
+    for (std::string& value : Parser::split(',', str))
+    {
+        std::string key = "";
+        Parser::trim(value);
+        // check for associative
+        size_t colon = value.find(':');
+        if (colon != std::string::npos)
+        {
+            key = value.substr(0, colon);
+            Parser::rtrim(key);
+            value = value.substr(colon + 1);
+            Parser::ltrim(value);
+        }
+        ret.push_back(std::make_pair(key, value));
+    }
+    return ret;
+}
+
 void Parser::_stripComments(std::string& line)
 {
     unsigned pos = line.find(";");
