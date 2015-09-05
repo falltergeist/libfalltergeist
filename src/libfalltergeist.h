@@ -40,6 +40,7 @@
 #include "Frm/Frame.h"
 #include "Gam/File.h"
 #include "Gcd/File.h"
+#include "Ini/File.h"
 #include "Int/File.h"
 #include "Int/Procedure.h"
 #include "Lst/File.h"
