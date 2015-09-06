@@ -21,11 +21,9 @@
 #include "../Ini/Section.h"
 
 // C++ standard includes
-#include <algorithm>
 #include <functional>
 
 // Libfalltergeist includes
-#include "../Exception.h"
 
 // Third party includes
 

@@ -18,15 +18,12 @@
  */
 
 #ifndef LIBFALLTERGEIST_INI_FILE_H
-#define	LIBFALLTERGEIST_INI_FILE_H
+#define LIBFALLTERGEIST_INI_FILE_H
 
 // C++ standard includes
-#include <fstream>
-#include <string>
 #include <map>
-#include <memory>
-#include <sstream>
-#include <algorithm>
+#include <string>
+#include <vector>
 
 // Libfalltergeist includes
 #include "../Ini/Parser.h"

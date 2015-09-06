@@ -24,9 +24,9 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "Section.h"
 
 // Libfalltergeist includes
+#include "../Ini/Value.h"
 
 // Third party includes
 
@@ -69,19 +69,6 @@ private:
 protected:
 
     void _stripComments(std::string& line);
-
-    /*bool _tryBool(std::string &line, bool* val);
-
-    int _tryDecimal(std::string &line, int* intval, double* doubleval);
-
-    bool _parseBool(std::string &name, std::string &line, std::shared_ptr<File> ini);
-
-    bool _parseDecimal(std::string &name, std::string &line, std::shared_ptr<File> ini);
-
-    bool _parseArray(std::string &name, std::string &line, std::shared_ptr<File> ini);
-
-    bool _parseArrayDecimal(std::vector<Value> &vec, std::string val);
-    bool _parseArrayBool(std::vector<Value> &vec, std::string val);*/
 
 };
 

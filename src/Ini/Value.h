@@ -21,8 +21,8 @@
 #define LIBFALLTERGEIST_INI_VALUE_H
 
 // C++ standard includes
-#include <string>
 #include <ostream>
+#include <string>
 
 // Libfalltergeist includes
 
