@@ -18,17 +18,17 @@
  */
 
 // Related headers
-#include "../Ini/Parser.h"
 #include "../Ini/Section.h"
 
 // C++ standard includes
-#include <string>
 #include <algorithm>
+#include <functional>
 
 // Libfalltergeist includes
 #include "../Exception.h"
 
 // Third party includes
+
 
 namespace libfalltergeist
 {
@@ -118,9 +118,23 @@ Array Section::propertyArray(const std::string& name) const
     PropertyMapConstIterator iter = _properties.find(name);
     if (iter != _properties.end())
     {
-        return Parser::parseArray(iter->second.str());
+        return iter->second.toArray();
     }
     return Array();
+}
+
+Section::PropertyRefs Section::listByMask(const std::string& mask, unsigned int start) const
+{
+    PropertyRefs vec;
+    int i = start;
+    char key[100];
+    sprintf_s(key, 100, mask.c_str(), i);
+    while (hasProperty(key))
+    {
+        vec.push_back(std::cref(property(key)));
+        sprintf_s(key, 100, mask.c_str(), ++i);
+    }
+    return vec;
 }
 
 Section::iterator Section::begin()

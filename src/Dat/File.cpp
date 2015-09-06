@@ -48,6 +48,7 @@
 #include "../Rix/File.h"
 #include "../Sve/File.h"
 #include "../Txt/CityFile.h"
+#include "../Txt/MapsFile.h"
 
 // Third party includes
 
@@ -200,6 +201,7 @@ Item* File::item(const std::string filename)
         else if (extension == "rix") item = new Rix::File(entry);
         else if (extension == "sve") item = new Sve::File(entry);
         else if (filename == "data/city.txt") item = new Txt::CityFile(entry);
+        else if (filename == "data/maps.txt") item = new Txt::MapsFile(entry);
         else item = new Item(entry);
 
         _items.insert(std::make_pair(filename, item));

@@ -33,6 +33,10 @@ namespace libfalltergeist
 namespace Ini
 {
 
+class Value;
+
+typedef std::vector<std::pair<std::string, Value>> Array;
+
 /**
  * @brief A value in INI file.
  * A wrapper for std::string with conversion functions to various types.
@@ -56,6 +60,9 @@ public:
     double toDouble() const;
 
     bool toBool() const;
+
+    Array toArray() const;
+
 
 private:
     std::string _value;

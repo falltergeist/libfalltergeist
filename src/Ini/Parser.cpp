@@ -76,7 +76,6 @@ void Parser::toLower(std::string& line)
     std::transform(line.begin(), line.end(), line.begin(), ::tolower);
 }
 
-
 Array Parser::parseArray(const std::string& str)
 {
     Array ret;
@@ -84,6 +83,11 @@ Array Parser::parseArray(const std::string& str)
     {
         std::string key = "";
         Parser::trim(value);
+        // skip empty values
+        if (value.size() == 0)
+        {
+            continue;
+        }
         // check for associative
         size_t colon = value.find(':');
         if (colon != std::string::npos)
@@ -93,7 +97,10 @@ Array Parser::parseArray(const std::string& str)
             value = value.substr(colon + 1);
             Parser::ltrim(value);
         }
-        ret.push_back(std::make_pair(key, value));
+        if (value.size() > 0)
+        {
+            ret.push_back(std::make_pair(key, value));
+        }
     }
     return ret;
 }

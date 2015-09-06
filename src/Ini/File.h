@@ -45,9 +45,9 @@ namespace Ini
 class File
 {
 public:
-    using SectionMap = std::map<std::string, Section>;
-    using iterator = SectionMap::iterator;
-    using const_iterator = SectionMap::const_iterator;
+    using Sections = std::vector<Section>;
+    using iterator = Sections::iterator;
+    using const_iterator = Sections::const_iterator;
 
     File();
     ~File();
@@ -57,21 +57,26 @@ public:
      */
     Section& section(const std::string &name);
     /**
-     * An alias for section()
+     * An alias for section().
      */
     Section& operator [] (const std::string &name);
-
-    const SectionMap& sections();
+    /**
+     * Checks if section with given name exists or not.
+     */
+    bool hasSection(const std::string &name) const;
+    /**
+     * Returns reference to internal vector of sections.
+     */
+    const Sections& sections();
 
     iterator begin();
     const_iterator begin() const;
     iterator end();
     const_iterator end() const;
 
-    bool hasSection(const std::string &name) const;
-
 private:
-    SectionMap _sections;
+    Sections _sections;
+    std::map<std::string, size_t> _sectionIdxMap;
 
 };
 

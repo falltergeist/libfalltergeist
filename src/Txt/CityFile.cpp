@@ -73,25 +73,24 @@ void CityFile::_initialize()
     std::istream stream(this);
     Ini::Parser parser(stream);
     auto file = parser.parse();
-    for (auto sec : file->sections())
+    for (auto section : file->sections())
     {
         City city;
-        city.name = sec.second["area_name"];
-        auto coords = parser.parseArray(sec.second["world_pos"]);
+        city.name = section["area_name"];
+        auto coords = section["world_pos"].toArray();
         if (coords.size() >= 2)
         {
             city.worldX = coords[0].second.toInt();
             city.worldY = coords[1].second.toInt();
         }
-        city.startState = sec.second["start_state"].toBool();
-        city.size = _sizeByName(sec.second["size"]);
-        city.townMapArtIdx = sec.second["townmap_art_idx"].toInt();
-        city.townMapLabelArtIdx = sec.second["townmap_label_art_idx"].toInt();
-        int i = 0;
-        std::string entrKey = "entrance_0";
-        while (sec.second.hasProperty(entrKey))
+        city.startState = section["start_state"].toBool();
+        city.size = _sizeByName(section["size"]);
+        city.townMapArtIdx = section["townmap_art_idx"].toInt();
+        city.townMapLabelArtIdx = section["townmap_label_art_idx"].toInt();
+        // parse entrances
+        for (auto prop : section.listByMask("entrance_%d"))
         {
-            auto entranceArray = sec.second.propertyArray(entrKey);
+            auto entranceArray = prop.get().toArray();
             if (entranceArray.size() >= 7)
             {
                 CityEntrance entrance;
@@ -104,7 +103,6 @@ void CityFile::_initialize()
                 entrance.orientation = entranceArray[6].second.toInt();
                 city.entrances.push_back(entrance);
             }
-            entrKey = "entrance_" + (++i);
         }
         _cities.push_back(city);
     }

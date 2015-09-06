@@ -18,6 +18,7 @@
  */
 
 // Related headers
+#include "../Ini/Parser.h"
 #include "../Ini/Value.h"
 
 // C++ standard includes
@@ -64,19 +65,38 @@ explicit Value::operator T() const
 
 int Value::toInt() const
 {
-    return std::stoi(_value);
+    try
+    {
+        return std::stoi(_value);
+    }
+    catch (std::invalid_argument)
+    {
+        return 0;
+    }
 }
 
 double Value::toDouble() const
 {
-    return std::stod(_value);
+    try
+    {
+        return std::stod(_value);
+    }
+    catch (std::invalid_argument)
+    {
+        return 0.0;
+    }
 }
 
 bool Value::toBool() const
 {
     std::string lc = _value;
-    std::transform(lc.begin(), lc.end(), lc.begin(), ::tolower);
+    Parser::toLower(lc);
     return (lc == "on" || lc == "true");
+}
+
+Array Value::toArray() const
+{
+    return Parser::parseArray(_value);
 }
 
 }

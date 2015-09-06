@@ -35,11 +35,9 @@ namespace libfalltergeist
 namespace Ini
 {
 
-typedef std::vector<std::pair<std::string, Value>> Array;
-
 /**
  * @brief A section in INI file.
- * Basically a wrapper for map<string, string> with additional convenience functions.
+ * Contains an ordered map of property names to Value objects.
  */
 class Section
 {
@@ -48,6 +46,7 @@ public:
     using PropertyMapConstIterator = PropertyMap::const_iterator;
     using iterator = PropertyMap::iterator;
     using const_iterator = PropertyMap::const_iterator;
+    using PropertyRefs = std::vector<std::reference_wrapper<const Value>>;
 
     Section(const std::string &name = "");
     ~Section();
@@ -107,12 +106,17 @@ public:
      */
     Array propertyArray(const std::string &name) const;
 
+    /**
+     * Returns a vector of references to properties values, that form a list. For example: enc_00, enc_01, enc_02, etc.
+     * @param mask a sprintf-style format of mask. Example: "enc_%02d".
+     * @param start a starting index
+     */
+    PropertyRefs listByMask(const std::string& mask, unsigned int start = 0) const;
+
 private:
 
     PropertyMap _properties;
     std::string _name;
-
-    void _trim(std::string& value) const;
 };
 
 }

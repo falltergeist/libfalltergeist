@@ -43,13 +43,15 @@ File::~File()
 
 Section& File::section(const std::string &name)
 {
-    auto it = _sections.find(name);
-    if (it == _sections.end())
+    auto it = _sectionIdxMap.find(name);
+    if (it == _sectionIdxMap.end())
     {
-        _sections[name] = std::move(Section(name));
-        return _sections.at(name);
+        auto idx = _sections.size();
+        _sections.push_back(std::move(Section(name)));
+        _sectionIdxMap[name] = idx;
+        return _sections.at(idx);
     }
-    return it->second;
+    return _sections.at(it->second);
 }
 
 Section& File::operator [] (const std::string &name)
@@ -59,10 +61,10 @@ Section& File::operator [] (const std::string &name)
 
 bool File::hasSection(const std::string &name) const
 {
-    return _sections.find(name) != _sections.end();
+    return _sectionIdxMap.find(name) != _sectionIdxMap.end();
 }
 
-const File::SectionMap& File::sections()
+const File::Sections& File::sections()
 {
     return _sections;
 }

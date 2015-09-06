@@ -60,5 +60,6 @@
 #include "Rix/File.h"
 #include "Sve/File.h"
 #include "Txt/CityFile.h"
+#include "Txt/MapsFile.h"
 
 #endif // LIBFALLTERGEIST_H
