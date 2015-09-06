@@ -71,7 +71,7 @@ void Section::setProperty(const std::string& name, const Value& value)
     _properties[name] = value;
 }
 
-const std::string& Section::propertyString(const std::string &name, const std::string &def) const
+std::string Section::propertyString(const std::string &name, const std::string &def) const
 {
     PropertyMapConstIterator iter = _properties.find(name);
     if (iter == _properties.end())

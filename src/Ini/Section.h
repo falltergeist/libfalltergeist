@@ -84,7 +84,7 @@ public:
     /**
      * Returns value of property with given name, or a given default value if such property doesn't exist.
      */
-    const std::string& propertyString(const std::string& name, const std::string& def = "") const;
+    std::string propertyString(const std::string& name, const std::string& def = "") const;
 
     /**
      * Returns value of given property, converted to int.
