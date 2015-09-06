@@ -126,11 +126,11 @@ Section::PropertyRefs Section::listByMask(const std::string& mask, unsigned int 
     PropertyRefs vec;
     int i = start;
     char key[100];
-    sprintf_s(key, 100, mask.c_str(), i);
+    snprintf(key, 100, mask.c_str(), i);
     while (hasProperty(key))
     {
         vec.push_back(std::cref(property(key)));
-        sprintf_s(key, 100, mask.c_str(), ++i);
+        snprintf(key, 100, mask.c_str(), ++i);
     }
     return vec;
 }
