@@ -135,7 +135,6 @@ std::unique_ptr<File> Parser::parse()
         if (*line.begin() == '[' && *line.rbegin() == ']')
         {
             _section = line.substr(1, line.length() - 2);
-            toLower(_section);
 
             continue;
         }

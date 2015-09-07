@@ -41,7 +41,7 @@ Section::~Section()
 {
 }
 
-std::string Section::name()
+const std::string& Section::name() const
 {
     return _name;
 }

@@ -34,62 +34,61 @@ namespace libfalltergeist
 namespace Txt
 {
 
-class ConditionFactor
+/**
+ * An expression that can be evaluated to some numeric result.
+ */
+struct NumericExpression
 {
-public:
-    ConditionFactor(const std::string& func, const Ini::Value& arg) : _func(func), _arg(arg)
+    static const char* CONSTANT    = "const";          // a numeric constant
+    static const char* PLAYER      = "Player";         // a value of player stat, perk, trait or skill
+    static const char* TIME_OF_DAY = "time_of_day";    // returns current hour (0 - 23)
+    static const char* GLOBAL      = "Global";         // game global variable value
+    static const char* RAND        = "Rand";           // a random value between 0 and 99
+
+    NumericExpression(std::string func, const Ini::Value& arg) : func(func), arg(arg)
     {
     }
 
-    enum class Func
-    {
-        CONSTANT = 1,
-        PLAYER,
-        ENCOUNTER,
-        TIME,
-        GLOBAL,
-        RAND
-    };
-
-private:
-    std::string _func;
-    Ini::Value _arg;
+    std::string func;
+    Ini::Value arg;
 };
 
-class ConditionTerm
+/**
+ * A logical expression for conditions. Example: If(Player(Level) > 10)
+ */
+struct LogicalExpression
 {
-public:
     enum class Operator
     {
         EQ, NE, GT, LT, GTE, LTE
     };
 
-private:
     Operator _operator;
-    ConditionFactor _leftOperand;
-    ConditionFactor _rightOperand;
+    NumericExpression _leftOperand;
+    int _rightOperand;
 };
 
-// Conditions consist of "subconditions" (Terms), delimited by "And"
-typedef std::vector<ConditionTerm> Condition;
+// Conditions consist of "sub-conditions" (Terms), delimited by "And".
+typedef std::vector<LogicalExpression> Condition;
 
-
-struct EncounterPosition
-{
-    std::string type;
-    int spacing;
-    ConditionFactor distance;
-};
-
+/**
+ * Inventory item of object.
+ */
 struct InventoryItem
 {
     int pid;
+    /**
+     * True if this item should be wielded (weapon)
+     */
     bool wielded;
     int minCount;
     int maxCount;
 };
 
-struct EncounterEntry
+/**
+ * An object that can be present within specific type of group with some probability.
+ */
+struct EncounterObject
 {
     int pid;
     int ratio;
@@ -99,16 +98,35 @@ struct EncounterEntry
     Condition condition;
 };
 
+
 /**
- *
+ * Describes specific type of group a player can encounter, like "Raiders", "Rats", etc.
  */
 struct Encounter
 {
-    int teamNum;
-    EncounterPosition position;
-    std::vector<EncounterEntry> entries;
+    /**
+     * Type of positioning: surrounding, wedge, etc.
+     */
+    std::string position;
+    /**
+     * Spacing between each object.
+     */
+    int spacing;
+    /**
+     * (probably) distance to player. Can have dynamic expression as value.
+     */
+    NumericExpression distance;
+    /**
+     * All types of objects (critters) in this encounter. All ratios usually sum up to 100%, but it is not required.
+     * With total ratio of 100% and 10 occurrences of this encounter in a group, total mean number of critters will be 10.
+     * With 200% - mean is 20 critters, and so on.
+     */
+    std::vector<EncounterObject> objects;
 };
 
+/**
+ * Reference to encounter type with number of occurrences (group size).
+ */
 struct EncounterGroup
 {
     std::string encounterType;
@@ -116,6 +134,10 @@ struct EncounterGroup
     int maxCount;
 };
 
+/**
+ * @brief An entry in encounter table.
+ * Describes a complete encounter type that can occur on specific sub-tiles.
+ */
 struct EncounterTableEntry
 {
     /**
@@ -141,6 +163,9 @@ struct EncounterTableEntry
     std::vector<EncounterGroup> team2;
 };
 
+/**
+ * Encounter table describes types of encounters that can occur on each world map sub-tile.
+ */
 struct EncounterTable
 {
     std::string lookupName;
@@ -148,12 +173,25 @@ struct EncounterTable
     std::vector<EncounterTableEntry> encounters;
 };
 
+/**
+ * Information about terrain type.
+ */
 struct TerrainType
 {
+    /**
+     * Controls travel speed over this terrain type. Higher values should give slower speed.
+     * Probably it is a number of frames to skip for each movement on the map.
+     */
     int travelDelay;
+    /**
+     * A list of map names, used for random encounters on this terrain type.
+     */
     std::vector<std::string> randomMaps;
 };
 
+/**
+ * Worldmap subtile. Each subtile has it's own encounter table, terrain type and other properties.
+ */
 struct WorldmapSubtile
 {
     enum class Fill
@@ -168,6 +206,9 @@ struct WorldmapSubtile
     std::string encounterTable;
 };
 
+/**
+ * A tile of worldmap. Has it's own image and a set of subtiles.
+ */
 struct WorldmapTile
 {
     static const char SUBTILES_X = 7;
@@ -189,13 +230,28 @@ public:
 
     int numHorizontalTiles;
 
+    std::map<std::string, unsigned char> chanceNames;
     std::map<std::string, TerrainType> terrainTypes;
     std::map<std::string, Encounter> encounterTypes;
     std::map<std::string, EncounterTable> encounterTables;
+    std::vector<WorldmapTile> tiles;
 
 protected:
 
     void _initialize() override;
+    EncounterObject _parseEncounterObject(const Ini::Value&);
+    InventoryItem _parseInventoryItem(const std::string&);
+
+    EncounterTableEntry _parseEncounterTableEntry(const Ini::Value&);
+    EncounterGroup _parseEncounterGroup(const std::string&);
+
+    Condition _parseCondition(const std::string&);
+    LogicalExpression _parseLogicalExpression(const std::string&);
+    NumericExpression _parseNumericExpression(const std::string&);
+
+    WorldmapSubtile _parseSubtile(const Ini::Value&);
+
+    unsigned char _chanceByName(const std::string&);
 };
 
 }

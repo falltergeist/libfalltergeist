@@ -58,7 +58,7 @@ public:
     iterator end();
     const_iterator end() const;
 
-    std::string name();
+    const std::string& name() const;
 
     /**
      * Checks if property with given name exists in given section.
