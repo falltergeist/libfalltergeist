@@ -18,6 +18,7 @@
  */
 
 // C++ standard includes
+#include <sstream>
 
 // Libfalltergeist includes
 #include "../Ini/File.h"
@@ -30,6 +31,12 @@ namespace libfalltergeist
 {
 namespace Txt
 {
+
+const char* NumericExpression::CONSTANT    = "const";          // a numeric constant
+const char* NumericExpression::PLAYER      = "Player";         // a value of player stat, perk, trait or skill
+const char* NumericExpression::TIME_OF_DAY = "time_of_day";    // returns current hour (0 - 23)
+const char* NumericExpression::GLOBAL      = "Global";         // game global variable value
+const char* NumericExpression::RAND        = "Rand";           // a random value between 0 and 99
 
 
 WorldmapFile::WorldmapFile(std::ifstream* stream) : Dat::Item(stream)
@@ -96,7 +103,8 @@ void WorldmapFile::_initialize()
                 }
                 else if (pair.first == "distance")
                 {
-                    enc.distance = _parseNumericExpression(pair.second);
+                    std::istringstream istr(pair.second);
+                    enc.distance = _parseNumericExpression(istr);
                 }
             }
             for (auto& ref : section.listByMask("type_%02d"))
@@ -131,7 +139,7 @@ void WorldmapFile::_initialize()
             {
                 for (int j = 0; j < WorldmapTile::SUBTILES_Y; j++)
                 {
-                    tile.subtiles[i, j] = _parseSubtile(section[std::to_string(i) + "_" + std::to_string(j)]);
+                    tile.subtiles[i][j] = _parseSubtile(section[std::to_string(i) + "_" + std::to_string(j)]);
                 }
             }
             tiles.push_back(std::move(tile));
@@ -159,7 +167,11 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
         }
         else if (pair.first == "item")
         {
-            obj.items.push_back(_parseInventoryItem(pair.second.str()));
+            try
+            {
+                obj.items.push_back(_parseInventoryItem(pair.second.str()));
+            }
+            catch (std::ios::failure) {} // @TODO: log warning
         }
         else if (pair.second.str() == "Dead")
         {
@@ -167,46 +179,179 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
         }
         else if (pair.second.str().find("If(") != std::string::npos)
         {
-            obj.condition = _parseCondition(pair.second.str());
+            try
+            {
+                obj.condition = _parseCondition(pair.second.str());
+            }
+            catch (std::ios::failure) {} // @TODO: log warning
         }
     }
     return obj;
 }
 
-InventoryItem WorldmapFile::_parseInventoryItem(const std::string& string)
+InventoryItem WorldmapFile::_parseInventoryItem(const std::string& value)
 {
-    // @TODO: implement
-    return Txt::InventoryItem();
+    InventoryItem item;
+    std::istringstream istr(value);
+    istr.exceptions(std::ios_base::failbit);
+    _parseRange(istr, item.minCount, item.maxCount);
+    istr >> item.pid;
+    if (value.rfind("(wielded)") != std::string::npos)
+    {
+        item.wielded = true;
+    }
+    return item;
 }
 
-EncounterTableEntry WorldmapFile::_parseEncounterTableEntry(const Ini::Value& string)
+EncounterTableEntry WorldmapFile::_parseEncounterTableEntry(const Ini::Value& value)
 {
-    // @TODO: implement
-    return Txt::EncounterTableEntry();
+    EncounterTableEntry entry;
+    for (auto pair : value.toArray())
+    {
+        Ini::Parser::toLower(pair.first);
+        if (pair.first == "chance")
+        {
+            entry.chance = (unsigned char)pair.second.toInt();
+        }
+        else if (pair.first == "counter")
+        {
+            entry.counter = pair.second.toInt();
+        }
+        else if (pair.first == "map")
+        {
+            entry.map = pair.second;
+        }
+        else if (pair.second.str() == "Special")
+        {
+            entry.isSpecial = true;
+        }
+        else if (pair.first == "enc")
+        {
+            // main encounter definition...
+            std::istringstream istr(pair.second.str());
+            istr.exceptions(std::ios::failbit);
+            std::string action;
+            do
+            {
+                entry.team1.push_back(_parseEncounterGroup(istr));
+                //while (istr.get() == ' ') {}      istr.unget();
+                istr >> action;
+            }
+            while (action == "AND");
+
+            if (action == "AMBUSH")
+            {
+                entry.action = EncounterTableEntry::Action::AMBUSH_PLAYER;
+            }
+            else if (action == "FIGHTING")
+            {
+                do
+                {
+                    entry.team2.push_back(_parseEncounterGroup(istr));
+                    istr >> action;
+                }
+                while (action == "AND");
+            }
+        }
+        else if (pair.second.str().find("If") == 0)
+        {
+            entry.condition = _parseCondition(pair.second);
+        }
+    }
+    return entry;
 }
 
-EncounterGroup WorldmapFile::_parseEncounterGroup(const std::string& string)
+EncounterGroup WorldmapFile::_parseEncounterGroup(std::istringstream& istr)
 {
-    // @TODO: implement
-    return Txt::EncounterGroup();
+    EncounterGroup grp;
+    _parseRange(istr, grp.minCount, grp.maxCount);
+    istr >> grp.encounterType;
+    return grp;
 }
 
-Condition WorldmapFile::_parseCondition(const std::string& string)
+Condition WorldmapFile::_parseCondition(const std::string& value)
 {
-    // @TODO: implement
-    return Condition();
+    Condition cond;
+    std::istringstream istr(value);
+    istr.exceptions(std::ios::failbit);
+    std::string logicalOperator;
+    do
+    {
+        cond.push_back(_parseLogicalExpression(istr));
+        istr >> logicalOperator;
+        Ini::Parser::toLower(logicalOperator);
+    }
+    while (logicalOperator == "And");
+
+    return cond;
 }
 
-LogicalExpression WorldmapFile::_parseLogicalExpression(const std::string& string)
+LogicalExpression WorldmapFile::_parseLogicalExpression(std::istringstream& istr)
 {
-    // @TODO: implement
-    return Txt::LogicalExpression();
+    LogicalExpression exp;
+    std::string token;
+    std::getline(istr, token, '(');
+    if (token != "If")
+    {
+        throw std::ios::failure("Invalid logical expression");
+    }
+    exp._leftOperand = _parseNumericExpression(istr);
+    while (istr.get() == ' ') {}
+    auto ch = istr.get();
+    if (ch == '>' || ch == '<' || ch == '=')
+    {
+        if (ch == '>')
+        {
+            if (istr.get() == '=')
+            {
+                exp._operator = LogicalExpression::Operator::GTE;
+            }
+            else
+            {
+                exp._operator = LogicalExpression::Operator::GT;
+                istr.unget();
+            }
+        }
+        else if (ch == '<')
+        {
+            if (istr.get() == '=')
+            {
+                exp._operator = LogicalExpression::Operator::LTE;
+            }
+            else
+            {
+                exp._operator = LogicalExpression::Operator::LT;
+                istr.unget();
+            }
+        }
+        else
+        {
+            exp._operator = LogicalExpression::Operator::EQ;
+        }
+    }
+    istr >> exp._rightOperand;
+    std::getline(istr, token, ')');
+    return exp;
 }
 
-NumericExpression WorldmapFile::_parseNumericExpression(const std::string& string)
+NumericExpression WorldmapFile::_parseNumericExpression(std::istringstream& istr)
 {
-    // @TODO: implement
-    return NumericExpression(NumericExpression::CONSTANT, Ini::Value("0"));
+    NumericExpression exp;
+    exp.func = "";
+    char ch = (char)istr.get();
+    while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_')
+    {
+        exp.func.push_back(ch);
+        ch = (char)istr.get();
+    }
+    istr.unget();
+    if (istr.get() == '(')
+    {
+        std::string arg;
+        std::getline(istr, arg, ')');
+        exp.arg = Ini::Value(arg);
+    }
+    return exp;
 }
 
 WorldmapSubtile WorldmapFile::_parseSubtile(const Ini::Value& value)
@@ -227,12 +372,37 @@ WorldmapSubtile WorldmapFile::_parseSubtile(const Ini::Value& value)
     return subtile;
 }
 
+void WorldmapFile::_parseRange(std::istringstream& istr, unsigned int& min, unsigned int& max)
+{
+    if (istr.get() == '(')
+    {
+        istr >> min;
+        if (istr.get() == '-')
+        {
+            istr >> max;
+        }
+        else
+        {
+            istr.unget();
+            max = min;
+        }
+        if (istr.get() != ')')
+        {
+            throw std::ios::failure("')' expected");
+        }
+    }
+    else
+    {
+        min = max = 1;
+    }
+}
+
 unsigned char WorldmapFile::_chanceByName(const std::string& name)
 {
-    auto it = chanceNames.find(name);
+    std::map<std::string, unsigned char>::iterator it = chanceNames.find(name);
     if (it != chanceNames.end())
     {
-        return *it;
+        return it->second;
     }
     return 0;
 }

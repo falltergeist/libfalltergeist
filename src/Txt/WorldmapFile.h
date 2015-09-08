@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_TXT_WORLDMAPFILE_H
 
 // C++ standard includes
+#include <sstream>
 #include <vector>
 
 // Libfalltergeist includes
@@ -39,18 +40,20 @@ namespace Txt
  */
 struct NumericExpression
 {
-    static const char* CONSTANT    = "const";          // a numeric constant
-    static const char* PLAYER      = "Player";         // a value of player stat, perk, trait or skill
-    static const char* TIME_OF_DAY = "time_of_day";    // returns current hour (0 - 23)
-    static const char* GLOBAL      = "Global";         // game global variable value
-    static const char* RAND        = "Rand";           // a random value between 0 and 99
+    static const char* CONSTANT;       // a numeric constant
+    static const char* PLAYER;         // a value of player stat, perk, trait or skill
+    static const char* TIME_OF_DAY;   // returns current hour (0 - 23)
+    static const char* GLOBAL;         // game global variable value
+    static const char* RAND;           // a random value between 0 and 99
+
+    NumericExpression() {}
 
     NumericExpression(std::string func, const Ini::Value& arg) : func(func), arg(arg)
     {
     }
 
-    std::string func;
-    Ini::Value arg;
+    std::string func = CONSTANT;
+    Ini::Value arg = Ini::Value("0");
 };
 
 /**
@@ -76,13 +79,13 @@ typedef std::vector<LogicalExpression> Condition;
  */
 struct InventoryItem
 {
-    int pid;
+    unsigned int pid;
     /**
      * True if this item should be wielded (weapon)
      */
     bool wielded;
-    int minCount;
-    int maxCount;
+    unsigned int minCount;
+    unsigned int maxCount;
 };
 
 /**
@@ -130,8 +133,8 @@ struct Encounter
 struct EncounterGroup
 {
     std::string encounterType;
-    int minCount;
-    int maxCount;
+    unsigned int minCount;
+    unsigned int maxCount;
 };
 
 /**
@@ -140,10 +143,16 @@ struct EncounterGroup
  */
 struct EncounterTableEntry
 {
+    enum class Action
+    {
+        NONE = 1,
+        AMBUSH_PLAYER,
+        FIGHTING
+    };
     /**
      * True for "FIGHTING", false for "AMBUSH Player"
      */
-    bool isFighting = false;
+    Action action = Action::NONE;
     /**
      * True for special encounters
      */
@@ -151,7 +160,7 @@ struct EncounterTableEntry
     /**
      * Force specific map for this encounter
      */
-    std::string map;
+    std::string map = "";
     /**
      * Encounter chance in %
      */
@@ -216,7 +225,7 @@ struct WorldmapTile
     int artIdx;
     int encounterDifficulty;
     std::string walkMaskName;
-    WorldmapSubtile subtiles[SUBTILES_X, SUBTILES_Y];
+    WorldmapSubtile subtiles[SUBTILES_X][SUBTILES_Y];
 };
 
 /**
@@ -243,13 +252,15 @@ protected:
     InventoryItem _parseInventoryItem(const std::string&);
 
     EncounterTableEntry _parseEncounterTableEntry(const Ini::Value&);
-    EncounterGroup _parseEncounterGroup(const std::string&);
+    EncounterGroup _parseEncounterGroup(std::istringstream& istr);
 
     Condition _parseCondition(const std::string&);
-    LogicalExpression _parseLogicalExpression(const std::string&);
-    NumericExpression _parseNumericExpression(const std::string&);
+    LogicalExpression _parseLogicalExpression(std::istringstream& istr);
+    NumericExpression _parseNumericExpression(std::istringstream& istr);
 
     WorldmapSubtile _parseSubtile(const Ini::Value&);
+
+    void _parseRange(std::istringstream& istr, unsigned int& min, unsigned int& max);
 
     unsigned char _chanceByName(const std::string&);
 };
