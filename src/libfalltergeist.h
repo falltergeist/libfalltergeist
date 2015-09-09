@@ -61,5 +61,6 @@
 #include "Sve/File.h"
 #include "Txt/CityFile.h"
 #include "Txt/MapsFile.h"
+#include "Txt/WorldmapFile.h"
 
 #endif // LIBFALLTERGEIST_H

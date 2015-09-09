@@ -21,6 +21,7 @@
 #define LIBFALLTERGEIST_TXT_WORLDMAPFILE_H
 
 // C++ standard includes
+#include <map>
 #include <sstream>
 #include <vector>
 
@@ -79,13 +80,13 @@ typedef std::vector<LogicalExpression> Condition;
  */
 struct InventoryItem
 {
-    unsigned int pid;
+    unsigned int pid = 0;
     /**
      * True if this item should be wielded (weapon)
      */
-    bool wielded;
-    unsigned int minCount;
-    unsigned int maxCount;
+    bool wielded = false;
+    unsigned int minCount = 1;
+    unsigned int maxCount = 1;
 };
 
 /**
@@ -93,9 +94,10 @@ struct InventoryItem
  */
 struct EncounterObject
 {
-    int pid;
-    int ratio;
-    int script;
+    int pid = 1;
+    int ratio = 0;
+    int script = -1;
+    int distance = -1;
     bool dead = false;
     std::vector<InventoryItem> items;
     Condition condition;
@@ -249,7 +251,7 @@ protected:
 
     void _initialize() override;
     EncounterObject _parseEncounterObject(const Ini::Value&);
-    InventoryItem _parseInventoryItem(const std::string&);
+    InventoryItem _parseInventoryItem(std::string);
 
     EncounterTableEntry _parseEncounterTableEntry(const Ini::Value&);
     EncounterGroup _parseEncounterGroup(std::istringstream& istr);

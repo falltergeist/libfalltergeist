@@ -84,10 +84,11 @@ void WorldmapFile::_initialize()
     numHorizontalTiles = file->section("Tile Data")["num_horizontal_tiles"].toInt();
     for (auto section : file->sections())
     {
-        auto pos = section.name().find("Encounter:");
+        const std::string encStr = "Encounter:";
+        auto pos = section.name().find(encStr);
         if (pos == 0)
         {
-            std::string name = section.name().substr(pos, std::string::npos);
+            std::string name = section.name().substr(encStr.size(), std::string::npos);
             parser.trim(name);
             Encounter enc = Encounter();
             for (auto pair : section["position"].toArray())
@@ -165,6 +166,10 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
         {
             obj.script = pair.second.toInt();
         }
+        else if (pair.first == "distance")
+        {
+            obj.distance = pair.second.toInt();
+        }
         else if (pair.first == "item")
         {
             try
@@ -177,7 +182,7 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
         {
             obj.dead = true;
         }
-        else if (pair.second.str().find("If(") != std::string::npos)
+        else if (pair.second.str().find("If") != std::string::npos)
         {
             try
             {
@@ -189,14 +194,15 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
     return obj;
 }
 
-InventoryItem WorldmapFile::_parseInventoryItem(const std::string& value)
+InventoryItem WorldmapFile::_parseInventoryItem(std::string value)
 {
     InventoryItem item;
+    Ini::Parser::toLower(value);
     std::istringstream istr(value);
     istr.exceptions(std::ios_base::failbit);
     _parseRange(istr, item.minCount, item.maxCount);
     istr >> item.pid;
-    if (value.rfind("(wielded)") != std::string::npos)
+    if (value.rfind("wielded") != std::string::npos)
     {
         item.wielded = true;
     }
@@ -278,7 +284,14 @@ Condition WorldmapFile::_parseCondition(const std::string& value)
     do
     {
         cond.push_back(_parseLogicalExpression(istr));
-        istr >> logicalOperator;
+        try
+        {
+            istr >> logicalOperator;
+        }
+        catch (std::ios::failure)
+        {
+            break;
+        }
         Ini::Parser::toLower(logicalOperator);
     }
     while (logicalOperator == "And");
@@ -291,12 +304,15 @@ LogicalExpression WorldmapFile::_parseLogicalExpression(std::istringstream& istr
     LogicalExpression exp;
     std::string token;
     std::getline(istr, token, '(');
-    if (token != "If")
+    Ini::Parser::toLower(token);
+    Ini::Parser::rtrim(token);
+    if (token != "if")
     {
         throw std::ios::failure("Invalid logical expression");
     }
     exp._leftOperand = _parseNumericExpression(istr);
     while (istr.get() == ' ') {}
+    istr.unget();
     auto ch = istr.get();
     if (ch == '>' || ch == '<' || ch == '=')
     {
@@ -345,12 +361,21 @@ NumericExpression WorldmapFile::_parseNumericExpression(std::istringstream& istr
         ch = (char)istr.get();
     }
     istr.unget();
+    if (exp.func.size() == 0)
+    {
+        exp.func = NumericExpression::CONSTANT;
+    }
+    std::string arg;
     if (istr.get() == '(')
     {
-        std::string arg;
         std::getline(istr, arg, ')');
-        exp.arg = Ini::Value(arg);
     }
+    else
+    {
+        istr.unget();
+        std::getline(istr, arg);
+    }
+    exp.arg = Ini::Value(arg);
     return exp;
 }
 
@@ -393,6 +418,7 @@ void WorldmapFile::_parseRange(std::istringstream& istr, unsigned int& min, unsi
     }
     else
     {
+        istr.unget();
         min = max = 1;
     }
 }
