@@ -33,7 +33,7 @@ namespace libfalltergeist
 namespace Txt
 {
 
-const char* NumericExpression::CONSTANT    = "const";          // a numeric constant
+const char* NumericExpression::CONSTANT    = "";               // a numeric constant
 const char* NumericExpression::PLAYER      = "Player";         // a value of player stat, perk, trait or skill
 const char* NumericExpression::TIME_OF_DAY = "time_of_day";    // returns current hour (0 - 23)
 const char* NumericExpression::GLOBAL      = "Global";         // game global variable value
@@ -105,8 +105,15 @@ void WorldmapFile::_initialize()
                 }
                 else if (pair.first == "distance")
                 {
-                    std::istringstream istr(pair.second);
-                    enc.distance = _parseNumericExpression(istr);
+                    try
+                    {
+                        Lexer lexer(pair.second.str());
+                        enc.distance = _parseNumericExpression(lexer);
+                    }
+                    catch (std::ios::failure)
+                    {
+                        // TODO: warnings
+                    }
                 }
             }
             for (auto& ref : section.listByMask("type_%02d"))
@@ -173,11 +180,7 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
         }
         else if (pair.first == "item")
         {
-            try
-            {
-                obj.items.push_back(_parseInventoryItem(pair.second.str()));
-            }
-            catch (std::ios::failure) {} // @TODO: log warning
+            obj.items.push_back(_parseInventoryItem(pair.second.str()));
         }
         else if (pair.second.str() == "Dead")
         {
@@ -185,27 +188,41 @@ EncounterObject WorldmapFile::_parseEncounterObject(const Ini::Value& val)
         }
         else if (pair.second.str().find("If") != std::string::npos)
         {
-            try
-            {
-                obj.condition = _parseCondition(pair.second.str());
-            }
-            catch (std::ios::failure) {} // @TODO: log warning
+            obj.condition = _parseCondition(pair.second.str());
         }
     }
     return obj;
 }
 
-InventoryItem WorldmapFile::_parseInventoryItem(std::string value)
+InventoryItem WorldmapFile::_parseInventoryItem(const std::string& value)
 {
     InventoryItem item;
-    Ini::Parser::toLower(value);
-    std::istringstream istr(value);
-    istr.exceptions(std::ios_base::failbit);
-    _parseRange(istr, item.minCount, item.maxCount);
-    istr >> item.pid;
-    if (value.rfind("wielded") != std::string::npos)
+    Lexer lexer(value);
+    try
     {
-        item.wielded = true;
+        _parseRange(lexer, item.minCount, item.maxCount);
+        if (!lexer.expect(Lexer::T_CONSTANT))
+        {
+            throw std::ios::failure("Item PID expected.");
+        }
+        item.pid = lexer.last().intData;
+        if ((lexer.expect('{') || lexer.expect('(')) && lexer.expect(Lexer::T_IDENTIFIER))
+        {
+            std::string specifier = lexer.last().data;
+            Ini::Parser::toLower(specifier);
+            if (specifier == "wielded")
+            {
+                item.wielded = true;
+            }
+            if (!lexer.expect('{') && !lexer.expect('('))
+            {
+                throw std::ios::failure("'}' or ')' expected.");
+            }
+        }
+    }
+    catch (std::ios::failure)
+    {
+        // TODO: warnings?
     }
     return item;
 }
@@ -235,36 +252,40 @@ EncounterTableEntry WorldmapFile::_parseEncounterTableEntry(const Ini::Value& va
         else if (pair.first == "enc")
         {
             // main encounter definition...
-            std::istringstream istr(pair.second.str());
-            istr.exceptions(std::ios::failbit);
-            std::string action;
-            do
-            {
-                try
-                {
-                    entry.team1.push_back(_parseEncounterGroup(istr));
-                    //while (istr.get() == ' ') {}      istr.unget();
-                    istr >> action;
-                }
-                catch (std::ios::failure)
-                {
-                    action == "";
-                }
-            }
-            while (action == "AND");
-
-            if (action == "AMBUSH")
-            {
-                entry.action = EncounterTableEntry::Action::AMBUSH_PLAYER;
-            }
-            else if (action == "FIGHTING")
+            Lexer lexer(pair.second.str());
+            try
             {
                 do
                 {
-                    entry.team2.push_back(_parseEncounterGroup(istr));
-                    istr >> action;
+                    entry.team1.push_back(_parseEncounterGroup(lexer));
                 }
-                while (action == "AND");
+                while (lexer.expect(Lexer::T_AND));
+
+                if (lexer.expect(Lexer::T_IDENTIFIER))
+                {
+                    if (lexer.last().data == "AMBUSH")
+                    {
+                        entry.action = EncounterTableEntry::Action::AMBUSH_PLAYER;
+                    }
+                    else if (lexer.last().data == "FIGHTING")
+                    {
+                        entry.action = EncounterTableEntry::Action::FIGHTING;
+                    }
+                    else
+                    {
+                        throw std::ios::failure("Invalid action: " + lexer.last().data);
+                    }
+
+                    do
+                    {
+                        entry.team2.push_back(_parseEncounterGroup(lexer));
+                    }
+                    while (lexer.expect(Lexer::T_AND));
+                }
+            }
+            catch (std::ios::failure)
+            {
+                // TODO: warnings?
             }
         }
         else if (pair.second.str().find("If") == 0)
@@ -275,119 +296,98 @@ EncounterTableEntry WorldmapFile::_parseEncounterTableEntry(const Ini::Value& va
     return entry;
 }
 
-EncounterGroup WorldmapFile::_parseEncounterGroup(std::istringstream& istr)
+EncounterGroup WorldmapFile::_parseEncounterGroup(Lexer& lexer)
 {
     EncounterGroup grp;
-    _parseRange(istr, grp.minCount, grp.maxCount);
-    istr >> grp.encounterType;
+    _parseRange(lexer, grp.minCount, grp.maxCount);
+    if (!lexer.expect(Lexer::T_IDENTIFIER)) {
+        throw std::ios::failure("Identifier expected.");
+    }
+    grp.encounterType = lexer.last().data;
     return grp;
 }
 
 Condition WorldmapFile::_parseCondition(const std::string& value)
 {
     Condition cond;
-    std::istringstream istr(value);
-    istr.exceptions(std::ios::failbit);
-    std::string logicalOperator;
-    do
+    Lexer lexer(value);
+    try
     {
-        cond.push_back(_parseLogicalExpression(istr));
-        try
+        do
         {
-            istr >> logicalOperator;
+            cond.push_back(_parseLogicalExpression(lexer));
         }
-        catch (std::ios::failure)
-        {
-            break;
-        }
-        Ini::Parser::toLower(logicalOperator);
+        while (lexer.expect(Lexer::T_AND));
     }
-    while (logicalOperator == "And");
-
+    catch (std::ios::failure)
+    {
+        // TODO: warnings?
+    }
     return cond;
 }
 
-LogicalExpression WorldmapFile::_parseLogicalExpression(std::istringstream& istr)
+LogicalExpression WorldmapFile::_parseLogicalExpression(Lexer& lexer)
 {
     LogicalExpression exp;
-    std::string token;
-    std::getline(istr, token, '(');
-    Ini::Parser::toLower(token);
-    Ini::Parser::rtrim(token);
-    if (token != "if")
+    
+    if (!lexer.expect(Lexer::T_IF))
     {
-        throw std::ios::failure("Invalid logical expression");
+        throw std::ios::failure("'If' expected.");
     }
-    exp._leftOperand = _parseNumericExpression(istr);
-    while (istr.get() == ' ') {}
-    istr.unget();
-    auto ch = istr.get();
-    if (ch == '>' || ch == '<' || ch == '=')
+    if (!lexer.expect('('))
     {
-        if (ch == '>')
-        {
-            if (istr.get() == '=')
-            {
-                exp._operator = LogicalExpression::Operator::GTE;
-            }
-            else
-            {
-                exp._operator = LogicalExpression::Operator::GT;
-                istr.unget();
-            }
-        }
-        else if (ch == '<')
-        {
-            if (istr.get() == '=')
-            {
-                exp._operator = LogicalExpression::Operator::LTE;
-            }
-            else
-            {
-                exp._operator = LogicalExpression::Operator::LT;
-                istr.unget();
-            }
-        }
-        else
-        {
-            exp._operator = LogicalExpression::Operator::EQ;
-        }
-        istr >> exp._rightOperand;
+        throw std::ios::failure("'(' expected.");
+    }
+    exp._leftOperand = _parseNumericExpression(lexer);
+    exp._operator = _operatorByLexem(lexer.lex());
+    if (exp._operator != LogicalExpression::Operator::NONE)
+    {
+        exp._rightOperand = _parseNumericExpression(lexer);
     }
     else
     {
-        istr.unget();
+        lexer.unLex();
     }
-    std::getline(istr, token, ')');
+    if (!lexer.expect(')'))
+    {
+        throw std::ios::failure("')' expected.");
+    }
     return exp;
 }
 
-NumericExpression WorldmapFile::_parseNumericExpression(std::istringstream& istr)
+NumericExpression WorldmapFile::_parseNumericExpression(Lexer& lexer)
 {
-    NumericExpression exp = NumericExpression();
-    exp.func = "";
-    char ch = (char)istr.get();
-    while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_')
+    NumericExpression exp;
+    if (lexer.expect(Lexer::T_IDENTIFIER))
     {
-        exp.func.push_back(ch);
-        ch = (char)istr.get();
-    }
-    istr.unget();
-    if (exp.func.size() == 0)
-    {
-        exp.func = NumericExpression::CONSTANT;
-    }
-    std::string arg;
-    if (istr.get() == '(')
-    {
-        std::getline(istr, arg, ')');
+        exp.func = lexer.last().data;
+        if (lexer.expect('('))
+        {
+            bool negate = lexer.expect('-');
+            if (!lexer.expect(Lexer::T_CONSTANT) && !lexer.expect(Lexer::T_IDENTIFIER))
+            {
+                throw std::ios::failure("Identified or constant expected.");
+            }
+            exp.arg = negate ? ('-' + lexer.last().data) : lexer.last().data;
+            if (!lexer.expect(')'))
+            {
+                throw std::ios::failure("')' expected.");
+            }
+        }
     }
     else
     {
-        arg = "";
-        istr.unget();
+        bool negate = lexer.expect('-');
+        if (lexer.expect(Lexer::T_CONSTANT))
+        {
+            exp.func = NumericExpression::CONSTANT;
+            exp.arg = negate ? ('-' + lexer.last().data) : lexer.last().data;
+        }
+        else
+        {
+            throw std::ios::failure("Constant expected");
+        }
     }
-    exp.arg = Ini::Value(arg);
     return exp;
 }
 
@@ -409,28 +409,30 @@ WorldmapSubtile WorldmapFile::_parseSubtile(const Ini::Value& value)
     return subtile;
 }
 
-void WorldmapFile::_parseRange(std::istringstream& istr, unsigned int& min, unsigned int& max)
+void WorldmapFile::_parseRange(Lexer& lexer, unsigned int& min, unsigned int& max)
 {
-    if (istr.get() == '(')
+    if (lexer.expect('('))
     {
-        istr >> min;
-        if (istr.get() == '-')
+        if (!lexer.expect(Lexer::T_CONSTANT))
         {
-            istr >> max;
+            throw std::ios::failure("Number expected");
+        }
+        min = lexer.last().intData;
+        if (lexer.expect('-') && lexer.expect(Lexer::T_CONSTANT))
+        {
+            max = lexer.last().intData;
         }
         else
         {
-            istr.unget();
             max = min;
         }
-        if (istr.get() != ')')
+        if (lexer.lex() != ')')
         {
             throw std::ios::failure("')' expected");
         }
     }
     else
     {
-        istr.unget();
         min = max = 1;
     }
 }
@@ -444,6 +446,25 @@ unsigned char WorldmapFile::_chanceByName(std::string name)
         return it->second;
     }
     return 0;
+}
+
+LogicalExpression::Operator WorldmapFile::_operatorByLexem(int lexem)
+{
+    switch (lexem)
+    {
+        case '>':
+            return LogicalExpression::Operator::GT;
+        case '<':
+            return LogicalExpression::Operator::LT;
+        case Lexer::T_GREATER_EQUAL:
+            return LogicalExpression::Operator::GTE;
+        case Lexer::T_LESS_EQUAL:
+            return LogicalExpression::Operator::LTE;
+        case Lexer::T_EQUAL:
+            return LogicalExpression::Operator::EQ;
+        default:
+            return LogicalExpression::Operator::NONE;
+    }
 }
 
 }

@@ -36,6 +36,8 @@ namespace libfalltergeist
 namespace Txt
 {
 
+class Lexer;
+
 /**
  * An expression that can be evaluated to some numeric result.
  */
@@ -69,7 +71,7 @@ struct LogicalExpression
 
     Operator _operator = Operator::NONE;
     NumericExpression _leftOperand;
-    int _rightOperand = 0;
+    NumericExpression _rightOperand;
 };
 
 // Conditions consist of "sub-conditions" (Terms), delimited by "And".
@@ -251,20 +253,21 @@ protected:
 
     void _initialize() override;
     EncounterObject _parseEncounterObject(const Ini::Value&);
-    InventoryItem _parseInventoryItem(std::string);
+    InventoryItem _parseInventoryItem(const std::string&);
 
     EncounterTableEntry _parseEncounterTableEntry(const Ini::Value&);
-    EncounterGroup _parseEncounterGroup(std::istringstream& istr);
+    EncounterGroup _parseEncounterGroup(Lexer& lexer);
 
     Condition _parseCondition(const std::string&);
-    LogicalExpression _parseLogicalExpression(std::istringstream& istr);
-    NumericExpression _parseNumericExpression(std::istringstream& istr);
+    LogicalExpression _parseLogicalExpression(Lexer& lexer);
+    NumericExpression _parseNumericExpression(Lexer& lexer);
 
     WorldmapSubtile _parseSubtile(const Ini::Value&);
 
-    void _parseRange(std::istringstream& istr, unsigned int& min, unsigned int& max);
+    void _parseRange(Lexer& lexer, unsigned int& min, unsigned int& max);
 
     unsigned char _chanceByName(std::string);
+    LogicalExpression::Operator _operatorByLexem(int lexem);
 };
 
 }
