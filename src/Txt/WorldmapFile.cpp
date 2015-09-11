@@ -23,6 +23,7 @@
 // Libfalltergeist includes
 #include "../Ini/File.h"
 #include "../Ini/Parser.h"
+#include "../Txt/Lexer.h"
 #include "../Txt/WorldmapFile.h"
 
 // Third party includes
@@ -130,7 +131,7 @@ void WorldmapFile::_initialize()
             }
             encounterTables[table.lookupName] = std::move(table);
         }
-        else if (section.name().find("Tile") == 0)
+        else if (section.name().find("Tile") == 0 && section.name() != "Tile Data")
         {
             WorldmapTile tile = WorldmapTile();
             tile.artIdx = section["art_idx"].toInt();
@@ -239,9 +240,16 @@ EncounterTableEntry WorldmapFile::_parseEncounterTableEntry(const Ini::Value& va
             std::string action;
             do
             {
-                entry.team1.push_back(_parseEncounterGroup(istr));
-                //while (istr.get() == ' ') {}      istr.unget();
-                istr >> action;
+                try
+                {
+                    entry.team1.push_back(_parseEncounterGroup(istr));
+                    //while (istr.get() == ' ') {}      istr.unget();
+                    istr >> action;
+                }
+                catch (std::ios::failure)
+                {
+                    action == "";
+                }
             }
             while (action == "AND");
 
@@ -344,15 +352,19 @@ LogicalExpression WorldmapFile::_parseLogicalExpression(std::istringstream& istr
         {
             exp._operator = LogicalExpression::Operator::EQ;
         }
+        istr >> exp._rightOperand;
     }
-    istr >> exp._rightOperand;
+    else
+    {
+        istr.unget();
+    }
     std::getline(istr, token, ')');
     return exp;
 }
 
 NumericExpression WorldmapFile::_parseNumericExpression(std::istringstream& istr)
 {
-    NumericExpression exp;
+    NumericExpression exp = NumericExpression();
     exp.func = "";
     char ch = (char)istr.get();
     while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_')
@@ -372,8 +384,8 @@ NumericExpression WorldmapFile::_parseNumericExpression(std::istringstream& istr
     }
     else
     {
+        arg = "";
         istr.unget();
-        std::getline(istr, arg);
     }
     exp.arg = Ini::Value(arg);
     return exp;
@@ -423,9 +435,10 @@ void WorldmapFile::_parseRange(std::istringstream& istr, unsigned int& min, unsi
     }
 }
 
-unsigned char WorldmapFile::_chanceByName(const std::string& name)
+unsigned char WorldmapFile::_chanceByName(std::string name)
 {
-    std::map<std::string, unsigned char>::iterator it = chanceNames.find(name);
+    Ini::Parser::toLower(name);
+    auto it = chanceNames.find(name);
     if (it != chanceNames.end())
     {
         return it->second;

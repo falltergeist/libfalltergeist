@@ -43,18 +43,18 @@ struct NumericExpression
 {
     static const char* CONSTANT;       // a numeric constant
     static const char* PLAYER;         // a value of player stat, perk, trait or skill
-    static const char* TIME_OF_DAY;   // returns current hour (0 - 23)
+    static const char* TIME_OF_DAY;    // returns current hour (0 - 23)
     static const char* GLOBAL;         // game global variable value
     static const char* RAND;           // a random value between 0 and 99
 
-    NumericExpression() {}
+    NumericExpression() : func(CONSTANT), arg(Ini::Value("0")) {}
 
     NumericExpression(std::string func, const Ini::Value& arg) : func(func), arg(arg)
     {
     }
 
-    std::string func = CONSTANT;
-    Ini::Value arg = Ini::Value("0");
+    std::string func;
+    Ini::Value arg;
 };
 
 /**
@@ -64,12 +64,12 @@ struct LogicalExpression
 {
     enum class Operator
     {
-        EQ, NE, GT, LT, GTE, LTE
+        NONE = 0, EQ, NE, GT, LT, GTE, LTE
     };
 
-    Operator _operator;
+    Operator _operator = Operator::NONE;
     NumericExpression _leftOperand;
-    int _rightOperand;
+    int _rightOperand = 0;
 };
 
 // Conditions consist of "sub-conditions" (Terms), delimited by "And".
@@ -264,7 +264,7 @@ protected:
 
     void _parseRange(std::istringstream& istr, unsigned int& min, unsigned int& max);
 
-    unsigned char _chanceByName(const std::string&);
+    unsigned char _chanceByName(std::string);
 };
 
 }
