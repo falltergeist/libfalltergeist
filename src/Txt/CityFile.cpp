@@ -32,12 +32,12 @@ namespace Txt
 {
 
 
-CityFile::CityFile(std::ifstream* stream) : Dat::Item(stream)
+CityFile::CityFile(std::ifstream* stream) : BaseFile(stream)
 {
     _initialize();
 }
 
-CityFile::CityFile(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
+CityFile::CityFile(Dat::Entry* datFileEntry) : BaseFile(datFileEntry)
 {
     _initialize();
 }
@@ -64,13 +64,9 @@ City::Size CityFile::_sizeByName(std::string name) const
     }
 }
 
-void CityFile::_initialize()
-{
-    if (_initialized) return;
-    Dat::Item::_initialize();
-    Dat::Item::setPosition(0);
 
-    std::istream stream(this);
+void CityFile::_parseText(std::istream& stream)
+{
     Ini::Parser parser(stream);
     auto file = parser.parse();
     for (auto section : file->sections())

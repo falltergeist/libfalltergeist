@@ -17,52 +17,37 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_INI_PARSER_H
-#define LIBFALLTERGEIST_INI_PARSER_H
-
 // C++ standard includes
-#include <memory>
-#include <string>
-#include <vector>
 
 // Libfalltergeist includes
-#include "../Ini/Value.h"
-#include "../Txt/Parser.h"
+#include "../Txt/BaseFile.h"
 
 // Third party includes
 
+
 namespace libfalltergeist
 {
-namespace Ini
+namespace Txt
 {
 
-class File;
-class Value;
 
-/**
- * @brief Parser of INI files.
- * Parses INI-like TXT files, such as MAPS.TXT, CITY.TXT, etc.
- */
-class Parser : public Txt::Parser
+BaseFile::BaseFile(std::ifstream* stream) : Item(stream)
 {
-public:
-    Parser(std::istream &stream);
-    ~Parser();
+}
 
-    std::unique_ptr<File> parse();
+BaseFile::BaseFile(Dat::Entry* datFileEntry) : Item(datFileEntry)
+{
+}
 
-    static Array parseArray(const std::string& value);
+void BaseFile::_initialize()
+{
+    if (_initialized) return;
+    Dat::Item::_initialize();
+    Dat::Item::setPosition(0);
 
-private:
-    std::istream &_stream; // stream to parse
-    std::string  _section; // current section
-
-protected:
-
-    void _stripComments(std::string& line);
-
-};
+    std::istream istr(this);
+    _parseText(istr);
+}
 
 }
 }
-#endif // LIBFALLTERGEIST_INI_PARSER_H

@@ -24,7 +24,7 @@
 #include <vector>
 
 // Libfalltergeist includes
-#include "../Dat/Item.h"
+#include "../Txt/BaseFile.h"
 
 // Third party includes
 
@@ -93,7 +93,7 @@ struct City
 /**
  * @brief CITY.TXT
  */
-class CityFile : public Dat::Item
+class CityFile : public BaseFile
 {
 public:
     CityFile(std::ifstream* stream);
@@ -104,7 +104,9 @@ public:
 protected:
     std::vector<City> _cities;
 
-    void _initialize() override;
+
+    virtual void _parseText(std::istream& istr) override;
+
     City::Size _sizeByName(std::string name) const;
 };
 

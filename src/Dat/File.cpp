@@ -48,6 +48,7 @@
 #include "../Rix/File.h"
 #include "../Sve/File.h"
 #include "../Txt/CityFile.h"
+#include "../Txt/EndDeathFile.h"
 #include "../Txt/MapsFile.h"
 #include "../Txt/WorldmapFile.h"
 
@@ -202,7 +203,13 @@ Item* File::item(const std::string filename)
         else if (extension == "rix") item = new Rix::File(entry);
         else if (extension == "sve") item = new Sve::File(entry);
         else if (filename == "data/city.txt") item = new Txt::CityFile(entry);
+        else if (filename == "data/enddeath.txt") item = new Txt::EndDeathFile(entry);
+        //else if (filename == "data/endgame.txt") item = new Txt::EndGameFile(entry);
+        //else if (filename == "data/genrep.txt") item = new Txt::GenRepFile(entry);
+        //else if (filename == "data/holodisk.txt") item = new Txt::HolodiskFile(entry);
+        //else if (filename == "data/karmavar.txt") item = new Txt::KarmaVarFile(entry);
         else if (filename == "data/maps.txt") item = new Txt::MapsFile(entry);
+        //else if (filename == "data/quests.txt") item = new Txt::QuestsFile(stream);
         else if (filename == "data/worldmap.txt") item = new Txt::WorldmapFile(entry);
         else item = new Item(entry);
 

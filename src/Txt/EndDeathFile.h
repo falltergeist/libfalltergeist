@@ -17,52 +17,51 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_INI_PARSER_H
-#define LIBFALLTERGEIST_INI_PARSER_H
+#ifndef FALLTERGEIST_TXT_ENDDEATHFILE_H
+#define FALLTERGEIST_TXT_ENDDEATHFILE_H
 
 // C++ standard includes
-#include <memory>
-#include <string>
-#include <vector>
+#include <list>
 
 // Libfalltergeist includes
-#include "../Ini/Value.h"
-#include "../Txt/Parser.h"
+#include "../Txt/BaseFile.h"
 
 // Third party includes
 
+
 namespace libfalltergeist
 {
-namespace Ini
+namespace Txt
 {
 
-class File;
-class Value;
-
-/**
- * @brief Parser of INI files.
- * Parses INI-like TXT files, such as MAPS.TXT, CITY.TXT, etc.
- */
-class Parser : public Txt::Parser
+struct EndDeath
 {
+    int globalVar = -1;
+    int minValue = 0;
+    int worldAreaKnown = -1;
+    int worldAreaNotKnown = -1;
+    int minLevel = 0;
+    unsigned char chance = 0;
+    std::string narratorFile;
+};
+
+class EndDeathFile : public BaseFile
+{
+
 public:
-    Parser(std::istream &stream);
-    ~Parser();
+    EndDeathFile(std::ifstream* stream);
+    EndDeathFile(Dat::Entry* datFileEntry);
 
-    std::unique_ptr<File> parse();
-
-    static Array parseArray(const std::string& value);
-
-private:
-    std::istream &_stream; // stream to parse
-    std::string  _section; // current section
+    const std::list<EndDeath>& items() const;
 
 protected:
+    virtual void _parseText(std::istream& istr) override;
 
-    void _stripComments(std::string& line);
-
+    std::list<EndDeath> _items;
 };
 
 }
 }
-#endif // LIBFALLTERGEIST_INI_PARSER_H
+
+
+#endif //FALLTERGEIST_TXT_ENDDEATHFILE_H

@@ -24,7 +24,7 @@
 #include <vector>
 
 // Libfalltergeist includes
-#include "../Dat/Item.h"
+#include "../Txt/BaseFile.h"
 
 // Third party includes
 
@@ -66,7 +66,7 @@ struct Map
 /**
  * @brief CITY.TXT
  */
-class MapsFile : public Dat::Item
+class MapsFile : public BaseFile
 {
 public:
     MapsFile(std::ifstream* stream);
@@ -77,7 +77,7 @@ public:
 protected:
     std::vector<Map> _maps;
 
-    void _initialize() override;
+    virtual void _parseText(std::istream& istr) override;
 };
 
 }

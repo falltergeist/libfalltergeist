@@ -60,6 +60,7 @@
 #include "Rix/File.h"
 #include "Sve/File.h"
 #include "Txt/CityFile.h"
+#include "Txt/EndDeathFile.h"
 #include "Txt/MapsFile.h"
 #include "Txt/WorldmapFile.h"
 

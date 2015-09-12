@@ -32,12 +32,12 @@ namespace Txt
 {
 
 
-MapsFile::MapsFile(std::ifstream* stream) : Dat::Item(stream)
+MapsFile::MapsFile(std::ifstream* stream) : BaseFile(stream)
 {
     _initialize();
 }
 
-MapsFile::MapsFile(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
+MapsFile::MapsFile(Dat::Entry* datFileEntry) : BaseFile(datFileEntry)
 {
     _initialize();
 }
@@ -47,13 +47,8 @@ const std::vector<Map>& MapsFile::maps() const
     return _maps;
 }
 
-void MapsFile::_initialize()
+void MapsFile::_parseText(std::istream& stream)
 {
-    if (_initialized) return;
-    Dat::Item::_initialize();
-    Dat::Item::setPosition(0);
-
-    std::istream stream(this);
     Ini::Parser parser(stream);
     auto file = parser.parse();
     for (auto section : file->sections())

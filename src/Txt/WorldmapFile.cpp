@@ -40,23 +40,18 @@ const char* NumericExpression::GLOBAL      = "Global";         // game global va
 const char* NumericExpression::RAND        = "Rand";           // a random value between 0 and 99
 
 
-WorldmapFile::WorldmapFile(std::ifstream* stream) : Dat::Item(stream)
+WorldmapFile::WorldmapFile(std::ifstream* stream) : BaseFile(stream)
 {
     _initialize();
 }
 
-WorldmapFile::WorldmapFile(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
+WorldmapFile::WorldmapFile(Dat::Entry* datFileEntry) : BaseFile(datFileEntry)
 {
     _initialize();
 }
 
-void WorldmapFile::_initialize()
+void WorldmapFile::_parseText(std::istream& stream)
 {
-    if (_initialized) return;
-    Dat::Item::_initialize();
-    Dat::Item::setPosition(0);
-
-    std::istream stream(this);
     Ini::Parser parser(stream);
     auto file = parser.parse();
 

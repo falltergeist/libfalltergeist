@@ -17,10 +17,11 @@
  * along with Falltergeist.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBFALLTERGEIST_INI_PARSER_H
-#define LIBFALLTERGEIST_INI_PARSER_H
+#ifndef LIBFALLTERGEIST_TXT_CSVPARSER_H
+#define LIBFALLTERGEIST_TXT_CSVPARSER_H
 
 // C++ standard includes
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
@@ -33,29 +34,24 @@
 
 namespace libfalltergeist
 {
-namespace Ini
+namespace Txt
 {
 
-class File;
-class Value;
+typedef std::list<std::vector<Ini::Value>> CSVFile;
 
 /**
- * @brief Parser of INI files.
- * Parses INI-like TXT files, such as MAPS.TXT, CITY.TXT, etc.
+ * @brief Parser of CSV files.
  */
-class Parser : public Txt::Parser
+class CSVParser : public Parser
 {
 public:
-    Parser(std::istream &stream);
-    ~Parser();
+    CSVParser(std::istream &stream);
+    ~CSVParser();
 
-    std::unique_ptr<File> parse();
-
-    static Array parseArray(const std::string& value);
+    std::unique_ptr<CSVFile> parse();
 
 private:
     std::istream &_stream; // stream to parse
-    std::string  _section; // current section
 
 protected:
 
@@ -65,4 +61,4 @@ protected:
 
 }
 }
-#endif // LIBFALLTERGEIST_INI_PARSER_H
+#endif // LIBFALLTERGEIST_TXT_CSVPARSER_H

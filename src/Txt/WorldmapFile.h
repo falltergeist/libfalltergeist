@@ -26,8 +26,8 @@
 #include <vector>
 
 // Libfalltergeist includes
-#include "../Dat/Item.h"
 #include "../Ini/Value.h"
+#include "../Txt/BaseFile.h"
 
 // Third party includes
 
@@ -235,7 +235,7 @@ struct WorldmapTile
 /**
  * @brief WORLDMAP.TXT
  */
-class WorldmapFile : public Dat::Item
+class WorldmapFile : public BaseFile
 {
 public:
     WorldmapFile(std::ifstream* stream);
@@ -251,7 +251,8 @@ public:
 
 protected:
 
-    void _initialize() override;
+    virtual void _parseText(std::istream& istr) override;
+
     EncounterObject _parseEncounterObject(const Ini::Value&);
     InventoryItem _parseInventoryItem(const std::string&);
 
