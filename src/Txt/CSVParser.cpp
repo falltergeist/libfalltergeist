@@ -45,7 +45,7 @@ CSVParser::~CSVParser()
 
 void CSVParser::_stripComments(std::string& line)
 {
-    unsigned pos = line.find(";"), pos2 = line.find("#");
+    size_t pos = line.find(";"), pos2 = line.find("#");
     if (pos != std::string::npos)
     {
         if (pos2 != std::string::npos)

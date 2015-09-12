@@ -22,6 +22,7 @@
 
 // C++ standard includes
 #include <algorithm>
+#include <functional>
 
 // Libfalltergeist includes
 

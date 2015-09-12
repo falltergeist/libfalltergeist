@@ -73,7 +73,7 @@ Array Parser::parseArray(const std::string& str)
 
 void Parser::_stripComments(std::string& line)
 {
-    unsigned pos = line.find(";");
+    auto pos = line.find(";");
     if (pos != std::string::npos)
     {
         line.erase(pos);
