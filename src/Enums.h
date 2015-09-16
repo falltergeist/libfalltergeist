@@ -26,11 +26,11 @@
 #define LIBFALLTERGEIST_ENUMS_H
 
 // C++ standard includes
+#include <stdint.h>
 
 // libfalltergeist includes
 
 // Third party includes
-#include <stdint.h>
 
 enum class STAT : uint32_t
 {
