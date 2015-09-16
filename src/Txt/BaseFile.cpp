@@ -22,46 +22,37 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+// C++ standard includes
 
-#include "Aaf/File.h"
-#include "Aaf/Glyph.h"
-#include "Acm/File.h"
-#include "Bio/File.h"
-#include "Dat/File.h"
-#include "Dat/Item.h"
-#include "Enums.h"
-#include "Exception.h"
-#include "Fon/File.h"
-#include "Fon/Glyph.h"
-#include "Frm/Direction.h"
-#include "Frm/File.h"
-#include "Frm/Frame.h"
-#include "Gam/File.h"
-#include "Gcd/File.h"
-#include "Ini/File.h"
-#include "Int/File.h"
-#include "Int/Procedure.h"
-#include "Lst/File.h"
-#include "Lip/File.h"
-#include "Map/Elevation.h"
-#include "Map/File.h"
-#include "Map/Object.h"
-#include "Map/Script.h"
-#include "Msg/File.h"
-#include "Msg/Message.h"
-#include "Mve/Chunk.h"
-#include "Mve/File.h"
-#include "Mve/Opcode.h"
-#include "Pal/File.h"
-#include "Pal/Color.h"
-#include "Pro/File.h"
-#include "Rix/File.h"
-#include "Sve/File.h"
-#include "Txt/CityFile.h"
-#include "Txt/CSVBasedFile.h"
-#include "Txt/MapsFile.h"
-#include "Txt/WorldmapFile.h"
+// Libfalltergeist includes
+#include "../Txt/BaseFile.h"
 
-#endif // LIBFALLTERGEIST_H
+// Third party includes
+
+
+namespace libfalltergeist
+{
+namespace Txt
+{
+
+
+BaseFile::BaseFile(std::ifstream* stream) : Item(stream)
+{
+}
+
+BaseFile::BaseFile(Dat::Entry* datFileEntry) : Item(datFileEntry)
+{
+}
+
+void BaseFile::_initialize()
+{
+    if (_initialized) return;
+    Dat::Item::_initialize();
+    Dat::Item::setPosition(0);
+
+    std::istream istr(this);
+    _parseText(istr);
+}
+
+}
+}

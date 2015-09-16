@@ -22,46 +22,75 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+// Related headers
+#include "../Ini/File.h"
 
-#include "Aaf/File.h"
-#include "Aaf/Glyph.h"
-#include "Acm/File.h"
-#include "Bio/File.h"
-#include "Dat/File.h"
-#include "Dat/Item.h"
-#include "Enums.h"
-#include "Exception.h"
-#include "Fon/File.h"
-#include "Fon/Glyph.h"
-#include "Frm/Direction.h"
-#include "Frm/File.h"
-#include "Frm/Frame.h"
-#include "Gam/File.h"
-#include "Gcd/File.h"
-#include "Ini/File.h"
-#include "Int/File.h"
-#include "Int/Procedure.h"
-#include "Lst/File.h"
-#include "Lip/File.h"
-#include "Map/Elevation.h"
-#include "Map/File.h"
-#include "Map/Object.h"
-#include "Map/Script.h"
-#include "Msg/File.h"
-#include "Msg/Message.h"
-#include "Mve/Chunk.h"
-#include "Mve/File.h"
-#include "Mve/Opcode.h"
-#include "Pal/File.h"
-#include "Pal/Color.h"
-#include "Pro/File.h"
-#include "Rix/File.h"
-#include "Sve/File.h"
-#include "Txt/CityFile.h"
-#include "Txt/CSVBasedFile.h"
-#include "Txt/MapsFile.h"
-#include "Txt/WorldmapFile.h"
+// C++ standard includes
 
-#endif // LIBFALLTERGEIST_H
+// Libfalltergeist includes
+
+// Third party includes
+
+namespace libfalltergeist
+{
+namespace Ini
+{
+
+File::File()
+{
+}
+
+File::~File()
+{
+}
+
+Section& File::section(const std::string &name)
+{
+    auto it = _sectionIdxMap.find(name);
+    if (it == _sectionIdxMap.end())
+    {
+        auto idx = _sections.size();
+        _sections.push_back(std::move(Section(name)));
+        _sectionIdxMap[name] = idx;
+        return _sections.at(idx);
+    }
+    return _sections.at(it->second);
+}
+
+Section& File::operator [] (const std::string &name)
+{
+    return section(name);
+}
+
+bool File::hasSection(const std::string &name) const
+{
+    return _sectionIdxMap.find(name) != _sectionIdxMap.end();
+}
+
+const File::Sections& File::sections()
+{
+    return _sections;
+}
+
+File::iterator File::begin()
+{
+    return _sections.begin();
+}
+
+File::const_iterator File::begin() const
+{
+    return _sections.begin();
+}
+
+File::iterator File::end()
+{
+    return _sections.end();
+}
+
+File::const_iterator File::end() const
+{
+    return _sections.end();
+}
+
+}
+}

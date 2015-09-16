@@ -30,6 +30,7 @@
 // libfalltergeist includes
 
 // Third party includes
+#include <stdint.h>
 
 enum class STAT : uint32_t
 {

@@ -22,46 +22,56 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+// Related headers
+#include "../Txt/Parser.h"
 
-#include "Aaf/File.h"
-#include "Aaf/Glyph.h"
-#include "Acm/File.h"
-#include "Bio/File.h"
-#include "Dat/File.h"
-#include "Dat/Item.h"
-#include "Enums.h"
-#include "Exception.h"
-#include "Fon/File.h"
-#include "Fon/Glyph.h"
-#include "Frm/Direction.h"
-#include "Frm/File.h"
-#include "Frm/Frame.h"
-#include "Gam/File.h"
-#include "Gcd/File.h"
-#include "Ini/File.h"
-#include "Int/File.h"
-#include "Int/Procedure.h"
-#include "Lst/File.h"
-#include "Lip/File.h"
-#include "Map/Elevation.h"
-#include "Map/File.h"
-#include "Map/Object.h"
-#include "Map/Script.h"
-#include "Msg/File.h"
-#include "Msg/Message.h"
-#include "Mve/Chunk.h"
-#include "Mve/File.h"
-#include "Mve/Opcode.h"
-#include "Pal/File.h"
-#include "Pal/Color.h"
-#include "Pro/File.h"
-#include "Rix/File.h"
-#include "Sve/File.h"
-#include "Txt/CityFile.h"
-#include "Txt/CSVBasedFile.h"
-#include "Txt/MapsFile.h"
-#include "Txt/WorldmapFile.h"
+// C++ standard includes
+#include <algorithm>
+#include <functional>
 
-#endif // LIBFALLTERGEIST_H
+// Libfalltergeist includes
+
+// Third party includes
+
+namespace libfalltergeist
+{
+namespace Txt
+{
+
+
+std::vector<std::string> Parser::split(char delim, const std::string& source)
+{
+    std::vector<std::string> tokens;
+    size_t start = 0, end = 0;
+    while ((end = source.find(delim, start)) != std::string::npos)
+    {
+        tokens.push_back(source.substr(start, end - start));
+        start = end + 1;
+    }
+    tokens.push_back(source.substr(start));
+    return tokens;
+}
+
+void Parser::trim(std::string& line)
+{
+    ltrim(line);
+    rtrim(line);
+}
+
+void Parser::rtrim(std::string& line)
+{
+    line.erase(find_if(line.rbegin(), line.rend(), std::not1(std::ptr_fun<int, int>(isspace))).base(), line.end());
+}
+
+void Parser::ltrim(std::string& line)
+{
+    line.erase(line.begin(), find_if(line.begin(), line.end(), std::not1(std::ptr_fun<int, int>(isspace))));
+}
+
+void Parser::toLower(std::string& line)
+{
+    std::transform(line.begin(), line.end(), line.begin(), ::tolower);
+}
+
+}
+}

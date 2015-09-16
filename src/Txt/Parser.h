@@ -22,46 +22,39 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef LIBFALLTERGEIST_TXT_PARSER_H
+#define LIBFALLTERGEIST_TXT_PARSER_H
 
-#include "Aaf/File.h"
-#include "Aaf/Glyph.h"
-#include "Acm/File.h"
-#include "Bio/File.h"
-#include "Dat/File.h"
-#include "Dat/Item.h"
-#include "Enums.h"
-#include "Exception.h"
-#include "Fon/File.h"
-#include "Fon/Glyph.h"
-#include "Frm/Direction.h"
-#include "Frm/File.h"
-#include "Frm/Frame.h"
-#include "Gam/File.h"
-#include "Gcd/File.h"
-#include "Ini/File.h"
-#include "Int/File.h"
-#include "Int/Procedure.h"
-#include "Lst/File.h"
-#include "Lip/File.h"
-#include "Map/Elevation.h"
-#include "Map/File.h"
-#include "Map/Object.h"
-#include "Map/Script.h"
-#include "Msg/File.h"
-#include "Msg/Message.h"
-#include "Mve/Chunk.h"
-#include "Mve/File.h"
-#include "Mve/Opcode.h"
-#include "Pal/File.h"
-#include "Pal/Color.h"
-#include "Pro/File.h"
-#include "Rix/File.h"
-#include "Sve/File.h"
-#include "Txt/CityFile.h"
-#include "Txt/CSVBasedFile.h"
-#include "Txt/MapsFile.h"
-#include "Txt/WorldmapFile.h"
+// C++ standard includes
+#include <string>
+#include <vector>
 
-#endif // LIBFALLTERGEIST_H
+// Libfalltergeist includes
+
+// Third party includes
+
+namespace libfalltergeist
+{
+namespace Txt
+{
+
+/**
+ * @brief Base class for text file parsers with some helper functions.
+ */
+class Parser
+{
+public:
+    static std::vector<std::string> split(char delim, const std::string& source);
+
+    static void trim(std::string& value);
+
+    static void rtrim(std::string& value);
+
+    static void ltrim(std::string& value);
+
+    static void toLower(std::string& value);
+};
+
+}
+}
+#endif // LIBFALLTERGEIST_TXT_PARSER_H

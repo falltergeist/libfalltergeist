@@ -22,46 +22,44 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef FALLTERGEIST_TXT_BASEFILE_H
+#define FALLTERGEIST_TXT_BASEFILE_H
 
-#include "Aaf/File.h"
-#include "Aaf/Glyph.h"
-#include "Acm/File.h"
-#include "Bio/File.h"
-#include "Dat/File.h"
-#include "Dat/Item.h"
-#include "Enums.h"
-#include "Exception.h"
-#include "Fon/File.h"
-#include "Fon/Glyph.h"
-#include "Frm/Direction.h"
-#include "Frm/File.h"
-#include "Frm/Frame.h"
-#include "Gam/File.h"
-#include "Gcd/File.h"
-#include "Ini/File.h"
-#include "Int/File.h"
-#include "Int/Procedure.h"
-#include "Lst/File.h"
-#include "Lip/File.h"
-#include "Map/Elevation.h"
-#include "Map/File.h"
-#include "Map/Object.h"
-#include "Map/Script.h"
-#include "Msg/File.h"
-#include "Msg/Message.h"
-#include "Mve/Chunk.h"
-#include "Mve/File.h"
-#include "Mve/Opcode.h"
-#include "Pal/File.h"
-#include "Pal/Color.h"
-#include "Pro/File.h"
-#include "Rix/File.h"
-#include "Sve/File.h"
-#include "Txt/CityFile.h"
-#include "Txt/CSVBasedFile.h"
-#include "Txt/MapsFile.h"
-#include "Txt/WorldmapFile.h"
+// C++ standard includes
+#include <list>
 
-#endif // LIBFALLTERGEIST_H
+// Libfalltergeist includes
+#include "../Dat/Item.h"
+
+// Third party includes
+
+
+namespace libfalltergeist
+{
+namespace Txt
+{
+
+/**
+ * @brief Base class for all TXT file types.
+ */
+class BaseFile : public Dat::Item
+{
+
+public:
+    BaseFile(std::ifstream* stream);
+    BaseFile(Dat::Entry* datFileEntry);
+
+protected:
+    virtual void _initialize() override;
+
+    /**
+     * Called when initializing file.
+     */
+    virtual void _parseText(std::istream& istr) = 0;
+};
+
+}
+}
+
+
+#endif //FALLTERGEIST_TXT_BASEFILE_H

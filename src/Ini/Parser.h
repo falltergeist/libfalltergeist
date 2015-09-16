@@ -22,46 +22,52 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_H
-#define LIBFALLTERGEIST_H
+#ifndef LIBFALLTERGEIST_INI_PARSER_H
+#define LIBFALLTERGEIST_INI_PARSER_H
 
-#include "Aaf/File.h"
-#include "Aaf/Glyph.h"
-#include "Acm/File.h"
-#include "Bio/File.h"
-#include "Dat/File.h"
-#include "Dat/Item.h"
-#include "Enums.h"
-#include "Exception.h"
-#include "Fon/File.h"
-#include "Fon/Glyph.h"
-#include "Frm/Direction.h"
-#include "Frm/File.h"
-#include "Frm/Frame.h"
-#include "Gam/File.h"
-#include "Gcd/File.h"
-#include "Ini/File.h"
-#include "Int/File.h"
-#include "Int/Procedure.h"
-#include "Lst/File.h"
-#include "Lip/File.h"
-#include "Map/Elevation.h"
-#include "Map/File.h"
-#include "Map/Object.h"
-#include "Map/Script.h"
-#include "Msg/File.h"
-#include "Msg/Message.h"
-#include "Mve/Chunk.h"
-#include "Mve/File.h"
-#include "Mve/Opcode.h"
-#include "Pal/File.h"
-#include "Pal/Color.h"
-#include "Pro/File.h"
-#include "Rix/File.h"
-#include "Sve/File.h"
-#include "Txt/CityFile.h"
-#include "Txt/CSVBasedFile.h"
-#include "Txt/MapsFile.h"
-#include "Txt/WorldmapFile.h"
+// C++ standard includes
+#include <memory>
+#include <string>
+#include <vector>
 
-#endif // LIBFALLTERGEIST_H
+// Libfalltergeist includes
+#include "../Ini/Value.h"
+#include "../Txt/Parser.h"
+
+// Third party includes
+
+namespace libfalltergeist
+{
+namespace Ini
+{
+
+class File;
+class Value;
+
+/**
+ * @brief Parser of INI files.
+ * Parses INI-like TXT files, such as MAPS.TXT, CITY.TXT, etc.
+ */
+class Parser : public Txt::Parser
+{
+public:
+    Parser(std::istream &stream);
+    ~Parser();
+
+    std::unique_ptr<File> parse();
+
+    static Array parseArray(const std::string& value);
+
+private:
+    std::istream &_stream; // stream to parse
+    std::string  _section; // current section
+
+protected:
+
+    void _stripComments(std::string& line);
+
+};
+
+}
+}
+#endif // LIBFALLTERGEIST_INI_PARSER_H
