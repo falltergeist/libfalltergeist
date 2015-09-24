@@ -65,7 +65,7 @@ file(GLOB_RECURSE HEADERS  "src/*.h")
 # Copy library headers to separate directory
 file(REMOVE_RECURSE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/src" 
-     DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+     DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include"
      FILES_MATCHING PATTERN "*.h")
 file(RENAME "${CMAKE_CURRENT_SOURCE_DIR}/include/src" "${CMAKE_CURRENT_SOURCE_DIR}/include/libfalltergeist")
 
