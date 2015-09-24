@@ -1,6 +1,6 @@
-libfalltergeist (0.4.0-0ppa2) trusty; urgency=low
+libfalltergeist (0.4.0-0ppa3) trusty; urgency=low
 
-  * headers installation added
+  * headers installation fix
 
- -- Dmitry V. Alexeev <mail@alexeevdv.ru> Thu, 24 Sep 2015 16:31:37 +0300
+ -- Dmitry V. Alexeev <mail@alexeevdv.ru> Thu, 24 Sep 2015 16:45:03 +0300
 
