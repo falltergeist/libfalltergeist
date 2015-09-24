@@ -1,0 +1,12 @@
+Source: libfalltergeist
+Section: devel
+Priority: optional
+Maintainer: Dmitry V. Alexeev <mail@alexeevdv.ru>
+Build-Depends: cmake, build-essential
+Homepage: https://github.com/falltergeist/libfalltergeist
+
+Package: libfalltergeist
+Architecture: any
+Depends: 
+Description: C++ library for Fallout data files
+ This library provides interface for Fallout 1 and Fallout 2 data files
