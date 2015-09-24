@@ -44,6 +44,10 @@ endif(WIN32)
 # BUILD_SHARED_LIBS is cmake variable. Need to change default value.
 option(BUILD_SHARED_LIBS "Build shared library" ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+
 #add extra search paths for libraries and includes
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)" )
 set(BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE STRING "Directory where binary will install")
@@ -55,8 +59,15 @@ include_directories(${ZLIB_INCLUDE_DIRS})
 
 add_definitions (-std=c++11 -Wall)
 
-FILE(GLOB_RECURSE SOURCES  src/*.cpp)
-FILE(GLOB_RECURSE HEADERS  src/*.h)
+file(GLOB_RECURSE SOURCES  "src/*.cpp")
+file(GLOB_RECURSE HEADERS  "src/*.h")
+
+# Copy library headers to separate directory
+file(REMOVE_RECURSE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/src" 
+     DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+     FILES_MATCHING PATTERN "*.h")
+file(RENAME "${CMAKE_CURRENT_SOURCE_DIR}/include/src" "${CMAKE_CURRENT_SOURCE_DIR}/include/libfalltergeist")
 
 if(LIBFALLTERGEIST_EMBEDDED)
     set(BUILD_SHARED_LIBS OFF)
@@ -72,12 +83,13 @@ if(NOT ANDROID)
 endif()
 
 set_target_properties(falltergeist PROPERTIES
-                      PUBLIC_HEADER "${HEADERS}")
+                      PUBLIC_HEADERS "${HEADERS}")
+
 
 if(NOT LIBFALLTERGEIST_EMBEDDED)
     install(TARGETS falltergeist
         LIBRARY DESTINATION ${LIB_INSTALL_DIR}
         RUNTIME DESTINATION ${BIN_INSTALL_DIR}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-        PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/falltergeist")
+        PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/libfalltergeist")
 endif()
