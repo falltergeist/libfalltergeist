@@ -28,8 +28,8 @@ set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build (by default 
 project( libfalltergeist )
 
 set(libfalltergeist_MAJOR_VERSION "0")
-set(libfalltergeist_MINOR_VERSION "3")
-set(libfalltergeist_PATCH_VERSION "1")
+set(libfalltergeist_MINOR_VERSION "4")
+set(libfalltergeist_PATCH_VERSION "0")
 
 set(libfalltergeist_VERSION_STRING "${libfalltergeist_MAJOR_VERSION}.${libfalltergeist_MINOR_VERSION}.${libfalltergeist_PATCH_VERSION}")
 
@@ -82,14 +82,12 @@ if(NOT ANDROID)
                         SOVERSION ${libfalltergeist_MAJOR_VERSION})
 endif()
 
-set_target_properties(falltergeist PROPERTIES
-                      PUBLIC_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-
 if(NOT LIBFALLTERGEIST_EMBEDDED)
     install(TARGETS falltergeist
         LIBRARY DESTINATION ${LIB_INSTALL_DIR}
         RUNTIME DESTINATION ${BIN_INSTALL_DIR}
-        ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-        PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
+        ARCHIVE DESTINATION ${LIB_INSTALL_DIR})
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include" DESTINATION ${INCLUDE_INSTALL_DIR})
 endif()
+

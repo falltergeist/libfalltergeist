@@ -2,7 +2,7 @@ Source: libfalltergeist
 Section: devel
 Priority: optional
 Maintainer: Dmitry V. Alexeev <mail@alexeevdv.ru>
-Build-Depends: cmake, build-essential
+Build-Depends: cmake, build-essential, zlib1g-dev
 Homepage: https://github.com/falltergeist/libfalltergeist
 
 Package: libfalltergeist

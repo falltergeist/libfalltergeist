@@ -1,5 +1,6 @@
-libfalltergeist (0.4.0-0ppa0) trusty; urgency=low
+libfalltergeist (0.4.0-0ppa2) trusty; urgency=low
 
-  * Initial upload!
+  * headers installation added
 
- -- Dmitry V. Alexeev <mail@alexeevdv.ru> Thu, 24 Sep 2015 13:52:33 +0300
+ -- Dmitry V. Alexeev <mail@alexeevdv.ru> Thu, 24 Sep 2015 16:31:37 +0300
+
