@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,65 +22,26 @@
  * SOFTWARE.
  */
 
-// C++ standard includes
-
-// libfalltergeist includes
 #include "../Msg/Message.h"
 
-// Third party includes
+namespace libfalltergeist {
+    namespace Msg {
+        Message::Message(uint32_t number, std::string sound, std::string text) {
+            _number = number;
+            _sound = std::move(sound);
+            _text = std::move(text);
+        }
 
-namespace libfalltergeist
-{
-namespace Msg
-{
+        uint32_t Message::number() {
+            return _number;
+        }
 
-Message::Message()
-{
-}
+        std::string Message::sound() {
+            return _sound;
+        }
 
-Message::~Message()
-{
-}
-
-void Message::setNumber(unsigned int number)
-{
-    _number = number;
-}
-
-unsigned int Message::number()
-{
-    return _number;
-}
-
-void Message::setSound(std::string sound)
-{
-    _sound = sound;
-}
-
-std::string Message::sound()
-{
-    return _sound;
-}
-
-void Message::setText(std::string text)
-{
-    _text = text;
-}
-
-std::string Message::text()
-{
-    return _text;
-}
-
-std::string* Message::textPointer()
-{
-    return &_text;
-}
-
-Message::operator std::string ()
-{
-    return _text;
-}
-
-}
+        std::string Message::text() {
+            return _text;
+        }
+    }
 }

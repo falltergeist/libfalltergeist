@@ -24,23 +24,21 @@
 
 #pragma once
 
-#include <string>
-#include "../Msg/IMessage.h"
+#include <vector>
+#include "../IFile.h"
+#include "../Msg/IFormat.h"
 
 namespace libfalltergeist {
     namespace Msg {
-        class Message : public IMessage {
+        class Format : public IFormat {
         public:
-            Message(uint32_t number, std::string sound, std::string text);
-            ~Message() override = default;
-
-            uint32_t number() override;
-            std::string sound() override;
-            std::string text() override;
+            Format();
+            explicit Format(std::shared_ptr<IFile> file);
+            ~Format() override = default;
+            std::shared_ptr<IMessage> byNumber(uint32_t number) override;
+            std::shared_ptr<std::vector<std::shared_ptr<IMessage>>> messages() override;
         private:
-            uint32_t _number;
-            std::string _sound;
-            std::string _text;
+            std::shared_ptr<std::vector<std::shared_ptr<IMessage>>> _messages;
         };
     }
 }

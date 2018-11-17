@@ -52,6 +52,7 @@ Item::Item(Entry* datFileEntry)
 }
 
 void Item::_initialize()
+
 {
     if (_initialized) return;
     _initialized = true;

@@ -39,7 +39,7 @@
 #include "../Gcd/File.h"
 #include "../Int/File.h"
 #include "../Map/File.h"
-#include "../Msg/File.h"
+#include "../Msg/Format.h"
 #include "../Mve/File.h"
 #include "../Lip/File.h"
 #include "../Lst/File.h"
@@ -196,7 +196,7 @@ Item* File::item(const std::string filename)
         else if (extension == "lip") item = new Lip::File(entry);
         else if (extension == "lst") item = new Lst::File(entry);
         else if (extension == "map") item = new Map::File(entry);
-        else if (extension == "msg") item = new Msg::File(entry);
+        //else if (extension == "msg") item = new Msg::File(entry);
         else if (extension == "mve") item = new Mve::File(entry);
         else if (extension == "pal") item = new Pal::File(entry);
         else if (extension == "pro") item = new Pro::File(entry);

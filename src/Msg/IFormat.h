@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,41 +22,19 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_MSG_FILE_H
-#define LIBFALLTERGEIST_MSG_FILE_H
+#pragma once
 
-// C++ standard includes
 #include <vector>
+#include <memory>
+#include "../Msg/IMessage.h"
 
-// libfalltergeist includes
-#include "../Dat/Item.h"
-
-// Third party includes
-
-namespace libfalltergeist
-{
-namespace Msg
-{
-
-class Message;
-
-class File : public Dat::Item
-{
-
-public:
-    File(Dat::Entry* datFileEntry);
-    File(std::ifstream* stream);
-    ~File();
-
-    std::vector<Message*>* messages();
-    Message* message(unsigned int number);
-
-protected:
-    std::vector<Message*> _messages;
-    virtual void _initialize();
-
-};
-
+namespace libfalltergeist {
+    namespace Msg {
+        class IFormat {
+        public:
+            virtual ~IFormat() = default;
+            virtual std::shared_ptr<IMessage> byNumber(uint32_t number) = 0;
+            virtual std::shared_ptr<std::vector<std::shared_ptr<IMessage>>> messages() = 0;
+        };
+    }
 }
-}
-#endif // LIBFALLTERGEIST_MSG_FILE_H

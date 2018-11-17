@@ -24,23 +24,17 @@
 
 #pragma once
 
+#include <cstdint>
 #include <string>
-#include "../Msg/IMessage.h"
 
 namespace libfalltergeist {
     namespace Msg {
-        class Message : public IMessage {
+        class IMessage {
         public:
-            Message(uint32_t number, std::string sound, std::string text);
-            ~Message() override = default;
-
-            uint32_t number() override;
-            std::string sound() override;
-            std::string text() override;
-        private:
-            uint32_t _number;
-            std::string _sound;
-            std::string _text;
+            virtual ~IMessage() = default;
+            virtual uint32_t number() = 0;
+            virtual std::string sound() = 0;
+            virtual std::string text() = 0;
         };
     }
 }
