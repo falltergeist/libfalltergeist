@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,22 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_BIO_FILE_H
-#define LIBFALLTERGEIST_BIO_FILE_H
+#pragma once
 
-// C++ standard includes
+#include <memory>
 #include <string>
+#include "../IFile.h"
+#include "../Bio/IFormat.h"
 
-// libfalltergeist includes
-#include "../Dat/Item.h"
-
-// Third party includes
-
-namespace libfalltergeist
-{
-namespace Bio
-{
-
-class File : public Dat::Item
-{
-
-public:
-    File(Dat::Entry* datFileEntry);
-    File(std::ifstream* stream);
-    ~File();
-
-    std::string text();
-
-protected:
-    std::string _text;
-    void _initialize();
-
-};
-
+namespace libfalltergeist {
+    namespace Bio {
+        class Format : public IFormat {
+        public:
+            explicit Format(std::shared_ptr<IFile> file);
+            ~Format() override = default;
+            std::string text() override;
+        private:
+            std::string _text;
+        };
+    }
 }
-}
-#endif // LIBFALLTERGEIST_BIO_FILE_H

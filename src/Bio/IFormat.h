@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,49 +22,14 @@
  * SOFTWARE.
  */
 
-// C++ standard includes
-#include <cstdint>
+#pragma once
 
-// libfalltergeist includes
-#include "../Bio/File.h"
-
-// Third party includes
-
-namespace libfalltergeist
-{
-namespace Bio
-{
-
-File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
-{
-    _initialize();
-}
-
-File::File(std::ifstream* stream) : Dat::Item(stream)
-{
-    _initialize();
-}
-
-File::~File()
-{
-}
-
-void File::_initialize()
-{
-    if (_initialized) return;
-    Dat::Item::_initialize();
-    Dat::Item::setPosition(0);
-
-    for (unsigned i = 0; i != this->size(); ++i)
-    {
-        _text += uint8();
+namespace libfalltergeist {
+    namespace Bio {
+        class IFormat {
+        public:
+            virtual ~IFormat() = default;
+            virtual std::string text() = 0;
+        };
     }
-}
-
-std::string File::text()
-{
-    return _text;
-}
-
-}
 }

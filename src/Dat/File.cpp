@@ -28,7 +28,7 @@
 // libfalltergeist includes
 #include "../Aaf/File.h"
 #include "../Acm/File.h"
-#include "../Bio/File.h"
+#include "../Bio/Format.h"
 #include "../Dat/Entry.h"
 #include "../Dat/File.h"
 #include "../Dat/Item.h"
@@ -187,7 +187,7 @@ Item* File::item(const std::string filename)
         Item* item = nullptr;
         if      (extension == "aaf") item = new Aaf::File(entry);
         else if (extension == "acm") item = new Acm::File(entry);
-        else if (extension == "bio") item = new Bio::File(entry);
+        //else if (extension == "bio") item = new Bio::File(entry);
         else if (extension == "fon") item = new Fon::File(entry);
         else if (extension == "frm") item = new Frm::File(entry);
         else if (extension == "gam") item = new Gam::File(entry);
