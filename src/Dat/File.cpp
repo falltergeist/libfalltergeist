@@ -34,7 +34,7 @@
 #include "../Dat/Item.h"
 #include "../Exception.h"
 #include "../Fon/File.h"
-#include "../Frm/File.h"
+#include "../Frm/Format.h"
 #include "../Gam/File.h"
 #include "../Gcd/File.h"
 #include "../Int/File.h"
@@ -43,7 +43,7 @@
 #include "../Mve/File.h"
 #include "../Lip/File.h"
 #include "../Lst/File.h"
-#include "../Pal/File.h"
+#include "../Pal/Format.h"
 #include "../Pro/File.h"
 #include "../Rix/File.h"
 #include "../Sve/File.h"
@@ -189,7 +189,7 @@ Item* File::item(const std::string filename)
         else if (extension == "acm") item = new Acm::File(entry);
         //else if (extension == "bio") item = new Bio::File(entry);
         else if (extension == "fon") item = new Fon::File(entry);
-        else if (extension == "frm") item = new Frm::File(entry);
+        //else if (extension == "frm") item = new Frm::File(entry);
         else if (extension == "gam") item = new Gam::File(entry);
         else if (extension == "gcd") item = new Gcd::File(entry);
         else if (extension == "int") item = new Int::File(entry);
@@ -198,7 +198,7 @@ Item* File::item(const std::string filename)
         else if (extension == "map") item = new Map::File(entry);
         //else if (extension == "msg") item = new Msg::File(entry);
         else if (extension == "mve") item = new Mve::File(entry);
-        else if (extension == "pal") item = new Pal::File(entry);
+        //else if (extension == "pal") item = new Pal::Format(entry);
         else if (extension == "pro") item = new Pro::File(entry);
         else if (extension == "rix") item = new Rix::File(entry);
         else if (extension == "sve") item = new Sve::File(entry);

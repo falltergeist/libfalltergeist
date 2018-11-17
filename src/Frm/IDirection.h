@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,18 @@
 
 #pragma once
 
-#include "../Pal/IColor.h"
+#include <cstdint>
+#include <memory>
+#include "../Frm/IFrame.h"
 
 namespace libfalltergeist {
-    namespace Pal {
-        class Color : public IColor {
+    namespace Frm {
+        class IDirection {
         public:
-            Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
-            ~Color() override = default;
-            uint8_t red() override;
-            uint8_t green() override;
-            uint8_t blue() override;
-            uint8_t alpha() override;
-        private:
-            uint8_t _red;
-            uint8_t _green;
-            uint8_t _blue;
-            uint8_t _alpha;
+            virtual ~IDirection() = default;
+            virtual int16_t shiftX() = 0;
+            virtual int16_t shiftY() = 0;
+            virtual std::shared_ptr<std::vector<std::shared_ptr<IFrame>>> frames() = 0;
         };
     }
 }

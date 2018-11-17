@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,90 +22,37 @@
  * SOFTWARE.
  */
 
-// C++ standard includes
-
-// libfalltergeist includes
 #include "../Frm/Frame.h"
 
-// Third party includes
+namespace libfalltergeist {
+    namespace Frm {
+        Frame::Frame(uint16_t width, uint16_t height, int16_t offsetX, int16_t offsetY) {
+            _width = width;
+            _height = height;
+            _offsetX = offsetX;
+            _offsetY = offsetY;
+            _indexes = std::make_shared<std::vector<uint8_t>>();
+            _indexes->resize(width * height);
+        }
 
-namespace libfalltergeist
-{
-namespace Frm
-{
+        uint16_t Frame::width() {
+            return _width;
+        }
 
-Frame::Frame(uint16_t width, uint16_t height)
-{
-    _width = width;
-    _height = height;
+        uint16_t Frame::height() {
+            return _height;
+        }
 
-    for (unsigned i = 0; i != (unsigned)_width*_height; ++i)
-    {
-        _indexes.push_back(0);
+        int16_t Frame::offsetX() {
+            return _offsetX;
+        }
+
+        int16_t Frame::offsetY() {
+            return _offsetY;
+        }
+
+        std::shared_ptr<std::vector<uint8_t>> Frame::indexes() {
+            return _indexes;
+        }
     }
-}
-
-Frame::Frame(const Frame& other)
-{
-    _width = other._width;
-    _height = other._height;
-    _offsetX = other._offsetX;
-    _offsetY = other._offsetY;
-    _indexes = other._indexes;
-}
-
-Frame::~Frame()
-{
-}
-
-uint16_t Frame::width() const
-{
-    return _width;
-}
-
-uint16_t Frame::height() const
-{
-    return _height;
-}
-
-int16_t Frame::offsetX() const
-{
-    return _offsetX;
-}
-
-void Frame::setOffsetX(int16_t value)
-{
-    _offsetX = value;
-}
-
-int16_t Frame::offsetY() const
-{
-    return _offsetY;
-}
-
-void Frame::setOffsetY(int16_t value)
-{
-    _offsetY = value;
-}
-
-const std::vector<uint8_t>* Frame::indexes() const
-{
-    return &_indexes;
-}
-
-uint8_t Frame::index(uint16_t x, uint16_t y) const
-{
-    if (x >= _width || y >= _height) return 0;
-
-    return _indexes.at(_width*y + x);
-}
-
-void Frame::setIndex(uint16_t x, uint16_t y, uint8_t index)
-{
-    if (x >= _width || y >= _height) return;
-
-    _indexes.at(_width*y + x) = index;
-}
-
-}
 }

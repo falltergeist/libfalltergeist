@@ -24,23 +24,20 @@
 
 #pragma once
 
-#include "../Pal/IColor.h"
+#include <memory>
+#include <vector>
+#include "../IFile.h"
+#include "../Pal/IFormat.h"
 
 namespace libfalltergeist {
     namespace Pal {
-        class Color : public IColor {
+        class Format : public IFormat {
         public:
-            Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
-            ~Color() override = default;
-            uint8_t red() override;
-            uint8_t green() override;
-            uint8_t blue() override;
-            uint8_t alpha() override;
+            explicit Format(std::shared_ptr<IFile> file);
+            ~Format() override = default;
+            std::shared_ptr<std::vector<std::shared_ptr<IColor>>> colors() override;
         private:
-            uint8_t _red;
-            uint8_t _green;
-            uint8_t _blue;
-            uint8_t _alpha;
+            std::shared_ptr<std::vector<std::shared_ptr<IColor>>> _colors;
         };
     }
 }

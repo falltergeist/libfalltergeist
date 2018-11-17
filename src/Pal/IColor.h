@@ -24,23 +24,17 @@
 
 #pragma once
 
-#include "../Pal/IColor.h"
+#include <cstdint>
 
 namespace libfalltergeist {
     namespace Pal {
-        class Color : public IColor {
+        class IColor {
         public:
-            Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
-            ~Color() override = default;
-            uint8_t red() override;
-            uint8_t green() override;
-            uint8_t blue() override;
-            uint8_t alpha() override;
-        private:
-            uint8_t _red;
-            uint8_t _green;
-            uint8_t _blue;
-            uint8_t _alpha;
+            virtual ~IColor() = default;
+            virtual uint8_t red() = 0;
+            virtual uint8_t green() = 0;
+            virtual uint8_t blue() = 0;
+            virtual uint8_t alpha() = 0;
         };
     }
 }

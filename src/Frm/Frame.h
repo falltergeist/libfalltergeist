@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,53 +22,29 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_FMR_FRAME_H
-#define LIBFALLTERGEIST_FMR_FRAME_H
+#pragma once
 
-// C++ standard includes
 #include <cstdint>
 #include <vector>
+#include "../Frm/IFrame.h"
 
-// libfalltergeist includes
-
-// Third party includes
-
-namespace libfalltergeist
-{
-namespace Frm
-{
-
-class Frame
-{
-
-public:
-    Frame(uint16_t width, uint16_t height);
-    Frame(const Frame& other);
-    ~Frame();
-
-    uint16_t width() const;
-    uint16_t height() const;
-
-    int16_t offsetX() const;
-    void setOffsetX(int16_t value);
-
-    int16_t offsetY() const;
-    void setOffsetY(int16_t value);
-
-    const std::vector<uint8_t>* indexes() const;
-
-    uint8_t index(uint16_t x, uint16_t y) const;
-    void setIndex(uint16_t x, uint16_t y, uint8_t index);
-
-protected:
-    uint16_t _width = 0;
-    uint16_t _height = 0;
-    int16_t _offsetX = 0;
-    int16_t _offsetY = 0;
-    std::vector<uint8_t> _indexes;
-
-};
-
+namespace libfalltergeist {
+    namespace Frm {
+        class Frame : public IFrame {
+        public:
+            Frame(uint16_t width, uint16_t height, int16_t offsetX, int16_t offsetY);
+            ~Frame() override = default;
+            uint16_t width() override;
+            uint16_t height() override;
+            int16_t offsetX() override;
+            int16_t offsetY() override;
+            std::shared_ptr<std::vector<uint8_t>> indexes() override;
+        private:
+            uint16_t _width;
+            uint16_t _height;
+            int16_t _offsetX;
+            int16_t _offsetY;
+            std::shared_ptr<std::vector<uint8_t>> _indexes;
+        };
+    }
 }
-}
-#endif // LIBFALLTERGEIST_FMR_FRAME_H

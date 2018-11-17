@@ -22,60 +22,27 @@
  * SOFTWARE.
  */
 
-// C++ standard includes
-
-// libfalltergeist includes
 #include "../Pal/Color.h"
-#include "../Pal/File.h"
+#include "../Pal/Format.h"
+#include "../FileWrapper.h"
 
-// Third party includes
+namespace libfalltergeist {
+    namespace Pal {
+        Format::Format(std::shared_ptr<IFile> file) {
+            _colors = std::make_shared<std::vector<std::shared_ptr<IColor>>>();
+            // zero color (transparent)
+            _colors->push_back(std::make_shared<Color>(0, 0, 0, 0));
 
-namespace libfalltergeist
-{
-namespace Pal
-{
+            FileWrapper wrapper(std::move(file));
+            wrapper.seek(3);
 
-File::File(Dat::Entry* datFileEntry) : Dat::Item(datFileEntry)
-{
-    _initialize();
-}
+            for (unsigned i = 1; i != 256; ++i) {
+                _colors->push_back(std::make_shared<Color>(wrapper.uint8(), wrapper.uint8(), wrapper.uint8()));
+            }
+        }
 
-File::File(std::ifstream* stream) : Dat::Item(stream)
-{
-    _initialize();
-}
-
-File::~File()
-{
-    for (auto color : _colors)
-    {
-        delete color;
+        std::shared_ptr<std::vector<std::shared_ptr<IColor>>> Format::colors() {
+            return _colors;
+        }
     }
-}
-
-void File::_initialize()
-{
-    if (_initialized) return;
-    Dat::Item::_initialize();
-    Dat::Item::setPosition(3);
-
-    _colors.push_back(new Color(0, 0, 0, 0)); // zero color (transparent)
-
-    for (unsigned i = 1; i != 256; ++i)
-    {
-        _colors.push_back(new Color(uint8(), uint8(), uint8()));
-    }
-}
-
-std::vector<Color*>* File::colors()
-{
-    return &_colors;
-}
-
-Color* File::color(unsigned index) const
-{
-    return _colors.at(index);
-}
-
-}
 }

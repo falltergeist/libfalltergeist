@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,42 +22,23 @@
  * SOFTWARE.
  */
 
-#ifndef LIBFALLTERGEIST_PAL_FILE_H
-#define LIBFALLTERGEIST_PAL_FILE_H
+#pragma once
 
-// C++ standard includes
+#include <cstdint>
+#include <memory>
 #include <vector>
+#include "../Frm/IDirection.h"
 
-// libfalltergeist includes
-#include "../Dat/Item.h"
-
-// Third party includes
-
-namespace libfalltergeist
-{
-namespace Pal
-{
-
-class Color;
-
-class File : public Dat::Item
-{
-
-public:
-    File(Dat::Entry* datFileEntry);
-    File(std::ifstream* stream);
-    ~File();
-
-    std::vector<Color*>* colors();
-
-    Color* color(unsigned index) const;
-
-protected:
-    std::vector<Color*> _colors;
-    virtual void _initialize();
-
-};
-
+namespace libfalltergeist {
+    namespace Frm {
+        class IFormat {
+        public:
+            virtual ~IFormat() = default;
+            virtual uint32_t version() = 0;
+            virtual uint16_t framesPerSecond() = 0;
+            virtual uint16_t framesPerDirection() = 0;
+            virtual uint16_t actionFrame() = 0;
+            virtual std::shared_ptr<std::vector<std::shared_ptr<IDirection>>> directions() = 0;
+        };
+    }
 }
-}
-#endif // LIBFALLTERGEIST_PAL_FILE_H

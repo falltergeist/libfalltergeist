@@ -22,80 +22,31 @@
  * SOFTWARE.
  */
 
-// C++ standard includes
-
-// libfalltergeist includes
 #include "../Pal/Color.h"
 
-// Third party includes
+namespace libfalltergeist {
+    namespace Pal {
+        Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
+            _red = red;
+            _green = green;
+            _blue = blue;
+            _alpha = alpha;
+        }
 
-namespace libfalltergeist
-{
-namespace Pal
-{
+        uint8_t Color::red() {
+            return _red;
+        }
 
-Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
-{
-    _red = red;
-    _green = green;
-    _blue = blue;
-    _alpha = alpha;
-}
+        uint8_t Color::green() {
+            return _green;
+        }
 
-Color::~Color()
-{
-}
+        uint8_t Color::blue() {
+            return _blue;
+        }
 
-void Color::setRed(uint8_t red)
-{
-    _red = red;
-}
-
-uint8_t Color::red() const
-{
-    return _red;
-}
-
-void Color::setGreen(uint8_t green)
-{
-    _green = green;
-}
-
-uint8_t Color::green() const
-{
-    return _green;
-}
-
-void Color::setBlue(uint8_t blue)
-{
-    _blue = blue;
-}
-
-uint8_t Color::blue() const
-{
-    return _blue;
-}
-
-void Color::setAlpha(uint8_t alpha)
-{
-    _alpha = alpha;
-}
-
-uint8_t Color::alpha() const
-{
-    return _alpha;
-}
-
-Color::operator int() const
-{
-    return (int) (unsigned int) *this;
-}
-
-Color::operator unsigned int() const
-{
-    uint8_t k = 4;
-    return ((red() * k) << 24) | ((green() * k) << 16) | ((blue() * k) << 8) | alpha();
-}
-
-}
+        uint8_t Color::alpha() {
+            return _alpha;
+        }
+    }
 }

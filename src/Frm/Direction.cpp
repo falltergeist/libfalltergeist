@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,86 +22,26 @@
  * SOFTWARE.
  */
 
-// C++ standard includes
-#include <algorithm>
-
-// libfalltergeist includes
 #include "../Frm/Direction.h"
-#include "../Frm/Frame.h"
 
-// Third party includes
+namespace libfalltergeist {
+    namespace Frm {
+        Direction::Direction(int16_t shiftX, int16_t shiftY) {
+            _shiftX = shiftX;
+            _shiftY = shiftY;
+            _frames = std::make_shared<std::vector<std::shared_ptr<IFrame>>>();
+        }
 
-namespace libfalltergeist
-{
-namespace Frm
-{
+        int16_t Direction::shiftX() {
+            return _shiftX;
+        }
 
-Direction::Direction()
-{
-}
+        int16_t Direction::shiftY() {
+            return _shiftY;
+        }
 
-Direction::~Direction()
-{
-    for (auto frame : _frames)
-    {
-        delete frame;
+        std::shared_ptr<std::vector<std::shared_ptr<IFrame>>> Direction::frames() {
+            return _frames;
+        }
     }
-}
-
-int16_t Direction::shiftX() const
-{
-    return _shiftX;
-}
-
-void Direction::setShiftX(int16_t value)
-{
-    _shiftX = value;
-}
-
-int16_t Direction::shiftY() const
-{
-    return _shiftY;
-}
-
-void Direction::setShiftY(int16_t value)
-{
-    _shiftY = value;
-}
-
-uint32_t Direction::dataOffset() const
-{
-    return _dataOffset;
-}
-
-uint16_t Direction::width() const
-{
-    std::vector<uint16_t> widths;
-    for (auto frame : _frames)
-    {
-        widths.push_back(frame->width());
-    }
-    return (*std::max_element(widths.begin(), widths.end())) * _frames.size();
-}
-
-uint16_t Direction::height() const
-{
-    std::vector<uint16_t> heights;
-    for (auto frame : _frames)
-    {
-        heights.push_back(frame->height());
-    }
-    return *std::max_element(heights.begin(), heights.end());
-}
-
-void Direction::setDataOffset(uint32_t value)
-{
-    _dataOffset = value;
-}
-
-std::vector<Frame*>* Direction::frames()
-{
-    return &_frames;
-}
-
-}
 }

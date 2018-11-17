@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2015 Falltergeist developers
+ * Copyright (c) 2012-2018 Falltergeist developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,26 @@
 
 #pragma once
 
-#include "../Pal/IColor.h"
+#include "../IFile.h"
+#include "../Frm/IFormat.h"
 
 namespace libfalltergeist {
-    namespace Pal {
-        class Color : public IColor {
+    namespace Frm {
+        class Format : public IFormat {
         public:
-            Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
-            ~Color() override = default;
-            uint8_t red() override;
-            uint8_t green() override;
-            uint8_t blue() override;
-            uint8_t alpha() override;
+            explicit Format(std::shared_ptr<IFile> file);
+            ~Format() override = default;
+            uint32_t version() override;
+            uint16_t framesPerSecond() override;
+            uint16_t framesPerDirection() override;
+            uint16_t actionFrame() override;
+            std::shared_ptr<std::vector<std::shared_ptr<IDirection>>> directions() override;
         private:
-            uint8_t _red;
-            uint8_t _green;
-            uint8_t _blue;
-            uint8_t _alpha;
+            uint32_t _version;
+            uint16_t _framesPerSecond;
+            uint16_t _framesPerDirection;
+            uint16_t _actionFrame;
+            std::shared_ptr<std::vector<std::shared_ptr<IDirection>>> _directions;
         };
     }
 }

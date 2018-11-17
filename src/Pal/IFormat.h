@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * The MIT License (MIT)
  *
@@ -24,23 +26,16 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
 #include "../Pal/IColor.h"
 
 namespace libfalltergeist {
     namespace Pal {
-        class Color : public IColor {
+        class IFormat {
         public:
-            Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
-            ~Color() override = default;
-            uint8_t red() override;
-            uint8_t green() override;
-            uint8_t blue() override;
-            uint8_t alpha() override;
-        private:
-            uint8_t _red;
-            uint8_t _green;
-            uint8_t _blue;
-            uint8_t _alpha;
+            virtual ~IFormat() = default;
+            virtual std::shared_ptr<std::vector<std::shared_ptr<IColor>>> colors() = 0;
         };
     }
 }
